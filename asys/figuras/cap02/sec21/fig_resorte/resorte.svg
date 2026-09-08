@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="50 35 330 220" style="background-color: white;">
+  <!-- Definitions for markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#003366" />
+    </marker>
+  </defs>
+
+  <!-- Title (Optional, hidden for clean look) -->
+  <!-- <text x="150" y="30" text-anchor="middle" font-family="'Computer Modern Serif', serif" font-size="16" font-weight="bold" fill="#333">Sistema Masa-Resorte</text> -->
+
+  <!-- Main Group centered horizontally -->
+  <g transform="translate(100, 50)">
+      
+      <!-- Ceiling / Support -->
+      <line x1="-40" y1="0" x2="40" y2="0" stroke="black" stroke-width="3" />
+      <!-- Hatching lines for support -->
+      <path d="M -40 0 L -30 -10 M -20 0 L -10 -10 M 0 0 L 10 -10 M 20 0 L 30 -10 M 40 0 L 50 -10" stroke="black" stroke-width="1" />
+      
+      <!-- Spring -->
+      <!-- Starts at (0,0), ends at (0,150) before connecting to mass -->
+      <path d="M 0 0 
+               L 0 15 
+               L 15 25 
+               L -15 45 
+               L 15 65 
+               L -15 85 
+               L 15 105 
+               L -15 125 
+               L 0 135 
+               L 0 150" 
+            fill="none" stroke="#003366" stroke-width="2" stroke-linejoin="round" />
+            
+      <!-- Mass -->
+      <!-- Attached at y=150. Box size 50x50. Center of mass at y=175 -->
+      <rect x="-25" y="150" width="50" height="50" fill="#E0E0E0" stroke="#003366" stroke-width="2" />
+      <text x="0" y="175" text-anchor="middle" dominant-baseline="middle" font-family="'Computer Modern Serif', serif" font-size="20" fill="black" font-weight="bold">m</text>
+  </g>
+
+  <!-- Annotations Group -->
+  <g transform="translate(100, 50)">
+      <!-- Equilibrium Position Line (dashed) -->
+      <!-- Let's assume equilibrium is at y=85 (middle of spring range) -->
+      <line x1="30" y1="85" x2="140" y2="85" stroke="#999" stroke-width="1" stroke-dasharray="5,5" />
+      <text x="145" y="90" font-family="'Computer Modern Serif', serif" font-size="14" fill="black">Equilibrio ($y=0$)</text>
+
+      <!-- Current Position Line (dashed) -->
+      <!-- Center of mass is at y=175 -->
+      <line x1="30" y1="175" x2="140" y2="175" stroke="#999" stroke-width="1" stroke-dasharray="5,5" />
+      
+      <!-- Displacement Vector y(t) -->
+      <line x1="100" y1="85" x2="100" y2="175" stroke="#003366" stroke-width="1.5" marker-end="url(#arrow)" />
+      <text x="110" y="140" font-family="'Computer Modern Serif', serif" font-size="16" fill="#003366" font-style="italic">y(t)</text>
+  </g>
+
+</svg>

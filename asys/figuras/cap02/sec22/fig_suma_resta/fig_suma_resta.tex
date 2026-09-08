@@ -1,0 +1,51 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=0.9]
+        % PANEL A: SUMA
+        \begin{scope}[shift={(0,0)}]
+            \draw[->, very thick] (-0.5,0) -- (3.5,0) node[right] {Re};
+            \draw[->, very thick] (0,-0.5) -- (0,3) node[above] {Im};
+            
+            \coordinate (O) at (0,0);
+            \coordinate (Z1) at (1, 2);
+            \coordinate (Z2) at (2, 0.5);
+            \coordinate (SUM) at ($(Z1)+(Z2)$);
+            
+            \draw[->, very thick, utnblue] (O) -- (Z1) node[midway, left] {$z_1$};
+            \draw[->, very thick, utnblue] (O) -- (Z2) node[midway, below] {$z_2$};
+            
+            \draw[dashed, gray] (Z1) -- (SUM) -- (Z2);
+            \draw[->, very thick, red] (O) -- (SUM) node[above right] {$z_1+z_2$};
+            \node at (1.5, -2.0) {\textbf{(a) Suma Vectorial}};
+        \end{scope}
+        
+        % PANEL B: RESTA
+        \begin{scope}[shift={(9,0)}]
+            \draw[->, very thick] (-2.5,0) -- (3,0) node[right] {Re};
+            \draw[->, very thick] (0,-1.5) -- (0,3) node[above] {Im};
+            
+            \coordinate (O) at (0,0);
+            \coordinate (Z1) at (1, 2);
+            \coordinate (Z2) at (2, 0.5);
+            \coordinate (Z2neg) at (-2, -0.5);
+            \coordinate (DIFF) at ($(Z1)+(Z2neg)$);
+            
+            \draw[->, very thick, utnblue] (O) -- (Z1) node[above right] {$z_1$};
+            \draw[->, very thick, utnblue] (O) -- (Z2) node[right] {$z_2$};
+            
+            % Opuesto y suma
+            \draw[->, very thick, utnblue, dashed] (O) -- (Z2neg) node[below] {$-z_2$};
+            \draw[dashed, gray] (Z1) -- (DIFF) -- (Z2neg);
+            \draw[->, very thick, red!70] (O) -- (DIFF) node[left] {$z_1+(-z_2)$};
+            
+            % Resta z1 - z2 (vector from z2 to z1)
+            \draw[->, very thick, red] (Z2) -- (Z1) node[midway, right] {$z_1-z_2$};
+            
+            \node at (0.5, -2.0) {\textbf{(b) Resta Vectorial}};
+        \end{scope}
+    \end{tikzpicture}
+\end{document}

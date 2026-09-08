@@ -1,0 +1,716 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\usepackage{float} 
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[mode=image]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, babel}
+
+\definecolor{utnblue}{RGB}{0, 51, 102}
+\definecolor{utnred}{RGB}{204, 0, 0}
+\definecolor{utngreen}{RGB}{0, 153, 76}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+\setlength{\headsep}{10pt}
+\setlength{\droptitle}{-0.5in}
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large\bfseries}
+\posttitle{\par\end{center}\vspace{-1.5em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Resolución del Trabajo Práctico N$^\text{o}$4 -- Parte B}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Encabezado de tema
+\newcommand{\tema}[1]{%
+  \bigskip
+  \noindent{\color{utnblue}\rule{\linewidth}{1pt}}\\[-0.4em]
+  \section*{#1}
+  \vspace{-0.6em}
+}
+
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Resolución del Trabajo Práctico N$^{\text o}$4 -- Parte B: Transformada de Fourier de tiempo continuo}%
+}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+
+	\label{sec:resolucion}
+
+	\noindent
+	Antes de cada bloque de ejercicios se incluye un breve repaso de las herramientas que se usan en él. La notación es la misma de toda la materia: la unidad imaginaria es $j$, la barra $\overline{\,\cdot\,}$ indica conjugación, $|X(j\omega)|$ y $\angle X(j\omega)$ son los espectros de amplitud y de fase, y los ángulos se expresan en radianes.
+
+	% ============================================================================
+	\tema{De la serie a la transformada}
+	% ============================================================================
+
+	La transformada de Fourier de una señal $x(t)$ y su inversa son el par
+	\[
+		X(j\omega) = \int_{-\infty}^{\infty} x(t)\,e^{-j\omega t}\,dt,
+		\qquad
+		x(t) = \frac{1}{2\pi}\int_{-\infty}^{\infty} X(j\omega)\,e^{j\omega t}\,d\omega.
+	\]
+	De las dos, la que lleva el peso conceptual es la de \emph{síntesis} (la de la derecha): afirma que cualquier señal $x(t)$ se reconstruye superponiendo exponenciales complejas $e^{j\omega t}$ sobre todas las frecuencias reales, cada una ponderada por su $X(j\omega)$. Esa es la idea de fondo: descomponer la señal en exponenciales, con $X(j\omega)$ midiendo el peso de la frecuencia $\omega$ en esa superposición.
+
+	Como ese peso es un número complejo, carga dos datos a la vez. Su módulo $|X(j\omega)|$ dice \emph{cuánto} aporta la frecuencia $\omega$ ---la amplitud de su contribución---, y su fase $\angle X(j\omega)$ dice \emph{con qué desfasaje} entra esa exponencial en la superposición. Por eso una señal queda descrita por dos espectros, el de amplitud $|X(j\omega)|$ y el de fase $\angle X(j\omega)$, que juntos contienen toda la información de $X(j\omega)$.
+
+	La ecuación de \emph{análisis} (la de la izquierda) es la receta para obtener ese peso: fijada una frecuencia $\omega$, multiplica la señal por $e^{-j\omega t}$ e integra sobre todo el tiempo. El resultado es el mismo $X(j\omega)$ que la síntesis necesita. Conviene tener a mano tres pares de referencia que se calculan directamente de esta integral:
+	\[
+		p_\tau(t) \;\leftrightarrow\; \tau\,\operatorname{sinc}\!\Big(\tfrac{\omega\tau}{2}\Big),
+		\qquad
+		e^{-at}u(t) \;\leftrightarrow\; \frac{1}{a+j\omega}\;\;(a>0),
+		\qquad
+		\delta(t) \;\leftrightarrow\; 1,
+	\]
+	donde $p_\tau(t)$ es el pulso rectangular de ancho $\tau$ centrado en el origen y $\operatorname{sinc}(x)=\sin(x)/x$.
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 1: pulso rectangular y seno cardinal}
+
+	El pulso vale $A$ en $(-\tau/2,\,\tau/2)$ y cero fuera, así que la integral de análisis se reduce a ese intervalo:
+	\begin{align*}
+		P_\tau(j\omega)
+		&= \int_{-\tau/2}^{\tau/2} A\,e^{-j\omega t}\,dt
+		= A\,\frac{e^{-j\omega t}}{-j\omega}\bigg|_{-\tau/2}^{\tau/2}
+		= \frac{A}{-j\omega}\Big(e^{-j\omega\tau/2} - e^{j\omega\tau/2}\Big) \\
+		&= \frac{A}{j\omega}\Big(e^{j\omega\tau/2} - e^{-j\omega\tau/2}\Big)
+		= \frac{A}{j\omega}\,2j\sin\!\Big(\tfrac{\omega\tau}{2}\Big)
+		= \frac{2A}{\omega}\sin\!\Big(\tfrac{\omega\tau}{2}\Big),
+	\end{align*}
+	donde usamos $e^{j\theta}-e^{-j\theta}=2j\sin\theta$. Multiplicando y dividiendo por $\tau/2$ para reconstruir el seno cardinal:
+	\[
+		\boxed{P_\tau(j\omega) = A\tau\,\frac{\sin(\omega\tau/2)}{\omega\tau/2} = A\tau\,\operatorname{sinc}\!\Big(\tfrac{\omega\tau}{2}\Big).}
+	\]
+
+	La transformada de un pulso es un seno cardinal: una función real que arranca en su valor máximo $A\tau$ en $\omega=0$ ---el área del pulso--- y oscila amortiguándose. Para $A=1$ y $\tau=2$ queda $P(j\omega)=2\operatorname{sinc}(\omega)$.
+
+	\textbf{Cruces por cero.} El seno cardinal se anula cuando su argumento es múltiplo entero no nulo de $\pi$:
+	\[
+		\frac{\omega\tau}{2} = m\pi \;\Rightarrow\; \omega = \frac{2\pi m}{\tau}, \quad m=\pm1,\pm2,\dots
+	\]
+	Con $\tau=2$ los ceros caen en $\omega=\pm\pi,\pm2\pi,\dots$ El dato importante está en la dependencia con $\tau$: \textbf{cuanto más angosto el pulso (menor $\tau$), más lejos se van los ceros} y más ancho resulta el espectro. Estrechar la señal en el tiempo la ensancha en frecuencia; es el compromiso tiempo--frecuencia, que volverá a aparecer en el Ejercicio~3 llevado al extremo.
+
+	\textbf{Fase.} Como $P_\tau(j\omega)$ es real, su fase solo puede valer $0$ (donde el seno cardinal es positivo) o $\pi$ (donde es negativo). La Figura~\ref{fig:sol_ej1} muestra módulo y fase.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.92\linewidth]{figures/fig_sol_ej1/fig_sol_ej1}
+		\caption{Espectro del pulso rectangular con $A=1$, $\tau=2$. Izquierda: amplitud $|P_\tau(j\omega)|=2\,|\!\operatorname{sinc}(\omega)|$, con ceros en los múltiplos de $\pi$. Derecha: fase, que alterna entre $0$ y $\pi$ según el signo del seno cardinal.}
+		\label{fig:sol_ej1}
+	\end{figure}
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 2: exponencial bilateral}
+
+	La señal $x(t)=e^{-a|t|}$ es simétrica respecto del origen. El valor absoluto en el exponente obliga a partir la integral en los dos tramos donde $|t|$ tiene expresión distinta:
+	\begin{align*}
+		X(j\omega)
+		&= \int_{-\infty}^{0} e^{at}\,e^{-j\omega t}\,dt + \int_{0}^{\infty} e^{-at}\,e^{-j\omega t}\,dt \\
+		&= \int_{-\infty}^{0} e^{(a-j\omega)t}\,dt + \int_{0}^{\infty} e^{-(a+j\omega)t}\,dt.
+	\end{align*}
+	Cada una es la integral de una exponencial; evaluando las primitivas en sus límites,
+	\[
+		\int_{-\infty}^{0} e^{(a-j\omega)t}\,dt = \frac{e^{(a-j\omega)t}}{a-j\omega}\bigg|_{-\infty}^{0}=\frac{1}{a-j\omega},
+		\qquad
+		\int_{0}^{\infty} e^{-(a+j\omega)t}\,dt = \frac{e^{-(a+j\omega)t}}{-(a+j\omega)}\bigg|_{0}^{\infty}=\frac{1}{a+j\omega},
+	\]
+	donde en ambos casos la cota infinita se anula porque $a>0$ gobierna la parte real del exponente y lleva la exponencial a cero. Sumando las dos fracciones sobre el denominador común $(a-j\omega)(a+j\omega)=a^2+\omega^2$:
+	\[
+		\boxed{X(j\omega) = \frac{(a+j\omega)+(a-j\omega)}{a^2+\omega^2} = \frac{2a}{a^2+\omega^2}.}
+	\]
+
+	\textbf{¿Real, imaginaria o compleja?} El resultado es \emph{real} para todo $\omega$ (no quedó parte imaginaria). La razón es la simetría de la señal: $x(t)$ es real y \emph{par}, y la transformada de una señal real y par es siempre real. Lo veremos como regla general en el Ejercicio~6. La Figura~\ref{fig:sol_ej2} muestra la señal y su espectro de amplitud $|X(j\omega)|=2/(1+\omega^2)$ para $a=1$, una campana centrada en el origen que decae suavemente.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.92\linewidth]{figures/fig_sol_ej2/fig_sol_ej2}
+		\caption{Izquierda: la señal $x(t)=e^{-|t|}$ ($a=1$). Derecha: su espectro $|X(j\omega)|=2/(1+\omega^2)$, real y par.}
+		\label{fig:sol_ej2}
+	\end{figure}
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 3: del pulso al impulso}
+
+	Tomamos el pulso del Ejercicio~1 con amplitud $A=1/\tau$. Su área vale $\tfrac{1}{\tau}\cdot\tau=1$ \emph{para todo $\tau$}: a medida que el pulso se angosta, se hace más alto, manteniendo el área en $1$. En el límite $\tau\to0$ esa familia tiende al impulso $\delta(t)$.
+
+	\textbf{Transformada.} Sustituyendo $A=1/\tau$ en el resultado del Ejercicio~1:
+	\[
+		P_\tau(j\omega) = \frac{1}{\tau}\cdot\tau\,\operatorname{sinc}\!\Big(\tfrac{\omega\tau}{2}\Big) = \operatorname{sinc}\!\Big(\tfrac{\omega\tau}{2}\Big).
+	\]
+	Para cada $\omega$ fijo, al hacer $\tau\to0$ el argumento $\omega\tau/2\to0$, y como $\operatorname{sinc}(0)=1$:
+	\[
+		\lim_{\tau\to0} P_\tau(j\omega) = 1 \qquad \text{para todo } \omega.
+	\]
+
+	\[
+		\boxed{\delta(t) \;\leftrightarrow\; 1.}
+	\]
+
+	\textbf{Lectura.} El primer cero del seno cardinal está en $\omega=2\pi/\tau$; al achicar $\tau$ ese cero se va a infinito y el lóbulo central se ensancha hasta cubrir todo el eje, aplanándose en la constante $1$ (Figura~\ref{fig:sol_ej3}). El impulso ---la señal más concentrada posible en el tiempo--- contiene \emph{todas las frecuencias con el mismo peso} y todas en fase. Es el caso extremo del compromiso del Ejercicio~1: concentración total en el tiempo equivale a extensión total en frecuencia.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.78\linewidth]{figures/fig_sol_ej3/fig_sol_ej3}
+		\caption{Espectro $\operatorname{sinc}(\omega\tau/2)$ del pulso de área unidad para tres valores de $\tau$. Al achicar $\tau$ el seno cardinal se ensancha y se aplana hacia la constante $1$, que es la transformada del impulso.}
+		\label{fig:sol_ej3}
+	\end{figure}
+
+	% ============================================================================
+	\tema{Propiedades de la transformada}
+	% ============================================================================
+
+	Las propiedades evitan recalcular integrales: una operación sobre la señal se traduce en una operación sobre su transformada. Las que se usan en este bloque son
+	\[
+		\begin{array}{llll}
+			\text{Linealidad} & a\,x_1+b\,x_2 \;\leftrightarrow\; a\,X_1 + b\,X_2,
+			& \text{Despl.\ temporal} & x(t-t_0) \;\leftrightarrow\; e^{-j\omega t_0}X(j\omega), \\[4pt]
+			\text{Escalamiento} & x(at) \;\leftrightarrow\; \dfrac{1}{|a|}X\!\big(\tfrac{j\omega}{a}\big),
+			& \text{Derivación} & \dfrac{d^n x}{dt^n} \;\leftrightarrow\; (j\omega)^n X(j\omega), \\[8pt]
+			\text{Convolución} & x*y \;\leftrightarrow\; X(j\omega)\,Y(j\omega). & &
+		\end{array}
+	\]
+	A ellas se agrega la \textbf{simetría conjugada}: si $x(t)$ es real, entonces $X(-j\omega)=\overline{X(j\omega)}$. Tomando módulo y fase, esto dice que \emph{el espectro de amplitud es par y el de fase es impar}. Combinada con la paridad de la señal da dos casos límite que usaremos para clasificar espectros:
+	\[
+		x \text{ real y par} \;\Rightarrow\; X(j\omega)\ \text{real};
+		\qquad
+		x \text{ real e impar} \;\Rightarrow\; X(j\omega)\ \text{imaginaria pura}.
+	\]
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 4: desplazamiento temporal del pulso}
+
+	La propiedad de desplazamiento dice que correr la señal en el tiempo multiplica su transformada por una exponencial: $x(t-t_0)\leftrightarrow e^{-j\omega t_0}X(j\omega)$. Aplicada al pulso del Ejercicio~1:
+	\[
+		\boxed{X(j\omega) = e^{-j\omega t_0}\,A\tau\,\operatorname{sinc}\!\Big(\tfrac{\omega\tau}{2}\Big).}
+	\]
+
+	\textbf{Amplitud.} El factor $e^{-j\omega t_0}$ tiene módulo $1$, así que
+	\[
+		|X(j\omega)| = |P_\tau(j\omega)| = A\tau\,\Big|\!\operatorname{sinc}\!\Big(\tfrac{\omega\tau}{2}\Big)\Big|,
+	\]
+	idéntico al del pulso sin desplazar (Figura~\ref{fig:sol_ej1}, panel izquierdo). \textbf{Desplazar en el tiempo no cambia el espectro de amplitud}: el contenido de cada frecuencia sigue siendo el mismo.
+
+	\textbf{Fase.} Lo que cambia es la fase, que se le suma una rampa lineal:
+	\[
+		\angle X(j\omega) = \underbrace{\angle P_\tau(j\omega)}_{0 \text{ o } \pi} - \omega t_0.
+	\]
+	Para $t_0=10$ y $\tau=2$:
+	\[
+		\boxed{\angle X(j\omega) = \angle P_\tau(j\omega) - 10\,\omega,}
+	\]
+	es decir, la fase original (que valía $0$ o $\pi$ según el signo del seno cardinal) con una recta de pendiente $-10$ superpuesta. Esa pendiente lineal $-t_0\omega$ es la firma de un retardo puro: amplitud intacta, fase con un término lineal cuya pendiente mide cuánto se corrió la señal.
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 5: propiedades combinadas}
+
+	Cada inciso combina dos propiedades. La estrategia es siempre la misma: reescribir el argumento de la señal para ver qué operaciones intervienen ---reflejo, escalamiento, desplazamiento--- y en qué orden, y luego aplicar la propiedad de cada una sin reintegrar.
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $x_1(t) = x(1-t) + x(-1-t)$. En ambos términos el tiempo aparece con signo negativo, señal de que hay una reflexión. Llamemos $g(t)=x(-t)$ a la señal reflejada; por escalamiento con $a=-1$, su transformada es $G(j\omega)=X(-j\omega)$ (invertir el tiempo invierte también el eje de frecuencias). Reescribiendo cada término como un desplazamiento de $g$,
+		\[
+			x(1-t)=x\big(-(t-1)\big)=g(t-1) \;\leftrightarrow\; e^{-j\omega}X(-j\omega),
+		\]
+		\[
+			x(-1-t)=x\big(-(t+1)\big)=g(t+1) \;\leftrightarrow\; e^{+j\omega}X(-j\omega).
+		\]
+		Sumando y usando $e^{j\omega}+e^{-j\omega}=2\cos\omega$:
+		\[
+			\boxed{X_1(j\omega) = 2\cos(\omega)\,X(-j\omega).}
+		\]
+
+		\item $x_2(t) = x(3t-6) = x\big(3(t-2)\big)$. Reescribir el argumento como $3(t-2)$ deja a la vista un escalamiento por $3$ seguido de un desplazamiento de $2$. Primero el escalamiento, $x(3t)\leftrightarrow \tfrac{1}{3}X(j\omega/3)$; luego el desplazamiento de $2$ multiplica por $e^{-j2\omega}$:
+		\[
+			\boxed{X_2(j\omega) = \frac{1}{3}\,e^{-j2\omega}\,X\!\Big(\frac{j\omega}{3}\Big).}
+		\]
+		El factor $1/3$ viene del escalamiento (la señal comprimida en el tiempo se ensancha en frecuencia y baja de altura); la exponencial, del desplazamiento.
+
+		\item $x_3(t) = \dfrac{d^2}{dt^2}x(t-1)$. Primero el desplazamiento, $x(t-1)\leftrightarrow e^{-j\omega}X(j\omega)$; luego la derivada segunda multiplica por $(j\omega)^2=-\omega^2$:
+		\[
+			\boxed{X_3(j\omega) = -\omega^2\,e^{-j\omega}\,X(j\omega).}
+		\]
+	\end{enumerate}
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 6: clasificación de espectros por simetría}
+
+	La herramienta es la simetría conjugada y sus dos casos particulares (ver el repaso de este bloque). El procedimiento de lectura es siempre el mismo:
+	\begin{itemize}[topsep=2pt, itemsep=1pt]
+		\item Si el espectro de amplitud \textbf{no} es par, la señal \textbf{no es real}.
+		\item Si la amplitud es par pero la fase \textbf{no} es impar, la señal tampoco es real.
+		\item Si la amplitud es par y la fase es impar, la señal \textbf{es real}; y dentro de ese caso:
+		fase $\equiv 0,\pi$ (transformada real) $\Rightarrow$ señal \emph{par};
+		fase $\equiv \pm\pi/2$ (transformada imaginaria pura) $\Rightarrow$ señal \emph{impar};
+		fase impar pero variada $\Rightarrow$ real, \emph{ni par ni impar}.
+	\end{itemize}
+	Aplicando esto a los nueve casos de la figura del enunciado:
+
+	\begin{center}
+		\begin{tabular}{cllc}
+			\toprule
+			Caso & Amplitud & Fase & Conclusión \\
+			\midrule
+			(a) & par (seno cardinal) & $0/\pi$ (par) & real y \textbf{par} \\
+			(b) & par (impulsos) & $\pm\pi/2$ (impar) & real e \textbf{impar} \\
+			(c) & par & impar suave & real, ni par ni impar \\
+			(d) & \textbf{no} par & --- & \textbf{no real} \\
+			(e) & par (impulsos) & $0$ & real y \textbf{par} \\
+			(f) & par & \textbf{par} (en V) & \textbf{no real} \\
+			(g) & par (impulsos) & impar & real, ni par ni impar \\
+			(h) & par (cero en $0$) & $\pm\pi/2$ (impar) & real e \textbf{impar} \\
+			(i) & par (seno cardinal) & lineal (impar) & real, ni par ni impar \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	Conviene recorrer algunos casos para ver el razonamiento en acción, más allá del veredicto de la tabla.
+
+	En \textbf{(a)} el módulo es un seno cardinal, que es par, y la fase solo toma los valores $0$ y $\pi$, que también forman una función par. Que la fase valga únicamente $0$ o $\pi$ es la marca de una transformada \emph{real} punto a punto: un número real positivo tiene fase $0$ y uno negativo, fase $\pi$, sin valores intermedios. Una transformada real corresponde a una señal real y par; es, de hecho, un pulso centrado en el origen.
+
+	En \textbf{(b)} el módulo son dos impulsos simétricos respecto del origen ---par---, pero la fase vale $+\pi/2$ del lado negativo y $-\pi/2$ del positivo ---impar, y tomando solo los valores $\pm\pi/2$---. Que la fase sea $\pm\pi/2$ significa que la transformada es imaginaria pura, lo que es propio de una señal real e \emph{impar}; es el espectro de un seno.
+
+	El caso \textbf{(d)} es el más rápido de descartar: su módulo está volcado hacia un solo lado del eje, así que no es par. Con eso alcanza para concluir que la señal no es real, sin necesidad de mirar siquiera la fase: si falla la primera condición, ya no hay vuelta atrás.
+
+	El \textbf{(f)} es la trampa fina. El módulo sí es par, de modo que pasa el primer filtro; pero la fase tiene forma de ``V'', que es una función par, no impar. La simetría conjugada exige que una señal real tenga fase impar, y esta no lo es, así que la señal no es real pese a tener un módulo de aspecto inocente. Es el caso que obliga a no quedarse solo con la amplitud.
+
+	En \textbf{(h)}, por último, el módulo es par y se anula en $\omega=0$, y la fase es $\pm\pi/2$ ---impar---: transformada imaginaria pura, señal real e impar. El cero del módulo en el origen es coherente con esa lectura, porque la transformada de una señal impar evaluada en $\omega=0$ es la integral de la señal sobre toda la recta, que vale cero justamente por ser impar.
+
+	La moraleja general es que hay que verificar \emph{las dos} condiciones ---módulo par y fase impar---, no solo la amplitud: los casos (d) y (f) muestran las dos maneras distintas en que una señal puede dejar de ser real.
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 7: verificación analítica de la simetría}
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Pulso del Ejercicio~1.} Su transformada es $P_\tau(j\omega)=A\tau\operatorname{sinc}(\omega\tau/2)$, que no tiene parte imaginaria: es \emph{real} para todo $\omega$. Esto confirma la regla, porque el pulso centrado es una señal real y par. (La fase real se manifiesta como $0$ o $\pi$, nunca un valor intermedio.)
+
+		\item \textbf{Exponencial causal $x(t)=e^{-at}u(t)$, $a>0$.} Es real pero ni par ni impar. Calculamos su transformada:
+		\[
+			X(j\omega)=\int_0^\infty e^{-at}e^{-j\omega t}\,dt = \int_0^\infty e^{-(a+j\omega)t}\,dt = \frac{1}{a+j\omega},
+		\]
+		donde la cota en $\infty$ se anula porque $a>0$. Para separar módulo y fase racionalizamos, multiplicando numerador y denominador por el conjugado $a-j\omega$ para dejar el denominador real:
+		\[
+			X(j\omega)=\frac{1}{a+j\omega}=\frac{a-j\omega}{(a+j\omega)(a-j\omega)}=\frac{a-j\omega}{a^2+\omega^2}=\frac{a}{a^2+\omega^2}-j\,\frac{\omega}{a^2+\omega^2}.
+		\]
+		Con la parte real y la imaginaria a la vista, el módulo y la fase salen directamente:
+		\[
+			|X(j\omega)| = \frac{\sqrt{a^2+\omega^2}}{a^2+\omega^2}=\frac{1}{\sqrt{a^2+\omega^2}}, \qquad \angle X(j\omega) = \arctan\!\Big(\frac{-\omega/(a^2+\omega^2)}{a/(a^2+\omega^2)}\Big)=-\arctan\!\Big(\frac{\omega}{a}\Big).
+		\]
+		El módulo depende de $\omega^2$: es \textbf{par}. La fase es $-\arctan(\omega/a)$, función \textbf{impar} de $\omega$. Esto es exactamente lo que predice la simetría conjugada para una señal real, y como la señal no es ni par ni impar, la transformada no es ni puramente real ni puramente imaginaria: es genuinamente compleja.
+	\end{enumerate}
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 8: convolución e inversa de $1/(a+j\omega)^2$}
+
+	La clave es reconocer que el denominador al cuadrado es un \emph{producto} de dos transformadas conocidas:
+	\[
+		X(j\omega) = \frac{1}{(a+j\omega)^2} = \frac{1}{a+j\omega}\cdot\frac{1}{a+j\omega}.
+	\]
+	La propiedad de convolución dice que un producto en frecuencia corresponde a una convolución en el tiempo. Como $\dfrac{1}{a+j\omega}\leftrightarrow e^{-at}u(t)$, la señal buscada es la convolución de esa exponencial consigo misma:
+	\[
+		x(t) = \big(e^{-at}u(t)\big) * \big(e^{-at}u(t)\big) = \int_{-\infty}^{\infty} e^{-a\sigma}u(\sigma)\,e^{-a(t-\sigma)}u(t-\sigma)\,d\sigma.
+	\]
+	Los escalones recortan el intervalo de integración a $0\le\sigma\le t$ (lo que exige $t\ge0$). Dentro de ese intervalo, $e^{-a\sigma}e^{-a(t-\sigma)}=e^{-at}$ no depende de $\sigma$:
+	\[
+		x(t) = e^{-at}\int_0^t d\sigma = t\,e^{-at}, \qquad t\ge0.
+	\]
+
+	\[
+		\boxed{x(t) = t\,e^{-at}\,u(t).}
+	\]
+
+	El factor $t$ que multiplica a la exponencial es la marca del polo doble: convolucionar una exponencial consigo misma produce una señal que primero crece (por el $t$) y después decae (por la exponencial), con un máximo en $t=1/a$ (Figura~\ref{fig:sol_ej8}).
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.6\linewidth]{figures/fig_sol_ej8/fig_sol_ej8}
+		\caption{Señal $x(t)=t\,e^{-t}u(t)$ (caso $a=1$), antitransformada de $1/(1+j\omega)^2$. Es causal, arranca en cero, alcanza el máximo $1/e$ en $t=1$ y luego decae.}
+		\label{fig:sol_ej8}
+	\end{figure}
+
+	% ============================================================================
+	\tema{Transformada de Fourier de señales periódicas}
+	% ============================================================================
+
+	Una señal periódica no es absolutamente integrable ---se repite sin decaer---, así que la integral de análisis no converge como función ordinaria. Su contenido está concentrado en frecuencias discretas, los armónicos, y representar un peso finito en una única frecuencia exige un impulso: la transformada de una periódica es un \emph{tren de impulsos} sobre el eje de frecuencias. El ladrillo básico es la exponencial armónica,
+	\[
+		e^{j\omega_0 t} \;\leftrightarrow\; 2\pi\,\delta(\omega-\omega_0),
+	\]
+	un único impulso ubicado en la frecuencia de la exponencial. Como toda señal periódica de período $T_0$ se escribe como serie de Fourier $x(t)=\sum_k c_k e^{jk\omega_0 t}$ con $\omega_0=2\pi/T_0$, su transformada es, por linealidad,
+	\[
+		X(j\omega) = 2\pi\sum_{k=-\infty}^{\infty} c_k\,\delta(\omega-k\omega_0):
+	\]
+	un impulso por cada armónico, de peso $2\pi c_k$, ubicado en $k\omega_0$. El espectro de líneas de la serie se convierte en un tren de impulsos.
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 9: coseno y seno}
+
+	Las dos sinusoides se escriben con la identidad de Euler como suma de exponenciales armónicas, y se transforman término a término.
+
+	\textbf{Coseno.} Por Euler, $\cos(\omega_0 t)=\tfrac12 e^{j\omega_0 t}+\tfrac12 e^{-j\omega_0 t}$. Cada exponencial aporta un impulso, $e^{\pm j\omega_0 t}\leftrightarrow 2\pi\,\delta(\omega\mp\omega_0)$, y el factor $\tfrac12$ deja impulsos de peso $\pi$:
+	\[
+		\cos(\omega_0 t) \;\leftrightarrow\; \tfrac12\,2\pi\,\delta(\omega-\omega_0) + \tfrac12\,2\pi\,\delta(\omega+\omega_0),
+	\]
+	\[
+		\boxed{\cos(\omega_0 t) \;\leftrightarrow\; \pi\big[\delta(\omega-\omega_0)+\delta(\omega+\omega_0)\big].}
+	\]
+	Dos impulsos \emph{reales} de peso $\pi$ en $\pm\omega_0$.
+
+	\textbf{Seno.} Ahora $\sin(\omega_0 t)=\tfrac{1}{2j}\big(e^{j\omega_0 t}-e^{-j\omega_0 t}\big)$. Transformando cada exponencial igual que antes:
+	\[
+		\sin(\omega_0 t) \;\leftrightarrow\; \frac{1}{2j}\big[2\pi\,\delta(\omega-\omega_0) - 2\pi\,\delta(\omega+\omega_0)\big]
+		= \frac{\pi}{j}\big[\delta(\omega-\omega_0) - \delta(\omega+\omega_0)\big].
+	\]
+	Usando $1/j=-j$ y reordenando los signos para dejar el resultado prolijo:
+	\[
+		\boxed{\sin(\omega_0 t) \;\leftrightarrow\; j\pi\big[\delta(\omega+\omega_0)-\delta(\omega-\omega_0)\big].}
+	\]
+	Dos impulsos \emph{imaginarios puros}, de signos opuestos en $\pm\omega_0$.
+
+	\textbf{Lectura de paridad.} La transformada del coseno es real (impulsos reales): coherente con que el coseno es una señal real y \emph{par}. La del seno es imaginaria pura: coherente con que el seno es real e \emph{impar}. Es el mismo criterio del Ejercicio~6, ahora sobre espectros de impulsos: la amplitud es par en ambos (impulsos simétricos), pero la fase del coseno es $0$ (par) y la del seno es $\pm\pi/2$ (impar). La Figura~\ref{fig:sol_ej10} compara los dos pares.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.95\linewidth]{figures/fig_sol_ej10/fig_sol_ej10}
+		\caption{Transformadas de las dos sinusoides puras. (a)~El coseno da dos impulsos reales de peso $\pi$. (b)~El seno da dos impulsos imaginarios, $+j\pi$ en $-\omega_0$ y $-j\pi$ en $+\omega_0$.}
+		\label{fig:sol_ej10}
+	\end{figure}
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 10: tren de impulsos}
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Coeficientes.} Los coeficientes de la serie se calculan integrando sobre un período cualquiera; tomamos el centrado en el origen, $(-T_0/2,\,T_0/2)$. De todos los impulsos del tren $\delta^{T_0}(t)=\sum_n\delta(t-nT_0)$, el único que cae dentro de ese intervalo es el de $n=0$, es decir $\delta(t)$; los demás están en $\pm T_0,\pm 2T_0,\dots$, fuera del período. La integral se reduce entonces a un solo impulso, y la propiedad de selección ---que afirma $\int \delta(t)\,f(t)\,dt = f(0)$--- la resuelve evaluando el integrando en $t=0$:
+		\[
+			c_k = \frac{1}{T_0}\int_{-T_0/2}^{T_0/2}\delta(t)\,e^{-jk\omega_0 t}\,dt = \frac{1}{T_0}\,e^{-jk\omega_0\cdot 0} = \frac{1}{T_0}.
+		\]
+		El resultado no depende de $k$: todos los coeficientes valen lo mismo, así que el espectro de líneas es plano. El tren de impulsos contiene todos los armónicos con igual peso.
+
+		\item \textbf{Transformada.} Insertando $c_k=1/T_0$ en la fórmula general del bloque:
+		\[
+			\boxed{\delta^{T_0}(t) \;\leftrightarrow\; \frac{2\pi}{T_0}\sum_{k=-\infty}^{\infty}\delta(\omega-k\omega_0), \qquad \omega_0=\frac{2\pi}{T_0}.}
+		\]
+		Es otro tren de impulsos, ahora en frecuencia: un impulso por cada múltiplo de $\omega_0$, todos con el mismo peso $2\pi/T_0$ y separados un paso $\omega_0$.
+
+		\item \textbf{Autodualidad y paso.} El tren de impulsos en el tiempo se transforma en un tren de impulsos en frecuencia: misma forma en los dos dominios. Lo único que cambia es el paso, y lo hace de manera \emph{recíproca}: en el tiempo los impulsos están separados $T_0$; en frecuencia, $\omega_0=2\pi/T_0$. Si se achica $T_0$ (impulsos más juntos en el tiempo), el paso $\omega_0$ \emph{crece} (impulsos más separados en frecuencia), y viceversa.
+
+		\item \textbf{Periódica genérica.} Para cualquier señal periódica de coeficientes $c_k$, la forma general ya anticipada es
+		\[
+			\boxed{X(j\omega) = 2\pi\sum_{k=-\infty}^{\infty} c_k\,\delta(\omega-k\omega_0).}
+		\]
+		El tren de impulsos es el caso particular con $c_k=1/T_0$ constante.
+	\end{enumerate}
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.92\linewidth]{figures/fig_sol_ej11/fig_sol_ej11}
+		\caption{Autodualidad del tren de impulsos. Izquierda: $\delta^{T_0}(t)$, impulsos de área $1$ separados $T_0$. Derecha: su transformada, impulsos de peso $2\pi/T_0$ separados $\omega_0=2\pi/T_0$.}
+		\label{fig:sol_ej11}
+	\end{figure}
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 11: transformadas con tabla y propiedades}
+
+	Cada señal se reduce a exponenciales armónicas y se transforma usando $e^{j\omega_0 t}\leftrightarrow 2\pi\delta(\omega-\omega_0)$ más las propiedades. La Figura~\ref{fig:sol_ej12} reúne los cinco espectros.
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $x(t)=1$. La constante puede leerse como la exponencial armónica de frecuencia nula, $1=e^{j\,0\,t}$, así que su transformada es el impulso de la armónica ubicado en $\omega=0$:
+		\[
+			\boxed{X(j\omega)=2\pi\,\delta(\omega).}
+		\]
+		Todo el contenido está concentrado en $\omega=0$: una señal constante es ``pura continua'', sin ninguna otra frecuencia. Es, además, el par dual del impulso del Ejercicio~3 ($\delta(t)\leftrightarrow 1$): un impulso en un dominio es una constante en el otro.
+
+		\item $x(t)=e^{j\omega_0(t-2)}$. Conviene desarmar el exponente para separar el corrimiento de la frecuencia: $e^{j\omega_0(t-2)}=e^{j\omega_0 t}\,e^{-j2\omega_0}$. El segundo factor, $e^{-j2\omega_0}$, no depende de $t$ ---es una constante compleja de módulo $1$---, de modo que sale de la transformada como coeficiente. Queda la armónica $e^{j\omega_0 t}\leftrightarrow 2\pi\,\delta(\omega-\omega_0)$ multiplicada por esa constante:
+		\[
+			\boxed{X(j\omega)=2\pi\,e^{-j2\omega_0}\,\delta(\omega-\omega_0).}
+		\]
+		Es un único impulso en $\omega_0$, presente solo en la frecuencia positiva. Como el espectro no es simétrico respecto del origen ---no hay nada en $-\omega_0$---, su módulo no es par y la señal no puede ser real, lo que es consistente con que una exponencial compleja, en efecto, no lo es.
+
+		\item $x(t)=\sin(\omega_0(5-t))$. Escribimos $\theta=\omega_0(5-t)=5\omega_0-\omega_0 t$ y usamos la forma exponencial del seno:
+		\[
+			\sin\theta = \frac{e^{j\theta}-e^{-j\theta}}{2j}
+			= \frac{1}{2j}\Big(e^{j5\omega_0}e^{-j\omega_0 t} - e^{-j5\omega_0}e^{j\omega_0 t}\Big).
+		\]
+		Transformando cada exponencial:
+		\[
+			\boxed{X(j\omega)=j\pi\Big[e^{-j5\omega_0}\,\delta(\omega-\omega_0) - e^{j5\omega_0}\,\delta(\omega+\omega_0)\Big].}
+		\]
+		Dos impulsos en $\pm\omega_0$ de módulo $\pi$; las fases extra $e^{\mp j5\omega_0}$ son el rastro del corrimiento temporal ($5$) y de la inversión del tiempo dentro del seno.
+
+		\item $x(t)=\dfrac{d}{dt}\{u(t+2)+u(t-2)\}$. La derivada del escalón unitario es el impulso, $\tfrac{d}{dt}u(t-t_0)=\delta(t-t_0)$, así que derivar la suma de escalones produce una suma de impulsos: $x(t)=\delta(t+2)+\delta(t-2)$. Cada impulso desplazado transforma según $\delta(t-t_0)\leftrightarrow e^{-j\omega t_0}$ (la propiedad de desplazamiento aplicada a $\delta(t)\leftrightarrow 1$), de modo que
+		\[
+			X(j\omega)=e^{j2\omega}+e^{-j2\omega}=2\cos(2\omega) \;\Rightarrow\; \boxed{X(j\omega)=2\cos(2\omega).}
+		\]
+		Vale la pena notar el contraste con los incisos anteriores: aquí la señal son dos impulsos en el \emph{tiempo} y su transformada es una función \emph{continua} de $\omega$ (un coseno), no un tren de impulsos. Es la situación opuesta a la de una señal periódica, cuyo espectro sí es discreto. El resultado es real y par, coherente con que $x(t)$ es real y par (dos impulsos simétricos respecto del origen).
+
+		\item $x(t)=1+\cos(6\pi t+\tfrac{\pi}{8})$. El $1$ aporta $2\pi\delta(\omega)$; el coseno desfasado se abre con Euler, $\cos(6\pi t+\tfrac{\pi}{8})=\tfrac12 e^{j\pi/8}e^{j6\pi t}+\tfrac12 e^{-j\pi/8}e^{-j6\pi t}$:
+		\[
+			\boxed{X(j\omega)=2\pi\,\delta(\omega) + \pi e^{j\pi/8}\delta(\omega-6\pi) + \pi e^{-j\pi/8}\delta(\omega+6\pi).}
+		\]
+		Tres impulsos: la continua en $\omega=0$ (peso $2\pi$) y el par del coseno en $\pm6\pi$ (peso $\pi$), cuya fase $\pm\pi/8$ es la del coseno.
+	\end{enumerate}
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.97\linewidth]{figures/fig_sol_ej12/fig_sol_ej12}
+		\caption{Espectros del Ejercicio~11 (se grafica el peso de cada impulso; las fases complejas se indican en el texto). Salvo (d), todos constan de impulsos en frecuencias discretas. En (d) la señal son dos impulsos en el tiempo y su transformada es el coseno continuo $2\cos(2\omega)$.}
+		\label{fig:sol_ej12}
+	\end{figure}
+
+	% ============================================================================
+	\tema{Transformada de Fourier y sistemas LIT}
+	% ============================================================================
+
+	Un sistema lineal e invariante en el tiempo (LIT) queda descrito en frecuencia por su \textbf{respuesta en frecuencia} $H(j\omega)$, la transformada de su respuesta al impulso $h(t)$. Como en el tiempo la salida es la convolución $y=h*x$, la propiedad de convolución la convierte en un simple producto en frecuencia:
+	\[
+		Y(j\omega) = H(j\omega)\,X(j\omega).
+	\]
+	Si el sistema está dado por una ecuación diferencial lineal de coeficientes constantes, transformarla convierte cada derivada de orden $k$ en un factor $(j\omega)^k$ y deja $H(j\omega)$ como un cociente de polinomios en $j\omega$:
+	\[
+		\sum_k a_k \frac{d^k y}{dt^k} = \sum_k b_k \frac{d^k x}{dt^k}
+		\;\Longrightarrow\;
+		H(j\omega) = \frac{\sum_k b_k (j\omega)^k}{\sum_k a_k (j\omega)^k}.
+	\]
+	El módulo $|H(j\omega)|$ dice cuánto amplifica o atenúa el sistema cada frecuencia; elegir su forma es diseñar un \emph{filtro}, que deja pasar unas bandas y atenúa otras.
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 12: primer orden, pasabajos y pasaaltos}
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $\dot{y}+a\,y=x$. Transformamos la ecuación término a término. Por la propiedad de derivación, $\dot{y}\leftrightarrow j\omega\,Y(j\omega)$; el término $a\,y$ aporta $a\,Y(j\omega)$ por linealidad, y el lado derecho es $X(j\omega)$. La ecuación diferencial se vuelve algebraica, y sacando $Y$ de factor común,
+		\[
+			j\omega\,Y(j\omega)+a\,Y(j\omega)=X(j\omega)
+			\;\Longrightarrow\;
+			(a+j\omega)\,Y(j\omega)=X(j\omega).
+		\]
+		La respuesta en frecuencia es el cociente entre la salida y la entrada, $H=Y/X$, que se despeja dividiendo por $(a+j\omega)$:
+		\[
+			\boxed{H(j\omega)=\frac{Y(j\omega)}{X(j\omega)}=\frac{1}{a+j\omega}.}
+		\]
+		Para leer su efecto separamos módulo y fase. Como $H$ es el cociente $1/(a+j\omega)$, su módulo es el inverso del módulo del denominador y su fase es el opuesto de la fase del denominador:
+		\[
+			|H(j\omega)|=\frac{1}{|a+j\omega|}=\frac{1}{\sqrt{a^2+\omega^2}},
+			\qquad
+			\angle H(j\omega)=-\angle(a+j\omega)=-\arctan\!\Big(\frac{\omega}{a}\Big).
+		\]
+		El módulo vale $1/a$ en $\omega=0$ y decae a cero al crecer $\omega$; la fase va de $0$ a $-\pi/2$. El sistema deja pasar las frecuencias bajas y atenúa las altas: es un \textbf{pasabajos}. Para la respuesta al impulso antitransformamos $H$, que es exactamente el par canónico de la exponencial causal, $1/(a+j\omega)\leftrightarrow e^{-at}u(t)$:
+		\[
+			h(t)=e^{-at}u(t).
+		\]
+
+		\item $\dot{y}+a\,y=\dot{x}$. La diferencia con el inciso anterior es que ahora el lado de la entrada también se deriva. El lado izquierdo transforma igual que antes y da $(a+j\omega)Y$; el derecho, por la misma propiedad de derivación, aporta $\dot{x}\leftrightarrow j\omega\,X$. La ecuación queda
+		\[
+			(a+j\omega)\,Y(j\omega)=j\omega\,X(j\omega),
+		\]
+		y despejando el cociente $H=Y/X$,
+		\[
+			\boxed{H(j\omega)=\frac{j\omega}{a+j\omega}.}
+		\]
+		El módulo es otra vez el cociente de los módulos, ahora con el factor $j\omega$ en el numerador (y $|j\omega|=|\omega|$):
+		\[
+			|H(j\omega)|=\frac{|j\omega|}{|a+j\omega|}=\frac{|\omega|}{\sqrt{a^2+\omega^2}},
+		\]
+		que vale $0$ en $\omega=0$ y tiende a $1$ cuando $\omega\to\infty$: justo lo contrario del anterior. Es un \textbf{pasaaltos}. Para antitransformar, el numerador $j\omega$ no figura tal cual en la tabla, pero se arregla sumando y restando $a$ en el numerador para reconstruir el denominador completo:
+		\[
+			H(j\omega)=\frac{j\omega}{a+j\omega}=\frac{(a+j\omega)-a}{a+j\omega}=1-\frac{a}{a+j\omega}.
+		\]
+		Ahora cada término es reconocible: la constante $1$ antitransforma a $\delta(t)$ (todo pasa instantáneamente) y $a/(a+j\omega)$ a $a\,e^{-at}u(t)$. Entonces
+		\[
+			h(t)=\delta(t)-a\,e^{-at}u(t).
+		\]
+
+		\item \textbf{Comparación.} Las dos respuestas comparten el denominador $a+j\omega$ (la misma dinámica interna); lo que cambia es el numerador. Cuando el numerador es constante, $H$ es grande en bajas frecuencias y chica en altas $\Rightarrow$ pasabajos. Cuando el numerador es $j\omega$ ---un cero en $\omega=0$--- el sistema anula la continua y deja pasar lo rápido $\Rightarrow$ pasaaltos. \textbf{El numerador fija qué frecuencias se realzan o se anulan.} La Figura~\ref{fig:sol_ej13} muestra los cuatro gráficos.
+	\end{enumerate}
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.95\linewidth]{figures/fig_sol_ej13/fig_sol_ej13}
+		\caption{Respuestas en frecuencia de los dos sistemas de primer orden. Arriba el pasabajos $1/(a+j\omega)$; abajo el pasaaltos $j\omega/(a+j\omega)$. El pasaaltos anula la continua ($|H|=0$ en $\omega=0$) y su fase salta de $+\pi/2$ a $-\pi/2$ al cruzar el origen.}
+		\label{fig:sol_ej13}
+	\end{figure}
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 13: sistema de segundo orden}
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Respuesta en frecuencia.} Transformando $\ddot{y}+6\dot{y}+8y=2x$, cada derivada de orden $k$ aporta $(j\omega)^k$:
+		\[
+			\big[(j\omega)^2+6(j\omega)+8\big]Y = 2X
+			\;\Rightarrow\;
+			\boxed{H(j\omega)=\frac{2}{(j\omega)^2+6(j\omega)+8}=\frac{2}{(j\omega+2)(j\omega+4)}.}
+		\]
+		Factorizamos el denominador buscando las raíces de $s^2+6s+8$ (con $s=j\omega$), que son $s=-2$ y $s=-4$.
+
+		\item \textbf{Respuesta al impulso.} Para antitransformar descomponemos $H$ en fracciones simples, una por cada polo:
+		\[
+			H(j\omega)=\frac{2}{(j\omega+2)(j\omega+4)}=\frac{A}{j\omega+2}+\frac{B}{j\omega+4}.
+		\]
+		El método de los residuos (``tapar el factor'') da cada constante multiplicando $H$ por el factor correspondiente ---lo que lo cancela--- y evaluando en la raíz que anula ese factor. Para $A$ multiplicamos por $(j\omega+2)$ y evaluamos en $j\omega=-2$; para $B$, por $(j\omega+4)$ en $j\omega=-4$:
+		\[
+			A=\frac{2}{j\omega+4}\bigg|_{j\omega=-2}=\frac{2}{-2+4}=1,
+			\qquad
+			B=\frac{2}{j\omega+2}\bigg|_{j\omega=-4}=\frac{2}{-4+2}=-1.
+		\]
+		Cada término $1/(j\omega+\alpha)$ es la transformada de la exponencial causal $e^{-\alpha t}u(t)$, así que antitransformando término a término:
+		\[
+			\boxed{h(t)=e^{-2t}u(t)-e^{-4t}u(t).}
+		\]
+
+		\item \textbf{Respuesta a $x(t)=e^{-3t}u(t)$.} Su transformada es $X(j\omega)=1/(j\omega+3)$, y la salida en frecuencia es el producto
+		\[
+			Y(j\omega)=H(j\omega)X(j\omega)=\frac{2}{(j\omega+2)(j\omega+3)(j\omega+4)}.
+		\]
+		Descomponemos en fracciones simples sobre los tres polos, con el mismo método de tapar el factor y evaluar en su raíz:
+		\[
+			Y=\frac{A}{j\omega+2}+\frac{B}{j\omega+3}+\frac{C}{j\omega+4},
+		\]
+		\[
+			A=\frac{2}{(j\omega+3)(j\omega+4)}\bigg|_{j\omega=-2}=\frac{2}{(1)(2)}=1,
+			\qquad
+			B=\frac{2}{(j\omega+2)(j\omega+4)}\bigg|_{j\omega=-3}=\frac{2}{(-1)(1)}=-2,
+		\]
+		\[
+			C=\frac{2}{(j\omega+2)(j\omega+3)}\bigg|_{j\omega=-4}=\frac{2}{(-2)(-1)}=1.
+		\]
+		Antitransformando término a término:
+		\[
+			\boxed{y(t)=e^{-2t}u(t)-2\,e^{-3t}u(t)+e^{-4t}u(t).}
+		\]
+	\end{enumerate}
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 14: problema inverso}
+
+	Acá se conocen el sistema y la salida, y se busca la entrada. En el tiempo, recuperar $x(t)$ a partir de $y(t)=h(t)*x(t)$ es un problema de \emph{deconvolución}, incómodo de atacar directamente. En frecuencia, en cambio, la convolución es un producto $Y=HX$, y despejar la entrada se reduce a una división: $X=Y/H$.
+
+	Primero llevamos la salida al dominio de la frecuencia. Transformando cada exponencial causal y sumando las dos fracciones sobre el denominador común $(j\omega+3)(j\omega+4)$:
+	\[
+		y(t)=e^{-3t}u(t)-e^{-4t}u(t)
+		\;\Rightarrow\;
+		Y(j\omega)=\frac{1}{j\omega+3}-\frac{1}{j\omega+4}
+		=\frac{(j\omega+4)-(j\omega+3)}{(j\omega+3)(j\omega+4)}
+		=\frac{1}{(j\omega+3)(j\omega+4)}.
+	\]
+	Ahora dividimos por $H(j\omega)=1/(j\omega+3)$. Dividir por una fracción es multiplicar por su inversa, es decir multiplicar por $(j\omega+3)$:
+	\[
+		X(j\omega)=\frac{Y(j\omega)}{H(j\omega)}=Y(j\omega)\,(j\omega+3)
+		=\frac{j\omega+3}{(j\omega+3)(j\omega+4)}
+		=\frac{1}{j\omega+4}.
+	\]
+	El factor $(j\omega+3)$ que aporta el sistema se cancela con el que ya traía el denominador de $Y$, y la entrada queda con un solo polo. Antitransformando:
+	\[
+		\boxed{x(t)=e^{-4t}u(t).}
+	\]
+	La lección operativa es que pasar a la frecuencia convierte un problema de deconvolución ---difícil en el tiempo--- en una simple división de funciones racionales.
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 15: pasabajos ideal irrealizable}
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Respuesta al impulso (por dualidad).} En lugar de integrar la fórmula de síntesis, conviene notar que $H(j\omega)$ es un \emph{rectángulo en frecuencia}, y que ya tenemos un rectángulo con su transformada calculada: el par del Ejercicio~1, donde un pulso de ancho $\tau$ en el tiempo tiene por transformada un seno cardinal,
+		\[
+			p_\tau(t) \;\leftrightarrow\; \tau\,\operatorname{sinc}\!\Big(\tfrac{\omega\tau}{2}\Big).
+		\]
+		La propiedad de dualidad afirma que si $g(t)\leftrightarrow G(j\omega)$, entonces la función $G(t)$ ---la misma expresión leída ahora como función del tiempo--- tiene transformada $2\pi\,g(-\omega)$. Tomando $g(t)=p_\tau(t)$ y $G(j\omega)=\tau\operatorname{sinc}(\omega\tau/2)$, y usando que el pulso es par ($p_\tau(-\omega)=p_\tau(\omega)$),
+		\[
+			\tau\,\operatorname{sinc}\!\Big(\tfrac{\tau}{2}\,t\Big) \;\leftrightarrow\; 2\pi\,p_\tau(\omega),
+		\]
+		es decir, un seno cardinal en el tiempo tiene por transformada un rectángulo en frecuencia ---la cara dual del par del Ejercicio~1---. El lado derecho vale $2\pi$ en $|\omega|<\tau/2$; para que coincida con nuestro filtro, que vale $1$ en $|\omega|<\omega_c$, basta elegir $\tau=2\omega_c$. Con esa elección $2\pi\,p_\tau(\omega)=2\pi\,H(j\omega)$, de modo que
+		\[
+			2\omega_c\,\operatorname{sinc}(\omega_c t) \;\leftrightarrow\; 2\pi\,H(j\omega).
+		\]
+		Dividiendo el par por $2\pi$ queda $H(j\omega)$ del lado de la frecuencia y la respuesta al impulso del lado del tiempo:
+		\[
+			\boxed{h(t)=\frac{\omega_c}{\pi}\,\operatorname{sinc}(\omega_c t).}
+		\]
+		Lo obtuvimos sin calcular ninguna integral: la dualidad lo deduce del par pulso--seno cardinal ya conocido. Que un rectángulo en frecuencia provenga de un seno cardinal en el tiempo es la cara dual de que un pulso en el tiempo tenga espectro de seno cardinal.
+
+		\item \textbf{Causalidad.} El seno cardinal es una función \emph{par}: $h(-t)=h(t)$. En particular $h(t)\ne0$ para $t<0$ (Figura~\ref{fig:sol_ej16}). Un sistema causal no puede responder antes de que llegue la entrada, es decir necesita $h(t)=0$ para $t<0$. Como acá la respuesta al impulso es no nula \emph{antes} del instante de excitación, el sistema \textbf{no es causal}: produciría salida antes de la entrada, algo imposible en un sistema físico que funciona en tiempo real.
+
+		\item \textbf{Conclusión.} El pasabajos ideal es \textbf{irrealizable}. La raíz del problema es el corte abrupto de $H(j\omega)$: un espectro que se anula de golpe en $\omega_c$ obliga a una respuesta al impulso de extensión infinita y simétrica en el tiempo (el seno cardinal), que invade los tiempos negativos. Recortar netamente en frecuencia y ser causal en el tiempo son objetivos incompatibles; los filtros reales aproximan el ideal con transiciones suaves.
+	\end{enumerate}
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.69\linewidth]{figures/fig_sol_ej16/fig_sol_ej16}
+		\caption{Respuesta al impulso del pasabajos ideal, $h(t)=(\omega_c/\pi)\operatorname{sinc}(\omega_c t)$. Es par y se extiende a todo el eje; en particular es no nula para $t<0$ (zona sombreada), lo que viola la causalidad.}
+		\label{fig:sol_ej16}
+	\end{figure}
+
+	% ============================================================================
+	\tema{Modulación de amplitud y multiplexado en frecuencia}
+	% ============================================================================
+
+	Multiplicar una señal por un coseno desdobla su espectro en dos copias trasladadas en frecuencia. Por la identidad de Euler $\cos(\omega_c t)=\tfrac12 e^{j\omega_c t}+\tfrac12 e^{-j\omega_c t}$ y la propiedad de desplazamiento en frecuencia,
+	\[
+		x(t)\cos(\omega_c t) \;\leftrightarrow\; \tfrac12 X\big(j(\omega-\omega_c)\big) + \tfrac12 X\big(j(\omega+\omega_c)\big):
+	\]
+	el espectro se desdobla en \emph{dos copias a mitad de altura}, centradas en $\pm\omega_c$. Sobre esta idea se montan la modulación de amplitud ---llevar un mensaje de banda base a una banda alta para poder radiarlo--- y el multiplexado, que acomoda muchas emisoras en frecuencias distintas sin que se pisen.
+
+	% ----------------------------------------------------------------------------
+	\subsection*{Ejercicio 16: modulación y demodulación}
+
+	El mensaje es $m(t)=\cos(\omega_1 t)+\tfrac12\cos(\omega_2 t)$ con $\omega_1=1000$, $\omega_2=2000$ y portadora $\omega_c=10\,000$ (todo en rad/s).
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Espectros.} El mensaje es suma de dos cosenos, así que su transformada son cuatro impulsos:
+		\[
+			M(j\omega)=\pi\big[\delta(\omega-\omega_1)+\delta(\omega+\omega_1)\big]+\tfrac{\pi}{2}\big[\delta(\omega-\omega_2)+\delta(\omega+\omega_2)\big],
+		\]
+		impulsos de peso $\pi$ en $\pm1000$ y de peso $\pi/2$ en $\pm2000$. La señal modulada desdobla cada impulso en dos copias a mitad de peso, centradas en $\pm\omega_c$:
+		\[
+			\boxed{S(j\omega)=\tfrac12 M\big(j(\omega-\omega_c)\big)+\tfrac12 M\big(j(\omega+\omega_c)\big).}
+		\]
+		Concretamente aparecen impulsos en $\omega_c\pm\omega_1=9000,\,11000$ y en $\omega_c\pm\omega_2=8000,\,12000$ (y sus simétricos en torno a $-\omega_c$).
+
+		\item \textbf{Gráfico.} La Figura~\ref{fig:sol_ej17} (paneles superior y central) muestra $M$ y $S$: el contenido que estaba alrededor de $\omega=0$ aparece ahora en dos racimos en torno a $\pm10\,000$.
+
+		\item \textbf{No solapamiento.} La copia centrada en $+\omega_c$ ocupa el intervalo $[\omega_c-W,\,\omega_c+W]=[8000,\,12000]$, y la centrada en $-\omega_c$, el simétrico $[-12000,-8000]$. No se pisan porque $\omega_c-W=8000>0$. En general, las dos copias quedan separadas mientras
+		\[
+			\boxed{\omega_c > W,}
+		\]
+		condición que aquí se cumple con holgura ($10\,000>2000$).
+
+		\item \textbf{Demodulación.} Multiplicamos la señal recibida otra vez por la portadora. Usando $\cos^2(\omega_c t)=\tfrac12+\tfrac12\cos(2\omega_c t)$:
+		\[
+			s(t)\cos(\omega_c t)=m(t)\cos^2(\omega_c t)=\tfrac12 m(t)+\tfrac12 m(t)\cos(2\omega_c t).
+		\]
+		En frecuencia, esto deja una copia de $M$ en banda base (el término $\tfrac12 m(t)$) y dos copias trasladadas a $\pm2\omega_c=\pm20\,000$ (Figura~\ref{fig:sol_ej17}, panel inferior). Un filtro pasabajos que conserve la banda base y elimine las copias altas recupera el mensaje a menos del factor $\tfrac12$. Su frecuencia de corte $\omega_{\text{co}}$ debe dejar pasar hasta $W=2000$ y cortar antes de $2\omega_c-W=18\,000$:
+		\[
+			W < \omega_{\text{co}} < 2\omega_c - W
+			\quad\Longrightarrow\quad
+			2000 < \omega_{\text{co}} < 18\,000.
+		\]
+		Un valor cómodo es $\omega_{\text{co}}=5000$ rad/s. La salida del filtro es $\tfrac12 m(t)$.
+	\end{enumerate}
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.98\linewidth]{figures/fig_sol_ej17/fig_sol_ej17}
+		\caption{Modulación y demodulación. Arriba: espectro del mensaje $M(j\omega)$ (eje en miles de rad/s). Centro: la modulada $S(j\omega)$, dos copias de $M$ en torno a $\pm\omega_c$. Abajo: tras remultiplicar por la portadora, reaparece una copia en banda base ---que el pasabajos (banda verde) deja pasar--- más copias en $\pm2\omega_c$ que el filtro elimina.}
+		\label{fig:sol_ej17}
+	\end{figure}
+
+\end{document}

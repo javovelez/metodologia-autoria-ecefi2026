@@ -1,0 +1,159 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Procedimiento invertir y desplazar para el Ejemplo 2:
+%   x(τ) = Π_T(τ - T/2): pulso en [0,T] (usamos T=2)
+%   h(t₀-τ) = e^{-(t₀-τ)} u(t₀-τ) = e^{τ-t₀} para τ ≤ t₀
+%
+% Tres paneles, uno por zona:
+%   Zona I  (t₀ = -0.5): sin solapamiento
+%   Zona II (t₀ =  1.0): solapamiento parcial [0, t₀]
+%   Zona III(t₀ =  3.0): solapamiento completo [0, T=2]
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% Colores
+\colorlet{xcol}{utnblue}
+\colorlet{hcol}{red!80!black}
+
+% =====================================================================
+% ZONA I: t₀ = -0.5
+% =====================================================================
+\begin{axis}[
+    name=z1,
+    width=6cm, height=5cm,
+    axis lines=center,
+    xlabel={$\tau$},
+    ylabel={},
+    xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    xmin=-2.2, xmax=3.2,
+    ymin=-0.35, ymax=1.5,
+    clip=true,
+    axis line style={->, thick},
+    xtick={-2,-1,0,1,2,3},
+    xticklabels={$-2$,$-1$,$0$,$T/2$,$T$,$3$},
+    ytick={0,1},
+    every tick label/.style={font=\tiny},
+    title={\footnotesize Zona~I:\; $t_0 < 0$},
+]
+    % x(τ): pulso [0,2] relleno
+    \fill[xcol!18] (axis cs:0,0) rectangle (axis cs:2,1);
+    \draw[xcol, very thick]
+        (axis cs:-2.1,0) -- (axis cs:0,0) -- (axis cs:0,1)
+        -- (axis cs:2,1) -- (axis cs:2,0) -- (axis cs:3.1,0);
+    \node[xcol, font=\tiny, above] at (axis cs:1,1) {$x(\tau)$};
+
+    % h(t₀-τ) con t₀=-0.5: e^{τ+0.5} para τ≤-0.5 (lejos, sin solapamiento)
+    \addplot[hcol, very thick, domain=-2.1:-0.5, samples=60] {exp(x+0.5)};
+    % salto y cero a la derecha
+    \draw[hcol, very thick] (axis cs:-0.5,0) -- (axis cs:-0.5,1);
+    \fill[hcol]  (axis cs:-0.5,1) circle (2.2pt);
+    \fill[white] (axis cs:-0.5,0) circle (2.2pt);
+    \draw[hcol]  (axis cs:-0.5,0) circle (2.2pt);
+    \addplot[hcol, very thick, domain=-0.5:3.1, samples=2] {0};
+    \node[hcol, font=\tiny] at (axis cs:-1.4,0.9) {$h(t_0\!-\!\tau)$};
+
+    % marcador t₀
+    \draw[dashed, gray!60, thin] (axis cs:-0.5,-0.18) -- (axis cs:-0.5,1.1);
+    \node[below, font=\tiny, gray] at (axis cs:-0.5,-0.18) {$t_0$};
+
+    % etiqueta sin solapamiento
+    \node[font=\tiny, gray, below] at (axis cs:1,-0.19) {$y(t_0)=0$};
+\end{axis}
+
+% =====================================================================
+% ZONA II: t₀ = 1
+% =====================================================================
+\begin{axis}[
+    name=z2,
+    at={(z1.east)}, anchor=west, xshift=0.6cm,
+    width=6cm, height=5cm,
+    axis lines=center,
+    xlabel={$\tau$},
+    xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    xmin=-2.2, xmax=3.2,
+    ymin=-0.35, ymax=1.5,
+    clip=true,
+    axis line style={->, thick},
+    xtick={-2,-1,0,1,2,3},
+    xticklabels={$-2$,$-1$,$0$,$t_0$,$T$,$3$},
+    ytick={0,1},
+    every tick label/.style={font=\tiny},
+    title={\footnotesize Zona~II:\; $0 \leq t_0 \leq T$},
+]
+    % Zona de solapamiento [0,1] (fondo sombreado)
+    \fill[gray!25] (axis cs:0,0) rectangle (axis cs:1,1);
+
+    % x(τ): pulso [0,2] relleno
+    \fill[xcol!18] (axis cs:0,0) rectangle (axis cs:2,1);
+    \draw[xcol, very thick]
+        (axis cs:-2.1,0) -- (axis cs:0,0) -- (axis cs:0,1)
+        -- (axis cs:2,1) -- (axis cs:2,0) -- (axis cs:3.1,0);
+    \node[xcol, font=\tiny, above] at (axis cs:1.6,1) {$x(\tau)$};
+
+    % h(1-τ): e^{τ-1} para τ≤1
+    \addplot[hcol, very thick, domain=-2.1:1, samples=80] {exp(x-1)};
+    \draw[hcol, very thick] (axis cs:1,0) -- (axis cs:1,1);
+    \fill[hcol]  (axis cs:1,1) circle (2.2pt);
+    \fill[white] (axis cs:1,0) circle (2.2pt);
+    \draw[hcol]  (axis cs:1,0) circle (2.2pt);
+    \addplot[hcol, very thick, domain=1:3.1, samples=2] {0};
+    \node[hcol, font=\tiny] at (axis cs:-1.3,0.7) {$h(t_0\!-\!\tau)$};
+
+    % marcadores
+    \draw[dashed, gray!60, thin] (axis cs:1,-0.18) -- (axis cs:1,1.15);
+
+    % etiqueta solapamiento
+    \draw[<->, gray!70, thin] (axis cs:0,-0.19) -- (axis cs:1,-0.19);
+    \node[font=\tiny, gray, below] at (axis cs:0.6,-0.19) {solapam.};
+\end{axis}
+
+% =====================================================================
+% ZONA III: t₀ = 3
+% =====================================================================
+\begin{axis}[
+    name=z3,
+    at={(z2.east)}, anchor=west, xshift=0.6cm,
+    width=6cm, height=5cm,
+    axis lines=center,
+    xlabel={$\tau$},
+    xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    xmin=-2.2, xmax=4.2,
+    ymin=-0.35, ymax=1.5,
+    clip=true,
+    axis line style={->, thick},
+    xtick={-2,-1,0,1,2,3},
+    xticklabels={$-2$,$-1$,$0$,$1$,$T$,$t_0$},
+    ytick={0,1},
+    every tick label/.style={font=\tiny},
+    title={\footnotesize Zona~III:\; $t_0 > T$},
+]
+    % Solapamiento completo [0,2]
+    \fill[gray!25] (axis cs:0,0) rectangle (axis cs:2,1);
+
+    % x(τ): pulso [0,2]
+    \fill[xcol!18] (axis cs:0,0) rectangle (axis cs:2,1);
+    \draw[xcol, very thick]
+        (axis cs:-2.1,0) -- (axis cs:0,0) -- (axis cs:0,1)
+        -- (axis cs:2,1) -- (axis cs:2,0) -- (axis cs:4.1,0);
+    \node[xcol, font=\tiny, above] at (axis cs:1,1) {$x(\tau)$};
+
+    % h(3-τ): e^{τ-3} para τ≤3
+    \addplot[hcol, very thick, domain=-2.1:3, samples=80] {exp(x-3)};
+    \draw[hcol, very thick] (axis cs:3,0) -- (axis cs:3,1);
+    \fill[hcol]  (axis cs:3,1) circle (2.2pt);
+    \fill[white] (axis cs:3,0) circle (2.2pt);
+    \draw[hcol]  (axis cs:3,0) circle (2.2pt);
+    \addplot[hcol, very thick, domain=3:4.1, samples=2] {0};
+    \node[hcol, font=\tiny] at (axis cs:0.5,0.55) {$h(t_0\!-\!\tau)$};
+
+    % marcadores
+    \draw[dashed, gray!60, thin] (axis cs:3,-0.18) -- (axis cs:3,1.15);
+    \draw[<->, gray!70, thin] (axis cs:0,-0.19) -- (axis cs:2,-0.19);
+    \node[font=\tiny, gray, below] at (axis cs:1,-0.19) {solapam.};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

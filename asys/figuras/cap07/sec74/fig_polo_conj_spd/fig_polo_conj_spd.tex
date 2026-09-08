@@ -1,0 +1,43 @@
+% ============================================================
+% fig_polo_conj_spd.tex
+% Par conjugado en el semiplano derecho (p = sigma +- j w0, sigma > 0).
+% Aporte a h(t): oscilacion de envolvente creciente (inestable).
+% Proporciones segun la referencia (libro de circuitos): crecimiento
+% fuerte (factor ~12) que llena el cuadro; varios lobulos visibles y
+% el ultimo cerca del borde superior/inferior en t_max. Sin clip.
+% Layout: [plano s]  L^{-1}  [h(t)].
+% ============================================================
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% --- Plano s ---
+\draw[->, thin] (-1.3, 0) -- (2.0, 0) node[below right, font=\footnotesize] {$\sigma$};
+\draw[->, thin] (0, -1.9) -- (0, 2.0) node[above, font=\footnotesize] {$j\omega$};
+\fill[black] (0, 0) circle (0.8pt);
+\node[red, font=\large] at (0.8, 1.3) {$\times$};
+\node[red, font=\large] at (0.8, -1.3) {$\times$};
+
+% --- Conector ---
+\draw[->, gray, thin] (2.5, 0) -- (3.7, 0)
+    node[midway, above, font=\footnotesize, gray] {$\mathcal{L}^{-1}$};
+
+% --- h(t) ---
+\begin{scope}[shift={(4.2, 0)}]
+    \draw[->, thin] (-0.3, 0) -- (4.0, 0) node[right, font=\footnotesize] {$t$};
+    \draw[->, thin] (0, -1.7) -- (0, 1.9) node[above, font=\footnotesize] {$h(t)$};
+    % Envolvente creciente: 0.125 e^{0.671 t} -> ~1.60 en t=3.8.
+    \draw[gray, thin, dashed, smooth, samples=80, domain=0:3.8]
+        plot (\x, {0.125*exp(0.671*\x)});
+    \draw[gray, thin, dashed, smooth, samples=80, domain=0:3.8]
+        plot (\x, {-0.125*exp(0.671*\x)});
+    % Oscilacion creciente, varios lobulos.
+    \draw[red!80!black, thick, smooth, samples=300, domain=0:3.8]
+        plot (\x, {0.125*exp(0.671*\x)*cos(deg(5*\x))});
+    \fill[red!80!black] (0, 0.125) circle (1.1pt);
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

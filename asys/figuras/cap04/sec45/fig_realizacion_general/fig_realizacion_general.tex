@@ -1,0 +1,213 @@
+\documentclass[border=6mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur, shapes.geometric, calc}
+
+% Realización directa con derivadores: caso general.
+% EDLCC:  sum_{k=0}^{N} a_k y^(k) = sum_{k=0}^{M} b_k x^(k)
+% Despejada: y = (1/a_0)[ sum b_k x^(k) - sum_{k>=1} a_k y^(k) ]
+%
+% Estructura:
+%   - Cadena de M derivadores en la columna de la entrada (izquierda).
+%   - Cadena de N derivadores en la columna de la salida (derecha).
+%   - Escaladores b_k/a_0 alineados en una columna entre la entrada y los
+%     sumadores, con el triángulo apuntando a la derecha.
+%   - Escaladores -a_k/a_0 alineados en una columna entre los sumadores y
+%     la salida, con el triángulo apuntando a la izquierda.
+%   - Cadena de sumadores en la columna central: cada uno junta la
+%     contribución b_k x^(k) (oeste), la contribución -a_k y^(k) (este) y
+%     la suma parcial proveniente de la fila inferior (sur). La salida (norte)
+%     alimenta el sumador de la fila superior. El sumador superior produce y(t).
+%   - Entre el segundo y el último elemento de cada cadena se dibuja una
+%     flecha discontinua que sintetiza los términos intermedios.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    gain_r/.style={
+        regular polygon, regular polygon sides=3, shape border rotate=30,
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum size=1.35cm, inner sep=0pt, font=\scriptsize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    gain_l/.style={
+        regular polygon, regular polygon sides=3, shape border rotate=210,
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum size=1.35cm, inner sep=0pt, font=\scriptsize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    op_block/.style={
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum width=1.2cm, minimum height=0.9cm, font=\normalsize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    sum/.style={
+        draw=utnblue!60, line width=0.5pt, circle,
+        minimum size=0.9cm, inner sep=0pt, fill=white,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.3pt, shadow yshift=-0.4pt, shadow opacity=20}
+    },
+    cross_line/.style={utnblue!40, line width=0.4pt},
+    signal/.style={->, thick, utnblue},
+    wire/.style={-, thick, utnblue},
+    dashsignal/.style={->, thick, utnblue, dashed},
+    dashwire/.style={-, thick, utnblue, dashed},
+    tlabel/.style={font=\footnotesize, inner sep=2pt},
+]
+
+% --- Coordenadas ---
+\def\xinL{-7.2}
+\def\xin{-5.6}
+\def\xb{-2.8}
+\def\xs{0}
+\def\xa{2.8}
+\def\xout{5.6}
+\def\xoutR{7.2}
+
+\def\yzero{0}
+\def\ydone{-1.1}
+\def\ytone{-2.2}
+\def\ydtwo{-3.3}
+\def\yttwo{-4.4}
+\def\ydlast{-6.4}
+\def\ytlast{-7.5}
+
+% =========================================================================
+% Macros locales para dibujar las cruces y signos del sumador.
+% \sumcrossWS{node}   -> cruz + signos en O y S  (sumador superior: salida E)
+% \sumcrossWES{node}  -> cruz + signos en O, E y S (sumador intermedio: salida N)
+% \sumcrossWE{node}   -> cruz + signos en O y E  (sumador inferior: salida N)
+% =========================================================================
+\newcommand{\sumcrossbase}[1]{%
+    \draw[cross_line] ([xshift=-0.318cm,yshift=-0.318cm]#1.center) -- ([xshift=0.318cm,yshift=0.318cm]#1.center);
+    \draw[cross_line] ([xshift=-0.318cm,yshift=0.318cm]#1.center) -- ([xshift=0.318cm,yshift=-0.318cm]#1.center);
+}
+\newcommand{\sumcrossWS}[1]{%
+    \sumcrossbase{#1}%
+    \node[font=\scriptsize] at ([xshift=-0.27cm]#1.center) {$+$};%
+    \node[font=\scriptsize] at ([yshift=-0.27cm]#1.center) {$+$};%
+}
+\newcommand{\sumcrossWES}[1]{%
+    \sumcrossbase{#1}%
+    \node[font=\scriptsize] at ([xshift=-0.27cm]#1.center) {$+$};%
+    \node[font=\scriptsize] at ([xshift=0.27cm]#1.center)  {$+$};%
+    \node[font=\scriptsize] at ([yshift=-0.27cm]#1.center) {$+$};%
+}
+\newcommand{\sumcrossWE}[1]{%
+    \sumcrossbase{#1}%
+    \node[font=\scriptsize] at ([xshift=-0.27cm]#1.center) {$+$};%
+    \node[font=\scriptsize] at ([xshift=0.27cm]#1.center)  {$+$};%
+}
+
+% =========================================================================
+% Cadena de sumadores en la columna central
+% =========================================================================
+\node[sum] (S0)    at (\xs, \yzero)  {};   \sumcrossWS{S0}
+\node[sum] (S1)    at (\xs, \ytone)  {};   \sumcrossWES{S1}
+\node[sum] (S2)    at (\xs, \yttwo)  {};   \sumcrossWES{S2}
+\node[sum] (Slast) at (\xs, \ytlast) {};   \sumcrossWE{Slast}
+
+% =========================================================================
+% Espina superior: x(t) -> tap -> [b0/a0] -> S0 -> tap -> y(t)
+% =========================================================================
+\coordinate (in_left)   at (\xinL, \yzero);
+\coordinate (in_tap)    at (\xin,  \yzero);
+\coordinate (out_tap)   at (\xout, \yzero);
+\coordinate (out_right) at (\xoutR,\yzero);
+
+\node[gain_r] (B0) at (\xb, \yzero) {$\dfrac{b_0}{a_0}$};
+
+\draw[wire]   (in_left) -- (in_tap) node[above, midway] {$x(t)$};
+\fill[utnblue] (in_tap) circle (2.2pt);
+\draw[signal] (in_tap) -- (B0.west); 
+\draw[signal] (B0.east) -- (S0.west);
+\draw[wire]   (S0.east) -- (out_tap);
+\fill[utnblue] (out_tap) circle (2.2pt);
+\draw[signal] (out_tap) -- (out_right) node[above, midway] {$y(t)$};
+
+% =========================================================================
+% Cadena de derivadores en la entrada (columna izquierda)
+% =========================================================================
+\node[op_block] (Din1) at (\xin, \ydone) {$\dfrac{d}{dt}$};
+\coordinate (tin1) at (\xin, \ytone);
+\node[op_block] (Din2) at (\xin, \ydtwo) {$\dfrac{d}{dt}$};
+\coordinate (tin2) at (\xin, \yttwo);
+\node[op_block] (DinM) at (\xin, \ydlast) {$\dfrac{d}{dt}$};
+\coordinate (tinM) at (\xin, \ytlast);
+
+\draw[signal] (in_tap) -- (Din1.north);
+\draw[wire]   (Din1.south) -- (tin1)
+              node[tlabel, midway, anchor=east, xshift=-2pt] {$\dot x$};
+\fill[utnblue] (tin1) circle (2.2pt);
+\draw[signal] (tin1) -- (Din2.north);
+\draw[wire]   (Din2.south) -- (tin2)
+              node[tlabel, midway, anchor=east, xshift=-2pt] {$\ddot x$};
+\fill[utnblue] (tin2) circle (2.2pt);
+\draw[dashsignal] (tin2) -- (DinM.north);
+\draw[wire]   (DinM.south) -- (tinM)
+              node[tlabel, midway, anchor=east, xshift=-2pt] {$x^{(M)}$};
+% tinM es esquina (DinM -> BM): no necesita nodo
+
+% =========================================================================
+% Cadena de derivadores en la salida (columna derecha)
+% =========================================================================
+\node[op_block] (Dout1) at (\xout, \ydone) {$\dfrac{d}{dt}$};
+\coordinate (tout1) at (\xout, \ytone);
+\node[op_block] (Dout2) at (\xout, \ydtwo) {$\dfrac{d}{dt}$};
+\coordinate (tout2) at (\xout, \yttwo);
+\node[op_block] (DoutN) at (\xout, \ydlast) {$\dfrac{d}{dt}$};
+\coordinate (toutN) at (\xout, \ytlast);
+
+\draw[signal] (out_tap) -- (Dout1.north);
+\draw[wire]   (Dout1.south) -- (tout1)
+              node[tlabel, midway, anchor=west, xshift=2pt] {$\dot y$};
+\fill[utnblue] (tout1) circle (2.2pt);
+\draw[signal] (tout1) -- (Dout2.north);
+\draw[wire]   (Dout2.south) -- (tout2)
+              node[tlabel, midway, anchor=west, xshift=2pt] {$\ddot y$};
+\fill[utnblue] (tout2) circle (2.2pt);
+\draw[dashsignal] (tout2) -- (DoutN.north);
+\draw[wire]   (DoutN.south) -- (toutN)
+              node[tlabel, midway, anchor=west, xshift=2pt] {$y^{(N)}$};
+% toutN es esquina (DoutN -> AN): no necesita nodo
+
+% =========================================================================
+% Escaladores de la entrada (columna xb), apuntan a la derecha.
+% Cada uno entra al sumador correspondiente por el oeste.
+% =========================================================================
+\node[gain_r] (B1) at (\xb, \ytone)  {$\dfrac{b_1}{a_0}$};
+\node[gain_r] (B2) at (\xb, \yttwo)  {$\dfrac{b_2}{a_0}$};
+\node[gain_r] (BM) at (\xb, \ytlast) {$\dfrac{b_M}{a_0}$};
+
+\draw[signal] (tin1) -- (B1.west);
+\draw[signal] (B1.east) -- (S1.west);
+\draw[signal] (tin2) -- (B2.west);
+\draw[signal] (B2.east) -- (S2.west);
+\draw[signal] (tinM) -- (BM.west);
+\draw[signal] (BM.east) -- (Slast.west);
+
+% =========================================================================
+% Escaladores de la salida (columna xa), apuntan a la izquierda.
+% Cada uno entra al sumador correspondiente por el este.
+% =========================================================================
+\node[gain_l] (A1) at (\xa, \ytone)  {$-\dfrac{a_1}{a_0}$};
+\node[gain_l] (A2) at (\xa, \yttwo)  {$-\dfrac{a_2}{a_0}$};
+\node[gain_l] (AN) at (\xa, \ytlast) {$-\dfrac{a_N}{a_0}$};
+
+\draw[signal] (tout1) -- (A1.east);
+\draw[signal] (A1.west) -- (S1.east);
+\draw[signal] (tout2) -- (A2.east);
+\draw[signal] (A2.west) -- (S2.east);
+\draw[signal] (toutN) -- (AN.east);
+\draw[signal] (AN.west) -- (Slast.east);
+
+% =========================================================================
+% Cascada vertical de sumadores: cada Sk.north -> S(k-1).south
+% =========================================================================
+\draw[signal]     (S1.north) -- (S0.south);
+\draw[signal]     (S2.north) -- (S1.south);
+\draw[dashsignal] (Slast.north) -- (S2.south);
+
+\end{tikzpicture}
+\end{document}

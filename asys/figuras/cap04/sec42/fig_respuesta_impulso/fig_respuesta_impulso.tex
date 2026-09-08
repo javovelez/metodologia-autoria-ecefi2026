@@ -1,0 +1,90 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Figura conceptual: δ(t) → [Sistema LIT] → h(t)
+% Muestra el experimento de respuesta al impulso.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    block/.style={
+        draw=utnblue!60,
+        line width=0.5pt,
+        fill=utnblue!8,
+        minimum width=2.6cm,
+        minimum height=1.2cm,
+        rounded corners=2pt,
+        align=center,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    signal/.style={->, thick, utnblue},
+]
+
+% ---- Panel (a): δ(t) ----
+\begin{axis}[
+    name=ax1,
+    width=5.5cm, height=5.5cm,
+    xmin=-1.6, xmax=1.6,
+    ymin=-0.4, ymax=5,
+    axis lines=center,
+    xtick={0}, xticklabels={$0$},
+    ytick={0}, yticklabels={$0$},
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north},
+    ylabel={$\delta(t)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={(a) Entrada}, title style={font=\small\bfseries},
+    clip=false,
+]
+% impulso: flecha vertical (estándar de cap. 3)
+\draw[->, utnblue, very thick, line width=1.5pt]
+    (axis cs:0,0) -- (axis cs:0,4.3);
+\node[anchor=south west, font=\scriptsize] at (axis cs:0.1,2.0) {área $=1$};
+\end{axis}
+
+% ---- Panel (b): h(t) ----
+% Colocado a la derecha de ax1 con un gap (xshift) para alojar el bloque central.
+\begin{axis}[
+    name=ax2,
+    at={(ax1.right of south east)}, anchor=left of south west, xshift=3.5cm,
+    width=5.5cm, height=5.5cm,
+    xmin=-1.6, xmax=3.5,
+    ymin=-0.4, ymax=5,
+    axis lines=center,
+    xtick={0}, xticklabels={$0$},
+    ytick={0}, yticklabels={$0$},
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north},
+    ylabel={$h(t)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={(b) Respuesta al impulso}, title style={font=\small\bfseries},
+    clip=false,
+]
+% cero para t < 0
+\addplot[domain=-1.5:0, samples=2, very thick, utnblue] {0};
+% exponencial decreciente h(t) = 4 e^{-t} u(t) (esquemática)
+\addplot[domain=0:3.4, samples=120, very thick, utnblue] {4*exp(-x)};
+% salto en t=0
+\draw[utnblue, very thick] (axis cs:0,0) -- (axis cs:0,4);
+\fill[utnblue] (axis cs:0,4) circle (2pt);
+\fill[white]   (axis cs:0,0) circle (2pt);
+\draw[utnblue, thick] (axis cs:0,0) circle (2pt);
+% etiqueta de forma funcional
+\node[utnblue, font=\scriptsize, anchor=west] at (axis cs:1.3, 1.7) {$h(t)=e^{-at}u(t)$};
+\node[gray,    font=\scriptsize, anchor=west] at (axis cs:1.3, 1.2) {\textit{(ejemplo)}};
+\end{axis}
+
+% ---- Bloque central y flechas de conexión ----
+% Bloque vertical y horizontalmente centrado entre los paneles.
+\node[block] (blk) at ($(ax1.east)!0.5!(ax2.west)$) {Sistema LIT\\[2pt]\footnotesize (en reposo)};
+
+% Flechas horizontales al nivel del centro vertical de los paneles.
+\draw[signal] (ax1.east) -- (blk.west);
+\draw[signal] (blk.east) -- (ax2.west);
+
+\end{tikzpicture}
+\end{document}

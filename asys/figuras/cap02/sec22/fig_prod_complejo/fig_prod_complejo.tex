@@ -1,0 +1,31 @@
+\documentclass[border=0mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=1.2, font=\small]
+        % Ejes
+        \draw[->, very thick] (-0.5,0) -- (4,0) node[right] {Re};
+        \draw[->, very thick] (0,-0.5) -- (0,3.5) node[above] {Im};
+        
+        \coordinate (O) at (0,0);
+        \coordinate (Z1) at (30:2);
+        \coordinate (Zprod) at (75:3); % Rotated by 45, scaled by 1.5
+        
+        % Vectores
+        \draw[->, very thick, utnblue] (O) -- (Z1) node[midway, below right] {$z_1$};
+        \draw[->, very thick, red] (O) -- (Zprod) node[midway, above left] {$z_{prod} = z_1 \cdot (A e^{j\phi})$};
+        
+        % Ángulo original
+        \draw[->, gray] (0.8,0) arc (0:30:0.8);
+        
+        % Arco de rotación
+        \draw[->, thick, orange] (30:1.2) arc (30:75:1.2);
+        \node[orange] at (52.5:1.4) {$\phi$};
+        
+        % Puntos
+        \fill[utnblue] (Z1) circle (1.5pt);
+        \fill[red] (Zprod) circle (1.5pt);
+    \end{tikzpicture}
+\end{document}

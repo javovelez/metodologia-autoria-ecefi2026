@@ -1,0 +1,127 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_aliasing
+% (a) ws > 2 wM (ws=3, wM=1): copias separadas, con separación entre ellas.
+% (b) ws = 2 wM (ws=2, wM=1): caso limite, las copias se tocan exactamente en +-wM,
+%     donde el borde derecho de la central y el izquierdo de la vecina coinciden.
+% (c) ws < 2 wM (ws=1.6, wM=1): en rojo punteado cada copia por separado; en azul
+%     el espectro que queda, que es la SUMA de todas. Con wM=1 y ws=1.6 dos copias
+%     vecinas se pisan en una franja de ancho 0.4 y ahí la suma vale 0.34 constante
+%     (0.85*(1-x) + 0.85*(x-0.6)), de modo que la envolvente alterna picos de 0.85
+%     en cada centro con mesetas planas de 0.34. Las copias se repiten hasta los
+%     bordes del eje (+-4.8 = 3 ws), donde quedan cortadas a la mitad.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=4pt]}, font=\scriptsize, xscale=0.83,
+    tri/.style={utnblue, thick, fill=utnblue!12},
+    tricopy/.style={utnblue!70, thick, fill=utnblue!6},
+    suma/.style={utnblue, very thick},
+    copia/.style={red!75!black, semithick, dash pattern=on 2pt off 1.6pt},
+    nyq/.style={black!45, thin, dashed},
+    ax/.style={->, thin, black},
+]
+    % ===================== (a) sin solapamiento =====================
+    \begin{scope}[shift={(0,0)}]
+        \node at (-5.1,0.6) {(a)};
+        \node[anchor=south, font=\scriptsize] at (0,1.40) {$\omega_s > 2\omega_M$};
+        \draw[ax] (-4.8,0) -- (5.1,0) node[right] {$\omega$};
+        \draw[tricopy] (-4,0) -- (-3,0.85) -- (-2,0) -- cycle;
+        \draw[tri]     (-1,0) -- (0,0.85)  -- (1,0)  -- cycle;
+        \draw[tricopy] ( 2,0) -- (3,0.85)  -- (4,0)  -- cycle;
+        % separación entre la copia central y su vecina
+        \draw[<->, black!55] (1,0.30) -- (2,0.30);
+        \node[black!60, anchor=south, font=\tiny] at (1.5,0.32) {separación};
+        % eje de ordenadas y origen
+        \draw[ax] (0,-0.05) -- (0,1.05);
+        \node[below, font=\tiny] at (0,-0.05) {$0$};
+        % marcas del eje
+        \draw[thin] (1,0.05) -- (1,-0.05) node[below, font=\tiny] {$\omega_M$};
+        \draw[thin] (2,0.05) -- (2,-0.05);
+        \draw[thin] (3,0.05) -- (3,-0.05) node[below, font=\tiny] {$\omega_s$};
+        \draw[thin] (-3,0.05) -- (-3,-0.05) node[below, font=\tiny] {$-\omega_s$};
+        \node[anchor=north, font=\tiny] at (2,-0.42) {$\omega_s\!-\!\omega_M$};
+        \draw[thin, -{Latex[length=3pt]}] (2,-0.42) -- (2,-0.13);
+    \end{scope}
+
+    % ===================== (b) caso limite =====================
+    \begin{scope}[shift={(0,-2.9)}]
+        \node at (-5.1,0.6) {(b)};
+        \node[anchor=south, font=\scriptsize] at (0,1.40) {$\omega_s = 2\omega_M$};
+        \begin{scope}
+            \clip (-4.85,-0.05) rectangle (4.85,1.05);
+            \foreach \c in {-4,-2,2,4} {
+                \draw[tricopy] ({\c-1},0) -- (\c,0.85) -- ({\c+1},0) -- cycle;
+            }
+            \draw[tri] (-1,0) -- (0,0.85) -- (1,0) -- cycle;
+        \end{scope}
+        \draw[ax] (-4.8,0) -- (5.1,0) node[right] {$\omega$};
+        % las copias se tocan justo en wM
+        \node[black!60, anchor=south, font=\tiny] at (1,0.58) {contacto};
+        \draw[black!55, thin, -{Latex[length=3pt]}] (1,0.56) -- (1,0.10);
+        % eje de ordenadas y origen
+        \draw[ax] (0,-0.05) -- (0,1.05);
+        \node[below, font=\tiny] at (0,-0.05) {$0$};
+        % marcas del eje: los dos bordes que se comparan caen en el mismo punto
+        \draw[thin] (1,0.05) -- (1,-0.05);
+        \draw[thin] (2,0.05) -- (2,-0.05) node[below, font=\tiny] {$\omega_s$};
+        \draw[thin] (-2,0.05) -- (-2,-0.05) node[below, font=\tiny] {$-\omega_s$};
+        \node[anchor=north, font=\tiny] at (1,-0.42) {$\omega_M\!=\!\omega_s\!-\!\omega_M$};
+        \draw[thin, -{Latex[length=3pt]}] (1,-0.42) -- (1,-0.13);
+    \end{scope}
+
+    % ===================== (c) con solapamiento =====================
+    \begin{scope}[shift={(0,-5.8)}]
+        \node at (-5.1,0.6) {(c)};
+        \node[anchor=south, font=\scriptsize] at (0,1.40) {$\omega_s < 2\omega_M$};
+        \begin{scope}
+            \clip (-4.8,-0.05) rectangle (4.8,1.05);
+            % relleno bajo la suma
+            \fill[utnblue!12]
+                (-4.8,0.85) -- (-4.2,0.34) -- (-3.8,0.34) -- (-3.2,0.85)
+                -- (-2.6,0.34) -- (-2.2,0.34) -- (-1.6,0.85)
+                -- (-1.0,0.34) -- (-0.6,0.34) -- ( 0.0,0.85)
+                -- ( 0.6,0.34) -- ( 1.0,0.34) -- ( 1.6,0.85)
+                -- ( 2.2,0.34) -- ( 2.6,0.34) -- ( 3.2,0.85)
+                -- ( 3.8,0.34) -- ( 4.2,0.34) -- ( 4.8,0.85)
+                -- ( 4.8,0) -- (-4.8,0) -- cycle;
+            % contorno de la suma
+            \draw[suma]
+                (-4.8,0.85) -- (-4.2,0.34) -- (-3.8,0.34) -- (-3.2,0.85)
+                -- (-2.6,0.34) -- (-2.2,0.34) -- (-1.6,0.85)
+                -- (-1.0,0.34) -- (-0.6,0.34) -- ( 0.0,0.85)
+                -- ( 0.6,0.34) -- ( 1.0,0.34) -- ( 1.6,0.85)
+                -- ( 2.2,0.34) -- ( 2.6,0.34) -- ( 3.2,0.85)
+                -- ( 3.8,0.34) -- ( 4.2,0.34) -- ( 4.8,0.85);
+            % cada copia por separado (lo que habría si no se sumaran)
+            \foreach \c in {-4.8,-3.2,-1.6,0,1.6,3.2,4.8} {
+                \draw[copia] ({\c-1},0) -- (\c,0.85) -- ({\c+1},0);
+            }
+        \end{scope}
+        \draw[ax] (-4.8,0) -- (5.1,0) node[right] {$\omega$};
+        % eje de ordenadas y origen
+        \draw[ax] (0,-0.05) -- (0,1.05);
+        \node[below, font=\tiny] at (0,-0.05) {$0$};
+        % linea de Nyquist en +- ws/2 = 0.8
+        \draw[nyq] (0.8,-0.05) -- (0.8,0.95);
+        \draw[nyq] (-0.8,-0.05) -- (-0.8,0.95);
+        \node[black!60, anchor=south, font=\tiny] at (0.8,0.95) {$\tfrac{\omega_s}{2}$};
+        % multiplos de ws: el centro de cada copia
+        \foreach \x/\lab in {1.6/{\omega_s}, 3.2/{2\omega_s}, 4.8/{3\omega_s},
+                             -1.6/{-\omega_s}, -3.2/{-2\omega_s}, -4.8/{-3\omega_s}} {
+            \draw[thin] (\x,0.05) -- (\x,-0.05) node[below, font=\tiny] {$\lab$};
+        }
+        % bordes de la zona de solapamiento: empieza en ws-wM y termina en wM
+        \draw[thin] (1,0.05) -- (1,-0.05) node[below, font=\tiny] {$\omega_M$};
+        \draw[thin] (0.6,0.05) -- (0.6,-0.05);
+        \node[anchor=north, font=\tiny] at (0.6,-0.42) {$\omega_s\!-\!\omega_M$};
+        \draw[thin, -{Latex[length=3pt]}] (0.6,-0.42) -- (0.6,-0.13);
+        % etiquetas de los dos trazos
+        \node[utnblue, anchor=south, font=\tiny] at (4.0,0.92) {suma};
+        \draw[utnblue, thin, -{Latex[length=3pt]}] (4.0,0.90) -- (4.0,0.40);
+        \node[red!75!black, anchor=south, font=\tiny] at (-4.0,0.92) {copias};
+        \draw[red!75!black, thin, -{Latex[length=3pt]}] (-4.0,0.90) -- (-4.0,0.24);
+    \end{scope}
+\end{tikzpicture}
+\end{document}

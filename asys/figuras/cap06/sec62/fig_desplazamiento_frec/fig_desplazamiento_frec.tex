@@ -1,0 +1,72 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_desplazamiento_frec
+% Dos paneles apilados ilustrando el teorema de desplazamiento en frecuencia.
+% Panel (a): |X(jω)| centrado en cero (forma genérica tipo campana).
+% Panel (b): |X(j(ω-ω0))|, la misma forma trasladada en bloque a ω0 > 0.
+% Línea punteada vertical en ω0 sobre el panel (b); flecha gris entre
+% paneles que marca la traslación + ω0.
+% Sizing: 2 paneles apilados, w 10cm, h 4.5cm por panel (preset S3).
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% Panel (a): |X(jω)| centrado en 0
+\begin{axis}[
+    name=panel_a,
+    width=8cm, height=3.5cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5, xmax=12, ymin=-0.1, ymax=1.25,
+    xtick={0},
+    ytick=\empty,
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.10)}},
+    ylabel={$|X(j\omega)|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Espectro genérico (gaussiana, sigma = 1.5)
+    \addplot[utnblue, thick, domain=-5:12, samples=200, smooth]
+        {exp(-x^2/(2*1.5^2))};
+\end{axis}
+
+% Panel (b): |X(j(ω-ω0))| centrado en ω0
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.south)+(0,-1cm)$)}, anchor=north,
+    width=8cm, height=3.5cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5, xmax=12, ymin=-0.1, ymax=1.25,
+    xtick={0, 6},
+    xticklabels={$0$, $\omega_0$},
+    ytick=\empty,
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.10)}},
+    ylabel={$|X(j(\omega-\omega_0))|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Mismo espectro trasladado a ω0 = 6
+    \addplot[utnblue, thick, domain=-5:12, samples=200, smooth]
+        {exp(-(x-6)^2/(2*1.5^2))};
+    % Línea punteada vertical en ω0
+    \addplot[gray, dashed, thin] coordinates {(6, 0) (6, 1)};
+\end{axis}
+
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,85 @@
+\documentclass[border=3mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[
+    group style={group size=2 by 2, horizontal sep=2.0cm, vertical sep=1.8cm},
+    width=5.5cm, height=4.0cm,
+    tick label style={font=\tiny},
+    label style={font=\scriptsize},
+    title style={font=\scriptsize\bfseries},
+    grid=major, grid style={gray!20},
+]
+
+% --- Panel 1: |F(jy)| ---
+% Poles at +/-j (on Im axis at y=+/-1) and -2.
+\nextgroupplot[
+    title={$|F(jy)|$\quad Eje Im},
+    xlabel={$y$}, ylabel={$|F|$},
+    xmin=-4, xmax=4, ymin=0, ymax=4,
+    restrict y to domain=0:4,
+]
+\addplot[utnblue, thick, domain=-4:-1.1, samples=200, unbounded coords=jump]
+    {1/(abs(1-x^2)*sqrt(4+x^2))};
+\addplot[utnblue, thick, domain=-0.9:0.9, samples=200, unbounded coords=jump]
+    {1/(abs(1-x^2)*sqrt(4+x^2))};
+\addplot[utnblue, thick, domain=1.1:4, samples=200, unbounded coords=jump]
+    {1/(abs(1-x^2)*sqrt(4+x^2))};
+
+% --- Panel 2: ang F(jy) ---
+\nextgroupplot[
+    title={$\angle F(jy)$\quad Eje Im},
+    xlabel={$y$}, ylabel={rad},
+    xmin=-4, xmax=4, ymin=-3.5, ymax=3.5,
+    ytick={-3.14159,-1.5708,0,1.5708,3.14159},
+    yticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+]
+\addplot[orange!80!black, thick, domain=-4:-1.02, samples=150, unbounded coords=jump]
+    {atan2( -x*(1-x^2), 2*(1-x^2) ) * pi/180};
+\addplot[orange!80!black, thick, domain=-0.98:-0.02, samples=150, unbounded coords=jump]
+    {atan2( -x*(1-x^2), 2*(1-x^2) ) * pi/180};
+\addplot[orange!80!black, thick, domain=0.02:0.98, samples=150, unbounded coords=jump]
+    {atan2( -x*(1-x^2), 2*(1-x^2) ) * pi/180};
+\addplot[orange!80!black, thick, domain=1.02:4, samples=150, unbounded coords=jump]
+    {atan2( -x*(1-x^2), 2*(1-x^2) ) * pi/180};
+
+% --- Panel 3: |F(e^jt)| ---
+% Poles +/-j on unit circle at theta=pi/2, -pi/2.
+\nextgroupplot[
+    title={$|F(e^{j\theta})|$\quad Circ.\ unit.},
+    xlabel={$\theta$ (rad)}, ylabel={$|F|$},
+    xmin=-3.14159, xmax=3.14159, ymin=0, ymax=4,
+    restrict y to domain=0:4,
+    xtick={-3.14159,-1.5708,0,1.5708,3.14159},
+    xticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+]
+\addplot[utnblue, thick, domain=-3.14159:-1.62, samples=200, unbounded coords=jump]
+    {1/(2*abs(cos(deg(x)))*sqrt(5+4*cos(deg(x))))};
+\addplot[utnblue, thick, domain=-1.52:1.52, samples=300, unbounded coords=jump]
+    {1/(2*abs(cos(deg(x)))*sqrt(5+4*cos(deg(x))))};
+\addplot[utnblue, thick, domain=1.62:3.14159, samples=200, unbounded coords=jump]
+    {1/(2*abs(cos(deg(x)))*sqrt(5+4*cos(deg(x))))};
+
+% --- Panel 4: ang F(e^jt) ---
+\nextgroupplot[
+    title={$\angle F(e^{j\theta})$\quad Circ.\ unit.},
+    xlabel={$\theta$ (rad)}, ylabel={rad},
+    xmin=-3.14159, xmax=3.14159, ymin=-3.5, ymax=3.5,
+    ytick={-3.14159,-1.5708,0,1.5708,3.14159},
+    yticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+    xtick={-3.14159,-1.5708,0,1.5708,3.14159},
+    xticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+]
+\addplot[orange!80!black, thick, domain=-3.14159:-1.59, samples=200, unbounded coords=jump]
+    {atan2(-((cos(deg(2*x))+1)*sin(deg(x)) + sin(deg(2*x))*(cos(deg(x))+2)), (cos(deg(2*x))+1)*(cos(deg(x))+2) - sin(deg(2*x))*sin(deg(x))) * pi/180};
+\addplot[orange!80!black, thick, domain=-1.55:-0.02, samples=300, unbounded coords=jump]
+    {atan2(-((cos(deg(2*x))+1)*sin(deg(x)) + sin(deg(2*x))*(cos(deg(x))+2)), (cos(deg(2*x))+1)*(cos(deg(x))+2) - sin(deg(2*x))*sin(deg(x))) * pi/180};
+\addplot[orange!80!black, thick, domain=0.02:1.55, samples=300, unbounded coords=jump]
+    {atan2(-((cos(deg(2*x))+1)*sin(deg(x)) + sin(deg(2*x))*(cos(deg(x))+2)), (cos(deg(2*x))+1)*(cos(deg(x))+2) - sin(deg(2*x))*sin(deg(x))) * pi/180};
+\addplot[orange!80!black, thick, domain=1.59:3.14159, samples=200, unbounded coords=jump]
+    {atan2(-((cos(deg(2*x))+1)*sin(deg(x)) + sin(deg(2*x))*(cos(deg(x))+2)), (cos(deg(2*x))+1)*(cos(deg(x))+2) - sin(deg(2*x))*sin(deg(x))) * pi/180};
+
+\end{groupplot}
+\end{tikzpicture}
+\end{document}

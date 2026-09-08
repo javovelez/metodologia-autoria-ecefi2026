@@ -1,0 +1,47 @@
+\documentclass[border=4mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    block/.style={
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum width=1.7cm, minimum height=0.9cm, rounded corners=2pt,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    sum/.style={
+        draw=utnblue!60, line width=0.5pt, circle, minimum size=0.8cm,
+        inner sep=0pt, fill=white,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.3pt, shadow yshift=-0.4pt, shadow opacity=20}
+    },
+    cross_line/.style={utnblue!40, line width=0.4pt},
+    signal/.style={->, thick, utnblue},
+    lab/.style={font=\footnotesize, above},
+]
+
+\coordinate (in) at (0,0);
+\coordinate (split) at (1.1,0);
+\node[block] (H1) at (3.0,0.85)  {$h_1[n]$};
+\node[block] (H2) at (3.0,-0.85) {$h_2[n]$};
+\node[sum]   (S)  at (4.9,0) {};
+\draw[cross_line] (4.9-0.28,-0.28) -- (4.9+0.28,0.28);
+\draw[cross_line] (4.9-0.28,0.28)  -- (4.9+0.28,-0.28);
+\node[font=\scriptsize] at (4.64,0.0)  {$+$};
+\node[font=\scriptsize] at (4.9,0.26)  {$+$};
+\node[block] (H3) at (6.8,0) {$h_3[n]$};
+\coordinate (out) at (8.5,0);
+
+\draw[signal] (in) -- (split) node[lab, midway] {$x[n]$};
+\fill[utnblue] (split) circle (2.2pt);
+\draw[signal] (split) |- (H1.west);
+\draw[signal] (split) |- (H2.west);
+\draw[signal] (H1.east) -| (S.north);
+\draw[signal] (H2.east) -| (S.south);
+\draw[signal] (S.east) -- (H3.west) node[lab, midway] {$w[n]$};
+\draw[signal] (H3.east) -- (out) node[lab, midway] {$y[n]$};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,24 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small,
+        block/.style={draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+                      minimum width=2.1cm, minimum height=1cm, rounded corners=2pt,
+                      blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                                   shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}},
+        signal/.style={->, thick, utnblue},
+        label_style/.style={font=\footnotesize, above}
+    ]
+        \node[block] (sys) at (0,0) {$\mathcal{T}\{\cdot\}$};
+
+        \coordinate (in) at (-2.4,0);
+        \coordinate (out) at (2.4,0);
+
+        \draw[signal] (in) -- (sys.west) node[label_style, midway] {$x(t)$};
+        \draw[signal] (sys.east) -- (out)  node[label_style, midway] {$y(t)$};
+    \end{tikzpicture}
+\end{document}
+ 

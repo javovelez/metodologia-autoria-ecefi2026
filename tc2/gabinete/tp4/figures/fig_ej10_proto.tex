@@ -1,0 +1,64 @@
+% Figura generada con netlist2tikz (n2t render fig_ej10_proto.sch --tikz --no-standalone).
+% Netlist fuente (fig_ej10_proto.sch):
+%   W in_t 1; right=0.5
+%   L1 1 m1; right=2, offset=0.35, l^=8{,}5\,\mathrm{mH}
+%   C1 1 m1; right=2, offset=-0.35, l_=849\,\mathrm{nF}
+%   W m1 c; right=0.45
+%   W c m2; right=0.45
+%   L2 m2 3; right=2, offset=0.35, l^=8{,}5\,\mathrm{mH}
+%   C2 m2 3; right=2, offset=-0.35, l_=849\,\mathrm{nF}
+%   W 3 out_t; right=0.5
+%   L3 c 4; down=1.2, l_=2{,}4\,\mathrm{mH}
+%   C3 4 0; down=1.2, l_=3.030\,\mathrm{nF}
+%   W in_b 0; right=3.4
+%   W 0 out_b; right=3.4
+%
+\begin{tikzpicture}[scale=1.00, transform shape, /tikz/circuitikz/bipoles/length=1.50cm, american currents, american voltages, font={\fontsize{7.5}{9}\selectfont}, voltage dir=RP]
+  \coordinate (in_t) at (0.54,2.88);
+  \coordinate (1) at (1.14,2.88);
+  \coordinate (1off1) at (1.14,3.3);
+  \coordinate (m1) at (3.54,2.88);
+  \coordinate (m1off2) at (3.54,3.3);
+  \coordinate (1off3) at (1.14,2.46);
+  \coordinate (m1off4) at (3.54,2.46);
+  \coordinate (c) at (4.08,2.88);
+  \coordinate (m2) at (4.62,2.88);
+  \coordinate (m2off5) at (4.62,3.3);
+  \coordinate (3) at (7.02,2.88);
+  \coordinate (3off6) at (7.02,3.3);
+  \coordinate (m2off7) at (4.62,2.46);
+  \coordinate (3off8) at (7.02,2.46);
+  \coordinate (out_t) at (7.62,2.88);
+  \coordinate (4) at (4.08,1.44);
+  \coordinate (0) at (4.08,0);
+  \coordinate (in_b) at (0,0);
+  \coordinate (out_b) at (8.16,0);
+  \draw (in_t) to (1);
+  \draw (1) to (1off1);
+  \draw (m1) to (m1off2);
+  \draw (1) to [open, n=Oanon1] (m1);
+  \draw (1off1) to [L, l^=$8{,}5\,\mathrm{mH}$, n=L1] (m1off2);
+  \draw (1) to (1off3);
+  \draw (m1) to (m1off4);
+  \draw (1) to [open, n=Oanon2] (m1);
+  \draw (1off3) to [C, l_=$849\,\mathrm{nF}$, n=C1] (m1off4);
+  \draw (m1) to (c);
+  \draw (c) to (m2);
+  \draw (m2) to (m2off5);
+  \draw (3) to (3off6);
+  \draw (m2) to [open, n=Oanon3] (3);
+  \draw (m2off5) to [L, l^=$8{,}5\,\mathrm{mH}$, n=L2] (3off6);
+  \draw (m2) to (m2off7);
+  \draw (3) to (3off8);
+  \draw (m2) to [open, n=Oanon4] (3);
+  \draw (m2off7) to [C, l_=$849\,\mathrm{nF}$, n=C2] (3off8);
+  \draw (3) to (out_t);
+  \draw (c) to [L, l_=$2{,}4\,\mathrm{mH}$, n=L3] (4);
+  \draw (4) to [C, l_=$3.030\,\mathrm{nF}$, n=C3] (0);
+  \draw (in_b) to (0);
+  \draw (0) to (out_b);
+  \draw (in_t) node[ocirc] {};
+  \draw (out_t) node[ocirc] {};
+  \draw (in_b) node[ocirc] {};
+  \draw (out_b) node[ocirc] {};
+\end{tikzpicture}

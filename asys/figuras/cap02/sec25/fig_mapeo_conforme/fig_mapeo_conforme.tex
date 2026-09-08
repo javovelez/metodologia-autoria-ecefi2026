@@ -1,0 +1,101 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small, auto]
+        % Estilos
+        \tikzset{
+            grid_x/.style={utnblue, thin},
+            grid_y/.style={red!80!black, thin},
+            axis_style/.style={->, black, thick},
+            dot/.style={circle, fill=black, inner sep=1.5pt}
+        }
+
+        % --- PANEL A: PLANO Z (Rectangular) ---
+        % Escala aumentada para equiparar áreas visuales. 
+        % Dominio Z: x en [0, 1], y en [0, pi/2 approx 1.57]
+        % Área matemática: 1 * 1.57 = 1.57
+        % Vamos a escalar por 2.5
+        \begin{scope}[scale=2.5]
+            \node[anchor=south] at (0.5, 1.7) {\textbf{Plano Z}};
+            
+            % Ejes
+            \draw[axis_style] (-0.2,0) -- (1.5,0) node[right] {Re ($x$)};
+            \draw[axis_style] (0,-0.2) -- (0,1.8) node[above] {Im ($y$)};
+
+            % Rejilla Vertical (x = c) -> Se mapearán a círculos
+            \foreach \x in {0.2, 0.4, 0.6, 0.8, 1.0} {
+                \draw[grid_x] (\x, 0) -- (\x, 1.6);
+            }
+            \node[utnblue, scale=0.8, anchor=north] at (1.0, 0) {$x=1$};
+
+            % Rejilla Horizontal (y = c) -> Se mapearán a rayos
+            % Usamos pasos de 0.3 radianes para que se vea claro
+            \foreach \y in {0.3, 0.6, 0.9, 1.2, 1.5} {
+                \draw[grid_y] (0, \y) -- (1.2, \y);
+            }
+            \node[red!80!black, scale=0.8, anchor=east] at (0, 1.5) {$y=1.5$};
+            
+            % Punto de interés: x=0.6, y=0.9
+            \coordinate (z_pt) at (0.6, 0.9);
+            \node[dot] at (z_pt) {};
+            
+            % Ángulo recto
+            \draw[thin] (0.6, 1.0) -- (0.7, 1.0) -- (0.7, 0.9);
+            
+            % Etiqueta
+            \node[anchor=south west, scale=0.7] at (0.7, 0.9) {$90^\circ$};
+        \end{scope}
+
+        % Flecha de transformación
+        \draw[->, ultra thick, gray!50, bend left=15] (3, 2) to node[midway, above, black] {$w = e^z$} (5, 2);
+
+        % --- PANEL B: PLANO W (Polar) ---
+        % Dominio W: r en [1, e=2.72], theta en [0, 1.57]
+        % Área matemática aprox: pi/4 * (2.72^2 - 1^2) approx 5
+        % Escala para igualar: 2.5 / sqrt(5/1.57) approx 2.5 / 1.78 = 1.4
+        \begin{scope}[shift={(6,0)}, scale=1.4]
+            \node[anchor=south] at (1.5, 3.0) {\textbf{Plano W}};
+
+            % Ejes
+            \draw[axis_style] (-0.5,0) -- (3.5,0) node[right] {$u$};
+            \draw[axis_style] (0,-0.5) -- (0,3.5) node[above] {$v$};
+
+            % Círculos (Mapeo de x = c => |w| = e^x)
+            \foreach \x in {0.2, 0.4, 0.6, 0.8, 1.0} {
+                \pgfmathsetmacro{\rad}{exp(\x)}
+                \draw[grid_x] (\rad, 0) arc (0:95:\rad);
+            }
+            % Etiqueta para r = e^1
+            \pgfmathsetmacro{\radmax}{exp(1.0)}
+            \node[utnblue, scale=0.8] at (2.0, -0.3) {$|w|=e$};
+
+            % Rayos (Mapeo de y = c => arg(w) = y rad)
+            \foreach \y in {0.3, 0.6, 0.9, 1.2, 1.5} {
+                \pgfmathsetmacro{\deg}{\y * 180 / 3.14159}
+                % Dibujamos rayos hasta un radio un poco mayor que e^1
+                \draw[grid_y] (0,0) -- (\deg:3.0);
+            }
+            % Etiqueta para el último rayo
+            \pgfmathsetmacro{\degmax}{1.5 * 180 / 3.14159}
+            \node[red!80!black, scale=0.8] at (\degmax:3.2) {$\phi=1.5$};
+            
+            % Punto de interés mapeado: w = e^(0.6) /_ 0.9 rad
+            \pgfmathsetmacro{\rw}{exp(0.6)}
+            \pgfmathsetmacro{\degw}{0.9 * 180 / 3.14159}
+            \coordinate (w_pt) at (\degw:\rw);
+            
+            \node[dot] at (w_pt) {};
+            
+            % Ángulo recto sobre la intersección curva
+            % Tangente del circulo: dirección degw + 90
+            % Tangente del rayo: dirección degw
+            \begin{scope}[shift={(w_pt)}, rotate=\degw]
+                \draw[thin] (0.2, 0) -- (0.2, 0.2) -- (0, 0.2);
+                \node[scale=0.7, anchor=south west, rotate=-\degw] at (0.2, 0.2) {$90^\circ$};
+            \end{scope}
+
+        \end{scope}
+
+    \end{tikzpicture}
+\end{document}

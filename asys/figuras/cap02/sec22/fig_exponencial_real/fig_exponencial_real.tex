@@ -1,0 +1,62 @@
+\documentclass[border=3mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        
+        \pgfplotsset{
+            width=5.5cm, height=5.5cm,
+            axis lines=center,
+            xlabel={$t$},
+            ylabel={$f(t)$},
+            xlabel style={anchor=north east},
+            ylabel style={anchor=north west},
+            xmin=-0.8, xmax=2.5,
+            ticks=none,
+            axis line style={->, thick},
+            every axis title/.style={at={(0.5,-0.25)},anchor=north}
+        }
+
+        % =============================================
+        % PANEL A: Crecimiento (σ > 0)
+        % =============================================
+        \begin{axis}[
+            at={(0cm,0cm)},
+            anchor=center,
+            ymin=-0.5, ymax=4,
+            title={\textbf{(a) $\sigma > 0$ (Crecimiento)}}
+        ]
+            \addplot[domain=-0.6:2, samples=100, very thick, red] {exp(0.7*x)};
+            \node[red, right] at (axis cs:2,4) {$e^{\sigma t}$};
+        \end{axis}
+        
+        % =============================================
+        % PANEL B: Constante (σ = 0)
+        % =============================================
+        \begin{axis}[
+            at={(5.5cm,0cm)},
+            anchor=center,
+            ymin=-0.5, ymax=4,
+            title={\textbf{(b) $\sigma = 0$ (Constante)}}
+        ]
+            \addplot[domain=-0.6:2.5, samples=10, very thick, utnblue] {1};
+            \node[utnblue, above] at (axis cs:1.2,1) {$e^{0} = 1$};
+        \end{axis}
+        
+        % =============================================
+        % PANEL C: Decrecimiento (σ < 0)
+        % =============================================
+        \begin{axis}[
+            at={(11cm,0cm)},
+            anchor=center,
+            ymin=-0.5, ymax=4,
+            title={\textbf{(c) $\sigma < 0$ (Decrecimiento)}}
+        ]
+            \addplot[domain=-0.6:2.5, samples=100, very thick, green!50!black] {3*exp(-1.5*x)};
+            \node[green!50!black, right] at (axis cs:0.2,2.5) {$e^{\sigma t}$};
+        \end{axis}
+        
+    \end{tikzpicture}
+\end{document}

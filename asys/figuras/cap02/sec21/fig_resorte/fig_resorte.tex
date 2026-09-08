@@ -1,0 +1,31 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{decorations.pathmorphing, patterns}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small,
+        spring/.style={decorate, decoration={zigzag, segment length=5, amplitude=3, pre length=3, post length=3}},
+    ]
+        % Techo
+        \fill[pattern=north east lines, pattern color=gray] (0.5, 5) rectangle (3.5, 5.2);
+        \draw[very thick] (0.5, 5) -- (3.5, 5);
+
+        % Resorte (elongado: masa desplazada hacia abajo)
+        \draw[spring, thick] (2, 5) -- (2, 2.2) node[midway, left=3mm, font=\footnotesize] {$k$};
+
+        % Línea discontinua: posición de equilibrio (centro de masa en y=3.4)
+        \draw[dashed, gray] (0.3, 3.4) -- (3.7, 3.4);
+
+        % Masa (desplazada hacia abajo, centro en y=1.8)
+        \draw[thick, fill=utnblue!15] (0.8, 1.4) rectangle (3.2, 2.2);
+        \node at (2, 1.8) {\textbf{$m$}};
+
+        % Línea discontinua: posición actual (fuera del bloque de la masa)
+        \draw[dashed, gray] (0.3, 1.8) -- (0.7, 1.8);
+        \draw[dashed, gray] (3.3, 1.8) -- (3.7, 1.8);
+
+        % Desplazamiento
+        \draw[<->, thick, codegreen!70!black] (3.9, 1.8) -- (3.9, 3.4) node[midway, right, font=\footnotesize] {$y(t)$};
+
+    \end{tikzpicture}
+\end{document}

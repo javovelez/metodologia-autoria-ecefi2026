@@ -1,0 +1,300 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{multicol}
+\usepackage{titling} % Para ajustar los espacios del título
+\usepackage{tasks} % Para listas en columnas
+\usepackage{float}
+\usepackage[mode=image]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=7cm,compat=1.15}
+\usepackage{caption}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+% Ajusta la separación entre el encabezado y el contenido
+\setlength{\headsep}{10pt}
+
+% Ajuste del título:
+\setlength{\droptitle}{-0.5in} % Mueve el título ligeramente hacia arriba
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large}
+	\posttitle{\par\end{center}\vspace{-4em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+	\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Trabajo Práctico N$^\text{o}$5: Transformada de Laplace}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Título optimizado con espacios reducidos
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Trabajo Práctico N$^{\text o}$5: Transformada de Laplace}%
+}
+\author{}
+\date{}
+
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+
+	% Entorno de dos columnas
+	\begin{multicols}{2}
+
+		\label{sec:enun}
+
+		% ===============================================
+		\textbf{Cálculo de la transformada}
+		% ===============================================
+		\begin{enumerate}
+			% ***********************************************
+			% 				Ejercicio 1
+			% ***********************************************
+			\item Obtener la transformada de Laplace $X(s)$ de las cuatro señales representadas en la Figura~\ref{fig:tp5_senales}, todas de duración finita. En cada caso, escribir primero la señal como combinación de escalones (o resolver la integral de definición con sus límites finitos) y determinar la región de convergencia.
+			\begin{enumerate}
+				\item Pulso rectangular de amplitud $A$ y duración $\tau$.
+				\item Rampa que crece linealmente de $0$ a $A$ en el intervalo $[0, \tau]$ y luego se anula.
+				\item Señal trapezoidal: crece de $0$ a $A$ en $[0,\tau_1]$, se mantiene en $A$ hasta $\tau_2$ y luego cae a $0$.
+				\item Rampa decreciente: parte de $A$ en $t=0$ y decrece linealmente hasta anularse en $t=\tau$.
+			\end{enumerate}
+			Observar que en los cuatro casos la ROC resulta ser todo el plano $s$, y explicar por qué la duración finita de la señal lleva a ese resultado.
+
+			\begin{center}
+				\includestandalone[width=\linewidth]{figures/fig_tp5_senales/fig_tp5_senales}
+				\captionof{figure}{Señales de duración finita del Ejercicio 1: (a) pulso rectangular, (b) rampa limitada, (c) trapezoidal y (d) rampa decreciente.}
+				\label{fig:tp5_senales}
+			\end{center}
+
+			% ===============================================
+			\textbf{Propiedades}
+			% ===============================================
+			% ***********************************************
+			% 				Ejercicio 2
+			% ***********************************************
+			\item Sin volver a resolver la integral de definición, apoyándose en la tabla de pares básicos y en la propiedad que se indica en cada caso, obtener la transformada de Laplace de:
+			\begin{enumerate}
+				\item $x(t) = e^{-a(t-t_0)}u(t-t_0)$ \hfill (desplazamiento temporal).
+				\item $x(t) = e^{-at}\cos(\omega_0 t)\,u(t)$ \hfill (desplazamiento en $s$).
+				\item $x(t) = t\,e^{-at}u(t)$ \hfill (derivación en $s$).
+				\item $x(t) = t\sin(at)\,u(t)$ \hfill (derivación en $s$).
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 3
+			% ***********************************************
+			\item \emph{Convolución como producto.} Sean las señales causales $x(t) = e^{-at}u(t)$ y $h(t) = e^{-bt}u(t)$, con $a, b > 0$. Se busca la convolución $y(t) = x(t) * h(t)$.
+			\begin{enumerate}
+				\item Aplicando la propiedad de convolución, escribir $Y(s) = X(s)H(s)$.
+				\item Para $a \neq b$, antitransformar por fracciones parciales y recuperar $y(t)$.
+				\item Repetir para $a = b$ y comparar: ¿qué cambia en la forma de $y(t)$ al confundirse los dos polos en uno doble?
+			\end{enumerate}
+			Comparar el camino seguido con el cálculo directo de la convolución en el tiempo, y observar el paralelo con la transformada de Fourier, donde el mismo producto $\frac{1}{(a+j\omega)^2}$ aparecía al convolucionar dos exponenciales.
+
+			% ===============================================
+			\textbf{Transformada inversa}
+			% ===============================================
+			% ***********************************************
+			% 				Ejercicio 4
+			% ***********************************************
+			\item Hallar la transformada inversa $f(t)$ de las siguientes funciones racionales con polos reales, suponiendo en todos los casos que corresponden a señales causales:
+			\begin{enumerate}
+				\item $F(s) = \dfrac{2s+9}{(s+3)(s+4)}$
+				\item $F(s) = \dfrac{4s+8}{s^2+4s-5}$
+				\item $F(s) = \dfrac{12}{s(s+1)(s+4)}$
+				\item $F(s) = \dfrac{2s}{(s+1)^2(s+2)}$
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 5
+			% ***********************************************
+			\item Hallar la transformada inversa $f(t)$ de las siguientes funciones racionales con polos complejos conjugados, suponiendo que corresponden a señales causales.
+			\begin{enumerate}
+				\item $F(s) = \dfrac{3(s+1)}{s^2+2s+5}$.
+				\item $F(s) = \dfrac{5s-11}{s^2+4s+13}$.
+				\item $F(s) = \dfrac{s+2}{s(s^2+4)}$.
+			\end{enumerate}
+
+			% ===============================================
+			\textbf{Función de transferencia, polos y ceros}
+			% ===============================================
+			% ***********************************************
+			% 				Ejercicio 6
+			% ***********************************************
+			\item Un sistema LIT causal está descrito por la ecuación diferencial
+			\[
+				\frac{d^2 y(t)}{dt^2} + 5\,\frac{d y(t)}{dt} + 6\,y(t) = \frac{d x(t)}{dt} + x(t).
+			\]
+			\begin{enumerate}
+				\item Determinar la función de transferencia $H(s) = P(s)/Q(s)$.
+				\item Hallar polos y ceros y graficar la constelación en el plano $s$.
+				\item Obtener la respuesta al impulso $h(t)$.
+				\item Indicar si el sistema es estable, a partir de la posición de los polos.
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 7
+			% ***********************************************
+			\item \emph{Identificación.} Observando la salida $y(t)$ de un sistema LIT ante una entrada conocida $x(t)$ puede recuperarse su funcionamiento. Para cada par entrada-salida, encontrar la función de transferencia $H(s)$, la respuesta al impulso $h(t)$ y la ecuación diferencial que caracteriza al sistema:
+			\begin{enumerate}
+				\item $x(t) = e^{-3t}u(t) \;\rightarrow\; y(t) = [\,e^{-t} - e^{-2t}\,]\,u(t)$.
+				\item $x(t) = 2u(t) \;\rightarrow\; y(t) = [\,e^{-t} - e^{-2t}\,]\,u(t)$.
+				\item $x(t) = u(t) \;\rightarrow\; y(t) = e^{-2t}\sin(4t)\,u(t)$.
+			\end{enumerate}
+			Comparar los casos (a) y (b): comparten la salida pero no la entrada, y conducen a sistemas distintos.
+
+			% ***********************************************
+			% 				Ejercicio 8
+			% ***********************************************
+			\item \emph{Leer el plano a partir de $h(t)$.} Para cada respuesta al impulso, hallar la función de transferencia $H(s)$, ubicar polos y ceros en el plano $s$, escribir la ecuación diferencial del sistema y clasificar su estabilidad:
+			\begin{enumerate}
+				\item $h(t) = 2\,[\cos(5t) + 3\sin(5t)]\,u(t)$.
+				\item $h(t) = 2\,e^{-t}[\cos(5t) + 3\sin(5t)]\,u(t)$.
+			\end{enumerate}
+			Comparar ambos casos: las dos respuestas oscilan a la misma frecuencia, pero una se sostiene y la otra se apaga. Identificar qué coordenada del polo gobierna esa diferencia.
+
+			% ***********************************************
+			% 				Ejercicio 9
+			% ***********************************************
+			\item \emph{Leer el plano a partir de la constelación.} Un sistema LIT causal queda definido por el mapa de polos y ceros de la Figura~\ref{fig:tp5_polos_ceros}, con ganancia $K = 4$.
+			\begin{enumerate}
+				\item Escribir su función de transferencia $H(s)$.
+				\item Obtener la respuesta al impulso $h(t)$.
+				\item Escribir la ecuación diferencial del sistema.
+				\item Indicar si es estable.
+			\end{enumerate}
+
+			\begin{center}
+				\includestandalone[width=0.7\linewidth]{figures/fig_tp5_polos_ceros/fig_tp5_polos_ceros}
+				\captionof{figure}{Constelación de polos ($\times$) y ceros ($\circ$) del sistema del Ejercicio 9.}
+				\label{fig:tp5_polos_ceros}
+			\end{center}
+
+			% ***********************************************
+			% 				Ejercicio 10
+			% ***********************************************
+			\item \emph{Interconexión de sistemas.} Estudiar las tres formas básicas de interconectar sistemas LIT, obteniendo en cada caso la función de transferencia equivalente y la ubicación de los polos en el plano $s$:
+			\begin{enumerate}
+				\item \emph{Serie} (cascada) de $H_1(s) = \dfrac{1}{s+1}$ y $H_2(s) = \dfrac{1}{s+2}$.
+				\item \emph{Paralelo} de esos mismos $H_1$ y $H_2$.
+				\item \emph{Realimentación} negativa de un sistema inestable $G(s) = \dfrac{1}{s-1}$, con su polo en $s=1$: se lo coloca en el camino directo de un lazo con una ganancia $k$ en el retorno. Hallar para qué valores de $k$ el lazo cerrado resulta estable.
+			\end{enumerate}
+			Comparar las tres configuraciones: ¿cuáles conservan los polos de los subsistemas y cuál los reubica? Interpretar el corrimiento del polo en el lazo realimentado.
+
+			% ===============================================
+			\textbf{Respuesta del sistema a entradas dadas}
+			% ===============================================
+			% ***********************************************
+			% 				Ejercicio 11
+			% ***********************************************
+			\item \emph{La misma transferencia, distintas entradas.} Sea el sistema LIT causal con
+			\[
+				H(s) = \frac{2}{(s+1)(s+2)},
+			\]
+			inicialmente en reposo. Para cada una de las siguientes entradas, hallar la salida $y(t)$ antitransformando $Y(s) = H(s)X(s)$:
+			\begin{enumerate}
+				\item $x(t) = \delta(t)$.
+				\item $x(t) = u(t)$ \hfill (respuesta al escalón).
+				\item $x(t) = e^{-3t}u(t)$.
+				\item $x(t) = e^{-t}u(t)$ \hfill (coincide con un polo del sistema).
+			\end{enumerate}
+			En el inciso (b), señalar cuál es el término permanente; en el (d), explicar por qué aparece un factor $t$ en la salida.
+
+			% ***********************************************
+			% 				Ejercicio 12
+			% ***********************************************
+			\item \emph{Transitorio y permanente ante una sinusoide.} Un sistema de primer orden tiene $H(s) = \dfrac{1}{s+1}$ y está inicialmente en reposo. Se lo excita con la entrada $x(t) = \cos(\omega_0 t)\,u(t)$, con $\omega_0 = 1$.
+			\begin{enumerate}
+				\item Hallar $Y(s) = H(s)X(s)$ y antitransformar para obtener $y(t)$.
+				\item Identificar el término transitorio (que se extingue) y el término permanente (la sinusoide sostenida).
+				\item Verificar que la amplitud y la fase del término permanente coinciden con $|H(j\omega_0)|$ y $\angle H(j\omega_0)$, y relacionarlo con la respuesta en frecuencia.
+			\end{enumerate}
+
+			% ===============================================
+			\textbf{Transformada unilateral y condiciones iniciales}
+			% ===============================================
+			% ***********************************************
+			% 				Ejercicio 13
+			% ***********************************************
+			\item Resolver las siguientes ecuaciones diferenciales con la transformada unilateral, arrastrando las condiciones iniciales dadas. En cada caso, identificar en la respuesta $y(t)$ qué término corresponde al transitorio (se extingue) y cuál al régimen permanente (subsiste):
+			\begin{enumerate}
+				\item $\dfrac{dy(t)}{dt} + 3\,y(t) = u(t)$, \quad con $y(0) = 2$.
+				\item $\dfrac{d^2y(t)}{dt^2} + 4\,y(t) = 0$, \quad con $y(0) = 1,\ y'(0) = 2$.
+				\item $\dfrac{d^2y(t)}{dt^2} + 2\,\dfrac{dy(t)}{dt} + 5\,y(t) = e^{-t}u(t)$, \quad con $y(0) = 0,\ y'(0) = 1$.
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 14
+			% ***********************************************
+			\item \emph{Un circuito con energía inicial.} Un capacitor $C$ que parte con tensión inicial $v_C(0) = V_0$ se conecta en $t = 0$, a través de una resistencia $R$, a una fuente de tensión escalón $E\,u(t)$:
+			\[
+				RC\,\frac{dv_C(t)}{dt} + v_C(t) = E\,u(t).
+			\]
+			Con $R = 2\ \text{k}\Omega$, $C = 1\ \text{mF}$ (de modo que $\tau = RC = 2\ \text{s}$), $E = 10\ \text{V}$ y $v_C(0) = 4\ \text{V}$,
+			\[
+				2\,\frac{dv_C(t)}{dt} + v_C(t) = 10\,u(t).
+			\]
+			\begin{enumerate}
+				\item Resolver con la transformada unilateral, incorporando la condición inicial $v_C(0) = 4\ \text{V}$.
+				\item Separar la solución en transitorio y permanente, e interpretar físicamente a qué tiende la tensión del capacitor cuando $t \to \infty$ y qué papel cumple el valor inicial en el transitorio.
+			\end{enumerate}
+
+			% ===============================================
+			\textbf{Síntesis: el plano $s$ contiene a Fourier}
+			% ===============================================
+			% ***********************************************
+			% 				Ejercicio 15
+			% ***********************************************
+			\item \emph{Puente con la transformada de Fourier.} Considerar el sistema LIT causal
+			\[
+				\frac{d^2 y(t)}{dt^2} + 6\,\frac{d y(t)}{dt} + 8\,y(t) = 2\,x(t),
+			\]
+			el mismo que se analizó con la transformada de Fourier en el Trabajo Práctico anterior.
+			\begin{enumerate}
+				\item Hallar la función de transferencia $H(s)$, sus polos y la ROC; clasificar la estabilidad a partir de la geometría del plano.
+				\item Obtener la respuesta al impulso $h(t)$.
+				\item Verificar que la respuesta en frecuencia se recupera evaluando $H(j\omega) = \left. H(s)\right|_{\sigma = 0}$. Explicar, a partir de esto, por qué la transformada de Laplace contiene a la de Fourier como caso particular, y qué información adicional aporta el plano $s$.
+				\item Determinar la respuesta del sistema a la entrada $x(t) = e^{-3t}u(t)$.
+			\end{enumerate}
+
+			% ===============================================
+			\textbf{Ejercicio integrador}
+			% ===============================================
+			% ***********************************************
+			% 				Ejercicio 16
+			% ***********************************************
+			\item Un sistema LIT causal queda descrito por la ecuación diferencial
+			\[
+				\frac{d^2 y(t)}{dt^2} + 4\,\frac{d y(t)}{dt} + 3\,y(t) = \frac{d x(t)}{dt} + 2\,x(t).
+			\]
+			A partir de este único dato, recorrer las herramientas del capítulo:
+			\begin{enumerate}
+				\item Obtener la función de transferencia $H(s) = P(s)/Q(s)$, hallar polos y ceros y graficar la constelación en el plano $s$.
+				\item Indicar la región de convergencia y clasificar el sistema en estabilidad y causalidad, a partir de la geometría del plano.
+				\item Obtener la respuesta al impulso $h(t)$ por fracciones parciales.
+				\item Hallar la respuesta al escalón unitario, identificar los términos transitorio y permanente, y verificar que el valor permanente coincide con $H(0)$.
+				\item Verificar que la respuesta en frecuencia se recupera como $H(j\omega) = \left. H(s)\right|_{\sigma = 0}$ y comentar qué información agrega el plano $s$.
+				\item Colocar el sistema en un lazo de realimentación negativa con ganancia $k > 0$ en el camino de retorno. Determinar la ubicación de los polos a lazo cerrado en función de $k$ y analizar hacia dónde se desplazan al aumentar $k$, indicando si pueden volverse complejos.
+			\end{enumerate}
+
+		\end{enumerate}
+
+	\end{multicols}
+
+\end{document}

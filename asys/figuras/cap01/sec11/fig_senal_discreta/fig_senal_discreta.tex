@@ -1,0 +1,39 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{axis}[
+            width=14cm, height=6cm,
+            axis lines=center,
+            xlabel={$n$ (muestra)},
+            ylabel={$T[n]$ [$^\circ$C]},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+            ylabel style={anchor=south east, at={(axis description cs:0,1)}},
+            xmin=-1, xmax=21,
+            ymin=10, ymax=38,
+            axis line style={->, thick},
+            xtick={0,2,...,20},
+            ytick={15,20,25,30,35},
+            grid=major,
+            grid style={gray!20},
+            every tick label/.style={font=\footnotesize},
+        ]
+            % Stems: muestras de temperatura diaria (forma suave subyacente)
+            \addplot+[ycomb, mark=*, mark size=2.5pt, mark options={fill=utnblue, draw=utnblue},
+                     thick, utnblue] coordinates {
+                (0, 18) (1, 17) (2, 16) (3, 15.5) (4, 16) 
+                (5, 17.5) (6, 20) (7, 23) (8, 26) (9, 29) 
+                (10, 31) (11, 33) (12, 34) (13, 34.5) (14, 33) 
+                (15, 31) (16, 28) (17, 25) (18, 22) (19, 20) 
+                (20, 19)
+            };
+
+            % Flecha indicando Ts
+            \draw[<->, thick, red!70!black] (axis cs:6, 12.5) -- (axis cs:7, 12.5) 
+                node[midway, below, font=\footnotesize] {$T_s$};
+
+        \end{axis}
+    \end{tikzpicture}
+\end{document}

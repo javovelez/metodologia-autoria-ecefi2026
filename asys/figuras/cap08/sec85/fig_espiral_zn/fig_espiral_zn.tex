@@ -1,0 +1,67 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+
+        % Configuración común de los dos paneles 3D (estilo Cap. 2)
+        % z^n = r^n e^{j lambda n}, con lambda = pi/8 = 22.5 => 16 muestras por vuelta.
+        % La envolvente r^n va en gris; cada muestra es un punto azul. Sin vectores, sin 2D.
+        \pgfplotsset{
+            width=6.2cm, height=6.2cm,
+            scale only axis,
+            anchor=center,
+            view={55}{28},
+            axis lines=center,
+            xlabel={$n$},
+            ylabel={$\operatorname{Re}$},
+            zlabel={$\operatorname{Im}$},
+            xlabel style={anchor=north east, inner sep=1pt},
+            ylabel style={anchor=north west, inner sep=1pt},
+            zlabel style={anchor=south, inner sep=1pt},
+            ymin=-1.2, ymax=1.2,
+            zmin=-1.2, zmax=1.2,
+            ticks=none,
+            axis line style={->},
+            clip=false
+        }
+
+        % ===== Panel (a): espiral hacia adentro, r < 1 =====
+        % Tres vueltas completas: n = 0..48. Decaimiento sutil (r = 0,98).
+        \begin{axis}[
+            at={(0cm,0cm)},
+            name=plotA,
+            xmin=-2, xmax=49,
+        ]
+            % Envolvente: la espiral cónica continua r^t (que decae, sutil), en gris
+            \addplot3[domain=0:48, samples=700, samples y=0, thin, gray!60]
+                ({x}, {pow(0.98,x)*cos(22.5*x)}, {pow(0.98,x)*sin(22.5*x)});
+            % Muestras: un punto azul por foto, n = 0..48
+            \addplot3[domain=0:48, samples=49, samples y=0, only marks,
+                      mark=*, mark size=1.1pt, utnblue]
+                ({x}, {pow(0.98,x)*cos(22.5*x)}, {pow(0.98,x)*sin(22.5*x)});
+        \end{axis}
+
+        % ===== Panel (b): espiral hacia afuera, r > 1 =====
+        % Tres vueltas completas: n = 0..48. Crecimiento sutil (r = 1,02).
+        \begin{axis}[
+            at={(7cm,0cm)},
+            name=plotB,
+            xmin=-2, xmax=49,
+        ]
+            % Envolvente: la espiral cónica continua r^t (que crece, sutil), en gris
+            \addplot3[domain=0:48, samples=700, samples y=0, thin, gray!60]
+                ({x}, {0.44*pow(1.02,x)*cos(22.5*x)}, {0.44*pow(1.02,x)*sin(22.5*x)});
+            \addplot3[domain=0:48, samples=49, samples y=0, only marks,
+                      mark=*, mark size=1.1pt, utnblue]
+                ({x}, {0.44*pow(1.02,x)*cos(22.5*x)}, {0.44*pow(1.02,x)*sin(22.5*x)});
+        \end{axis}
+
+        % ===== Marcadores de panel: a la misma altura =====
+        \def\ylab{-3.6}
+        \node[font=\footnotesize] at (0,\ylab) {(a) $r=0{,}98$};
+        \node[font=\footnotesize] at (7,\ylab) {(b) $r=1{,}02$};
+
+    \end{tikzpicture}
+\end{document}

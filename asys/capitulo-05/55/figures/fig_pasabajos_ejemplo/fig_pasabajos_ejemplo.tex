@@ -1,0 +1,106 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Acción del filtro pasabajos ideal con omega_c = 2 omega_0 sobre la
+% señal periódica x(t) = 1 + 2 cos(omega_0 t) + cos(3 omega_0 t).
+% Salida y(t) = 1 + 2 cos(omega_0 t).
+% T_0 = 1, omega_0 = 2 pi.
+%
+% Tres paneles apilados (preset S4: w 9 cm, h 4 cm, aspect 2.25:1):
+% (a) entrada x(t) en el dominio del tiempo
+% (b) salida y(t) en el dominio del tiempo
+% (c) máscara |H(j omega)| con la grilla armónica del espectro de x;
+%     stems azules sólidos = armónicos que sobreviven, stems rojos
+%     punteados = armónicos suprimidos por el filtro.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\begin{groupplot}[
+    group style={
+        group size=1 by 3,
+        vertical sep=0.95cm,
+    },
+    width=9cm,
+    height=4cm,
+    axis lines=center,
+    axis line style={->, thin},
+    every tick label/.style={font=\tiny},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+
+% =====================================
+% Panel (a): entrada x(t)
+% =====================================
+\nextgroupplot[
+    title={(a)},
+    xmin=-0.55, xmax=1.55,
+    ymin=-2.7, ymax=4.5,
+    xtick={-0.5, 0, 0.5, 1, 1.5},
+    xticklabels={$-T_0/2$, $0$, $T_0/2$, $T_0$, $3T_0/2$},
+    ytick={-2, 0, 2, 4},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.30)}},
+]
+    \addplot[utnblue, semithick, domain=-0.55:1.55, samples=600, smooth]
+        {1 + 2*cos(deg(2*pi*x)) + cos(deg(6*pi*x))};
+
+% =====================================
+% Panel (b): salida y(t)
+% =====================================
+\nextgroupplot[
+    title={(b)},
+    xmin=-0.55, xmax=1.55,
+    ymin=-2.7, ymax=4.5,
+    xtick={-0.5, 0, 0.5, 1, 1.5},
+    xticklabels={$-T_0/2$, $0$, $T_0/2$, $T_0$, $3T_0/2$},
+    ytick={-2, 0, 2, 4},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.30)}},
+]
+    \addplot[red!80!black, semithick, domain=-0.55:1.55, samples=400, smooth]
+        {1 + 2*cos(deg(2*pi*x))};
+
+% =====================================
+% Panel (c): |H(j omega)| y espectro de x
+% =====================================
+\nextgroupplot[
+    title={(c)},
+    xmin=-4.5, xmax=4.5,
+    ymin=-0.25, ymax=1.45,
+    xtick={-3, -2, -1, 0, 1, 2, 3},
+    xticklabels={$-3\omega_0$, , $-\omega_0$, $0$, $\omega_0$, , $3\omega_0$},
+    ytick={0, 1},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+]
+    % Brick wall lowpass con corte omega_c = 2 omega_0
+    \addplot[gray!60, semithick]
+        coordinates {(-4.5, 0) (-2, 0) (-2, 1) (2, 1) (2, 0) (4.5, 0)};
+
+    % Stems del espectro de x. Heights: c_0 = 1, c_{±1} = 1, c_{±3} = 1/2.
+    % Stems azules sólidos: armónicos que sobreviven al filtro (k = 0, ±1).
+    \draw[utnblue, semithick] (axis cs:0, 0) -- (axis cs:0, 1);
+    \fill[utnblue] (axis cs:0, 1) circle (1.6pt);
+    \draw[utnblue, semithick] (axis cs:1, 0) -- (axis cs:1, 1);
+    \fill[utnblue] (axis cs:1, 1) circle (1.6pt);
+    \draw[utnblue, semithick] (axis cs:-1, 0) -- (axis cs:-1, 1);
+    \fill[utnblue] (axis cs:-1, 1) circle (1.6pt);
+
+    % Stems rojos punteados: armónicos suprimidos (k = ±3).
+    \draw[red!80!black, semithick, dashed] (axis cs:3, 0) -- (axis cs:3, 0.5);
+    \fill[red!80!black] (axis cs:3, 0.5) circle (1.6pt);
+    \draw[red!80!black, semithick, dashed] (axis cs:-3, 0) -- (axis cs:-3, 0.5);
+    \fill[red!80!black] (axis cs:-3, 0.5) circle (1.6pt);
+
+    % Marcador de la frecuencia de corte
+    \node[font=\tiny, gray, anchor=south west, inner sep=1pt]
+        at (axis cs:2, 1.02) {$\omega_c = 2\omega_0$};
+
+\end{groupplot}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,102 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_par_pulso_sinc
+% Par TFTC pulso rectangular <-> sinc, en formato senal/amplitud/fase
+% para coherencia con fig_par_exp_unilateral y demas pares.
+% (a) p_tau(t) con tau = 2: outline 3-lados, coherente con
+%     fig_tren_pulsos_limite.
+% (b) |P_tau(jw)| = tau * |sinc(w*tau/2)| = |2 sin(w)/w|.
+% (c) angulo P_tau(jw): 0 donde sinc > 0, pi donde sinc < 0.
+% Sizing: 3 paneles lado a lado, w 4.5cm, h 4cm.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=3pt,width=3pt]}, font=\scriptsize]
+
+% Panel (a): pulso p_tau(t) en el tiempo
+\begin{axis}[
+    name=panel_a,
+    width=4.5cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thin},
+    xmin=-3, xmax=3, ymin=-0.30, ymax=1.45,
+    xtick={-1, 0, 1},
+    xticklabels={$-\tau/2$, $0$, $\tau/2$},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.20)}},
+    ylabel={$p_\tau(t)$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\scriptsize, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \draw[utnblue, semithick] (axis cs:-1,0) -- (axis cs:-1,1) -- (axis cs:1,1) -- (axis cs:1,0);
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.1, 1.0) {$1$};
+\end{axis}
+
+% Panel (b): |P_tau(jw)| = |2 sin(w)/w|
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.east)+(1.2cm,0)$)}, anchor=west,
+    width=4.5cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thin},
+    xmin=-11, xmax=11, ymin=-0.30, ymax=2.7,
+    xtick={0},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+    ylabel={$|P_\tau(j\omega)|$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\scriptsize, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, semithick, domain=-11:11, samples=600]
+        {abs(2 * sin(deg(x + 0.0001))/(x + 0.0001))};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.3, 2.02) {$\tau$};
+\end{axis}
+
+% Panel (c): fase de P_tau(jw), 0 o pi
+\begin{axis}[
+    name=panel_c,
+    at={($(panel_b.east)+(1.2cm,0)$)}, anchor=west,
+    width=4.5cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thin},
+    xmin=-11, xmax=11, ymin=-0.60, ymax=4.2,
+    xtick={0},
+    ytick={0, 3.14159},
+    yticklabels={$0$, $\pi$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+    ylabel={$\angle P_\tau(j\omega)$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(c)},
+    title style={font=\scriptsize, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \draw[utnblue, semithick]
+        (axis cs:-11,3.1416) --
+        (axis cs:-9.4248,3.1416) -- (axis cs:-9.4248,0) --
+        (axis cs:-6.2832,0) -- (axis cs:-6.2832,3.1416) --
+        (axis cs:-3.1416,3.1416) -- (axis cs:-3.1416,0) --
+        (axis cs:3.1416,0) -- (axis cs:3.1416,3.1416) --
+        (axis cs:6.2832,3.1416) -- (axis cs:6.2832,0) --
+        (axis cs:9.4248,0) -- (axis cs:9.4248,3.1416) --
+        (axis cs:11,3.1416);
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,80 @@
+% Figura generada con netlist2tikz (n2t render fig_ej01_bloques.sch --tikz --no-standalone).
+% Netlist fuente (fig_ej01_bloques.sch):
+%   # Esquema de filtro completo: Eg + RG -- [4 cuadripolos en cascada] -- RL
+%   # up/down=1.30 centra las cajas (sobresalen igual arriba y abajo).
+%   V g0 v0; up=1.30, l=E_g
+%   W v0 v1; right=0.3
+%   RG v1 a_in; right=1.0, l=R_G
+%   W g0 a_inb; right=1.3
+%   TP1 b1t b1b a_in a_inb; right=1.3, fill=utnblue!8, l={\shortstack{Hemisec.\\adaptación\\$m{=}0{,}6$}}
+%   TP2 b2t b2b b1t b1b; right=1.3, fill=utnblue!8, l=Prototipo
+%   TP3 b3t b3b b2t b2b; right=1.3, fill=utnblue!8, l={\shortstack{Sección\\$m$-derivada}}
+%   TP4 b4t b4b b3t b3b; right=1.3, fill=utnblue!8, l={\shortstack{Hemisec.\\adaptación\\$m{=}0{,}6$}}
+%   W b4t r1; right=0.4
+%   W b4b r1b; right=0.4
+%   RL r1 r1b; down=1.30, l=R_L
+%
+\begin{tikzpicture}[scale=1.00, transform shape, /tikz/circuitikz/bipoles/length=1.50cm, american currents, american voltages, font={\fontsize{11}{9}\selectfont}, voltage dir=RP]
+  \coordinate (g0) at (0,0);
+  \coordinate (v0) at (0,1.95);
+  \coordinate (v1) at (0.45,1.95);
+  \coordinate (a_in) at (1.95,1.95);
+  \coordinate (a_inb) at (1.95,0);
+  \coordinate (TP1@wnw) at (2.6,1.95);
+  \coordinate (TP1@wsw) at (2.6,0);
+  \coordinate (TP1@ene) at (5.2,1.95);
+  \coordinate (TP1@ese) at (5.2,0);
+  \coordinate (TP1@mid) at (3.9,0.975);
+  \coordinate (b1t) at (5.85,1.95);
+  \coordinate (b1b) at (5.85,0);
+  \coordinate (TP2@wnw) at (6.5,1.95);
+  \coordinate (TP2@wsw) at (6.5,0);
+  \coordinate (TP2@ene) at (9.1,1.95);
+  \coordinate (TP2@ese) at (9.1,0);
+  \coordinate (TP2@mid) at (7.8,0.975);
+  \coordinate (b2t) at (9.75,1.95);
+  \coordinate (b2b) at (9.75,0);
+  \coordinate (TP3@wnw) at (10.4,1.95);
+  \coordinate (TP3@wsw) at (10.4,0);
+  \coordinate (TP3@ene) at (13,1.95);
+  \coordinate (TP3@ese) at (13,0);
+  \coordinate (TP3@mid) at (11.7,0.975);
+  \coordinate (b3t) at (13.65,1.95);
+  \coordinate (b3b) at (13.65,0);
+  \coordinate (TP4@wnw) at (14.3,1.95);
+  \coordinate (TP4@wsw) at (14.3,0);
+  \coordinate (TP4@ene) at (16.9,1.95);
+  \coordinate (TP4@ese) at (16.9,0);
+  \coordinate (TP4@mid) at (15.6,0.975);
+  \coordinate (b4t) at (17.55,1.95);
+  \coordinate (b4b) at (17.55,0);
+  \coordinate (r1) at (18.15,1.95);
+  \coordinate (r1b) at (18.15,0);
+  \draw (v0) to [V, l_=$E_g$, n=V] (g0);
+  \draw (v0) to (v1);
+  \draw (v1) to [R, l_=$R_G$, n=RG] (a_in);
+  \draw (g0) to (a_inb);
+  \draw (3.9,0.975) node[rectangle, thick, inner sep=0pt, minimum width=2.60cm, minimum height=2.60cm, text width=2.08cm, align=center, shape border rotate=0, fill=utnblue!8, draw, scale=1.0] (TP1) {\shortstack{Hemisec.\\adaptación\\$m{=}0{,}6$}};
+  \draw (a_in) -- (TP1@wnw);
+  \draw (a_inb) -- (TP1@wsw);
+  \draw (TP1@ene) -- (b1t);
+  \draw (TP1@ese) -- (b1b);
+  \draw (7.8,0.975) node[rectangle, thick, inner sep=0pt, minimum width=2.60cm, minimum height=2.60cm, text width=2.08cm, align=center, shape border rotate=0, fill=utnblue!8, draw, scale=1.0] (TP2) {Prototipo};
+  \draw (b1t) -- (TP2@wnw);
+  \draw (b1b) -- (TP2@wsw);
+  \draw (TP2@ene) -- (b2t);
+  \draw (TP2@ese) -- (b2b);
+  \draw (11.7,0.975) node[rectangle, thick, inner sep=0pt, minimum width=2.60cm, minimum height=2.60cm, text width=2.08cm, align=center, shape border rotate=0, fill=utnblue!8, draw, scale=1.0] (TP3) {\shortstack{Sección\\$m$-derivada}};
+  \draw (b2t) -- (TP3@wnw);
+  \draw (b2b) -- (TP3@wsw);
+  \draw (TP3@ene) -- (b3t);
+  \draw (TP3@ese) -- (b3b);
+  \draw (15.6,0.975) node[rectangle, thick, inner sep=0pt, minimum width=2.60cm, minimum height=2.60cm, text width=2.08cm, align=center, shape border rotate=0, fill=utnblue!8, draw, scale=1.0] (TP4) {\shortstack{Hemisec.\\adaptación\\$m{=}0{,}6$}};
+  \draw (b3t) -- (TP4@wnw);
+  \draw (b3b) -- (TP4@wsw);
+  \draw (TP4@ene) -- (b4t);
+  \draw (TP4@ese) -- (b4b);
+  \draw (b4t) to (r1);
+  \draw (b4b) to (r1b);
+  \draw (r1) to [R, l_=$R_L$, n=RL] (r1b);
+\end{tikzpicture}

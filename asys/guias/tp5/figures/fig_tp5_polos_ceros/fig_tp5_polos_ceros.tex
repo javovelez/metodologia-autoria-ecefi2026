@@ -1,0 +1,37 @@
+\documentclass[tikz, border=2pt]{standalone}
+
+\usepackage{amsmath,amssymb}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta}
+\usepackage{xcolor}
+
+\definecolor{utnblue}{RGB}{0, 51, 102}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    axis line style={-{Latex[length=4pt]}},
+    width=8cm, height=6cm,
+    xmin=-7.5, xmax=2.5,
+    ymin=-3, ymax=3,
+    xlabel={$\sigma$},
+    ylabel={$j\omega$},
+    xlabel style={anchor=north west},
+    ylabel style={anchor=south east},
+    xtick={-6,-2,-1},
+    xticklabels={$-6$,$-2$,$-1$},
+    ytick=\empty,
+    tick style={black},
+    clip=false,
+]
+    % --- Polos (cruces) en s = -2 y s = -6 ---
+    \addplot[only marks, mark=x, mark size=4pt, line width=1pt, utnblue]
+        coordinates {(-2,0) (-6,0)};
+    % --- Cero (círculo) en s = -1 ---
+    \addplot[only marks, mark=o, mark size=4pt, line width=1pt, utnblue]
+        coordinates {(-1,0)};
+\end{axis}
+\end{tikzpicture}
+\end{document}

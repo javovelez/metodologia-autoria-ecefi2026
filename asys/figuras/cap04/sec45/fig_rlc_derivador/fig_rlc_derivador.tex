@@ -1,0 +1,114 @@
+\documentclass[border=6mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur, shapes.geometric}
+
+% Circuito RLC serie:  LC v̈_C + RC v̇_C + v_C = v_in
+% Realización directa con derivadores: v_C = v_in - RC v̇_C - LC v̈_C
+% Caso particular del esquema general con M = 0, N = 2 (a_0 = 1, sin
+% escalado en el camino directo de la entrada salvo el factor unitario).
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    gain_r/.style={
+        regular polygon, regular polygon sides=3, shape border rotate=30,
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum size=1.25cm, inner sep=0pt, font=\footnotesize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    gain_l/.style={
+        regular polygon, regular polygon sides=3, shape border rotate=210,
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum size=1.25cm, inner sep=0pt, font=\footnotesize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    op_block/.style={
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum width=1.2cm, minimum height=0.9cm, font=\normalsize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    sum/.style={
+        draw=utnblue!60, line width=0.5pt, circle,
+        minimum size=0.9cm, inner sep=0pt, fill=white,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.3pt, shadow yshift=-0.4pt, shadow opacity=20}
+    },
+    cross_line/.style={utnblue!40, line width=0.4pt},
+    signal/.style={->, thick, utnblue},
+    wire/.style={-, thick, utnblue},
+    tlabel/.style={font=\footnotesize, inner sep=2pt},
+]
+
+% --- Coordenadas ---
+\def\xinL{-5.0}
+\def\xb{-2.6}
+\def\xs{0}
+\def\xa{2.6}
+\def\xout{5.0}
+\def\xoutR{6.4}
+
+\def\yzero{0}
+\def\ydone{-1.2}
+\def\ytone{-2.4}
+\def\ydtwo{-3.6}
+\def\yttwo{-4.8}
+
+% --- Sumador superior S0 (oeste: 1; sur: salida de S1; este: v_C) ---
+\node[sum] (S0) at (\xs, \yzero) {};
+\draw[cross_line] ([xshift=-0.318cm,yshift=-0.318cm]S0.center) -- ([xshift=0.318cm,yshift=0.318cm]S0.center);
+\draw[cross_line] ([xshift=-0.318cm,yshift=0.318cm]S0.center)  -- ([xshift=0.318cm,yshift=-0.318cm]S0.center);
+\node[font=\scriptsize] at ([xshift=-0.27cm]S0.center) {$+$};
+\node[font=\scriptsize] at ([yshift=-0.27cm]S0.center) {$+$};
+
+% --- Sumador intermedio S1 (este: -RC v̇_C; sur: -LC v̈_C; norte: a S0) ---
+\node[sum] (S1) at (\xs, \ytone) {};
+\draw[cross_line] ([xshift=-0.318cm,yshift=-0.318cm]S1.center) -- ([xshift=0.318cm,yshift=0.318cm]S1.center);
+\draw[cross_line] ([xshift=-0.318cm,yshift=0.318cm]S1.center)  -- ([xshift=0.318cm,yshift=-0.318cm]S1.center);
+\node[font=\scriptsize] at ([xshift=0.27cm]S1.center)  {$+$};
+\node[font=\scriptsize] at ([yshift=-0.27cm]S1.center) {$+$};
+
+% --- Espina superior: v_in -> [1] -> S0 -> tap -> v_C ---
+\coordinate (in_left)   at (\xinL, \yzero);
+\coordinate (out_tap)   at (\xout, \yzero);
+\coordinate (out_right) at (\xoutR,\yzero);
+
+\node[gain_r] (B0) at (\xb, \yzero) {$1$};
+
+\draw[signal] (in_left) -- (B0.west) node[above, midway] {$v_{\mathrm{in}}(t)$};
+\draw[signal] (B0.east) -- (S0.west);
+\draw[wire]   (S0.east) -- (out_tap);
+\fill[utnblue] (out_tap) circle (2.2pt);
+\draw[signal] (out_tap) -- (out_right) node[above, midway] {$v_C(t)$};
+
+% --- Cadena de derivadores en la salida (dos derivadores) ---
+\node[op_block] (Dout1) at (\xout, \ydone) {$\dfrac{d}{dt}$};
+\coordinate (tout1) at (\xout, \ytone);
+\node[op_block] (Dout2) at (\xout, \ydtwo) {$\dfrac{d}{dt}$};
+\coordinate (tout2) at (\xout, \yttwo);
+
+\draw[signal] (out_tap) -- (Dout1.north);
+\draw[wire]   (Dout1.south) -- (tout1)
+              node[tlabel, midway, anchor=west, xshift=2pt] {$\dot v_C$};
+\fill[utnblue] (tout1) circle (2.2pt);
+\draw[signal] (tout1) -- (Dout2.north);
+\draw[wire]   (Dout2.south) -- (tout2)
+              node[tlabel, midway, anchor=west, xshift=2pt] {$\ddot v_C$};
+% tout2 es esquina (Dout2 -> A2): no necesita nodo
+
+% --- Escaladores de la salida (apuntan a la izquierda) ---
+\node[gain_l] (A1) at (\xa, \ytone) {$-RC$};
+\node[gain_l] (A2) at (\xa, \yttwo) {$-LC$};
+
+\draw[signal] (tout1) -- (A1.east);
+\draw[signal] (A1.west) -- (S1.east);
+\draw[signal] (tout2) -- (A2.east);
+% L-shape: -LC horizontal hasta x=xs, luego sube a S1.south (esquina sin nodo)
+\draw[signal] (A2.west) -| (S1.south);
+
+% --- Cascada vertical S1 -> S0 ---
+\draw[signal] (S1.north) -- (S0.south);
+
+\end{tikzpicture}
+\end{document}

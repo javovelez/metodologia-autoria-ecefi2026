@@ -1,0 +1,46 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur, shapes.geometric}
+
+\begin{document}
+
+\begin{tikzpicture}[>=Latex, font=\small,
+    block/.style={draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+                  minimum width=2.1cm, minimum height=1cm, rounded corners=2pt,
+                  blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                               shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}},
+    sum/.style={draw=utnblue!60, line width=0.5pt, circle,
+                minimum size=0.9cm, inner sep=0pt, fill=white,
+                blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                             shadow xshift=0.3pt, shadow yshift=-0.4pt, shadow opacity=20}},
+    cross_line/.style={utnblue!40, line width=0.4pt},
+    signal/.style={->, thick, utnblue},
+    wire/.style={-, thick, utnblue},
+    label_style/.style={font=\footnotesize, above},
+]
+    \node[block] (h1) at (0, 1.5)  {$H_1(s)$};
+    \node[block] (h2) at (0,-1.5)  {$H_2(s)$};
+    \node[sum]   (S)  at (3.0, 0)  {};
+
+    % Cruz interna del sumador y signos en las cuñas N y S (entradas)
+    \draw[cross_line] ([xshift=-0.318cm,yshift=-0.318cm]S.center) -- ([xshift=0.318cm,yshift=0.318cm]S.center);
+    \draw[cross_line] ([xshift=-0.318cm,yshift=0.318cm]S.center)  -- ([xshift=0.318cm,yshift=-0.318cm]S.center);
+    \node[font=\scriptsize] at ([yshift=0.27cm]S.center)  {$+$};
+    \node[font=\scriptsize] at ([yshift=-0.27cm]S.center) {$+$};
+
+    % Espina de entrada con ramificación (T-junction)
+    \coordinate (tap) at (-2.3,0);
+    \draw[wire]    (-3.7,0) -- node[label_style]{$X(s)$} (tap);
+    \fill[utnblue] (tap) circle (2.2pt);
+    \draw[signal]  (tap) |- (h1.west);
+    \draw[signal]  (tap) |- (h2.west);
+
+    % Salidas hacia el sumador
+    \draw[signal] (h1.east) -| (S.north);
+    \draw[signal] (h2.east) -| (S.south);
+
+    % Salida
+    \draw[signal] (S.east) -- node[label_style]{$Y(s)$} (5.0,0);
+\end{tikzpicture}
+
+\end{document}

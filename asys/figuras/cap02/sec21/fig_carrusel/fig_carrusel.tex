@@ -1,0 +1,31 @@
+\documentclass[border=5mm]{standalone}
+
+% Importamos la configuración global (subimos 4 niveles hasta la raíz).
+% Esto carga tikz, fuentes, colores, etc.
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+
+    % Iniciamos un entorno TikZ.
+    % Como setup.tex ya carga \usepackage{tikz}, no hace falta cargarlo aquí.
+    \begin{tikzpicture}
+        
+        % Creamos un nodo que contiene TODO el gráfico de Inkscape.
+        % inner sep=0pt: El nodo se ajusta como un guante al contenido.
+        \node[inner sep=0pt] {
+            
+            % Definimos el ancho deseado.
+            % 16cm es ideal porque es A4 (21cm) - márgenes (2.5cm izq + 2.5cm der).
+            % Esto asegura que el tamaño de letra de la figura sea idéntico al del libro.
+            \def\svgwidth{16cm}
+            
+            % Insertamos el archivo generado por Inkscape.
+            % El archivo carrusel.pdf y carrusel.pdf_tex deben estar en esta carpeta.
+            \input{carrusel.pdf_tex}
+        };
+        
+    \end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,130 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_filtros_idealizados
+% Cuatro paneles 2x2 con |H(jw)| de los cuatro filtros canonicos.
+% (a) Pasabajos: |H| = 1 en |w| <= w_c, 0 fuera.
+% (b) Pasaaltos: |H| = 0 en |w| <= w_c, 1 fuera.
+% (c) Pasabanda: |H| = 1 en w_1 <= |w| <= w_2, 0 fuera.
+% (d) Eliminabanda: |H| = 0 en w_1 <= |w| <= w_2, 1 fuera.
+% Sizing: 4 paneles 2x2, w 7cm, h 3.5cm.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ===== Panel (a): Pasabajos =====
+\begin{axis}[
+    name=panel_a,
+    width=7cm, height=3.5cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5, xmax=5, ymin=-0.2, ymax=1.4,
+    xtick={-2, 0, 2},
+    xticklabels={$-\omega_c$, $0$, $\omega_c$},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    ylabel={$|H(j\omega)|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick] coordinates {
+        (-5,0) (-2,0) (-2,1) (2,1) (2,0) (5,0)
+    };
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.15, 1.0) {$1$};
+\end{axis}
+
+% ===== Panel (b): Pasaaltos =====
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.east)+(1.6cm,0)$)}, anchor=west,
+    width=7cm, height=3.5cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5, xmax=5, ymin=-0.2, ymax=1.4,
+    xtick={-2, 0, 2},
+    xticklabels={$-\omega_c$, $0$, $\omega_c$},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    ylabel={$|H(j\omega)|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick] coordinates {
+        (-5,1) (-2,1) (-2,0) (2,0) (2,1) (5,1)
+    };
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.15, 1.0) {$1$};
+\end{axis}
+
+% ===== Panel (c): Pasabanda =====
+\begin{axis}[
+    name=panel_c,
+    at={($(panel_a.south)+(0,-1.4cm)$)}, anchor=north,
+    width=7cm, height=3.5cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5, xmax=5, ymin=-0.2, ymax=1.4,
+    xtick={-3.5, -1.5, 0, 1.5, 3.5},
+    xticklabels={$-\omega_2$, $-\omega_1$, $0$, $\omega_1$, $\omega_2$},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    ylabel={$|H(j\omega)|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(c)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick] coordinates {
+        (-5,0) (-3.5,0) (-3.5,1) (-1.5,1) (-1.5,0)
+        (1.5,0) (1.5,1) (3.5,1) (3.5,0) (5,0)
+    };
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.15, 1.0) {$1$};
+\end{axis}
+
+% ===== Panel (d): Eliminabanda =====
+\begin{axis}[
+    name=panel_d,
+    at={($(panel_c.east)+(1.6cm,0)$)}, anchor=west,
+    width=7cm, height=3.5cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5, xmax=5, ymin=-0.2, ymax=1.4,
+    xtick={-3.5, -1.5, 0, 1.5, 3.5},
+    xticklabels={$-\omega_2$, $-\omega_1$, $0$, $\omega_1$, $\omega_2$},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    ylabel={$|H(j\omega)|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(d)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick] coordinates {
+        (-5,1) (-3.5,1) (-3.5,0) (-1.5,0) (-1.5,1)
+        (1.5,1) (1.5,0) (3.5,0) (3.5,1) (5,1)
+    };
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.15, 1.0) {$1$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

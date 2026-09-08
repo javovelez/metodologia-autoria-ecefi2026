@@ -1,0 +1,23 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur, shapes.geometric}
+
+\begin{document}
+
+\begin{tikzpicture}[>=Latex, font=\small,
+    block/.style={draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+                  minimum width=2.1cm, minimum height=1cm, rounded corners=2pt,
+                  blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                               shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}},
+    signal/.style={->, thick, utnblue},
+    label_style/.style={font=\footnotesize, above},
+]
+    \node[block] (h1) at (0,0)   {$H_1(s)$};
+    \node[block] (h2) at (4.4,0) {$H_2(s)$};
+
+    \draw[signal] (-2.4,0)  -- node[label_style]{$X(s)$}            (h1.west);
+    \draw[signal] (h1.east) -- node[label_style]{$H_1(s)\,X(s)$}    (h2.west);
+    \draw[signal] (h2.east) -- node[label_style]{$Y(s)$}            (6.8,0);
+\end{tikzpicture}
+
+\end{document}

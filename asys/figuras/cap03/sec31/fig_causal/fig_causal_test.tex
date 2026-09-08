@@ -1,0 +1,159 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    mypanel/.style={
+        width=4.4cm, height=3.0cm,
+        axis lines=center,
+        axis line style={->, thin},
+        axis on top=true,
+        xlabel={$t$}, xlabel style={right, font=\scriptsize},
+        xmin=-2.6, xmax=3.0,
+        ymin=-0.3, ymax=1.6,
+        xtick=\empty, ytick=\empty,
+        clip=false,
+    },
+    zero/.style={utnblue, thick, line cap=rect},
+    sig/.style={utnblue, thick},
+}
+
+% ---------------------------------------------------------------
+% Fila 1 — SEÑALES DERECHAS
+% ---------------------------------------------------------------
+
+% Panel (1,1): Derecha, T1 < 0  →  no causal
+\begin{axis}[mypanel, name=pA, ylabel={$x(t)$}]
+    \addplot[zero] coordinates {(-2.6,0)(-1.2,0)};
+    \addplot[sig, domain=-1.2:2.9, samples=60]
+        {2.718*(x+1.2)*exp(-1.0*(x+1.2))};
+    \addplot[utnblue, only marks, mark=*, mark size=1.8pt]
+        coordinates {(-1.2,0)};
+    \draw[gray, dashed, thin] (axis cs:-1.2,0) -- (axis cs:-1.2,1.0);
+    \draw[gray, dashed, thin] (axis cs:0,-0.18) -- (axis cs:0,0.30);
+    \node[below, font=\scriptsize, inner sep=2pt] at (axis cs:-1.2,0) {$T_1$};
+    \node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize, align=center]
+        at (axis cs:0.2,-0.40) {derecha, $T_1 < 0$\\(no causal)};
+\end{axis}
+
+% Panel (1,2): Causal, T1 = 0  →  RESALTADO
+\begin{axis}[mypanel, name=pB, ylabel={},
+    at={($(pA.east)+(1.4cm,0)$)}, anchor=west]
+    \fill[utnblue!7] (axis cs:-2.6,-0.3) rectangle (axis cs:3.0,1.6);
+    \addplot[zero] coordinates {(-2.6,0)(0,0)};
+    \addplot[sig, domain=0:2.9, samples=60]
+        {2.718*x*exp(-1.0*x)};
+    \addplot[utnblue, only marks, mark=*, mark size=1.8pt]
+        coordinates {(0,0)};
+    \node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize\bfseries, align=center]
+        at (axis cs:0.2,-0.40) {derecha, $T_1 = 0$\\\textbf{causal}};
+\end{axis}
+
+% Panel (1,3): Derecha, T1 > 0  →  causal
+\begin{axis}[mypanel, name=pC, ylabel={},
+    at={($(pB.east)+(1.4cm,0)$)}, anchor=west]
+    \addplot[zero] coordinates {(-2.6,0)(1.2,0)};
+    \addplot[sig, domain=1.2:2.9, samples=50]
+        {4.892*(x-1.2)*exp(-1.8*(x-1.2))};
+    \addplot[utnblue, only marks, mark=*, mark size=1.8pt]
+        coordinates {(1.2,0)};
+    \draw[gray, dashed, thin] (axis cs:1.2,0) -- (axis cs:1.2,1.0);
+    \draw[gray, dashed, thin] (axis cs:0,-0.18) -- (axis cs:0,0.14);
+    \node[below, font=\scriptsize, inner sep=2pt] at (axis cs:1.2,0) {$T_1$};
+    \node[below left, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize, align=center]
+        at (axis cs:0.2,-0.40) {derecha, $T_1 > 0$\\(causal)};
+\end{axis}
+
+% ---------------------------------------------------------------
+% Fila 2 — SEÑALES IZQUIERDAS
+% ---------------------------------------------------------------
+
+% Panel (2,1): Izquierda, T2 > 0  →  ni causal ni anticausal
+\begin{axis}[mypanel, name=pD, ylabel={$x(t)$},
+    at={($(pA.south)+(0,-1.4cm)$)}, anchor=north]
+    \addplot[sig, domain=-2.6:1.2, samples=60]
+        {2.718*(1.2-x)*exp(1.0*(x-1.2))};
+    \addplot[zero] coordinates {(1.2,0)(3.0,0)};
+    \addplot[utnblue, only marks, mark=*, mark size=1.8pt]
+        coordinates {(1.2,0)};
+    \draw[gray, dashed, thin] (axis cs:1.2,0) -- (axis cs:1.2,1.0);
+    \draw[gray, dashed, thin] (axis cs:0,-0.18) -- (axis cs:0,0.30);
+    \node[below, font=\scriptsize, inner sep=2pt] at (axis cs:1.2,0) {$T_2$};
+    \node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize, align=center]
+        at (axis cs:0.2,-0.40) {izquierda, $T_2 > 0$\\(no causal, no anticausal)};
+\end{axis}
+
+% Panel (2,2): Anticausal, T2 = 0  →  RESALTADO
+\begin{axis}[mypanel, name=pE, ylabel={},
+    at={($(pD.east)+(1.4cm,0)$)}, anchor=west]
+    \fill[utnblue!7] (axis cs:-2.6,-0.3) rectangle (axis cs:3.0,1.6);
+    \addplot[sig, domain=-2.6:0, samples=60]
+        {-2.718*x*exp(1.0*x)};
+    \addplot[zero] coordinates {(0,0)(3.0,0)};
+    \addplot[utnblue, only marks, mark=*, mark size=1.8pt]
+        coordinates {(0,0)};
+    \node[below left, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize\bfseries, align=center]
+        at (axis cs:0.2,-0.40) {izquierda, $T_2 = 0$\\\textbf{anticausal}};
+\end{axis}
+
+% Panel (2,3): Izquierda, T2 < 0  →  anticausal
+\begin{axis}[mypanel, name=pF, ylabel={},
+    at={($(pE.east)+(1.4cm,0)$)}, anchor=west]
+    \addplot[sig, domain=-2.6:-1.2, samples=40]
+        {-4.892*(x+1.2)*exp(1.8*(x+1.2))};
+    \addplot[zero] coordinates {(-1.2,0)(3.0,0)};
+    \addplot[utnblue, only marks, mark=*, mark size=1.8pt]
+        coordinates {(-1.2,0)};
+    \draw[gray, dashed, thin] (axis cs:-1.2,0) -- (axis cs:-1.2,1.0);
+    \draw[gray, dashed, thin] (axis cs:0,-0.18) -- (axis cs:0,0.14);
+    \node[below, font=\scriptsize, inner sep=2pt] at (axis cs:-1.2,0) {$T_2$};
+    \node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize, align=center]
+        at (axis cs:0.2,-0.40) {izquierda, $T_2 < 0$\\(anticausal)};
+\end{axis}
+
+% ---------------------------------------------------------------
+% Fila 3 — BILATERAL y DERECHA E IZQUIERDA (centrada)
+% ---------------------------------------------------------------
+
+% Panel (3,1): Bilateral  →  no tiene T1 ni T2
+%   x(t) = 0.25 + 0.70*exp(-0.35*t^2),  bordes: ≈0.35 en t=±2.6
+\begin{axis}[mypanel, name=pG, ylabel={$x(t)$},
+    at={($(pD.south)+(2.9cm,-1.4cm)$)}, anchor=north]
+    \addplot[sig, domain=-2.6:2.9, samples=80]
+        {0.25 + 0.70*exp(-0.35*x^2)};
+    \draw[gray, dashed, thin] (axis cs:0,-0.18) -- (axis cs:0,0.98);
+    \node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize, align=center]
+        at (axis cs:0.2,-0.40) {bilateral, no causal\\(sin $T_1$ ni $T_2$)};
+\end{axis}
+
+% Panel (3,2): Derecha e izquierda  →  soporte finito [T1, T2], T1<0<T2
+\begin{axis}[mypanel, name=pH, ylabel={},
+    at={($(pG.east)+(1.4cm,0)$)}, anchor=west]
+    \addplot[zero] coordinates {(-2.6,0)(-1.2,0)};
+    \addplot[zero] coordinates {(1.6,0)(3.0,0)};
+    \addplot[sig, domain=-1.2:1.6, samples=80]
+        {0.475*(1 + cos(deg( 180*(x-0.2)/1.4 )))};
+    \addplot[utnblue, only marks, mark=*, mark size=1.8pt]
+        coordinates {(-1.2, {exp(-0.9*(-1.4)^2)*0.95})
+                     ( 1.6, {exp(-0.9*( 1.4)^2)*0.95})};
+    \draw[gray, dashed, thin] (axis cs:-1.2,0) -- (axis cs:-1.2,0.28);
+    \draw[gray, dashed, thin] (axis cs: 1.6,0) -- (axis cs: 1.6,0.28);
+    \draw[gray, dashed, thin] (axis cs:0,-0.18) -- (axis cs:0,0.99);
+    \node[below, font=\scriptsize, inner sep=2pt] at (axis cs:-1.2,0) {$T_1$};
+    \node[below, font=\scriptsize, inner sep=2pt] at (axis cs: 1.6,0) {$T_2$};
+    \node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize, align=center]
+        at (axis cs:0.2,-0.40) {der.\ e izq., no causal\\$T_1 < 0 < T_2$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,44 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{decorations.markings, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1, font=\small]
+
+    % =============================================
+    % Panel A: Independencia del Camino
+    % =============================================
+    \begin{scope}
+        % Título
+        \node at (0, 3.2) {\textbf{Independencia del Camino}};
+        
+        % Dominio simplemente conexo
+        \fill[cyan!20] plot[smooth cycle, tension=0.8] 
+            coordinates {(-2, 0) (-1.5, 2.2) (0.8, 2.5) (2.2, 1.5) (2.5, -0.3) (1.5, -2) (-0.8, -2.3) (-2.2, -1)};
+        \draw[utnblue, thick] plot[smooth cycle, tension=0.8] 
+            coordinates {(-2, 0) (-1.5, 2.2) (0.8, 2.5) (2.2, 1.5) (2.5, -0.3) (1.5, -2) (-0.8, -2.3) (-2.2, -1)};
+        \node[utnblue] at (-1.5, 1.5) {$D$};
+
+        % Punto A
+        \fill[utnblue] (-1.5, -0.5) circle (4pt);
+        \node[utnblue, below left] at (-1.5, -0.5) {$A$};
+        
+        % Punto B
+        \fill[utnblue] (1.5, 1.0) circle (4pt);
+        \node[utnblue, above right] at (1.5, 1.0) {$B$};
+        
+        % Camino C1 (línea recta)
+        \draw[red!80!black, very thick, ->] (-1.5, -0.5) -- (1.5, 1.0);
+        \node[red!80!black, below right] at (0.2, 0.1) {$C_1$};
+        
+        % Camino C2 (curva superior)
+        \draw[orange!80!black, very thick, ->] (-1.5, -0.5) .. controls (-0.5, 1.8) and (0.8, 2.0) .. (1.5, 1.0);
+        \node[orange!80!black, above] at (-0.2, 1.6) {$C_2$};
+        
+        % Igualdad
+        \node[align=center] at (0, -2.8) {$\displaystyle\int_{C_1} f(z)\,dz = \int_{C_2} f(z)\,dz$};
+    \end{scope}
+
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,85 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document} 
+\begin{tikzpicture}[>=Latex, font=\small]
+    
+    % Panel A: Función Completa
+    \begin{axis}[
+        name=plotA,
+        view={55}{25},
+        width=8.5cm, height=7cm,
+        zmin=0, zmax=5,
+        xmin=-2, xmax=2,
+        ymin=-2, ymax=2,
+        axis lines=center,
+        xlabel={Re},
+        ylabel={Im},
+        zlabel={$|f(z)|$},
+        colormap/viridis,
+        shader=interp,
+        title={\textbf{(a) Función Analítica $f(z) = \frac{1}{1-z}$}},
+        title style={yshift=0pt},
+        clip=false
+    ]
+        \addplot3[
+            surf,
+            opacity=0.85,
+            samples=45,
+            domain=-2:2,
+            domain y=-2:2,
+            point meta={pow(z,0.25)}
+        ] {
+            min(5, 1/sqrt((1-x)^2 + y^2 + 0.001))
+        };
+        
+        % Marcar el polo
+        \draw[red, thick, dashed] (axis cs:1,0,0) -- (axis cs:1,0,5);
+        \node[red, anchor=south, font=\tiny] at (axis cs:1,0,5) {Polo};
+    \end{axis}
+
+    % Panel B: Disco de Taylor (Serie convergente)
+    \begin{axis}[
+        name=plotB,
+        at={($(plotA.east)+(1cm,0)$)},
+        anchor=west,
+        view={55}{25},
+        width=8.5cm, height=7cm,
+        zmin=0, zmax=5,
+        xmin=-2, xmax=2,
+        ymin=-2, ymax=2,
+        axis lines=center,
+        xlabel={Re},
+        ylabel={Im},
+        zlabel={$|S_\infty(z)|$},
+        colormap/viridis,
+        shader=interp,
+        title={\textbf{(b) Reconstrucción por Taylor $|z|<1$}},
+        title style={yshift=0pt},
+        clip=false
+    ]
+        % Superficie paramétrica para asegurar dominio circular
+        \addplot3[
+            surf,
+            opacity=0.85,
+            samples=40,
+            samples y=60,
+            domain=0:0.99, % Radio
+            domain y=0:360, % Ángulo
+            point meta={pow(z,0.25)},
+            z buffer=sort
+        ] (
+            {x*cos(y)},
+            {x*sin(y)},
+            {min(5, 1/sqrt(1 + x*x - 2*x*cos(y) + 0.001))}
+        );
+        
+        % Dibujar el círculo de convergencia en el plano z=0
+        \draw[utnblue, thick, dashed] (axis cs:0,0,0) circle [radius=1];
+        \node[utnblue, anchor=north, font=\tiny] at (axis cs:0,-1.2,0) {ROC: $|z|=1$};
+    \end{axis}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,90 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Respuesta en frecuencia del sistema con h(t) = e^{-2t} u(t):
+%   H(jw) = 1 / (2 + j w)
+%   |H(jw)|     = 1 / sqrt(4 + w^2)        --> 1/sqrt(5) en w=1; 1/(2 sqrt 2) en w=2.
+%   arg H(jw)   = -arctan(w/2)             --> -arctan(1/2) en w=1; -pi/4 en w=2.
+% Panel (a): módulo continuo vs w; marcadores en w=1 y w=2.
+% Panel (b): fase continua vs w; marcadores en w=1 y w=2.
+% Sizing: preset S3 (2 paneles apilados, w 10 cm, h 4.5 cm; aspect 2.2:1).
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\begin{groupplot}[
+    group style={
+        group size=1 by 2,
+        vertical sep=1.1cm,
+        x descriptions at=edge bottom,
+    },
+    width=10cm,
+    height=4.5cm,
+    xmin=-8.5, xmax=8.5,
+    xtick={-8, -4, -2, 0, 2, 4, 8},
+    every tick label/.style={font=\tiny},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.45)}},
+    axis lines=center,
+    axis line style={->, thick},
+    enlarge x limits=0.02,
+    clip mode=individual,
+    title style={font=\small, yshift=-2pt},
+]
+
+% =====================================================
+% Panel (a): |H(jw)| = 1 / sqrt(4 + w^2)
+% =====================================================
+\nextgroupplot[
+    title={(a)},
+    ymin=-0.05, ymax=0.6,
+    ytick={0, 0.5},
+    yticklabels={$0$, $\tfrac{1}{2}$},
+    yticklabel style={xshift=-3pt},
+    ylabel={$|H(j\omega)|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+]
+    \addplot[utnblue, very thick, domain=-8.5:8.5, samples=400, smooth]
+        {1/sqrt(4 + x*x)};
+    % Líneas guía hacia w = 1 y w = 2
+    \draw[gray!60, dotted, thin] (axis cs:1, 0) -- (axis cs:1, 0.4472);
+    \draw[gray!60, dotted, thin] (axis cs:0, 0.4472) -- (axis cs:1, 0.4472);
+    \draw[gray!60, dotted, thin] (axis cs:2, 0) -- (axis cs:2, 0.3536);
+    \draw[gray!60, dotted, thin] (axis cs:0, 0.3536) -- (axis cs:2, 0.3536);
+    % Marcadores en w = 1 y w = 2
+    \addplot[only marks, mark=*, mark size=1.6pt,
+             mark options={fill=utnblue, draw=utnblue}]
+        coordinates {(1, 0.4472) (2, 0.3536)};
+    \node[font=\tiny, anchor=west] at (axis cs:1.2, 0.4472) {$1/\sqrt{5}$};
+    \node[font=\tiny, anchor=west] at (axis cs:2.2, 0.3536) {$1/(2\sqrt{2})$};
+
+% =====================================================
+% Panel (b): arg H(jw) = -arctan(w/2)
+% =====================================================
+\nextgroupplot[
+    title={(b)},
+    ymin=-2.0, ymax=2.0,
+    ytick={-1.5708, -0.7854, -0.4636, 0, 1.5708},
+    yticklabels={$-\pi/2$, $-0{,}79$, $-0{,}46$, $0$, $\pi/2$},
+    ylabel={$\angle H(j\omega)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+]
+    \addplot[utnblue, very thick, domain=-8.5:8.5, samples=400, smooth]
+        {-rad(atan(x/2))};
+    % Líneas guía hacia w = 1 y w = 2
+    \draw[gray!60, dotted, thin] (axis cs:1, 0) -- (axis cs:1, -0.4636);
+    \draw[gray!60, dotted, thin] (axis cs:0, -0.4636) -- (axis cs:1, -0.4636);
+    \draw[gray!60, dotted, thin] (axis cs:2, 0) -- (axis cs:2, -0.7854);
+    \draw[gray!60, dotted, thin] (axis cs:0, -0.7854) -- (axis cs:2, -0.7854);
+    % Marcadores en w = 1 y w = 2
+    \addplot[only marks, mark=*, mark size=1.6pt,
+             mark options={fill=utnblue, draw=utnblue}]
+        coordinates {(1, -0.4636) (2, -0.7854)};
+
+\end{groupplot}
+
+\end{tikzpicture}
+\end{document}

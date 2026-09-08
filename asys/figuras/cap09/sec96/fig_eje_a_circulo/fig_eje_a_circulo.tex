@@ -1,0 +1,118 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_eje_a_circulo
+% Dos columnas: a la izquierda las representaciones sobre la recta, apiladas
+% ((a) eje omega y (b) eje lambda); a la derecha la gráfica polar (c).
+% (a) Eje omega con el espectro muestreado (copias cada ws), ticks ws/2, ws.
+% (b) El MISMO dibujo con el eje medido en lambda = omega*Delta t: las copias
+%     quedan cada 2pi y la banda base ocupa [-pi, pi] (franja gris). Es la
+%     representación habitual del espectro de una secuencia.
+% (c) El eje de (b) enrollado sobre el círculo de longitud 2pi.
+% El espectro es un lóbulo suave cuyo módulo decae a cero al aumentar la
+% frecuencia:  b(u) = (1 + cos(180 u / W))/2,  |u| < W,  W = ws/5.
+% En (c) el lóbulo va en polares con el CENTRO como cero: cada dirección es una
+% frecuencia lambda y la distancia al centro es |X_s|, de modo que al aumentar
+% lambda el módulo tiende a cero. A < R para que el lóbulo quede DENTRO del
+% círculo punteado: ese círculo es el eje de lambda, no una curva de nivel de |X_s|. W = ws/5 son 72 grados en lambda, así que el
+% módulo ya vale cero bastante antes de lambda = pi (Nyquist), donde no hay
+% contenido. SIN relleno en (c): lo que se lee es la curva del módulo.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=4pt]}, font=\footnotesize,
+    declare function={
+        b(\u)  = 0.5*(1+cos(600*\u));   % lóbulo sobre el eje, |u| < 0.3 cm
+        bc(\t) = 0.5*(1+cos(2.5*\t));   % el mismo lóbulo en lambda, |t| < 72 grados
+    },
+    tri/.style={utnblue, thick, fill=utnblue!14},
+    tricopy/.style={utnblue!70, thick, fill=utnblue!6},
+    ax/.style={->, thin, black},
+    marca/.style={font=\footnotesize},
+]
+    % ---- La tira del espectro muestreado, idéntica en (a) y en (b) ----
+    % #1: nombre del eje. ws = 1.5 cm, semiancho del lóbulo 0.3 cm.
+    \newcommand{\tiraespectro}[1]{%
+        \draw[ax] (-3.75,0) -- (3.75,0) node[right] {#1};
+        \foreach \c in {-3.0, -1.5, 1.5, 3.0} {
+            \pgfmathsetmacro{\la}{\c-0.3}
+            \pgfmathsetmacro{\lb}{\c+0.3}
+            \draw[tricopy] plot[domain=\la:\lb, samples=60, variable=\x]
+                (\x,{0.62*b(\x-\c)}) -- cycle;
+        }
+        \draw[tri] plot[domain=-0.3:0.3, samples=60, variable=\x]
+            (\x,{0.62*b(\x)}) -- cycle;
+        % eje vertical: el módulo del espectro
+        \draw[ax] (0,0) -- (0,0.95);
+        \node[gray!75, font=\scriptsize, anchor=east] at (-0.06,0.86) {$|X_s|$};
+    }
+
+    % ============ (a) eje omega ============
+    % scale sube el dibujo sin agrandar la tipografía: el eje gana cuerpo y las
+    % etiquetas quedan del mismo tamaño, con más aire entre ellas.
+    \begin{scope}[scale=1.2]
+        \def\S{1.5}   % ws en cm
+        \tiraespectro{$\omega$}
+        % ticks omega
+        \draw[thin] (0.5*\S,0.05) -- (0.5*\S,-0.05) node[below, font=\scriptsize] {$\tfrac{\omega_s}{2}$};
+        \draw[thin] (\S,0.05) -- (\S,-0.05) node[below, font=\scriptsize] {$\omega_s$};
+        \draw[thin] (-0.5*\S,0.05) -- (-0.5*\S,-0.05) node[below, font=\scriptsize] {$-\tfrac{\omega_s}{2}$};
+        \draw[thin] (-\S,0.05) -- (-\S,-0.05) node[below, font=\scriptsize] {$-\omega_s$};
+        % bracket banda base
+        \draw[gray!70, thin] (-0.5*\S,1.12) -- (-0.5*\S,1.22) -- (0.5*\S,1.22) -- (0.5*\S,1.12);
+        \node[gray!70, font=\scriptsize, anchor=south] at (0,1.20) {banda base};
+        \node[marca] at (0.1,1.68) {(a)};
+    \end{scope}
+
+    % ============ Flecha: cambio de unidad ============
+    \draw[->, thick, gray!70] (-1.05,-0.55) to[bend right=12] (-1.05,-1.30);
+    \node[gray!70, font=\footnotesize, anchor=east] at (-1.15,-0.92)
+        {$\lambda = \omega\,\Delta t$};
+
+    % ============ (b) el mismo dibujo, eje en lambda ============
+    \begin{scope}[shift={(0,-2.30)}, scale=1.2]
+        \def\S{1.5}   % 2pi en cm (el mismo paso que ws en (a))
+        % la vuelta [-pi, pi] resaltada: es el tramo que se enrolla en (c)
+        \fill[gray!12] (-0.5*\S,0) rectangle (0.5*\S,0.80);
+        \tiraespectro{$\lambda$}
+        % ticks lambda
+        \draw[thin] (0.5*\S,0.05) -- (0.5*\S,-0.05) node[below, font=\scriptsize] {$\pi$};
+        \draw[thin] (\S,0.05) -- (\S,-0.05) node[below, font=\scriptsize] {$2\pi$};
+        \draw[thin] (-0.5*\S,0.05) -- (-0.5*\S,-0.05) node[below, font=\scriptsize] {$-\pi$};
+        \draw[thin] (-\S,0.05) -- (-\S,-0.05) node[below, font=\scriptsize] {$-2\pi$};
+        \node[marca] at (0.1,1.15) {(b)};
+    \end{scope}
+
+    % ============ Flecha enrollar: de la columna izquierda a la derecha ============
+    \draw[->, thick, gray!70] (5.00,-1.15) -- (6.30,-1.15);
+    \node[gray!70, font=\footnotesize, anchor=south] at (5.65,-1.05) {enrollar};
+
+    % ============ (c) el círculo lambda, a la derecha ============
+    \begin{scope}[shift={(9.20,-1.15)}, scale=0.88]
+        \def\R{1.30}
+        \def\A{1.15}
+        % circunferencia: el eje de frecuencias lambda (una vuelta = 2 pi)
+        \draw[gray!55, thin, dashed] (0,0) circle (\R);
+        \fill[gray!70] (0,0) circle (0.8pt);
+        % el espectro enrollado: distancia al centro = |X_s|, cero en el centro
+        \draw[utnblue, thick]
+            plot[domain=-72:72, samples=160, variable=\t] (\t:{\A*bc(\t)});
+        % marcas del circulo
+        \fill[black] (0:\R) circle (1.1pt);
+        \node[anchor=west, font=\scriptsize] at (0:{\R+0.10}) {$\lambda=0$};
+        \fill[black] (180:\R) circle (1.1pt);
+        \node[anchor=east, font=\scriptsize] at (180:{\R+0.10}) {$\lambda=\pi$};
+        \node[utnblue, font=\scriptsize, anchor=north east, yshift=-4pt]
+            at (180:{\R+0.10}) {$(\omega_s/2)$};
+        \draw[gray!70, thin] (90:{\R-0.09}) -- (90:{\R+0.09});
+        \node[font=\scriptsize, anchor=south] at (90:{\R+0.14}) {$\tfrac{\pi}{2}$};
+        \draw[gray!70, thin] (270:{\R-0.09}) -- (270:{\R+0.09});
+        \node[font=\scriptsize, anchor=north] at (270:{\R+0.14}) {$-\tfrac{\pi}{2}$};
+        % sentido de lambda creciente
+        \draw[->, gray!60, thin] (108:{\R+0.16}) arc (108:150:{\R+0.16});
+        \node[gray!75, font=\scriptsize, anchor=south east]
+            at (146:{\R+0.20}) {$\lambda$};
+        \node[marca] at (0,{\R+1.00}) {(c)};
+    \end{scope}
+\end{tikzpicture}
+\end{document}

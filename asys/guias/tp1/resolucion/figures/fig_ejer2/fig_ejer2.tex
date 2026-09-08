@@ -1,0 +1,48 @@
+\documentclass[border=3mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=0.80, font=\small]
+
+    % --- Cuadrícula ---
+    \draw[help lines, gray!30, step=1] (-2.3,-2.3) grid (5.3,4.8);
+
+    % --- Ejes ---
+    \draw[->, thick] (-2.3,0) -- (5.5,0) node[right] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-2.3) -- (0,5.0) node[above] {$\operatorname{Im}$};
+    \node[below left, font=\scriptsize] at (-0.08,-0.12) {$0$};
+
+    % Marcas en los ejes
+    \foreach \x in {-2,-1,1,2,3,4,5}
+        \draw (\x,0.09)--(\x,-0.09) node[below, font=\tiny]{$\x$};
+    \foreach \y in {-2,-1,1,2,3,4}
+        \draw (0.09,\y)--(-0.09,\y) node[left, font=\tiny]{$\y$};
+
+    % --- Vectores ---
+    % z_a = 1
+    \draw[->, utnblue, ultra thick] (0,0) -- (1,0)
+        node[above right] {$z_a$};
+
+    % z_b = -0.4  (flecha corta: etiqueta con puntero)
+    \draw[->, utnblue, ultra thick] (0,0) -- (-0.4,0);
+    \node[utnblue] at (-1.15, 0.35) {$z_b$};
+    \draw[utnblue, thin] (-1.0, 0.27) -- (-0.45, 0.05);
+
+    % z_c = j
+    \draw[->, utnblue, ultra thick] (0,0) -- (0,1)
+        node[right] {$z_c$};
+
+    % z_d = -sqrt(3)j aprox -1.732
+    \draw[->, utnblue, ultra thick] (0,0) -- (0,-1.732)
+        node[right] {$z_d$};
+
+    % z_e = 4+4j
+    \draw[->, utnblue, ultra thick] (0,0) -- (4,4)
+        node[above right] {$z_e$};
+
+    % z_f = -1-j
+    \draw[->, utnblue, ultra thick] (0,0) -- (-1,-1)
+        node[below left] {$z_f$};
+
+\end{tikzpicture}
+\end{document}

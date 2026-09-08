@@ -1,0 +1,58 @@
+% ============================================================
+% fig_rc_libre_forzada.tex
+% Descomposición de la respuesta de un RC con condición inicial
+% v_c(0^-)=V_0 y entrada v_s(t) = V u(t), en tres curvas:
+%   - Forzada (utnblue): V (1 - e^{-t/τ})           — sube desde 0 hasta V
+%   - Libre   (red):     V_0 e^{-t/τ}               — decae desde V_0 hasta 0
+%   - Total   (black):   V + (V_0 - V) e^{-t/τ}     — suma de las dos
+% Caso ilustrativo: V_0 = 2, V = 1 (CI por encima del régimen final).
+% ============================================================
+%\PassOptionsToPackage{gray}{xcolor}
+
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[font=\small, >=Latex]
+\begin{axis}[
+    width=13cm, height=5.5cm,
+    axis lines=middle,
+    axis line style={->, thin},
+    xmin=-0.3, xmax=5.7,
+    ymin=-0.15, ymax=2.5,
+    xtick={1, 2, 3, 4, 5},
+    xticklabels={$\tau$, $2\tau$, $3\tau$, $4\tau$, $5\tau$},
+    ytick={1, 2},
+    yticklabels={$V$, $V_0$},
+    xticklabel style={font=\footnotesize},
+    yticklabel style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={at={(axis description cs:1.0, 0.07)}, anchor=west, font=\footnotesize},
+    ylabel={$v_c$},
+    ylabel style={font=\footnotesize, rotate=0, anchor=south east,
+                  at={(axis description cs:0, 1)}},
+    clip=false,
+    samples=200,
+]
+    % Asíntota horizontal: régimen final v_c = V
+    \addplot[gray, very thin, dashed, domain=0:5.4] {1};
+
+    % Componente forzada: V (1 - e^{-t/τ})  con V = 1
+    \addplot[utnblue, semithick, domain=0:5.4] {1 - exp(-x)};
+
+    % Componente libre: V_0 e^{-t/τ}  con V_0 = 2
+    \addplot[red!80!black, semithick, domain=0:5.4] {2*exp(-x)};
+
+    % Total: V + (V_0 - V) e^{-t/τ}  con V_0 = 2, V = 1
+    \addplot[black, semithick, domain=0:5.4] {1 + exp(-x)};
+
+    % Etiquetas inline coloreadas
+    \node[font=\footnotesize, anchor=north, utnblue]
+        at (axis cs:2.0, 0.78) {forzada};
+    \node[font=\footnotesize, anchor=north, red!80!black]
+        at (axis cs:0.55, 1.13) {libre};
+    \node[font=\footnotesize, anchor=south, black]
+        at (axis cs:1.0, 1.40) {total $v_c(t)$};
+\end{axis}
+\end{tikzpicture}
+\end{document}

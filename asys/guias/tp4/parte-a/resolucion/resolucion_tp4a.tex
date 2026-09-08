@@ -1,0 +1,616 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage[mode=image]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, babel}
+
+\definecolor{utnblue}{RGB}{0, 51, 102}
+\definecolor{utnred}{RGB}{204, 0, 0}
+\definecolor{utngreen}{RGB}{0, 153, 76}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+\setlength{\headsep}{10pt}
+\setlength{\droptitle}{-0.5in}
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large\bfseries}
+\posttitle{\par\end{center}\vspace{-1.5em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Resolución del Trabajo Práctico N$^\text{o}$4 -- Parte A}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Resolución del Trabajo Práctico N$^{\text o}$4 -- Parte A: Serie de Fourier de tiempo continuo}%
+}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+
+	\label{sec:resolucion}
+
+	% ***********************************************
+	% 				Ejercicio 1
+	% ***********************************************
+	\section*{Ejercicio 1: Ortogonalidad de exponenciales armónicas}
+
+	La Sección~5.1 del libro define el producto interno entre dos señales complejas sobre un intervalo $[t_1, t_2]$ como
+	\[
+		\langle x, y\rangle = \int_{t_1}^{t_2} x(t)\,\overline{y(t)}\,dt,
+	\]
+	donde la barra indica conjugación. Dos señales son \textbf{ortogonales} en ese intervalo si su producto interno se anula.
+
+	Aplicamos la definición al producto $\langle e^{jm\omega_0 t},\, e^{jn\omega_0 t}\rangle$ sobre un período de longitud $T = 2\pi/\omega_0$. Como $\overline{e^{jn\omega_0 t}} = e^{-jn\omega_0 t}$, la integral queda
+	\begin{align*}
+		\langle e^{jm\omega_0 t},\, e^{jn\omega_0 t}\rangle
+		&= \int_{0}^{T} e^{jm\omega_0 t}\,e^{-jn\omega_0 t}\,dt \\
+		&= \int_{0}^{T} e^{j(m-n)\omega_0 t}\,dt.
+	\end{align*}
+	Si $m \ne n$, la primitiva existe y la evaluación da
+	\[
+		\frac{e^{j(m-n)\omega_0 t}}{j(m-n)\omega_0}\bigg|_{0}^{T}
+		= \frac{e^{j(m-n)2\pi} - 1}{j(m-n)\omega_0}
+		= \frac{1 - 1}{j(m-n)\omega_0} = 0,
+	\]
+	donde usamos $\omega_0 T = 2\pi$ y $e^{j2\pi\ell} = 1$ para todo $\ell \in \mathbb{Z}$. Por lo tanto el conjunto $\{e^{jk\omega_0 t}\}_{k\in\mathbb{Z}}$ es ortogonal sobre cualquier intervalo de longitud $T$.
+
+	\textbf{Caso particular $m = 3$, $n = 5$, $T = 2\pi$:} aquí $\omega_0 = 1$ y $m - n = -2$. La integral queda
+	\[
+		\int_{0}^{2\pi} e^{-j2t}\,dt = \frac{e^{-j2t}}{-j2}\bigg|_{0}^{2\pi} = \frac{e^{-j4\pi} - 1}{-j2} = 0.
+	\]
+
+	\[
+		\boxed{\langle e^{jm\omega_0 t},\, e^{jn\omega_0 t}\rangle = 0 \quad \forall\, m \ne n.}
+	\]
+
+	% ***********************************************
+	% 				Ejercicio 2
+	% ***********************************************
+	\section*{Ejercicio 2: Norma cuadrática sobre un período}
+
+	La norma cuadrática es el producto interno de una señal consigo misma; representa la \textbf{energía} de la señal sobre el intervalo de integración (Sección~5.1). Calculamos en cada caso $\|x\|^2 = \langle x, x\rangle$ sobre un período de longitud $T = 2\pi/\omega_0$.
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $e^{jk\omega_0 t}$. El módulo de una exponencial compleja es $1$ para todo $t$, así que el integrando es constante:
+		\[
+			\|e^{jk\omega_0 t}\|^2 = \int_{0}^{T} \big|e^{jk\omega_0 t}\big|^2\,dt = \int_{0}^{T} 1\,dt = T.
+		\]
+		\[
+			\boxed{\|e^{jk\omega_0 t}\|^2 = T.}
+		\]
+
+		\item $\cos(k\omega_0 t)$. Aplicamos la identidad de mitad de ángulo, $\cos^2\theta = \tfrac{1}{2}[1 + \cos(2\theta)]$:
+		\begin{align*}
+			\|\cos(k\omega_0 t)\|^2
+			&= \int_{0}^{T} \cos^2(k\omega_0 t)\,dt
+			= \int_{0}^{T} \frac{1 + \cos(2k\omega_0 t)}{2}\,dt \\
+			&= \frac{T}{2} + \frac{1}{2}\int_{0}^{T} \cos(2k\omega_0 t)\,dt
+			= \frac{T}{2} + 0 = \frac{T}{2}.
+		\end{align*}
+		El segundo término se anula porque $\cos(2k\omega_0 t)$ tiene período $T/(2k)$, y la integral de un coseno sobre un número entero de períodos es nula.
+		\[
+			\boxed{\|\cos(k\omega_0 t)\|^2 = \frac{T}{2}.}
+		\]
+
+		\item $\sin(k\omega_0 t)$. Repetimos el procedimiento con $\sin^2\theta = \tfrac{1}{2}[1 - \cos(2\theta)]$; el segundo término se anula por el mismo argumento que en el inciso anterior.
+		\[
+			\boxed{\|\sin(k\omega_0 t)\|^2 = \frac{T}{2}.}
+		\]
+	\end{enumerate}
+
+	Coseno y seno comparten la misma norma sobre un período: la mitad de la del módulo unitario. Es coherente con la identidad $|e^{jk\omega_0 t}|^2 = \cos^2(k\omega_0 t) + \sin^2(k\omega_0 t)$, que al integrarse reparte $T$ en dos mitades iguales.
+
+	% ***********************************************
+	% 				Ejercicio 3
+	% ***********************************************
+	\section*{Ejercicio 3: Serie exponencial del pulso rectangular}
+
+	La Sección~5.2 del libro define los coeficientes de la serie exponencial de Fourier mediante la \textbf{fórmula de análisis}:
+	\[
+		c_k = \frac{1}{T_0}\int_{T_0} x(t)\,e^{-jk\omega_0 t}\,dt,
+		\qquad \omega_0 = \frac{2\pi}{T_0}.
+	\]
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.75\linewidth]{figures/fig_ej3_senal/fig_ej3_senal}
+		\caption{Pulso rectangular periódico del Ejercicio~3 ($T_0 = 3\tau$). La señal se repite cada $T_0$; los puntos suspensivos indican que la repetición se extiende a todo el eje.}
+		\label{fig:ej3_senal}
+	\end{figure}
+
+	Para el pulso dado, $T_0 = 3\tau$ y por lo tanto $\omega_0 = 2\pi/(3\tau)$. La señal vale $1$ solo en el intervalo $(-\tau/2,\,\tau/2)$ y cero en el resto del período; basta integrar sobre el soporte:
+	\begin{align*}
+		c_k &= \frac{1}{3\tau}\int_{-\tau/2}^{\tau/2} e^{-jk\omega_0 t}\,dt
+		= \frac{1}{3\tau}\,\frac{e^{-jk\omega_0 t}}{-jk\omega_0}\bigg|_{-\tau/2}^{\tau/2} \\
+		&= \frac{1}{3\tau}\,\frac{e^{-jk\omega_0\tau/2} - e^{jk\omega_0\tau/2}}{-jk\omega_0}
+		= \frac{1}{3\tau}\,\frac{2\sin(k\omega_0\tau/2)}{k\omega_0},
+	\end{align*}
+	donde en el último paso usamos $e^{j\theta} - e^{-j\theta} = 2j\sin\theta$. Multiplicando y dividiendo por $\tau/2$ para reconstruir la forma del seno cardinal:
+	\[
+		c_k = \frac{\tau}{T_0}\,\frac{\sin(k\omega_0\tau/2)}{k\omega_0\tau/2}
+		= \frac{1}{3}\,\frac{\sin(k\pi/3)}{k\pi/3},
+	\]
+	con $\omega_0\tau/2 = \pi/3$.
+
+	\[
+		\boxed{c_k = \frac{1}{3}\,\operatorname{sinc}\!\left(\frac{k\pi}{3}\right), \qquad c_0 = \frac{1}{3}.}
+	\]
+
+	La envolvente es un seno cardinal escalado por el ciclo de trabajo $\tau/T_0 = 1/3$. Sus cruces por cero ocurren cuando $k\pi/3 = m\pi$ con $m \in \mathbb{Z}\setminus\{0\}$, es decir, en $k = \pm 3, \pm 6, \pm 9, \ldots$ (múltiplos de $3$, excluyendo $k = 0$ donde la sinc vale $1$).
+
+	\textbf{Valores numéricos de los primeros coeficientes:}
+	\begin{center}
+		\begin{tabular}{c|ccccc}
+			$k$ & $0$ & $1$ & $2$ & $3$ & $4$ \\ \hline
+			$c_k$ & $1/3$ & $\sqrt{3}/(2\pi)$ & $\sqrt{3}/(4\pi)$ & $0$ & $-\sqrt{3}/(8\pi)$ \\
+			$|c_k|$ & $0{,}333$ & $0{,}276$ & $0{,}138$ & $0$ & $0{,}069$ \\
+			$\arg c_k$ & $0$ & $0$ & $0$ & --- & $\pi$
+		\end{tabular}
+	\end{center}
+
+	Como $x(t)$ es real y par, los $c_k$ resultan reales con $c_{-k} = c_k$ (Sección~5.3, simetría conjugada + paridad). El espectro de fases sólo toma los valores $0$ y $\pi$, según el signo del seno cardinal: $\pi$ aparece a partir de $|k| = 4$, donde el sinc cambia de signo respecto del lóbulo central. En los cruces ($k = \pm 3$) la fase está indefinida, indicado en la Figura~\ref{fig:ej3} con marcador hueco. Para completar el rango $-4 \leq k < 0$ basta reflejar los valores tabulados respecto del eje $k = 0$.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.45\linewidth]{figures/fig_ej3/fig_ej3}
+		\caption{Espectro de líneas del pulso rectangular ($T_0 = 3\tau$). Arriba: módulo $|c_k|$ con la envolvente $|\operatorname{sinc}(k\pi/3)/3|$ punteada en rojo; los cruces por cero caen en los múltiplos de $3$. Abajo: fase $\arg c_k$, con marcadores huecos en $k = \pm 3$ donde la fase está indefinida.}
+		\label{fig:ej3}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 4
+	% ***********************************************
+	\section*{Ejercicio 4: Serie exponencial del triángulo}
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.65\linewidth]{figures/fig_ej4_senal/fig_ej4_senal}
+		\caption{Triángulo periódico del Ejercicio~4 ($T_0 = 2$): triángulos isósceles de base $2$ y altura $1$, centrados en cada múltiplo entero de $T_0$.}
+		\label{fig:ej4_senal}
+	\end{figure}
+
+	La señal es $x(t) = 1 - |t|$ en $(-1,\, 1)$ con $T_0 = 2$, así que $\omega_0 = \pi$. Calculamos primero el coeficiente DC, que es directamente el valor medio:
+	\[
+		c_0 = \frac{1}{2}\int_{-1}^{1}(1 - |t|)\,dt = \frac{1}{2}\cdot 1 = \frac{1}{2},
+	\]
+	donde aprovechamos que el área del triángulo isósceles de base $2$ y altura $1$ vale $1$.
+
+	Para $k \ne 0$ aplicamos la fórmula general. Como $x(t)$ es par y $\sin(k\omega_0 t)$ es impar, el producto $x(t)\sin(k\omega_0 t)$ es impar y su integral sobre el intervalo simétrico se anula. Solo queda la parte coseno:
+	\[
+		c_k = \frac{1}{2}\int_{-1}^{1}(1 - |t|)\cos(k\pi t)\,dt
+		= \int_{0}^{1}(1 - t)\cos(k\pi t)\,dt,
+	\]
+	donde el factor $1/2 \cdot 2 = 1$ recoge la duplicación por paridad del integrando sobre $(0, 1)$.
+
+	Descomponemos la integral en dos partes:
+	\[
+		\int_{0}^{1}(1 - t)\cos(k\pi t)\,dt
+		= \underbrace{\int_{0}^{1}\cos(k\pi t)\,dt}_{I_1} \;-\; \underbrace{\int_{0}^{1} t\cos(k\pi t)\,dt}_{I_2}.
+	\]
+
+	\textbf{Cálculo de $I_1$:}
+	\[
+		I_1 = \frac{\sin(k\pi t)}{k\pi}\bigg|_{0}^{1} = \frac{\sin(k\pi) - 0}{k\pi} = 0,
+	\]
+	porque $\sin(k\pi) = 0$ para todo $k$ entero.
+
+	\textbf{Cálculo de $I_2$ por partes:} con $u = t$ y $dv = \cos(k\pi t)\,dt$, es decir $du = dt$ y $v = \sin(k\pi t)/(k\pi)$:
+	\begin{align*}
+		I_2 &= \frac{t\sin(k\pi t)}{k\pi}\bigg|_{0}^{1} - \int_{0}^{1}\frac{\sin(k\pi t)}{k\pi}\,dt \\
+		&= 0 - \left[-\frac{\cos(k\pi t)}{(k\pi)^2}\right]_{0}^{1}
+		= \frac{\cos(k\pi) - 1}{(k\pi)^2}
+		= \frac{(-1)^k - 1}{(k\pi)^2}.
+	\end{align*}
+
+	Combinando:
+	\[
+		c_k = I_1 - I_2 = -\frac{(-1)^k - 1}{(k\pi)^2} = \frac{1 - (-1)^k}{(k\pi)^2}.
+	\]
+
+	El factor $1 - (-1)^k$ vale $0$ para $k$ par y $2$ para $k$ impar:
+	\[
+		\boxed{c_k =
+		\begin{cases}
+			1/2, & k = 0, \\
+			2/(k\pi)^2, & k \text{ impar}, \\
+			0, & k \text{ par}, \; k \ne 0.
+		\end{cases}}
+	\]
+
+	\textbf{Valores numéricos:}
+	\begin{center}
+		\begin{tabular}{c|ccccc}
+			$k$ & $0$ & $1$ & $2$ & $3$ & $4$ \\ \hline
+			$c_k$ & $1/2$ & $2/\pi^2$ & $0$ & $2/(9\pi^2)$ & $0$ \\
+			$|c_k|$ & $0{,}500$ & $0{,}203$ & $0$ & $0{,}023$ & $0$
+		\end{tabular}
+	\end{center}
+
+	Los $c_k$ son reales con $c_{-k} = c_k$ (señal real y par). Los coeficientes decaen como $1/k^2$, más rápido que el $1/|k|$ del pulso rectangular del Ejercicio~3. La Sección~5.2 del libro señala que el ritmo $1/|k|$ es característico de las señales con saltos de discontinuidad: el pulso los tiene en los bordes, mientras que el triángulo es continuo.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.45\linewidth]{figures/fig_ej4/fig_ej4}
+		\caption{Espectro de líneas del triángulo. En rojo punteado se muestra la envolvente $2/(k\pi)^2$ que toca los stems impares; los pares se anulan. El decaimiento $1/k^2$ es notoriamente más rápido que el $1/k$ del pulso rectangular.}
+		\label{fig:ej4}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 5
+	% ***********************************************
+	\section*{Ejercicio 5: Serie exponencial del tren de impulsos}
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.45\linewidth]{figures/fig_ej5_senal/fig_ej5_senal}
+		\caption{Tren de impulsos periódico $\delta^{T_0}(t)$: impulsos unitarios espaciados $T_0$ a lo largo de toda la recta.}
+		\label{fig:ej5_senal}
+	\end{figure}
+
+	El tren de impulsos $\delta^{T_0}(t) = \sum_{k} \delta(t - kT_0)$ se introduce en la Sección~3.3 del libro. Sobre cualquier intervalo de longitud $T_0$ contiene exactamente un impulso. Tomando el intervalo simétrico $(-T_0/2,\, T_0/2)$, el único impulso es $\delta(t)$, y la fórmula de análisis se reduce a:
+	\[
+		c_k = \frac{1}{T_0}\int_{-T_0/2}^{T_0/2} \delta(t)\,e^{-jk\omega_0 t}\,dt
+		= \frac{1}{T_0}\,e^{-jk\omega_0 \cdot 0}
+		= \frac{1}{T_0},
+	\]
+	donde aplicamos la propiedad de selección del impulso (Sección~3.3): $\int \delta(t)\,f(t)\,dt = f(0)$.
+
+	\[
+		\boxed{c_k = \frac{1}{T_0}, \qquad \forall\,k \in \mathbb{Z}.}
+	\]
+
+	El espectro de líneas es \textbf{constante}: todos los armónicos tienen la misma amplitud $1/T_0$ y fase nula. El tren de impulsos contiene todas las frecuencias armónicas con igual peso. Esta propiedad es central para la teoría del muestreo del Capítulo~9 del libro.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.45\linewidth]{figures/fig_ej5/fig_ej5}
+		\caption{Espectro de líneas del tren de impulsos $\delta^{T_0}(t)$. Todos los coeficientes valen $1/T_0$, sin decaimiento.}
+		\label{fig:ej5}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 6
+	% ***********************************************
+	\section*{Ejercicio 6: Desplazamiento temporal aplicado al pulso periódico}
+
+	La Sección~5.3 del libro demuestra la propiedad de desplazamiento: si $x(t) \leftrightarrow c_k$, entonces
+	\[
+		x(t - t_0) \;\leftrightarrow\; \tilde{c}_k = c_k\,e^{-jk\omega_0 t_0}.
+	\]
+	La propiedad sale del cambio de variable $u = t - t_0$ dentro de la fórmula de análisis: el factor exponencial extra aparece como constante respecto de la nueva variable y se factoriza fuera de la integral.
+
+	Aplicada al pulso del Ejercicio~3 con $t_0 = \tau/2$ y $\omega_0\tau/2 = \pi/3$:
+	\[
+		\boxed{\tilde{c}_k = c_k\,e^{-jk\pi/3} = \frac{1}{3}\,\operatorname{sinc}\!\left(\frac{k\pi}{3}\right)\,e^{-jk\pi/3}.}
+	\]
+
+	\textbf{Módulo:} $|\tilde{c}_k| = |c_k|$, idéntico al del Ejercicio~3. El desplazamiento en el tiempo no afecta la amplitud de los armónicos.
+
+	\textbf{Fase:} $\arg \tilde{c}_k = \arg c_k - k\pi/3$. Como $c_k$ es real, $\arg c_k$ vale $0$ cuando $c_k > 0$ y $\pi$ cuando $c_k < 0$. La fase nueva se obtiene restando una rampa lineal de pendiente $-\pi/3$ por unidad de $k$.
+
+	\begin{center}
+		\begin{tabular}{c|ccccc}
+			$k$ & $0$ & $1$ & $2$ & $3$ & $4$ \\ \hline
+			$\arg c_k$ (original) & $0$ & $0$ & $0$ & --- & $\pi$ \\
+			$\arg \tilde{c}_k$ (desplazado) & $0$ & $-\pi/3$ & $-2\pi/3$ & --- & $-\pi/3$
+		\end{tabular}
+	\end{center}
+
+	En radianes con equivalencia en grados: $-\pi/3$ rad $(-60^\circ)$, $-2\pi/3$ rad $(-120^\circ)$. Para $k = 4$, $\arg c_4 - 4\pi/3 = \pi - 4\pi/3 = -\pi/3$ (mod $2\pi$). Como $\tilde{x}(t)$ sigue siendo real, la fase es impar en $k$: el rango $-4 \leq k < 0$ se obtiene por reflexión cambiando el signo de la fase.
+
+	\textbf{Comparación.} En el espectro original la fase solo tomaba dos valores ($0$ y $\pi$). En el desplazado se intercala una rampa lineal de pendiente $-\omega_0 t_0$. Esta es la marca distintiva de un retardo puro: módulo intacto, fase con componente lineal añadida.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.45\linewidth]{figures/fig_ej6/fig_ej6}
+		\caption{Comparación del espectro de fases del pulso original (arriba, azul) con el de la versión desplazada $\tilde{x}(t) = x(t - \tau/2)$ (abajo, rojo). En el desplazado se ve la rampa lineal de pendiente $-\pi/3$ superpuesta a los valores originales; la fase es impar en $k$ por ser $\tilde{x}$ real.}
+		\label{fig:ej6}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 7
+	% ***********************************************
+	\section*{Ejercicio 7: Parseval sobre el triángulo}
+
+	La identidad de Parseval (Sección~5.3 del libro) relaciona la potencia media de una señal periódica con la suma de los módulos al cuadrado de sus coeficientes:
+	\[
+		P = \frac{1}{T_0}\int_{T_0}|x(t)|^2\,dt = \sum_{k=-\infty}^{\infty}|c_k|^2.
+	\]
+	Es la versión en frecuencia del teorema de Pitágoras: la energía total se reparte entre los armónicos sin interferencias cruzadas, gracias a la ortogonalidad de la base demostrada en el Ejercicio~1.
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Potencia media por integración directa.}
+		\[
+			P = \frac{1}{2}\int_{-1}^{1}(1 - |t|)^2\,dt = \int_{0}^{1}(1 - t)^2\,dt = \left[-\frac{(1-t)^3}{3}\right]_{0}^{1} = \frac{1}{3}.
+		\]
+		\[
+			\boxed{P = \frac{1}{3}.}
+		\]
+
+		\item \textbf{Estimación truncada en $|k| \leq 5$.} De los coeficientes del Ejercicio~4, los $c_k$ no nulos son $k = 0$ y $k$ impar. Usando $|c_{-k}| = |c_k|$:
+		\begin{align*}
+			\sum_{k=-5}^{5}|c_k|^2 &= |c_0|^2 + 2\bigl(|c_1|^2 + |c_3|^2 + |c_5|^2\bigr) \\
+			&= \frac{1}{4} + 2\left(\frac{4}{\pi^4} + \frac{4}{81\pi^4} + \frac{4}{625\pi^4}\right) \\
+			&= \frac{1}{4} + \frac{8}{\pi^4}\left(1 + \frac{1}{81} + \frac{1}{625}\right).
+		\end{align*}
+		Numéricamente, con $\pi^4 \approx 97{,}409$:
+		\[
+			\sum_{k=-5}^{5}|c_k|^2 \approx 0{,}250 + 0{,}0821\cdot 1{,}0139 \approx 0{,}3332.
+		\]
+
+		\item \textbf{Fracción contenida en los primeros cinco armónicos.}
+		\[
+			\frac{\sum_{|k|\leq 5}|c_k|^2}{P} \approx \frac{0{,}3332}{0{,}3333} \approx 0{,}9997.
+		\]
+		Más del $99{,}9\%$ de la potencia está en los primeros cinco armónicos por lado. El decaimiento $1/k^2$ del triángulo (Ejercicio~4) hace que la cola de la serie contribuya muy poco, lo que justifica la aproximación truncada.
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 8
+	% ***********************************************
+	\section*{Ejercicio 8: Serie trigonométrica de la onda cuadrada}
+
+	La Sección~5.4 del libro define las fórmulas de análisis para la serie trigonométrica:
+	\[
+		a_0 = \frac{1}{T_0}\int_{T_0} x(t)\,dt, \qquad
+		a_k = \frac{2}{T_0}\int_{T_0} x(t)\cos(k\omega_0 t)\,dt, \qquad
+		b_k = \frac{2}{T_0}\int_{T_0} x(t)\sin(k\omega_0 t)\,dt,
+	\]
+	con la convención $a_0 = c_0$ (valor medio directo, sin factor $1/2$). La serie se reconstruye como
+	\[
+		x(t) = a_0 + \sum_{k=1}^{\infty}\bigl[a_k\cos(k\omega_0 t) + b_k\sin(k\omega_0 t)\bigr].
+	\]
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.65\linewidth]{figures/fig_ej8_senal/fig_ej8_senal}
+		\caption{Onda cuadrada impar del Ejercicio~8 ($T_0 = 4$, amplitud $\pm 1$). La señal alterna entre $+1$ y $-1$ cada medio período; su simetría impar respecto del origen anticipa que solo intervendrán senos.}
+		\label{fig:ej8_senal}
+	\end{figure}
+
+	Para la onda cuadrada dada, $T = 4$ y $\omega_0 = \pi/2$.
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Coeficientes nulos por simetría.} La señal es impar: $x(-t) = -x(t)$. Como $\cos(k\omega_0 t)$ es par, el producto $x(t)\cos(k\omega_0 t)$ es impar; su integral sobre un intervalo simétrico vale cero. Lo mismo le pasa a $a_0$, que es la integral pura de $x$:
+		\[
+			\Rightarrow a_0 = 0, \qquad a_k = 0 \quad \forall\, k \geq 1.
+		\]
+		Solo sobreviven los coeficientes seno $b_k$.
+
+		\item \textbf{Cálculo de $b_k$.} El integrando $x(t)\sin(k\omega_0 t)$ es par (impar por impar), así que la integral sobre $(-T/2, T/2)$ vale el doble de la integral sobre $(0, T/2)$. Sobre $(0, 2)$, $x(t) = 1$:
+		\begin{align*}
+			b_k &= \frac{2}{4}\cdot 2\int_{0}^{2} \sin\!\left(\frac{k\pi t}{2}\right)dt
+			= \int_{0}^{2}\sin\!\left(\frac{k\pi t}{2}\right)dt \\
+			&= -\frac{2\cos(k\pi t/2)}{k\pi}\bigg|_{0}^{2}
+			= -\frac{2[\cos(k\pi) - 1]}{k\pi}
+			= \frac{2[1 - (-1)^k]}{k\pi}.
+		\end{align*}
+		Como antes, el factor $1 - (-1)^k$ vale $0$ para $k$ par y $2$ para $k$ impar:
+		\[
+			\boxed{b_k =
+			\begin{cases}
+				4/(k\pi), & k \text{ impar}, \\
+				0, & k \text{ par}.
+			\end{cases}}
+		\]
+
+		\item \textbf{Coeficientes exponenciales por las relaciones de la Sección~5.4.} Con $a_k = 0$ y $b_k$ recién calculado:
+		\[
+			c_k = \frac{a_k - jb_k}{2} = -\frac{jb_k}{2}, \qquad
+			c_{-k} = \frac{a_k + jb_k}{2} = \frac{jb_k}{2}, \qquad
+			c_0 = a_0 = 0.
+		\]
+		Para $k$ impar positivo,
+		\[
+			\boxed{c_k = -\frac{2j}{k\pi}, \qquad c_{-k} = \frac{2j}{k\pi}.}
+		\]
+		Los $c_k$ resultan puramente imaginarios; su signo se invierte al cambiar de $k$ a $-k$. El módulo es par y la fase es impar en $k$, consistente con la simetría conjugada $c_{-k} = \overline{c_k}$ que tienen todas las señales reales (Sección~5.3).
+	\end{enumerate}
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.45\linewidth]{figures/fig_ej8/fig_ej8}
+		\caption{Espectro de líneas (módulo) de la onda cuadrada. La envolvente punteada en rojo es $2/(|k|\pi)$, característica del decaimiento $1/|k|$ propio de señales con discontinuidades de salto. Los armónicos pares se anulan.}
+		\label{fig:ej8}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 9
+	% ***********************************************
+	\section*{Ejercicio 9: Conversión exponencial $\to$ trigonométrica}
+
+	Las relaciones inversas son (Sección~5.4 del libro):
+	\[
+		a_0 = c_0, \qquad a_k = 2\,\mathrm{Re}\{c_k\}, \qquad b_k = -2\,\mathrm{Im}\{c_k\} \quad (k \geq 1).
+	\]
+
+	\textbf{Pulso rectangular del Ejercicio~3.} Los $c_k$ son reales: $c_k = \tfrac{1}{3}\operatorname{sinc}(k\pi/3)$. Como $\mathrm{Im}\{c_k\} = 0$,
+	\[
+		\boxed{a_0 = \frac{1}{3}, \qquad a_k = \frac{2}{3}\operatorname{sinc}\!\left(\frac{k\pi}{3}\right), \qquad b_k = 0.}
+	\]
+	La señal es par y se reconstruye únicamente con cosenos.
+
+	\textbf{Triángulo del Ejercicio~4.} Los $c_k$ también son reales:
+	\[
+		\boxed{a_0 = \frac{1}{2}, \qquad
+		a_k =
+		\begin{cases}
+			4/(k\pi)^2, & k \text{ impar}, \\
+			0, & k \text{ par},\, k \ne 0,
+		\end{cases}
+		\qquad b_k = 0.}
+	\]
+	De nuevo, la paridad par se refleja como $b_k = 0$.
+
+	\textbf{Lectura conjunta con el Ejercicio~8.} La onda cuadrada impar tenía $a_k = 0$ y solo $b_k$ no nulos; aquí tenemos las dos pares con $b_k = 0$ y solo $a_k$ no nulos. La regla operativa es directa: \textbf{señal par $\Rightarrow$ solo cosenos; señal impar $\Rightarrow$ solo senos}. Es la versión trigonométrica de la simetría conjugada $c_{-k} = \overline{c_k}$ combinada con la simetría de la señal.
+
+	% ***********************************************
+	% 				Ejercicio 10
+	% ***********************************************
+	\section*{Ejercicio 10: Sistema $h(t) = e^{-t}u(t)$}
+
+	La Sección~5.5 del libro establece que las exponenciales armónicas son las \textbf{funciones propias} de los sistemas LIT: si la entrada es $e^{j\omega t}$, la salida es $H(j\omega)\,e^{j\omega t}$, donde
+	\[
+		H(j\omega) = \int_{-\infty}^{\infty} h(\tau)\,e^{-j\omega\tau}\,d\tau
+	\]
+	es la \textbf{respuesta en frecuencia} del sistema (valor propio asociado a la frecuencia $\omega$).
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Cálculo de $H(j\omega)$.} Como $h(\tau) = 0$ para $\tau < 0$, el límite inferior se reduce a $0$:
+		\[
+			H(j\omega) = \int_{0}^{\infty} e^{-\tau}\,e^{-j\omega\tau}\,d\tau
+			= \int_{0}^{\infty} e^{-(1+j\omega)\tau}\,d\tau
+			= \frac{e^{-(1+j\omega)\tau}}{-(1+j\omega)}\bigg|_{0}^{\infty}
+			= \frac{1}{1 + j\omega}.
+		\]
+		La cota en $\infty$ se anula porque $\mathrm{Re}\{1 + j\omega\} = 1 > 0$.
+		\[
+			\boxed{H(j\omega) = \frac{1}{1 + j\omega}.}
+		\]
+
+		El módulo es $|H(j\omega)| = 1/\sqrt{1+\omega^2}$, decreciente en $|\omega|$; la fase $\angle H(j\omega) = -\arctan(\omega)$ va desde $0$ en $\omega = 0$ hasta $-\pi/2$ rad ($-90^\circ$) cuando $\omega \to \infty$. Es un filtro pasabajos de primer orden.
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=0.7\linewidth]{figures/fig_ej10_H/fig_ej10_H}
+			\caption{Respuesta en frecuencia de $h(t) = e^{-t}u(t)$. Izquierda: módulo $|H(j\omega)| = 1/\sqrt{1+\omega^2}$. Derecha: fase $\arg H(j\omega) = -\arctan(\omega)$.}
+			\label{fig:ej10_H}
+		\end{figure}
+
+		\item \textbf{Régimen sinusoidal permanente con $x(t) = \cos(2t)$.} La frecuencia de la entrada es $\omega = 2$. Evaluamos:
+		\[
+			H(j2) = \frac{1}{1 + j2}, \qquad |H(j2)| = \frac{1}{\sqrt{5}} \approx 0{,}447,
+			\qquad \angle H(j2) = -\arctan(2) \approx -1{,}107 \text{ rad}\; (\approx -63{,}43^\circ).
+		\]
+		Por la propiedad de régimen sinusoidal permanente (Sección~5.5), la salida es la entrada escalada en amplitud por $|H(j2)|$ y desfasada en $\angle H(j2)$, conservando la frecuencia:
+		\[
+			\boxed{y(t) = \frac{1}{\sqrt{5}}\cos\!\bigl(2t - \arctan 2\bigr).}
+		\]
+
+		\item \textbf{Entrada periódica = triángulo del Ejercicio~4.} Para una entrada con desarrollo $x(t) = \sum c_k e^{jk\omega_0 t}$, la salida es $y(t) = \sum d_k e^{jk\omega_0 t}$ con
+		\[
+			d_k = H(jk\omega_0)\,c_k.
+		\]
+		El sistema actúa \textbf{armónico por armónico}: cada coeficiente de la entrada se multiplica por el valor de la respuesta en frecuencia evaluada en la frecuencia $k\omega_0$ correspondiente. Con $\omega_0 = \pi$:
+		\[
+			d_k = \frac{c_k}{1 + jk\pi}.
+		\]
+		Los $c_k$ del triángulo son no nulos solo para $k = 0$ y $k$ impar. Calculamos los módulos:
+		\begin{center}
+			\begin{tabular}{c|ccccc}
+				$k$ & $0$ & $1$ & $2$ & $3$ & $4$ \\ \hline
+				$|c_k|$ & $0{,}500$ & $0{,}2026$ & $0$ & $0{,}0225$ & $0$ \\
+				$|1 + jk\pi|$ & $1$ & $3{,}297$ & $6{,}362$ & $9{,}479$ & $12{,}608$ \\
+				$|d_k|$ & $0{,}500$ & $0{,}0614$ & $0$ & $0{,}00237$ & $0$
+			\end{tabular}
+		\end{center}
+
+		La componente DC pasa sin atenuación ($|H(j0)| = 1$), mientras que los armónicos altos se atenúan fuertemente. El sistema actúa como un \textbf{pasabajos suave}: no corta abruptamente, sino que degrada cada vez más los armónicos a medida que crece la frecuencia.
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone[width=0.7\linewidth]{figures/fig_ej10_espectros/fig_ej10_espectros}
+			\caption{Espectros de líneas de entrada (izquierda, azul) y salida (derecha, rojo) para el triángulo del Ejercicio~4 filtrado por $h(t) = e^{-t}u(t)$. La DC pasa intacta; los armónicos altos quedan fuertemente atenuados.}
+			\label{fig:ej10_espectros}
+		\end{figure}
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 11
+	% ***********************************************
+	\section*{Ejercicio 11: Pasabajos ideal $\omega_c = 3$}
+
+	El filtro pasabajos ideal (Sección~5.5) tiene módulo $1$ dentro de la banda $|\omega| < \omega_c$ y módulo $0$ fuera. Aquí $\omega_c = 3$. Su respuesta es real y par, así que la fase es nula dentro de la banda.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.6\linewidth]{figures/fig_ej11/fig_ej11}
+		\caption{Respuesta en frecuencia $H(j\omega)$ del filtro pasabajos ideal con frecuencia de corte $\omega_c = 3$. Dentro de la banda $|\omega| < 3$ vale $1$; fuera, $0$.}
+		\label{fig:ej11}
+	\end{figure}
+
+	La entrada $x(t) = \cos(2t) + \sin(4t)$ contiene exactamente dos frecuencias: $\omega_1 = 2$ y $\omega_2 = 4$. Aplicamos la propiedad de régimen sinusoidal permanente a cada componente y sumamos por linealidad:
+	\begin{itemize}
+		\item En $\omega_1 = 2$: como $|2| < 3$, el filtro deja pasar la componente intacta. $|H(j2)| = 1$, $\angle H(j2) = 0$. La salida correspondiente es $\cos(2t)$.
+		\item En $\omega_2 = 4$: como $|4| \geq 3$, el filtro elimina la componente. $|H(j4)| = 0$. La salida correspondiente es $0$.
+	\end{itemize}
+
+	\[
+		\boxed{y(t) = \cos(2t).}
+	\]
+
+	El filtro selecciona los armónicos según su frecuencia: pasan los que caen en la banda, los demás se descartan. Esta selectividad por frecuencia es el contenido operativo central de la Sección~5.5.
+
+	% ***********************************************
+	% 				Ejercicio 12
+	% ***********************************************
+	\section*{Ejercicio 12: Filtro pasabanda ideal sobre el pulso del Ejercicio~3}
+
+	El filtro pasabanda ideal mantiene los armónicos cuya frecuencia cae en la banda $\omega_1 < |\omega| < \omega_2$ y elimina el resto. Igual que en el Ejercicio~10, los coeficientes de la salida son $d_k = H(jk\omega_0)\,c_k$: cada armónico se mantiene íntegro ($H = 1$) o se anula ($H = 0$), según caiga dentro o fuera de la banda.
+
+	Con $\omega_0 = 2\pi/(3\tau)$, la frecuencia del armónico $k$ es $k\omega_0$. La condición para que el armónico $k$ pase es $\omega_1 < |k\omega_0| < \omega_2$, equivalente a $\omega_1/\omega_0 < |k| < \omega_2/\omega_0$.
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $\omega_1 = 0{,}5\,\omega_0$, $\omega_2 = 2{,}5\,\omega_0$. La condición queda $0{,}5 < |k| < 2{,}5$, es decir, $|k| \in \{1, 2\}$. Pasan los armónicos $k = \pm 1$ y $k = \pm 2$; los demás (incluida la DC en $k = 0$) se eliminan.
+
+		Recuperando los $c_k$ del Ejercicio~3:
+		\[
+			d_k =
+			\begin{cases}
+				\sqrt{3}/(2\pi), & k = \pm 1, \\
+				\sqrt{3}/(4\pi), & k = \pm 2, \\
+				0, & \text{en otro caso.}
+			\end{cases}
+		\]
+		La salida es una combinación de los dos primeros armónicos del pulso, sin DC:
+		\[
+			y(t) = 2c_1\cos(\omega_0 t) + 2c_2\cos(2\omega_0 t)
+			= \frac{\sqrt{3}}{\pi}\cos(\omega_0 t) + \frac{\sqrt{3}}{2\pi}\cos(2\omega_0 t).
+		\]
+
+		\item $\omega_1 = 3{,}5\,\omega_0$, $\omega_2 = 6{,}5\,\omega_0$. La condición queda $3{,}5 < |k| < 6{,}5$, es decir, $|k| \in \{4, 5, 6\}$.
+
+		Del Ejercicio~3, $c_k = 0$ en los múltiplos de $3$, así que $c_{\pm 6} = 0$. De los tres candidatos solo sobreviven $k = \pm 4$ y $k = \pm 5$. Calculando $c_5 = \tfrac{1}{3}\operatorname{sinc}(5\pi/3) \approx -0{,}055$:
+		\[
+			d_k =
+			\begin{cases}
+				-\sqrt{3}/(8\pi) \approx -0{,}069, & k = \pm 4, \\
+				\approx -0{,}055, & k = \pm 5, \\
+				0, & \text{en otro caso.}
+			\end{cases}
+		\]
+	\end{enumerate}
+
+	\textbf{Comparación con la entrada.} El espectro de líneas del pulso original (Ejercicio~3) tenía amplitud máxima en $k = 0$ y decaía siguiendo la envolvente sinc, con ceros en múltiplos de $3$. En el caso (a) el filtro conserva los dos primeros armónicos no nulos y suprime todo lo demás: la salida pierde DC y queda con dos componentes. En el caso (b) el filtro está sintonizado a una banda de armónicos más altos; aún así, una de las tres frecuencias candidatas se anula porque cae sobre un cero de la envolvente del pulso. Esta interacción entre la banda del filtro y la estructura interna de los coeficientes ilustra que el resultado del filtrado depende conjuntamente de las dos cosas, no solo de la banda.
+
+	\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.7\linewidth]{figures/fig_ej12/fig_ej12}
+		\caption{Espectros de líneas de salida del filtro pasabanda aplicado al pulso del Ejercicio~3. (a)~Banda baja: sobreviven $|k|=1,2$. (b)~Banda alta: sobreviven $|k|=4,5$; el armónico $|k|=6$ se anula no por el filtro sino porque cae sobre un cero de la envolvente sinc.}
+		\label{fig:ej12}
+	\end{figure}
+
+\end{document}

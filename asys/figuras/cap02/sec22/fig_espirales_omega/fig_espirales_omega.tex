@@ -1,0 +1,67 @@
+\documentclass[border=3mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        
+        % Configuración común
+        \pgfplotsset{
+            width=5.5cm, height=5.5cm, 
+            scale only axis, 
+            view={55}{30},
+            axis lines=center,
+            xlabel={$t$},
+            ylabel={Re},
+            zlabel={Im},
+            xlabel style={anchor=north east, inner sep=1pt},
+            ylabel style={anchor=north west, inner sep=1pt},
+            zlabel style={anchor=south, inner sep=1pt},
+            xmin=-0.5, xmax=3.5,
+            ymin=-2.5, ymax=2.5,
+            zmin=-2.5, zmax=2.5,
+            ticks=none,
+            axis line style={->},
+            clip=false
+        }
+
+        % =============================================
+        % PANEL A: ω bajo
+        % =============================================
+        \begin{axis}[
+            at={(0cm,0cm)},
+            name=plot1
+        ]
+            \addplot3[domain=0:3, samples=200, samples y=0, thick, orange] 
+                ({x}, {cos(360*x)}, {sin(360*x)});
+        \end{axis}
+        % Etiquetas subidas manualmente para quedar pegadas al gráfico
+        \node[anchor=north, yshift=6mm] at (plot1.south) {\textbf{(a) $\omega = 2\pi$}};
+        
+        % =============================================
+        % PANEL B: ω medio
+        % =============================================
+        \begin{axis}[
+            at={(4.5cm,0cm)}, % Superposición intencional de bounding boxes invisibles
+            name=plot2
+        ]
+            \addplot3[domain=0:3, samples=300, samples y=0, thick, utnblue] 
+                ({x}, {cos(720*x)}, {sin(720*x)});
+        \end{axis}
+        \node[anchor=north, yshift=6mm] at (plot2.south) {\textbf{(b) $\omega = 4\pi$}};
+        
+        % =============================================
+        % PANEL C: ω alto
+        % =============================================
+        \begin{axis}[
+            at={(9.0cm,0cm)}, 
+            name=plot3
+        ]
+            \addplot3[domain=0:3, samples=500, samples y=0, thick, purple] 
+                ({x}, {cos(1440*x)}, {sin(1440*x)});
+        \end{axis}
+        \node[anchor=north, yshift=6mm] at (plot3.south) {\textbf{(c) $\omega = 8\pi$}};
+
+    \end{tikzpicture}
+\end{document}

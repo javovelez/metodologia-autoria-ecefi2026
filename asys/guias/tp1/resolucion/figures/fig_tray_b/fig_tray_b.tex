@@ -1,0 +1,43 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.7, font=\small]
+    \useasboundingbox (-1.4, -1.4) rectangle (1.4, 1.4);
+
+    % --- CAPA 1: Grid ---
+    \begin{scope}
+        \clip (-1.4, -1.4) rectangle (1.4, 1.4);
+        \draw[help lines, gray!30, step=0.5] (-1.4,-1.4) grid (1.4, 1.4);
+    \end{scope}
+
+    % --- CAPA 2: Trayectoria (circunferencia unitaria) ---
+    \begin{scope}
+        \clip (-1.4, -1.4) rectangle (1.4, 1.4);
+        % Circunferencia unitaria completa
+        \draw[utnblue, thick] (1,0) arc(0:360:1);
+        % Flecha de dirección (antihoraria) en la parte superior
+        \draw[->, utnblue, thick] ({cos(60)},{sin(60)}) arc(60:65:1);
+    \end{scope}
+
+    % --- CAPA 3: Ejes ---
+    \draw[->, thick] (-1.35,0) -- (1.35,0) node[right, font=\scriptsize] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-1.35) -- (0,1.35) node[above, font=\scriptsize] {$\operatorname{Im}$};
+
+    % --- CAPA 4: Etiquetas y marcas ---
+    \foreach \x in {-1, 1} {
+        \draw (\x, 0.05)--(\x,-0.05) node[below, font=\scriptsize] {$\x$};
+    }
+    \foreach \y in {-1, 1} {
+        \draw (0.05, \y)--(-0.05,\y) node[left, font=\scriptsize] {$\y$};
+    }
+    \node[below left, font=\scriptsize] at (0,0) {$0$};
+
+    % Punto inicial
+    \fill[utnblue] (1,0) circle (1.2pt);
+    \node[below right, font=\scriptsize] at (1,0) {$t{=}0$};
+
+    % Etiqueta de módulo constante
+    \node[utnblue, font=\scriptsize] at (0,0) {$|f|{=}1$};
+\end{tikzpicture}
+\end{document}

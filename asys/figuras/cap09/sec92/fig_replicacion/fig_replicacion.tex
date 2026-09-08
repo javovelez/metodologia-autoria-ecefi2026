@@ -1,0 +1,81 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_replicacion
+% Tres paneles apilados sobre el mismo eje de frecuencias:
+%   (a) X(jw): triangulo en [-wM, wM], wM=1.
+%   (b) espectro del peine: impulsos de peso 2pi/Delta t en cada k*ws, ws=3.
+%   (c) X_s(jw) = (a) convolucionada con (b): copias del triangulo en 0, +-ws,
+%       +-2ws, todas a escala 1/Delta t (ws=3 > 2 wM=2, no se solapan).
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=4pt]}, font=\scriptsize, xscale=0.62,
+    tri/.style={utnblue, thick, fill=utnblue!12},
+    tricopy/.style={utnblue!70, thick, fill=utnblue!7},
+    imp/.style={utnblue, thick, -{Latex[length=4pt]}},
+    ax/.style={->, thin, black},
+]
+    % ===================== (a) X(jw) =====================
+    \begin{scope}[shift={(0,0)}]
+        \node at (-8.6,0.55) {(a)};
+        \draw[ax] (-8,0) -- (8,0) node[right] {$\omega$};
+        \draw[tri] (-1,0) -- (0,1.0) -- (1,0) -- cycle;
+        \node[utnblue, anchor=south] at (0,1.02) {$X(j\omega)$};
+        % ticks +-wM
+        \draw[thin] (1,0.06) -- (1,-0.06) node[below, font=\tiny] {$\omega_M$};
+        \draw[thin] (-1,0.06) -- (-1,-0.06) node[below, font=\tiny] {$-\omega_M$};
+    \end{scope}
+
+    % ===================== (b) espectro del peine =====================
+    \begin{scope}[shift={(0,-2.7)}]
+        \node at (-8.6,0.55) {(b)};
+        \draw[ax] (-8,0) -- (8,0) node[right] {$\omega$};
+        % impulsos en 0, +-ws, +-2ws
+        \draw[imp] (-6,0) -- (-6,0.85);
+        \draw[imp] (-3,0) -- (-3,0.85);
+        \draw[imp] ( 0,0) -- ( 0,0.85);
+        \draw[imp] ( 3,0) -- ( 3,0.85);
+        \draw[imp] ( 6,0) -- ( 6,0.85);
+        % puntos suspensivos: los impulsos siguen sin fin
+        \node[utnblue, font=\tiny] at (-7.4,0.42) {$\cdots$};
+        \node[utnblue, font=\tiny] at ( 7.4,0.42) {$\cdots$};
+        % peso de cada impulso, anotado sobre el del origen
+        \node[anchor=west, font=\tiny] at (0.18,0.86) {$\tfrac{2\pi}{\Delta t}$};
+        % ticks en multiplos de ws
+        \draw[thin] (3,0.06) -- (3,-0.06) node[below, font=\tiny] {$\omega_s$};
+        \draw[thin] (6,0.06) -- (6,-0.06) node[below, font=\tiny] {$2\omega_s$};
+        \draw[thin] (-3,0.06) -- (-3,-0.06) node[below, font=\tiny] {$-\omega_s$};
+        \draw[thin] (-6,0.06) -- (-6,-0.06) node[below, font=\tiny] {$-2\omega_s$};
+    \end{scope}
+
+    % ===================== (c) X_s(jw) =====================
+    \begin{scope}[shift={(0,-5.4)}]
+        \node at (-8.6,0.55) {(c)};
+        \draw[ax] (-8,0) -- (8,0) node[right] {$\omega$};
+        % copias laterales
+        \draw[tricopy] (-7,0) -- (-6,0.85) -- (-5,0) -- cycle;
+        \draw[tricopy] (-4,0) -- (-3,0.85) -- (-2,0) -- cycle;
+        \draw[tricopy] ( 2,0) -- ( 3,0.85) -- ( 4,0) -- cycle;
+        \draw[tricopy] ( 5,0) -- ( 6,0.85) -- ( 7,0) -- cycle;
+        % copia central (destacada)
+        \draw[tri] (-1,0) -- (0,0.85) -- (1,0) -- cycle;
+        \node[utnblue, anchor=south] at (0,1.20) {$X_s(j\omega)$};
+        % puntos suspensivos: las copias siguen sin fin
+        \node[utnblue!70, font=\tiny] at (-7.6,0.42) {$\cdots$};
+        \node[utnblue!70, font=\tiny] at ( 7.6,0.42) {$\cdots$};
+        % eje y: marca de la escala 1/Delta t
+        \draw[ax] (0,-0.05) -- (0,1.15);
+        \draw[thin] (-0.12,0.85) -- (0.12,0.85);
+        \node[anchor=east, font=\tiny] at (-0.18,0.92) {$\tfrac{1}{\Delta t}$};
+        % ticks en multiplos de ws
+        \draw[thin] (3,0.06) -- (3,-0.06) node[below, font=\tiny] {$\omega_s$};
+        \draw[thin] (6,0.06) -- (6,-0.06) node[below, font=\tiny] {$2\omega_s$};
+        \draw[thin] (-3,0.06) -- (-3,-0.06) node[below, font=\tiny] {$-\omega_s$};
+        \draw[thin] (-6,0.06) -- (-6,-0.06) node[below, font=\tiny] {$-2\omega_s$};
+        % marca de la separación entre copias
+        \draw[<->, gray!65] (1,-0.62) -- (2,-0.62);
+        \node[gray!65, anchor=north, font=\tiny] at (1.5,-0.60) {separación};
+    \end{scope}
+\end{tikzpicture}
+\end{document}

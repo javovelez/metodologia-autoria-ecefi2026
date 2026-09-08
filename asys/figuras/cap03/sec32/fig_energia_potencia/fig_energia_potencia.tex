@@ -1,0 +1,66 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    panel/.style={
+        width=13cm, height=2.8cm,
+        axis lines=center,
+        tick style={thin},
+        xlabel style={anchor=north},
+        ylabel style={font=\small, rotate=0, anchor=south east,
+                      at={(axis description cs:0,1)}},
+        clip=false,
+    }
+}
+
+% ---- panel (a): exponencial bilateral e^{-|t|} → señal de energía ----
+\begin{axis}[panel, name=ax1,
+    xmin=-3.5, xmax=3.5, ymin=-0.2, ymax=1.4,
+    xtick={-3,-2,-1,0,1,2,3},
+    ytick={0,1},
+    yticklabels={$0$,$1$},
+    ylabel={$x_1(t)$},
+    title={(a)~señal de energía:~~$E_{x_1}=1/a,\quad P_{x_1}=0$},
+    title style={font=\small, at={(axis description cs:0.5,1.25)}, anchor=south},
+    domain=-3.5:3.5, samples=200,
+]
+\addplot[utnblue, very thick] {exp(-abs(x))};
+\end{axis}
+
+% ---- panel (b): sinusoide → señal de potencia ----
+\begin{axis}[panel, name=ax2,
+    at={(ax1.below south west)}, anchor=above north west, yshift=-8pt,
+    xmin=-3.5, xmax=3.5, ymin=-1.6, ymax=1.6,
+    xtick={-3,-2,-1,0,1,2,3},
+    ytick={-1,0,1},
+    yticklabels={$-A$,$0$,$A$},
+    ylabel={$x_2(t)$},
+    title={(b)~señal de potencia:~~$E_{x_2}=\infty,\quad P_{x_2}=A^2/2$},
+    title style={font=\small, at={(axis description cs:0.5,1.25)}, anchor=south},
+    domain=-3.5:3.5, samples=300,
+]
+\addplot[utnblue, very thick] {cos(deg(pi*x))};
+\end{axis}
+
+% ---- panel (c): exponencial creciente e^{t} → ni de energía ni de potencia ----
+\begin{axis}[panel, name=ax3,
+    at={(ax2.below south west)}, anchor=above north west, yshift=-8pt,
+    xmin=-3.5, xmax=3.5, ymin=-0.3, ymax=5,
+    xtick={-3,-2,-1,0,1,2,3},
+    ytick={0,2,4},
+    yticklabels={$0$,$2$,$4$},
+    xlabel={$t$},
+    ylabel={$x_3(t)$},
+    title={(c)~ni energía ni potencia:~~$E_{x_3}=\infty,\quad P_{x_3}=\infty$},
+    title style={font=\small, at={(axis description cs:0.5,1.25)}, anchor=south},
+    domain=-3.5:3.5, samples=200, clip=true,
+]
+\addplot[utnblue, very thick] {exp(0.5*x)};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

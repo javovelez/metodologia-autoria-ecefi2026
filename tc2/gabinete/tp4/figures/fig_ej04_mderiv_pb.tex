@@ -1,0 +1,34 @@
+% Figura generada con netlist2tikz (n2t render fig_ej04_mderiv_pb.sch --tikz --no-standalone).
+% Netlist fuente (fig_ej04_mderiv_pb.sch):
+%   W in_t 1; right=0.4
+%   L1 1 2; right=2, l^=11{,}5\,\mathrm{mH}
+%   L2 2 3; right=2, l^=11{,}5\,\mathrm{mH}
+%   W 3 out_t; right=0.4
+%   L3 2 4; down=1.1, l_=21{,}6\,\mathrm{mH}
+%   C 4 0; down=1.1, l_=91{,}6\,\mathrm{nF}
+%   W in_b 0; right=2.4
+%   W 0 out_b; right=2.4
+%
+\begin{tikzpicture}[scale=1.00, transform shape, /tikz/circuitikz/bipoles/length=1.50cm, american currents, american voltages, font={\fontsize{7.5}{9}\selectfont}, voltage dir=RP]
+  \coordinate (in_t) at (0,2.64);
+  \coordinate (1) at (0.48,2.64);
+  \coordinate (2) at (2.88,2.64);
+  \coordinate (3) at (5.28,2.64);
+  \coordinate (out_t) at (5.76,2.64);
+  \coordinate (4) at (2.88,1.32);
+  \coordinate (0) at (2.88,0);
+  \coordinate (in_b) at (0,0);
+  \coordinate (out_b) at (5.76,0);
+  \draw (in_t) to (1);
+  \draw (1) to [L, l^=$11{,}5\,\mathrm{mH}$, n=L1] (2);
+  \draw (2) to [L, l^=$11{,}5\,\mathrm{mH}$, n=L2] (3);
+  \draw (3) to (out_t);
+  \draw (2) to [L, l_=$21{,}6\,\mathrm{mH}$, n=L3] (4);
+  \draw (4) to [C, l_=$91{,}6\,\mathrm{nF}$, n=C] (0);
+  \draw (in_b) to (0);
+  \draw (0) to (out_b);
+  \draw (in_t) node[ocirc] {};
+  \draw (out_t) node[ocirc] {};
+  \draw (in_b) node[ocirc] {};
+  \draw (out_b) node[ocirc] {};
+\end{tikzpicture}

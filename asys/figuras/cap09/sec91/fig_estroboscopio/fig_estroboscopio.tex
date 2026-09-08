@@ -1,0 +1,55 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_estroboscopio
+% El rayo (vector) gira CCW y avanza ~7/8 de vuelta (315 grados) entre foto y foto.
+% Posiciones fotografiadas P0..P3 a 90, 45, 0, -45 grados: aparentan retroceder 45
+% grados por foto (sentido horario). Arco punteado (gris): movimiento real, CCW,
+% casi una vuelta entera. Flecha roja: paso aparente, CW, corto, hacia atras.
+% B&W: cada elemento se identifica por trazo (punteado vs solido) y por rotulo
+% adyacente, no por color. El rotulo "paso aparente" va pegado a su flecha con
+% linea de guia, por el sector 44-90 grados que el arco punteado deja libre.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=4pt]}, font=\scriptsize,
+    spoke/.style={utnblue, semithick},
+    real/.style={black!55, thick, dashed, -{Latex[length=5pt]}},
+    apar/.style={red!80!black, very thick, -{Latex[length=5pt]}},
+    dot/.style={fill=black},
+]
+    \def\R{1.7}
+
+    % arco del movimiento real: CCW de P0 (90) casi hasta P1 (404=44), sin cubrir
+    % el tramo corto P0-P1. Hace las veces de circulo: no se dibuja circulo solido.
+    \draw[real] (90:\R) arc (90:404:\R);
+
+    % rayos a las posiciones fotografiadas
+    \draw[spoke] (0,0) -- (45:\R);
+    \draw[spoke] (0,0) -- (0:\R);
+    \draw[spoke] (0,0) -- (-45:\R);
+    \draw[utnblue, very thick] (0,0) -- (90:\R);
+    \fill[black] (0,0) circle (1.0pt);
+
+    % puntos fotografiados
+    \fill[dot] (90:\R) circle (1.8pt);
+    \fill[dot] (45:\R) circle (1.8pt);
+    \fill[dot] (0:\R)  circle (1.8pt);
+    \fill[dot] (-45:\R) circle (1.8pt);
+
+    % etiquetas P0..P3
+    \node[anchor=south] at (90:\R+0.12) {$P_0$};
+    \node[anchor=south west] at (45:\R+0.06) {$P_1$};
+    \node[anchor=west] at (0:\R+0.10) {$P_2$};
+    \node[anchor=north west] at (-45:\R+0.06) {$P_3$};
+
+    % paso aparente: arco CW corto de P0 a P1, radio interior, con rotulo pegado
+    % por linea de guia radial a 70 grados (sector libre de arco punteado)
+    \draw[apar] (89:0.95) arc (89:46:0.95);
+    \draw[red!80!black, very thin] (70:1.08) -- (70:1.88);
+    \node[red!80!black, anchor=west, font=\scriptsize] at (70:1.92) {paso aparente};
+
+    % leyenda del movimiento real, abajo
+    \node[black!65, font=\scriptsize] at (270:\R+0.30) {movimiento real (casi una vuelta)};
+\end{tikzpicture}
+\end{document}

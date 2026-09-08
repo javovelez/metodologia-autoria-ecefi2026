@@ -1,0 +1,75 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ---- Panel (a): g(t) = (1 - e^{-t})u(t) ----
+\begin{axis}[
+    name=ax1,
+    width=7.5cm, height=5.5cm,
+    axis lines=center,
+    xlabel={$t$},
+    ylabel={$g(t)$},
+    xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    ylabel style={font=\small, rotate=0, anchor=south east, at={(axis description cs:0,1)}},
+    xmin=-1.5, xmax=5.8,
+    ymin=-0.12, ymax=1.35,
+    clip=false,
+    axis line style={->, thick},
+    xtick={0,2,3,4,5},
+    ytick={0,1},
+    every tick label/.style={font=\footnotesize},
+    title={\small (a) $g(t)=(1-e^{-t})\,u(t)$},
+]
+    % zero for t < 0
+    \addplot[domain=-1.3:0, samples=2, very thick, utnblue] {0};
+    % 1 - e^{-t} for t >= 0
+    \addplot[domain=0:5.5, samples=200, very thick, utnblue] {1 - exp(-x)};
+    % asymptote at 1
+    \addplot[domain=-0.3:5.5, dashed, thick, gray!60] {1};
+    \node[font=\footnotesize, gray!80, right] at (axis cs:5.5, 1) {$1$};
+    % mark tau_0 = 1: dashed guide lines to (1, 1-1/e)
+    \draw[dashed, gray!70, thin] (axis cs:1, 0) -- (axis cs:1, 0.632);
+    \draw[dashed, gray!70, thin] (axis cs:0, 0.632) -- (axis cs:1, 0.632);
+    \node[font=\footnotesize, left] at (axis cs:0, 0.632) {$1\!-\!\tfrac{1}{e}$};
+    \node[font=\footnotesize, below] at (axis cs:1, 0) {$\tau_0$};
+    % dot at origin
+    \fill[utnblue] (axis cs:0, 0) circle (2.5pt);
+\end{axis}
+
+% ---- Panel (b): h(t) = e^{-t}u(t) = g'(t) ----
+\begin{axis}[
+    name=ax2,
+    at={(ax1.east)}, anchor=west, xshift=1.8cm,
+    width=7.5cm, height=5.5cm,
+    axis lines=center,
+    xlabel={$t$},
+    ylabel={$h(t)$},
+    xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    ylabel style={font=\small, rotate=0, anchor=south east, at={(axis description cs:0,1)}},
+    xmin=-1.5, xmax=5.8,
+    ymin=-0.12, ymax=1.35,
+    clip=false,
+    axis line style={->, thick},
+    xtick={0,2,3,4,5},
+    ytick={0,1},
+    every tick label/.style={font=\footnotesize},
+    title={\small (b) $h(t)=e^{-t}\,u(t)=g'(t)$},
+]
+    % zero for t < 0
+    \addplot[domain=-1.3:0, samples=2, very thick, utnblue] {0};
+    % e^{-t} for t >= 0
+    \addplot[domain=0:5.5, samples=200, very thick, utnblue] {exp(-x)};
+    % vertical jump at t=0 from 0 to 1
+    \draw[utnblue, thick] (axis cs:0,0) -- (axis cs:0,1);
+    \fill[utnblue] (axis cs:0,1) circle (2.5pt);
+    \fill[white]   (axis cs:0,0) circle (2.5pt);
+    \draw[utnblue, thick] (axis cs:0,0) circle (2.5pt);
+    \node[font=\footnotesize, below] at (axis cs:1, 0) {$\tau_0$};
+    \draw[dashed, gray!70, thin] (axis cs:1, 0) -- (axis cs:1, 0.368);
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

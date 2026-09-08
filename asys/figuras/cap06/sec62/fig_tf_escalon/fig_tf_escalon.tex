@@ -1,0 +1,67 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_tf_escalon
+% TFTC extendida del escalón: U(jw) = 1/(jw) + pi*delta(w).
+% (a) Parte real: impulso de peso pi en w = 0 (el valor medio 1/2).
+% (b) Parte imaginaria: -1/w, hipérbola impar (el salto).
+% Estilo consistente con fig_tf_armonica (impulso como flecha utnblue).
+% Sizing: dos paneles de w 7cm, h 4cm; incluir a 0.85\linewidth.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% --- Panel (a): parte real, impulso pi en el origen ---
+\begin{axis}[
+    name=panelA,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-3.5, xmax=3.5, ymin=-0.4, ymax=1.4,
+    xtick={0},
+    xticklabels={$0$},
+    ytick={1},
+    yticklabels={$\pi$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.22)}},
+    ylabel={$\operatorname{Re}\{U(j\omega)\}$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:0,0) -- (axis cs:0,1);
+\end{axis}
+
+% --- Panel (b): parte imaginaria, -1/w ---
+\begin{axis}[
+    at={(panelA.outer east)}, anchor=outer west, xshift=6mm,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-3.5, xmax=3.5, ymin=-1.4, ymax=1.4,
+    xtick=\empty,
+    ytick=\empty,
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.5)}},
+    ylabel={$\operatorname{Im}\{U(j\omega)\}$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0.08,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick, smooth, samples=60, domain=-3.4:-0.75]
+        {-1/x};
+    \addplot[utnblue, very thick, smooth, samples=60, domain=0.75:3.4]
+        {-1/x};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,51 @@
+% ============================================================
+% fig_semicirculo.tex
+% Contorno semicircular — ejemplo: f(z) = 1/(1+z^2)
+% Polos en z = +j (encerrado) y z = -j (no encerrado, difuminado)
+% ============================================================
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.2, font=\small]
+
+    % Región sombreada: semiplano superior encerrado
+    \fill[cyan!10] (-2.8,0) -- (2.8,0) arc (0:180:2.8) -- cycle;
+
+    % --- Contorno C_R (segmento real) ---
+    \draw[utnblue, thick] (-2.8,0) -- (2.8,0);
+    % Flecha en el segmento real (hacia la derecha)
+    \draw[->, utnblue, thick] (-0.01,0) -- (0.01,0);
+    \node[utnblue, below, font=\footnotesize] at (1.6,-0.15) {$C_R$};
+
+    % --- Contorno Γ_R (semicírculo superior) ---
+    \draw[utnblue, thick] (2.8,0) arc (0:180:2.8);
+    % Flecha en el semicírculo (hacia la izquierda en el tope)
+    \draw[->, utnblue, thick] (0.01, 2.8) -- (-0.01, 2.8);
+    \node[utnblue, font=\footnotesize] at (2.17, 2) {$\Gamma_R$};
+
+    % --- Ejes ---
+    \draw[->] (-3.2,0) -- (3.5,0) node[right] {Re};
+    \draw[->] (0,-1.3) -- (0,3.2) node[above] {Im};
+
+    % --- Ticks y etiquetas de R ---
+    \draw (2.8, 0.08) -- (2.8,-0.08) node[below, font=\footnotesize] {$+R$};
+    \draw (-2.8, 0.08) -- (-2.8,-0.08) node[below, font=\footnotesize] {$-R$};
+
+    % --- Ticks sobre el eje imaginario en ±j ---
+    \draw (0.08, 1) -- (-0.08, 1) node[left, font=\footnotesize] {$j$};
+    \draw (0.08,-1) -- (-0.08,-1) node[left, font=\footnotesize] {$-j$};
+
+    % --- Polo encerrado z = +j (semiplano superior) ---
+    \node[red, font=\normalsize] at (0, 1) {$\times$};
+    \node[red, right, font=\scriptsize] at (0.15, 1) {$z_1 = j$};
+
+    % --- Polo no encerrado z = -j (semiplano inferior, difuminado) ---
+    \node[red!35, font=\normalsize] at (0,-1) {$\times$};
+    \node[red!35, right, font=\scriptsize] at (0.15,-1) {$z_2 = -j$};
+
+    % --- Etiqueta R → ∞ sobre el arco ---
+    \node[gray, font=\scriptsize] at (-1.9, 2.5) {$(R \to \infty)$};
+
+\end{tikzpicture}
+\end{document} 

@@ -1,0 +1,92 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_limite_serie_a_tf
+% Tres paneles lado a lado con tau = 1 fijo y T_0 = 4, 8, 16.
+% c_k = (tau/T_0) * sinc(k*w_0*tau/2), graficado contra omega = k*w_0.
+% Misma escala vertical en los tres paneles para que se vea el aplanamiento;
+% misma escala horizontal [-9, 9] para que se vea la densificación.
+% Sizing: 3 paneles lado a lado, w 4.5cm, h 4cm.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=3pt,width=3pt]}, font=\scriptsize]
+
+\begin{groupplot}[
+    group style={
+        group size=3 by 1,
+        horizontal sep=1.2cm,
+        y descriptions at=edge left,
+    },
+    width=4.5cm,
+    height=4cm,
+    xmin=-9, xmax=9,
+    xtick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.30)}},
+    axis lines=center,
+    axis line style={->, thin},
+    ymin=-0.10, ymax=0.36,
+    ytick={0, 0.25},
+    yticklabels={$0$, $\tfrac{1}{4}$},
+    ylabel={$c_k$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+    title style={font=\scriptsize, yshift=-2pt},
+]
+
+% Panel (a): T_0 = 4 (omega_0 = pi/2)
+\nextgroupplot[title={(a)}]
+    \addplot+[ycomb, mark=*, mark size=0.5pt, red!80!black, semithick,
+              mark options={fill=red!80!black, draw=red!80!black}]
+        coordinates {
+            (-7.8540,-0.0450) (-6.2832,0.0000) (-4.7124,0.0750)
+            (-3.1416,0.1592) (-1.5708,0.2251) (0.0000,0.2500)
+            (1.5708,0.2251) (3.1416,0.1592) (4.7124,0.0750)
+            (6.2832,0.0000) (7.8540,-0.0450)
+        };
+
+% Panel (b): T_0 = 8 (omega_0 = pi/4)
+\nextgroupplot[title={(b)}]
+    \addplot+[ycomb, mark=*, mark size=0.5pt, red!80!black, semithick,
+              mark options={fill=red!80!black, draw=red!80!black}]
+        coordinates {
+            (-8.6394,-0.0267) (-7.8540,-0.0225) (-7.0686,-0.0135)
+            (-6.2832,0.0000) (-5.4978,0.0174) (-4.7124,0.0375)
+            (-3.9270,0.0588) (-3.1416,0.0796) (-2.3562,0.0980)
+            (-1.5708,0.1125) (-0.7854,0.1218) (0.0000,0.1250)
+            (0.7854,0.1218) (1.5708,0.1125) (2.3562,0.0980)
+            (3.1416,0.0796) (3.9270,0.0588) (4.7124,0.0375)
+            (5.4978,0.0174) (6.2832,0.0000) (7.0686,-0.0135)
+            (7.8540,-0.0225) (8.6394,-0.0267)
+        };
+
+% Panel (c): T_0 = 16 (omega_0 = pi/8)
+\nextgroupplot[title={(c)}]
+    \addplot+[ycomb, mark=*, mark size=0.4pt, red!80!black, semithick,
+              mark options={fill=red!80!black, draw=red!80!black}]
+        coordinates {
+            (-8.6394,-0.0134) (-8.2467,-0.0126) (-7.8540,-0.0113)
+            (-7.4613,-0.0093) (-7.0686,-0.0068) (-6.6759,-0.0037)
+            (-6.2832,0.0000) (-5.8905,0.0041) (-5.4978,0.0087)
+            (-5.1051,0.0136) (-4.7124,0.0188) (-4.3197,0.0241)
+            (-3.9270,0.0294) (-3.5343,0.0347) (-3.1416,0.0398)
+            (-2.7489,0.0446) (-2.3562,0.0490) (-1.9635,0.0529)
+            (-1.5708,0.0563) (-1.1781,0.0589) (-0.7854,0.0609)
+            (-0.3927,0.0621) (0.0000,0.0625) (0.3927,0.0621)
+            (0.7854,0.0609) (1.1781,0.0589) (1.5708,0.0563)
+            (1.9635,0.0529) (2.3562,0.0490) (2.7489,0.0446)
+            (3.1416,0.0398) (3.5343,0.0347) (3.9270,0.0294)
+            (4.3197,0.0241) (4.7124,0.0188) (5.1051,0.0136)
+            (5.4978,0.0087) (5.8905,0.0041) (6.2832,0.0000)
+            (6.6759,-0.0037) (7.0686,-0.0068) (7.4613,-0.0093)
+            (7.8540,-0.0113) (8.2467,-0.0126) (8.6394,-0.0134)
+        };
+
+\end{groupplot}
+
+\end{tikzpicture}
+\end{document}

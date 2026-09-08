@@ -1,0 +1,82 @@
+% ============================================================
+% fig_factor_convergencia.tex
+% Visualiza el efecto del factor de convergencia e^{-sigma t} sobre
+% señales que la TFTC no captura.
+%   (a) Escalón u(t) (azul, no decae) y u(t) e^{-0.5 t} (rojo, decae).
+%   (b) Exponencial creciente e^t u(t) (azul, crece sin tope) y
+%       el producto e^t u(t) · e^{-2t} = e^{-t} u(t) (rojo, decae).
+% ============================================================
+%\PassOptionsToPackage{gray}{xcolor}
+
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[font=\small, >=Latex]
+
+% =====================================================================
+% Panel (a): escalón u(t) y u(t) e^{-0.5 t}
+% =====================================================================
+\begin{axis}[
+    name=axA,
+    width=7cm, height=4.8cm,
+    axis lines=middle,
+    axis line style={->},
+    xmin=-0.5, xmax=3.4,
+    ymin=-0.18, ymax=1.4,
+    xtick={1,2,3},
+    ytick={1},
+    xticklabel style={font=\scriptsize},
+    yticklabel style={font=\scriptsize},
+    xlabel={$t$},
+    xlabel style={at={(axis description cs:1.0, 0.13)}, anchor=west, font=\small},
+    title={(a)},
+    title style={font=\small, yshift=-2pt, anchor=south},
+    samples=200,
+    clip=false,
+]
+    % u(t) — escalón en azul
+    \addplot[utnblue, thick, domain=-0.5:0] {0};
+    \addplot[utnblue, thick, domain=0:3.2] {1};
+    \addplot[utnblue, only marks, mark=*, mark size=1.3pt] coordinates {(0,1)};
+
+    % u(t) e^{-0.5 t} — rescatado, en rojo
+    \addplot[red!80!black, thick, domain=0:3.2] {exp(-0.5*x)};
+    \addplot[red!80!black, only marks, mark=*, mark size=1.3pt] coordinates {(0,1)};
+\end{axis}
+
+% =====================================================================
+% Panel (b): exponencial creciente e^t u(t) y producto rescatado
+% =====================================================================
+\begin{axis}[
+    name=axB,
+    at={($(axA.outer east)+(0.6cm,0)$)},
+    anchor=outer west,
+    width=7cm, height=4.8cm,
+    axis lines=middle,
+    axis line style={->},
+    xmin=-0.5, xmax=2.5,
+    ymin=-1.0, ymax=8,
+    xtick={1,2},
+    ytick={1, 4},
+    xticklabel style={font=\scriptsize},
+    yticklabel style={font=\scriptsize},
+    xlabel={$t$},
+    xlabel style={at={(axis description cs:1.0, 0.13)}, anchor=west, font=\small},
+    title={(b)},
+    title style={font=\small, yshift=-2pt, anchor=south},
+    samples=200,
+    clip=true,
+]
+    % e^t u(t) — explota en azul
+    \addplot[utnblue, thick, domain=-0.5:0] {0};
+    \addplot[utnblue, thick, domain=0:2.0] {exp(x)};
+    \addplot[utnblue, only marks, mark=*, mark size=1.3pt] coordinates {(0,1)};
+
+    % e^t · e^{-2t} = e^{-t} — rescatado, en rojo
+    \addplot[red!80!black, thick, domain=0:2.5] {exp(-x)};
+    \addplot[red!80!black, only marks, mark=*, mark size=1.3pt] coordinates {(0,1)};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

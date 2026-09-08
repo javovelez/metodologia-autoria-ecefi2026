@@ -1,0 +1,48 @@
+\documentclass[border=1mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=1.4 ]%, font=\small
+        % Configuración
+        \def\axislen{1.8}
+        \def\veclen{1.2}
+        
+        % Ejes
+        \draw[->] (-\axislen,0) -- (\axislen,0) node[right] {Re};
+        \draw[->] (0,-\axislen) -- (0,\axislen) node[above] {Im};
+        
+        % Círculo unitario (referencia visual)
+        \draw[gray!30, very thick , dashed] (0,0) circle (\veclen);
+        
+        % Vectores
+        % 0 rad
+        \draw[->, very thick, utnblue] (0,0) -- (\veclen,0);
+        \fill[utnblue] (\veclen,0) circle (1.5pt);
+        \node[above right] at (\veclen,0) {$1$};
+        \node[below, utnblue] at (\veclen,-0.1) {$e^{j0}$};
+        
+        % pi/2 rad
+        \draw[->, very thick, utnblue] (0,0) -- (0,\veclen);
+        \fill[utnblue] (0,\veclen) circle (1.5pt);
+        \node[above right] at (0,\veclen) {$j$};
+        \node[left, utnblue] at (-0.1,\veclen) {$e^{j\pi/2}$};
+        
+        % pi rad
+        \draw[->, very thick, utnblue] (0,0) -- (-\veclen,0);
+        \fill[utnblue] (-\veclen,0) circle (1.5pt);
+        \node[above left] at (-\veclen,0) {$-1$};
+        \node[below, utnblue] at (-\veclen,-0.1) {$e^{j\pi}$};
+        
+        % 3pi/2 rad
+        \draw[->, very thick, utnblue] (0,0) -- (0,-\veclen);
+        \fill[utnblue] (0,-\veclen) circle (1.5pt);
+        \node[below right] at (0,-\veclen) {$-j$};
+        \node[left, utnblue] at (-0.1,-\veclen) {$e^{j3\pi/2}$};
+        
+        % Sentido positivo
+        % \draw[->, gray] (0.4,0) arc (20:70:0.4);
+        
+    \end{tikzpicture}
+\end{document}

@@ -1,0 +1,107 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\scriptsize,
+        mk/.style={fill=utnblue},
+        vec/.style={utnblue, semithick, -{Latex[length=4pt]}},
+        arco/.style={red!80!black, semithick, -{Latex[length=3pt]}},
+    ]
+        \def\rc{1.15}    % radio del círculo
+        \def\rl{1.42}    % radio de las etiquetas de muestra
+        \def\ra{0.48}    % radio del arco que mide lambda
+        \def\dcol{5.80}  % paso horizontal entre paneles
+        \def\dfil{4.50}  % paso vertical entre filas
+
+        \newcommand{\circulo}{\draw[gray!55, thin] (0,0) circle (\rc);}
+        % muestras sobre el círculo, numeradas con el índice n
+        % #1 = radio del marcador, #2 = lista angulo/etiqueta
+        \newcommand{\puntos}[2]{%
+            \foreach \ang/\lbl in {#2} {
+                \fill[mk] (\ang:\rc) circle (#1);
+                \node[utnblue, font=\tiny, inner sep=1pt] at (\ang:\rl) {\lbl};
+            }%
+        }
+        % marcador de panel y valor de lambda, juntos arriba y centrados
+        \newcommand{\panel}[2]{%
+            \node[anchor=south] at (0,1.66) {#1\quad$#2$};
+        }
+
+        % ============================== FILA SUPERIOR ==============================
+
+        % ---------- (a) k = 0 ----------
+        \begin{scope}[shift={(0,0)}]
+            \panel{(a)}{\lambda_0 = 0}
+            \circulo
+            \puntos{1.8pt}{0/0}
+            \draw[vec] (0,0) -- (0:\rc);
+        \end{scope}
+
+        % ---------- (b) k = 1 ----------
+        \begin{scope}[shift={(\dcol,0)}]
+            \panel{(b)}{\lambda_1 = \pi/4}
+            \circulo
+            \puntos{1.6pt}{0/0, 45/1, 90/2, 135/3, 180/4, 225/5, 270/6, 315/7}
+            \draw[vec] (0,0) -- (45:\rc);
+            \draw[arco] (0:\ra) arc (0:45:\ra);
+        \end{scope}
+
+        % ---------- (c) k = 2 ----------
+        \begin{scope}[shift={(2*\dcol,0)}]
+            \panel{(c)}{\lambda_2 = \pi/2}
+            \circulo
+            \puntos{1.6pt}{0/0, 90/1, 180/2, 270/3}
+            \draw[vec] (0,0) -- (90:\rc);
+            \draw[arco] (0:\ra) arc (0:90:\ra);
+        \end{scope}
+
+        % ---------- (d) k = 3 ----------
+        \begin{scope}[shift={(3*\dcol,0)}]
+            \panel{(d)}{\lambda_3 = 3\pi/4}
+            \circulo
+            \puntos{1.6pt}{0/0, 135/1, 270/2, 45/3, 180/4, 315/5, 90/6, 225/7}
+            \draw[vec] (0,0) -- (135:\rc);
+            \draw[arco] (0:\ra) arc (0:135:\ra);
+        \end{scope}
+
+        % ============================== FILA INFERIOR ==============================
+
+        % ---------- (e) k = 4 ----------
+        \begin{scope}[shift={(0,-\dfil)}]
+            \panel{(e)}{\lambda_4 = \pi}
+            \circulo
+            \puntos{1.8pt}{0/0, 180/1}
+            \draw[vec] (0,0) -- (180:\rc);
+            \draw[arco] (0:\ra) arc (0:180:\ra);
+        \end{scope}
+
+        % ---------- (f) k = 5 ----------
+        \begin{scope}[shift={(\dcol,-\dfil)}]
+            \panel{(f)}{\lambda_5 = 5\pi/4}
+            \circulo
+            \puntos{1.6pt}{0/0, 225/1, 90/2, 315/3, 180/4, 45/5, 270/6, 135/7}
+            \draw[vec] (0,0) -- (225:\rc);
+            \draw[arco] (0:\ra) arc (0:225:\ra);
+        \end{scope}
+
+        % ---------- (g) k = 6 ----------
+        \begin{scope}[shift={(2*\dcol,-\dfil)}]
+            \panel{(g)}{\lambda_6 = 3\pi/2}
+            \circulo
+            \puntos{1.6pt}{0/0, 270/1, 180/2, 90/3}
+            \draw[vec] (0,0) -- (270:\rc);
+            \draw[arco] (0:\ra) arc (0:270:\ra);
+        \end{scope}
+
+        % ---------- (h) k = 7 ----------
+        \begin{scope}[shift={(3*\dcol,-\dfil)}]
+            \panel{(h)}{\lambda_7 = 7\pi/4}
+            \circulo
+            \puntos{1.6pt}{0/0, 315/1, 270/2, 225/3, 180/4, 135/5, 90/6, 45/7}
+            \draw[vec] (0,0) -- (315:\rc);
+            \draw[arco] (0:\ra) arc (0:315:\ra);
+        \end{scope}
+
+    \end{tikzpicture}
+\end{document}

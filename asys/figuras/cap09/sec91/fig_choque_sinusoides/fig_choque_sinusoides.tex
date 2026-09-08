@@ -1,0 +1,74 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_choque_sinusoides
+% Dos cosenos que comparten muestras bajo Delta t = 1/8 s.
+%   - lenta: 1 ciclo/s  -> cos(360*1*x)  (utnblue)
+%   - rapida: 9 ciclos/s -> cos(360*9*x) (red!80!black)
+% Muestras en x = n/8, n=0..8: y = cos(45*n). Ambas pasan por estos puntos.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=3pt,width=3pt]}, font=\scriptsize]
+\begin{axis}[
+    width=13cm, height=5.6cm,
+    axis lines=center,
+    axis line style={->, thick},
+    % el eje de ordenadas arranca a la altura de las lineas guia, para no
+    % atravesar la fila de indices n de abajo
+    y axis line style={shorten <=17pt},
+    xmin=-0.03, xmax=1.08, ymin=-1.62, ymax=1.45,
+    xtick={0,0.125,0.25,0.375,0.5,0.625,0.75,0.875,1},
+    xticklabels={$0$,,,,,,,,$1$},
+    ytick={-1,0,1},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$ (s)},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.46)}},
+    ylabel={},
+    enlarge x limits=false,
+    clip mode=individual,
+    axis on top,
+]
+    % lineas guia verticales en los instantes de muestreo (sin \foreach dentro del eje)
+    \draw[gray!40, thin, dashed] (axis cs:0.125,-1.3) -- (axis cs:0.125,1.3);
+    \draw[gray!40, thin, dashed] (axis cs:0.25,-1.3)  -- (axis cs:0.25,1.3);
+    \draw[gray!40, thin, dashed] (axis cs:0.375,-1.3) -- (axis cs:0.375,1.3);
+    \draw[gray!40, thin, dashed] (axis cs:0.5,-1.3)   -- (axis cs:0.5,1.3);
+    \draw[gray!40, thin, dashed] (axis cs:0.625,-1.3) -- (axis cs:0.625,1.3);
+    \draw[gray!40, thin, dashed] (axis cs:0.75,-1.3)  -- (axis cs:0.75,1.3);
+    \draw[gray!40, thin, dashed] (axis cs:0.875,-1.3) -- (axis cs:0.875,1.3);
+    \draw[gray!40, thin, dashed] (axis cs:1,-1.3)      -- (axis cs:1,1.3);
+
+    % sinusoide rapida: 9 ciclos/s
+    \addplot[red!80!black, thick, samples=600, domain=0:1] {cos(360*9*x)};
+    % sinusoide lenta: 1 ciclo/s
+    \addplot[utnblue, thick, samples=200, domain=0:1] {cos(360*1*x)};
+
+    % muestras compartidas
+    \addplot[only marks, mark=*, mark size=1.8pt,
+             mark options={fill=black, draw=black}]
+        coordinates {
+            (0,1) (0.125,0.70711) (0.25,0) (0.375,-0.70711) (0.5,-1)
+            (0.625,-0.70711) (0.75,0) (0.875,0.70711) (1,1)
+        };
+
+    % indices de muestra n = 0..8, alineados con los instantes de muestreo
+    \node[anchor=base, font=\footnotesize] at (axis cs:0,-1.42) {$0$};
+    \node[anchor=base, font=\footnotesize] at (axis cs:0.125,-1.42) {$1$};
+    \node[anchor=base, font=\footnotesize] at (axis cs:0.25,-1.42) {$2$};
+    \node[anchor=base, font=\footnotesize] at (axis cs:0.375,-1.42) {$3$};
+    \node[anchor=base, font=\footnotesize] at (axis cs:0.5,-1.42) {$4$};
+    \node[anchor=base, font=\footnotesize] at (axis cs:0.625,-1.42) {$5$};
+    \node[anchor=base, font=\footnotesize] at (axis cs:0.75,-1.42) {$6$};
+    \node[anchor=base, font=\footnotesize] at (axis cs:0.875,-1.42) {$7$};
+    \node[anchor=base, font=\footnotesize] at (axis cs:1,-1.42) {$8$};
+    \node[anchor=west, font=\footnotesize] at (axis cs:1.03,-1.42) {$n$};
+
+    % etiquetas de cada curva
+    \node[utnblue, anchor=west, font=\footnotesize]
+        at (axis cs:0.265,1.27) {$1$ ciclo/s};
+    \node[red!80!black, anchor=west, font=\footnotesize]
+        at (axis cs:0.66,1.27) {$9$ ciclos/s};
+\end{axis}
+\end{tikzpicture}
+\end{document}

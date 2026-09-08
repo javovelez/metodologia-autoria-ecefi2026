@@ -1,0 +1,102 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_margen_muestreo
+% Por qué en la práctica ws tiene que superar 2 wr y no 2 wM.
+% El filtro antialiasing real no corta de manera abrupta: deja pasar la banda útil
+% hasta wM, decae a lo largo de una franja de transición y en wr ya se anuló.
+%   X(w) = 1                para |w| < wM
+%        = coseno alzado    para wM <= |w| <= wr   (1 en wM, 0 en wr)
+%        = 0                para |w| > wr
+% Valores: wM = 1,8   wr = 3,0   ws = 7,0  =>  2 wr = 6,0 < 7,0 (condición OK)
+%          ws/2 = 3,5   ws - wr = 4,0   ws - wM = 5,2
+% (a) El espectro que entrega el filtro: banda útil plana y transición (gris).
+% (b) Muestreado con ws: la vecina empieza en ws - wr = 4,0, a la derecha de
+%     wr = 3,0, de modo que las copias no se solapan. La regla de arriba parte el
+%     eje en tres tramos: banda útil [0, wM], transición [wM, wr] y franja libre
+%     [wr, ws - wr]. El rechazo del filtro está idealizado a cero; uno real deja
+%     un resto por encima de wr que sí se solapa.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=4pt]}, font=\scriptsize, x=0.52cm, y=1.20cm,
+    declare function={
+        X(\x) = (abs(\x)<1.8) * 1
+              + (abs(\x)>=1.8)*(abs(\x)<=3.0) * (0.5*(1+cos(180*(abs(\x)-1.8)/1.2)));
+    },
+    esp/.style={utnblue, thick, fill=utnblue!12},
+    espcopy/.style={utnblue!70, thick, fill=utnblue!6},
+    nyq/.style={gray!70, thin, dashed},
+    med/.style={<->, gray!65},
+    ax/.style={->, thin, black},
+]
+    % ===================== (a) lo que entrega el filtro =====================
+    \begin{scope}[shift={(0,0)}]
+        \node at (-10.4,0.62) {(a)};
+        \begin{scope}
+            \clip (-9.5,-0.05) rectangle (9.5,1.40);
+            \draw[esp] (-3.0,0)
+                -- plot[domain=-3.0:3.0, samples=300, variable=\x] (\x,{X(\x)})
+                -- (3.0,0) -- cycle;
+            % franja de transición, resaltada sobre el relleno
+            \fill[gray!35] (1.8,0) -- plot[domain=1.8:3.0, samples=80, variable=\x]
+                    (\x,{X(\x)}) -- (3.0,0) -- cycle;
+            \fill[gray!35] (-1.8,0) -- plot[domain=-1.8:-3.0, samples=80, variable=\x]
+                    (\x,{X(\x)}) -- (-3.0,0) -- cycle;
+        \end{scope}
+        \draw[ax] (-9.9,0) -- (10.1,0) node[right] {$\omega$};
+        \draw[ax] (0,-0.05) -- (0,1.15);
+        \node[below, font=\tiny] at (0,-0.05) {$0$};
+        \draw[thin] (1.8,0.04) -- (1.8,-0.04) node[below, font=\tiny] {$\omega_M$};
+        \draw[thin] (3.0,0.04) -- (3.0,-0.04) node[below, font=\tiny] {$\omega_r$};
+        \node[gray!60!black, anchor=west, font=\tiny] at (4.6,0.56) {transición};
+        \draw[gray!60!black, thin, -{Latex[length=3pt]}] (4.5,0.55) -- (2.6,0.34);
+        \node[utnblue, anchor=south east, font=\tiny] at (-0.2,1.00) {$X(j\omega)$};
+    \end{scope}
+
+    % ===================== (b) después de muestrear =====================
+    \begin{scope}[shift={(0,-2.60)}]
+        \node at (-10.4,0.62) {(b)};
+        \begin{scope}
+            \clip (-9.5,-0.05) rectangle (9.5,1.40);
+            \foreach \c in {-7,7} {
+                \draw[espcopy] (\c-3.0,0)
+                    -- plot[domain=\c-3.0:\c+3.0, samples=300, variable=\x] (\x,{X(\x-\c)})
+                    -- (\c+3.0,0) -- cycle;
+            }
+            \draw[esp] (-3.0,0)
+                -- plot[domain=-3.0:3.0, samples=300, variable=\x] (\x,{X(\x)})
+                -- (3.0,0) -- cycle;
+            % la transición de la copia central, sombreada como en (a)
+            \fill[gray!35] (1.8,0) -- plot[domain=1.8:3.0, samples=80, variable=\x]
+                    (\x,{X(\x)}) -- (3.0,0) -- cycle;
+            \fill[gray!35] (-1.8,0) -- plot[domain=-1.8:-3.0, samples=80, variable=\x]
+                    (\x,{X(\x)}) -- (-3.0,0) -- cycle;
+        \end{scope}
+        \draw[ax] (-9.9,0) -- (10.1,0) node[right] {$\omega$};
+        \draw[ax] (0,-0.05) -- (0,1.15);
+        \node[below, font=\tiny] at (0,-0.05) {$0$};
+        % frecuencia de Nyquist, rotulada abajo y en segunda fila para no chocar con wr
+        \draw[nyq] (3.5,-0.28) -- (3.5,1.24);
+        \draw[nyq] (-3.5,-0.28) -- (-3.5,1.24);
+        \node[gray!55!black, font=\tiny, anchor=north] at (3.5,-0.30) {$\tfrac{\omega_s}{2}$};
+        % marcas del eje
+        \draw[thin] (1.8,0.04) -- (1.8,-0.04) node[below, font=\tiny] {$\omega_M$};
+        \draw[thin] (3.0,0.04) -- (3.0,-0.04) node[below, font=\tiny] {$\omega_r$};
+        % el rótulo va en una segunda fila, con guía, para no confundirlo con ws/2
+        \draw[thin] (4.0,0.04) -- (4.0,-0.04);
+        \node[anchor=west, font=\tiny] at (4.6,-0.36) {$\omega_s - \omega_r$};
+        \draw[thin, -{Latex[length=3pt]}] (4.5,-0.34) -- (4.06,-0.10);
+        \draw[thin] (7.0,0.04) -- (7.0,-0.04) node[below, font=\tiny] {$\omega_s$};
+        % regla superior: banda útil, transición y franja libre, una tras otra
+        \draw[med] (-1.8,1.30) -- (1.8,1.30);
+        \node[gray!65, anchor=south, font=\tiny, fill=white, inner sep=1pt] at (0,1.35) {banda útil};
+        \draw[med] (1.8,1.30) -- (3.0,1.30);
+        \node[gray!65, anchor=south, font=\tiny, fill=white, inner sep=1pt] at (2.4,1.52) {transición};
+        \draw[med] (3.0,1.30) -- (4.0,1.30);
+        \node[gray!65, anchor=south, font=\tiny, fill=white, inner sep=1pt] at (3.5,1.35) {libre};
+        \node[utnblue!70, anchor=south, font=\tiny] at (-7.0,1.06) {vecina};
+        \draw[utnblue!70, thin, -{Latex[length=3pt]}] (-7.0,1.04) -- (-7.0,0.30);
+    \end{scope}
+\end{tikzpicture}
+\end{document}

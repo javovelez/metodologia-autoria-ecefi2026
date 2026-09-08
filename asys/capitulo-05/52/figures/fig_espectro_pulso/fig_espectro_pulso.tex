@@ -1,0 +1,87 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Espectro de líneas del tren de pulsos rectangulares con tau = T_0/4.
+% Coeficientes c_k = (tau/T_0) sinc(k w_0 tau / 2) = (1/4) sinc(k pi / 4).
+% Panel (a): módulo |c_k| con la envolvente sinc punteada.
+% Panel (b): fase ∠c_k (alterna entre 0 y pi).
+% Sizing: preset S3 (2 paneles apilados, w 10 cm, h 4.5 cm; aspect 2.2:1).
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\begin{groupplot}[
+    group style={
+        group size=1 by 2,
+        vertical sep=1.1cm,
+        x descriptions at=edge bottom,
+    },
+    width=10cm,
+    height=4.5cm,
+    xmin=-12.8, xmax=12.8,
+    xtick={-12, -8, -4, 0, 4, 8, 12},
+    every tick label/.style={font=\tiny},
+    xlabel={$k$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.40)}},
+    axis lines=center,
+    axis line style={->, thick},
+    enlarge x limits=0.02,
+    clip mode=individual,
+    title style={font=\small, yshift=-2pt},
+]
+
+% =====================================================
+% Panel (a): módulo |c_k|
+% =====================================================
+\nextgroupplot[
+    title={(a)},
+    ymin=-0.035, ymax=0.32,
+    ytick={0, 0.25},
+    yticklabels={$0$, $\tau/T_0$},
+    ylabel={$|c_k|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+]
+    % Envolvente sinc punteada
+    \addplot[black!70, densely dashed, semithick, domain=-12.5:12.5, samples=500, smooth]
+        {abs(sin(deg(x*pi/4))/(x*pi/4))/4};
+    % Stems con marcadores en cada k entero
+    \addplot+[ycomb, mark=*, mark size=1.8pt, utnblue, very thick,
+              mark options={fill=utnblue, draw=utnblue}]
+        coordinates {
+            (-12, 0) (-11, 0.0205) (-10, 0.0318) (-9, 0.0250)
+            (-8, 0) (-7, 0.0322) (-6, 0.0531) (-5, 0.0450)
+            (-4, 0) (-3, 0.0750) (-2, 0.1592) (-1, 0.2251)
+            (0, 0.25)
+            (1, 0.2251) (2, 0.1592) (3, 0.0750) (4, 0)
+            (5, 0.0450) (6, 0.0531) (7, 0.0322) (8, 0)
+            (9, 0.0250) (10, 0.0318) (11, 0.0205) (12, 0)
+        };
+
+% =====================================================
+% Panel (b): fase ∠c_k
+% =====================================================
+\nextgroupplot[
+    title={(b)},
+    ymin=-0.6, ymax=3.9,
+    ytick={0, 3.14159},
+    yticklabels={$0$, $\pi$},
+    ylabel={$\angle c_k$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+]
+    \addplot+[ycomb, mark=*, mark size=1.8pt, utnblue, very thick,
+              mark options={fill=utnblue, draw=utnblue}]
+        coordinates {
+            (-11, 0) (-10, 0) (-9, 0)
+            (-7, 3.14159) (-6, 3.14159) (-5, 3.14159)
+            (-3, 0) (-2, 0) (-1, 0) (0, 0) (1, 0) (2, 0) (3, 0)
+            (5, 3.14159) (6, 3.14159) (7, 3.14159)
+            (9, 0) (10, 0) (11, 0)
+        };
+
+\end{groupplot}
+
+\end{tikzpicture}
+\end{document}

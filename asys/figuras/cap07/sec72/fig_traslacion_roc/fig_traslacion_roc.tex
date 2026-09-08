@@ -1,0 +1,89 @@
+% ============================================================
+% fig_traslacion_roc.tex
+% Geometría del desplazamiento en s aplicado al coseno causal:
+%   (a) Original cos(omega_0 t) u(t):
+%        polos en s = ±j omega_0, ROC Re{s} > 0.
+%   (b) Modulado e^{-a t} cos(omega_0 t) u(t):
+%        polos trasladados a s = -a ± j omega_0,
+%        ROC trasladada a Re{s} > -a.
+% Estilo coherente con sec71/fig_roc_tres_formas.
+% ============================================================
+%\PassOptionsToPackage{gray}{xcolor}
+
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=0.85, font=\small]
+
+% Constantes: omega_0 = 2, a = 1.5
+
+% =====================================================================
+% Panel (a): plano s con polos del coseno causal en s = ±j omega_0
+%   ROC: semiplano derecho Re{s} > 0
+% =====================================================================
+\begin{scope}[shift={(0,0)}]
+    % --- Fill: ROC ---
+    \fill[cyan!15] (0, -2.8) rectangle (3, 2.8);
+
+    % --- Ejes ---
+    \draw[->, thick] (-3, 0) -- (3.2, 0) node[right] {$\sigma$};
+    \draw[->, thick] (0, -2.8) -- (0, 3.0) node[above right, inner sep=1pt] {$j\omega$};
+
+    % --- Anotaciones ---
+    \fill[black] (0,0) circle (1pt);
+
+    % Polos en (0, ±2)
+    \node[red, font=\normalsize] at (0, 2) {$\times$};
+    \node[red, right, font=\scriptsize, inner sep=2pt] at (0.05, 2) {$j\omega_0$};
+    \node[red, font=\normalsize] at (0, -2) {$\times$};
+    \node[red, right, font=\scriptsize, inner sep=2pt] at (0.05, -2) {$-j\omega_0$};
+
+    % Etiqueta ROC
+    \node[utnblue!80!black, font=\scriptsize] at (1.6, 1.0) {ROC};
+
+    % Marcador de panel
+    \node[anchor=south, font=\small] at (0, 3.4) {(a)};
+\end{scope}
+
+% =====================================================================
+% Panel (b): plano s con polos trasladados a -a ± j omega_0
+%   ROC: semiplano derecho Re{s} > -a
+% =====================================================================
+\begin{scope}[shift={(7.5,0)}]
+    % --- Fill: ROC trasladada ---
+    \fill[cyan!15] (-1.5, -2.8) rectangle (3, 2.8);
+
+    % --- Ejes ---
+    \draw[->, thick] (-3, 0) -- (3.2, 0) node[right] {$\sigma$};
+    \draw[->, thick] (0, -2.8) -- (0, 3.0) node[above right, inner sep=1pt] {$j\omega$};
+
+    % --- Frontera de la ROC ---
+    \draw[dashed, thick, gray] (-1.5, -2.8) -- (-1.5, 2.8);
+
+    % --- Anotaciones ---
+    \fill[black] (0,0) circle (1pt);
+
+    % Polos trasladados a (-1.5, ±2)
+    \node[red, font=\normalsize] at (-1.5, 2) {$\times$};
+    \node[red, above left, font=\scriptsize, inner sep=2pt] at (-1.55, 2.05) {$-a + j\omega_0$};
+    \node[red, font=\normalsize] at (-1.5, -2) {$\times$};
+    \node[red, below left, font=\scriptsize, inner sep=2pt] at (-1.55, -2.05) {$-a - j\omega_0$};
+
+    % Tick para -a sobre el eje sigma
+    \draw (-1.5, 0.08) -- (-1.5, -0.08);
+    \node[below, font=\scriptsize] at (-1.5, -0.1) {$-a$};
+
+    % Flecha que indica la traslación
+    \draw[->, thick, gray, dashed] (0.0, 0.6) -- (-1.4, 0.6);
+    \node[gray, font=\scriptsize, anchor=south] at (-0.7, 0.65) {$-a$};
+
+    % Etiqueta ROC
+    \node[utnblue!80!black, font=\scriptsize] at (1.6, 1.0) {ROC};
+
+    % Marcador de panel
+    \node[anchor=south, font=\small] at (0, 3.4) {(b)};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

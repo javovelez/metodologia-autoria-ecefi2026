@@ -1,0 +1,122 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_escalamiento_pulso
+% Efecto del escalamiento temporal sobre el pulso rectangular, ejemplo
+% a = 2. Grid 2x2:
+%   (a) arriba-izq    — pulso original p_τ(t), ancho τ, altura 1.
+%   (b) arriba-der    — sinc original τ·sinc(ωτ/2), ceros en
+%                       múltiplos de 2π/τ, altura central τ.
+%   (c) abajo-izq     — pulso acelerado p_τ(2t) = p_{τ/2}(t), ancho τ/2.
+%   (d) abajo-der     — sinc dilatada (τ/2)·sinc(ωτ/4), ceros en
+%                       múltiplos de 4π/τ, altura central τ/2.
+% Mismo rango de eje y escala en cada columna para comparación visual
+% directa entre filas (Regla A).
+% Parametros: τ = 2.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ====================== Panel (a): tiempo original ======================
+\begin{axis}[
+    name=panel_a,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-2, xmax=2.4, ymin=-0.25, ymax=1.4,
+    xtick={1},
+    xticklabels={$\tau/2$},
+    ytick=\empty,
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Pulso original p_τ(t) — azul, ancho τ = 2 (de -1 a 1)
+    \addplot[utnblue, very thick] coordinates
+        {(-2,0) (-1,0) (-1,1) (1,1) (1,0) (2.4,0)};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.1, 1.0) {$1$};
+\end{axis}
+
+% ====================== Panel (b): frecuencia original ==================
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.east)+(1.4cm,0)$)}, anchor=west,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-11, xmax=14, ymin=-0.7, ymax=2.6,
+    xtick={3.1416},
+    xticklabels={$\frac{2\pi}{\tau}$},
+    ytick={2},
+    yticklabels={$\tau$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.20)}},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Sinc original τ·sinc(ωτ/2) con τ=2 → 2·sinc(ω) = 2 sin(ω)/ω
+    \addplot[utnblue, very thick, domain=-11:14, samples=400, smooth]
+        {2 * sin(deg(x + 0.0001))/(x + 0.0001)};
+\end{axis}
+
+% ====================== Panel (c): tiempo acelerada =====================
+\begin{axis}[
+    name=panel_c,
+    at={($(panel_a.south)+(0,-1.6cm)$)}, anchor=north,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-2, xmax=2.4, ymin=-0.25, ymax=1.4,
+    xtick={0.5},
+    xticklabels={$\tau/4$},
+    ytick=\empty,
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+    title={(c)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Pulso acelerado p_τ(2t) = p_{τ/2}(t) — rojo, ancho τ/2 = 1
+    % (de -0.5 a 0.5).
+    \addplot[red!80!black, very thick] coordinates
+        {(-2,0) (-0.5,0) (-0.5,1) (0.5,1) (0.5,0) (2.4,0)};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.1, 1.0) {$1$};
+\end{axis}
+
+% ====================== Panel (d): frecuencia dilatada ==================
+\begin{axis}[
+    name=panel_d,
+    at={($(panel_b.south)+(0,-1.6cm)$)}, anchor=north,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-11, xmax=14, ymin=-0.7, ymax=2.6,
+    xtick={6.2832},
+    xticklabels={$\frac{4\pi}{\tau}$},
+    ytick=\empty,
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.20)}},
+    title={(d)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Sinc dilatada (τ/2)·sinc(ωτ/4) con τ=2 → sinc(ω/2) = 2 sin(ω/2)/ω
+    \addplot[red!80!black, very thick, domain=-11:14, samples=400, smooth]
+        {2 * sin(deg((x + 0.0001)/2))/(x + 0.0001)};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.3, 1.08) {$\tau/2$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

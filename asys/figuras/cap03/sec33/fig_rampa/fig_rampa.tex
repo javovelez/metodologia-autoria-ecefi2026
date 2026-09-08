@@ -1,0 +1,56 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    mypanel/.style={
+        width=6.2cm, height=4.2cm,
+        axis lines=center,
+        axis line style={->, thin},
+        axis on top=true,
+        xmin=-2.5, xmax=4.8,
+        xtick={-2,-1,1,2,3,4},
+        tick style={thin},
+        tick label style={font=\scriptsize},
+        xlabel={$t$}, xlabel style={right, font=\scriptsize},
+        ylabel style={above, font=\scriptsize},
+        clip=false,
+        title style={yshift=-1.5ex},
+    },
+    sig/.style={utnblue, thick},
+}
+
+% -------------------------------------------------------
+% PANEL A: escalón unitario u(t)
+% -------------------------------------------------------
+\begin{axis}[mypanel, name=pA,
+    ymin=-0.5, ymax=1.8,
+    ytick={1},
+    ylabel={$u(t)$},
+    title={\textbf{(a)}}]
+\addplot[sig] coordinates {(-2.5,0)(0,0)};
+\addplot[sig, dashed] coordinates {(0,0)(0,1)};  % salto
+\addplot[sig] coordinates {(0,1)(4.8,1)};
+\addplot[sig, mark=*, fill=white, draw=utnblue, mark size=1.8pt, only marks] coordinates {(0,0)};
+\addplot[sig, mark=*, mark size=1.8pt, only marks] coordinates {(0,1)};
+\node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+\end{axis}
+
+% -------------------------------------------------------
+% PANEL B: rampa unitaria r(t) = t*u(t)
+% -------------------------------------------------------
+\begin{axis}[mypanel, name=pB,
+    at={($(pA.east)+(1.8cm,0)$)}, anchor=west,
+    ymin=-0.5, ymax=4.8,
+    ytick={1,2,3,4},
+    ylabel={$r(t)$},
+    title={\textbf{(b)}}]
+\addplot[sig] coordinates {(-2.5,0)(0,0)(4.8,4.8)};
+\node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

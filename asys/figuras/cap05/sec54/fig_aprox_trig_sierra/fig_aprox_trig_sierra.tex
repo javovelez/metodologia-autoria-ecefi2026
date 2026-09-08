@@ -1,0 +1,177 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Aproximación trigonométrica del diente de sierra.
+% T_0 = 4, omega_0 = pi/2, x(t) = t/2 sobre [0, 4) periódica.
+% a_0 = 1, a_k = 0, b_k = -2/(k*pi).
+% Valores: b_1=-0.6366198, b_2=-0.3183099, b_3=-0.2122066,
+%          b_4=-0.1591549, b_5=-0.1273240, b_6=-0.1061033.
+%
+% Layout 6x2: filas k=1..6.
+%   Columna izquierda: armónico individual b_k sin(k omega_0 t).
+%   Columna derecha:   suma parcial S_k(t) sobre el diente original.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=3pt,width=3pt]}, font=\scriptsize]
+
+\begin{groupplot}[
+    group style={
+        group size=2 by 5,
+        horizontal sep=1.2cm,
+        vertical sep=0.45cm,
+        x descriptions at=edge bottom,
+    },
+    width=5.5cm,
+    height=3.6cm,
+    xmin=-2.5, xmax=6.8,
+    xtick={-2, 0, 2, 4, 6},
+    enlarge x limits=0,
+    every tick label/.style={font=\tiny},
+    title style={
+        font=\scriptsize,
+        at={(axis description cs:1.0, 1.0)},
+        anchor=north east,
+        xshift=-3pt,
+        yshift=-2pt,
+    },
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+    axis lines=center,
+    axis line style={->, thin, black},
+    clip mode=individual,
+]
+
+% =============================================================
+% Fila 1, k = 1
+% =============================================================
+\nextgroupplot[
+    ymin=-1.4, ymax=1.4,
+    ytick={-0.5, 0, 0.5},
+    title={(a)},
+]
+    \addplot[red!80!black, semithick, samples=200, domain=-2.3:6.3, smooth]
+        {-0.6366198*sin(deg(pi/2*x))};
+
+\nextgroupplot[
+    ymin=-0.4, ymax=2.4,
+    ytick={0, 1, 2},
+    title={(b)},
+]
+    \addplot[utnblue, semithick]
+        coordinates {
+            (-2.3, 0.85) (0, 2) (0, 0) (4, 2) (4, 0) (6.3, 1.15)
+        };
+    \addplot[red!80!black, semithick, samples=300, domain=-2.3:6.3, smooth]
+        {1 - 0.6366198*sin(deg(pi/2*x))};
+
+% =============================================================
+% Fila 2, k = 2
+% =============================================================
+\nextgroupplot[
+    ymin=-1.4, ymax=1.4,
+    ytick={-0.5, 0, 0.5},
+    title={(c)},
+]
+    \addplot[red!80!black, semithick, samples=300, domain=-2.3:6.3, smooth]
+        {-0.3183099*sin(deg(pi*x))};
+
+\nextgroupplot[
+    ymin=-0.4, ymax=2.4,
+    ytick={0, 1, 2},
+    title={(d)},
+]
+    \addplot[utnblue, semithick]
+        coordinates {
+            (-2.3, 0.85) (0, 2) (0, 0) (4, 2) (4, 0) (6.3, 1.15)
+        };
+    \addplot[red!80!black, semithick, samples=400, domain=-2.3:6.3, smooth]
+        {1
+         - 0.6366198*sin(deg(pi/2*x))
+         - 0.3183099*sin(deg(pi*x))};
+
+% =============================================================
+% Fila 3, k = 3
+% =============================================================
+\nextgroupplot[
+    ymin=-1.4, ymax=1.4,
+    ytick={-0.5, 0, 0.5},
+    title={(e)},
+]
+    \addplot[red!80!black, semithick, samples=400, domain=-2.3:6.3, smooth]
+        {-0.2122066*sin(deg(3*pi/2*x))};
+
+\nextgroupplot[
+    ymin=-0.4, ymax=2.4,
+    ytick={0, 1, 2},
+    title={(f)},
+]
+    \addplot[utnblue, semithick]
+        coordinates {
+            (-2.3, 0.85) (0, 2) (0, 0) (4, 2) (4, 0) (6.3, 1.15)
+        };
+    \addplot[red!80!black, semithick, samples=500, domain=-2.3:6.3, smooth]
+        {1
+         - 0.6366198*sin(deg(pi/2*x))
+         - 0.3183099*sin(deg(pi*x))
+         - 0.2122066*sin(deg(3*pi/2*x))};
+
+% =============================================================
+% Fila 4, k = 4
+% =============================================================
+\nextgroupplot[
+    ymin=-1.4, ymax=1.4,
+    ytick={-0.5, 0, 0.5},
+    title={(g)},
+]
+    \addplot[red!80!black, semithick, samples=500, domain=-2.3:6.3, smooth]
+        {-0.1591549*sin(deg(2*pi*x))};
+
+\nextgroupplot[
+    ymin=-0.4, ymax=2.4,
+    ytick={0, 1, 2},
+    title={(h)},
+]
+    \addplot[utnblue, semithick]
+        coordinates {
+            (-2.3, 0.85) (0, 2) (0, 0) (4, 2) (4, 0) (6.3, 1.15)
+        };
+    \addplot[red!80!black, semithick, samples=600, domain=-2.3:6.3, smooth]
+        {1
+         - 0.6366198*sin(deg(pi/2*x))
+         - 0.3183099*sin(deg(pi*x))
+         - 0.2122066*sin(deg(3*pi/2*x))
+         - 0.1591549*sin(deg(2*pi*x))};
+
+% =============================================================
+% Fila 5, k = 5
+% =============================================================
+\nextgroupplot[
+    ymin=-1.4, ymax=1.4,
+    ytick={-0.5, 0, 0.5},
+    title={(i)},
+]
+    \addplot[red!80!black, semithick, samples=600, domain=-2.3:6.3, smooth]
+        {-0.1273240*sin(deg(5*pi/2*x))};
+
+\nextgroupplot[
+    ymin=-0.4, ymax=2.4,
+    ytick={0, 1, 2},
+    title={(j)},
+]
+    \addplot[utnblue, semithick]
+        coordinates {
+            (-2.3, 0.85) (0, 2) (0, 0) (4, 2) (4, 0) (6.3, 1.15)
+        };
+    \addplot[red!80!black, semithick, samples=700, domain=-2.3:6.3, smooth]
+        {1
+         - 0.6366198*sin(deg(pi/2*x))
+         - 0.3183099*sin(deg(pi*x))
+         - 0.2122066*sin(deg(3*pi/2*x))
+         - 0.1591549*sin(deg(2*pi*x))
+         - 0.1273240*sin(deg(5*pi/2*x))};
+
+\end{groupplot}
+
+\end{tikzpicture}
+\end{document}

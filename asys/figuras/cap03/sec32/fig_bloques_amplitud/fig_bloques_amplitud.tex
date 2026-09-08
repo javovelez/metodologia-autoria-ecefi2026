@@ -1,0 +1,91 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur, shapes.geometric}
+
+\begin{document}
+ 
+\begin{tikzpicture}[>=Latex, font=\small,
+    gain/.style={regular polygon, regular polygon sides=3, shape border rotate=30,
+                 draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+                 minimum size=1.1cm, inner sep=2pt,
+                 blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                              shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}},
+    op_circle/.style={draw=utnblue!60, line width=0.5pt, circle,
+                      minimum size=0.9cm, inner sep=0pt, fill=white,
+                      blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                                   shadow xshift=0.3pt, shadow yshift=-0.4pt, shadow opacity=20}},
+    op_block/.style={draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+                     minimum width=1.2cm, minimum height=0.9cm,
+                     blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                                  shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}},
+    signal/.style={->, thick, utnblue},
+    cross_line/.style={utnblue!40, line width=0.4pt},
+    label_style/.style={font=\footnotesize, above}
+]
+
+% ═══════════ FILA SUPERIOR (y = 0) ═══════════
+
+% ── (a) Escalado ────────────────────────────────────────────────────
+\begin{scope}[shift={(0, 0)}]
+    \node[font=\small] at (0, 1.0) {\textbf{(a)}~escalado};
+    \node[gain] (g) at (0,0) {$\alpha$};
+    \draw[signal] (-2.3, 0)  -- node[label_style]{$x(t)$}           (g.west);
+    \draw[signal] (g.east)   -- node[label_style]{$\alpha\,x(t)$}   (2.3, 0);
+\end{scope}
+
+% ── (b) Suma ────────────────────────────────────────────────────────
+\begin{scope}[shift={(6.5, 0)}]
+    \node[font=\small] at (0, 1.0) {\textbf{(b)}~suma};
+    \node[op_circle] (s) at (0,0) {};
+    \draw[cross_line] (-0.318, -0.318) -- (0.318,  0.318);
+    \draw[cross_line] (-0.318,  0.318) -- (0.318, -0.318);
+    \node[font=\scriptsize] at (-0.27,  0.00) {$+$};
+    \node[font=\scriptsize] at ( 0.00, -0.27) {$+$};
+    \draw[signal] (-2.3, 0) -- node[label_style]{$x_1(t)$}               (s.west);
+    \draw[signal] (0, -1.9) -- node[right, font=\footnotesize]{$x_2(t)$} (s.south);
+    \draw[signal] (s.east)  -- node[label_style]{$x_1(t)+x_2(t)$}        (2.3, 0);
+\end{scope}
+
+% ── (c) Diferencia ──────────────────────────────────────────────────
+\begin{scope}[shift={(13, 0)}]
+    \node[font=\small] at (0, 1.0) {\textbf{(c)}~diferencia};
+    \node[op_circle] (d) at (0,0) {};
+    \draw[cross_line] (-0.318, -0.318) -- (0.318,  0.318);
+    \draw[cross_line] (-0.318,  0.318) -- (0.318, -0.318);
+    \node[font=\scriptsize] at (-0.27,  0.00) {$+$};
+    \node[font=\scriptsize] at ( 0.00, -0.27) {$-$};
+    \draw[signal] (-2.3, 0) -- node[label_style]{$x_1(t)$}               (d.west);
+    \draw[signal] (0, -1.9) -- node[right, font=\footnotesize]{$x_2(t)$} (d.south);
+    \draw[signal] (d.east)  -- node[label_style]{$x_1(t)-x_2(t)$}        (2.3, 0);
+\end{scope}
+
+% ═══════════ FILA INFERIOR (y = -4.0) ═══════════
+
+% ── (d) Producto ────────────────────────────────────────────────────
+\begin{scope}[shift={(0, -4.0)}]
+    \node[font=\small] at (0, 1.0) {\textbf{(d)}~producto};
+    \node[op_circle, font=\normalsize] (p) at (0,0) {$\times$};
+    \draw[signal] (-2.3, 0) -- node[label_style]{$x_1(t)$}               (p.west);
+    \draw[signal] (0, -1.9) -- node[right, font=\footnotesize]{$x_2(t)$} (p.south);
+    \draw[signal] (p.east)  -- node[label_style]{$x_1(t)\cdot x_2(t)$}   (2.3, 0);
+\end{scope}
+
+% ── (e) Derivada ────────────────────────────────────────────────────
+\begin{scope}[shift={(6.5, -4.0)}]
+    \node[font=\small] at (0, 1.0) {\textbf{(e)}~derivada};
+    \node[op_block] (der) at (0,0) {$\dfrac{d}{dt}$};
+    \draw[signal] (-2.3, 0)  -- node[label_style]{$x(t)$}        (der.west);
+    \draw[signal] (der.east) -- node[label_style]{$\dot{x}(t)$}  (2.3, 0);
+\end{scope}
+
+% ── (f) Integral ────────────────────────────────────────────────────
+\begin{scope}[shift={(13, -4.0)}]
+    \node[font=\small] at (0, 1.0) {\textbf{(f)}~integral};
+    \node[op_block] (integ) at (0,0) {$\displaystyle\int$};
+    \draw[signal] (-2.3, 0)    -- node[label_style]{$x(t)$}                           (integ.west);
+    \draw[signal] (integ.east) -- node[label_style]{$\int_{-\infty}^{t}\!x\,d\tau$}  (2.3, 0);
+\end{scope}
+
+\end{tikzpicture}
+
+\end{document}

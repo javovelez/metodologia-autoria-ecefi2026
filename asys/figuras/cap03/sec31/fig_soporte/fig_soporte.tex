@@ -1,0 +1,73 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    mypanel/.style={
+        width=4.5cm, height=3.2cm,
+        axis lines=center,
+        axis line style={->, thin},
+        axis on top=true,
+        xlabel={$t$}, xlabel style={right, font=\scriptsize},
+        xmin=-2.8, xmax=2.8,
+        ymin=-0.35, ymax=1.25,
+        xtick=\empty, ytick=\empty,
+        clip=false,
+    },
+    zero/.style={utnblue, thick, line cap=rect},
+    sig/.style={utnblue, thick},
+}
+
+% ---------------------------------------------------------------
+% Panel A — DERECHA
+% x(t) = 0.5 + 0.4 sin(2(t - T_1)) para t >= T_1, con T_1 = -1
+% ---------------------------------------------------------------
+\begin{axis}[mypanel, name=pA, ylabel={$x(t)$}]
+    \addplot[zero] coordinates {(-2.8,0)(-1.0,0)};
+    \addplot[sig, domain=-1:2.7, samples=100]
+        {0.5*(1 - exp(-2.5*(x+1))) + 0.4*sin(deg(2*(x+1)))};
+    \addplot[utnblue, only marks, mark=*, mark size=1.8pt]
+        coordinates {(-1.0, 0)};
+    \draw[gray, dashed, thin] (axis cs:0,-0.22) -- (axis cs:0,1.0);
+    \node[below, font=\scriptsize, inner sep=2pt] at (axis cs:-1,0) {$T_1$};
+    \node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize, align=center]
+        at (axis cs:0,-0.5) {\textbf{derecha}\\soporte $[T_1,\,+\infty)$};
+\end{axis}
+
+% ---------------------------------------------------------------
+% Panel B — IZQUIERDA
+% x(t) = 0.5 + 0.3 cos(1.8(t - T_2)) para t <= T_2, con T_2 = 1
+% ---------------------------------------------------------------
+\begin{axis}[mypanel, name=pB, ylabel={},
+    at={($(pA.east)+(1.0cm,0)$)}, anchor=west]
+    \addplot[sig, domain=-2.7:1.0, samples=100]
+        {0.5*(1 - exp(2.5*(x-1))) + 0.4*sin(deg(2*(1-x)))};
+    \addplot[zero] coordinates {(1.0,0)(2.8,0)};
+    \addplot[utnblue, only marks, mark=*, mark size=1.8pt]
+        coordinates {(1.0, 0)};
+    \draw[gray, dashed, thin] (axis cs:0,-0.22) -- (axis cs:0,1.0);
+    \node[below, font=\scriptsize, inner sep=2pt] at (axis cs:1,0) {$T_2$};
+    \node[below left, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize, align=center]
+        at (axis cs:0,-0.5) {\textbf{izquierda}\\soporte $(-\infty,\,T_2]$};
+\end{axis}
+
+% ---------------------------------------------------------------
+% Panel C — BILATERAL
+% Lorentziana x(t) = 1/(1 + 0.5 t^2), no nula en todo R
+% ---------------------------------------------------------------
+\begin{axis}[mypanel, name=pC, ylabel={},
+    at={($(pB.east)+(1.0cm,0)$)}, anchor=west]
+    \addplot[sig, domain=-2.7:2.7, samples=120]
+        {1/(1 + 0.5*x^2)};
+    \draw[gray, dashed, thin] (axis cs:0,-0.22) -- (axis cs:0,1.0);
+    \node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+    \node[anchor=north, font=\scriptsize, align=center]
+        at (axis cs:0,-0.5) {\textbf{bilateral}\\no nula en todo $\mathbb{R}$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

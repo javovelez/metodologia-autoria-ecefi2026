@@ -1,0 +1,32 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{groupplot}[
+            group style={group size=2 by 1, horizontal sep=1.8cm},
+            width=6.8cm, height=4.3cm,
+            axis lines=middle,
+            axis line style={->, thin, black},
+            xmin=-3.6, xmax=5.9, ymin=-0.25, ymax=1.35,
+            xtick={-3,-2,-1,0,1,2,3,4}, ytick={1}, yticklabels={$1$},
+            xlabel={$n$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\footnotesize},
+            ylabel style={rotate=0, anchor=south east, at={(axis description cs:0,1)}, font=\footnotesize},
+            every tick label/.style={font=\footnotesize},
+            title style={font=\footnotesize, yshift=-1pt},
+            clip=false,
+        ]
+            % (a) impulso unitario: la muestra en n=0 y los ceros de las demás
+            \nextgroupplot[title={(a)}, ylabel={$\delta[n]$}]
+                \addplot[ycomb, mark=*, mark size=1.6pt, thick, utnblue]
+                    coordinates {(-3,0) (-2,0) (-1,0) (0,1) (1,0) (2,0) (3,0) (4,0)};
+            % (b) escalón unitario: sigue valiendo uno más allá de n=4
+            \nextgroupplot[title={(b)}, ylabel={$u[n]$}]
+                \addplot[ycomb, mark=*, mark size=1.6pt, thick, utnblue]
+                    coordinates {(-3,0) (-2,0) (-1,0) (0,1) (1,1) (2,1) (3,1) (4,1)};
+                \node[font=\footnotesize] at (axis cs:5.1,1) {$\cdots$};
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}

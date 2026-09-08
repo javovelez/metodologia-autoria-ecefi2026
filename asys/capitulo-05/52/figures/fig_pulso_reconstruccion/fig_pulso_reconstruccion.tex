@@ -1,0 +1,106 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Tren periódico de pulsos rectangulares con tau = T_0/4, T_0 = 1.
+% Coeficientes c_k = (1/4) sinc(k pi / 4); ceros en k = +/- 4, +/- 8, +/- 12 ...
+% Reconstrucción truncada hat_x_N(t) = sum_{k=-N}^{N} c_k e^{j k w_0 t}
+%                                    = c_0 + 2 sum_{k=1}^{N} c_k cos(k w_0 t)
+% Cuatro paneles apilados con N = 1, 3, 7, 21. Se grafican tres períodos
+% completos (-1.5 T_0 a 1.5 T_0) para mostrar la naturaleza periódica del tren.
+
+% Macro: construye la expresión de la suma parcial hasta N harmónicos.
+% Salta los k múltiplos de 4 (donde c_k = 0).
+\newcommand{\BuildPartialSum}[1]{%
+    \xdef\PartialSumExpr{0.25}%
+    \foreach \k in {1,...,#1} {%
+        \pgfmathtruncatemacro{\rem}{mod(\k,4)}%
+        \ifnum\rem>0
+            \xdef\PartialSumExpr{\PartialSumExpr
+                + 2*sin(deg(\k*pi/4))/(\k*pi)*cos(deg(2*pi*\k*x))}%
+        \fi
+    }%
+}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\begin{groupplot}[
+    group style={
+        group size=1 by 4,
+        vertical sep=0.7cm,
+        x descriptions at=edge bottom,
+    },
+    width=10cm,
+    height=3.2cm,
+    xmin=-1.55, xmax=1.55,
+    ymin=-0.3, ymax=1.4,
+    axis lines=center,
+    axis line style={->, thick},
+    xtick={-1, -0.5, 0, 0.5, 1},
+    xticklabels={$-T_0$, $-T_0/2$, $0$, $T_0/2$, $T_0$},
+    ytick={0, 1},
+    every tick label/.style={font=\tiny},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.20)}},
+    enlarge x limits=0.02,
+    clip mode=individual,
+    title style={font=\small, yshift=-2pt},
+]
+
+% Panel (a): N = 1
+\BuildPartialSum{1}
+\nextgroupplot[title={(a) $N=1$}]
+    \addplot[utnblue, very thick]
+        coordinates {
+            (-1.55, 0) (-1.125, 0) (-1.125, 1) (-0.875, 1) (-0.875, 0)
+            (-0.125, 0) (-0.125, 1) (0.125, 1) (0.125, 0)
+            (0.875, 0) (0.875, 1) (1.125, 1) (1.125, 0)
+            (1.55, 0)
+        };
+    \addplot[red!80!black, thick, domain=-1.5:1.5, samples=600, smooth]
+        {\PartialSumExpr};
+
+% Panel (b): N = 3
+\BuildPartialSum{3}
+\nextgroupplot[title={(b) $N=3$}]
+    \addplot[utnblue, very thick]
+        coordinates {
+            (-1.55, 0) (-1.125, 0) (-1.125, 1) (-0.875, 1) (-0.875, 0)
+            (-0.125, 0) (-0.125, 1) (0.125, 1) (0.125, 0)
+            (0.875, 0) (0.875, 1) (1.125, 1) (1.125, 0)
+            (1.55, 0)
+        };
+    \addplot[red!80!black, thick, domain=-1.5:1.5, samples=600, smooth]
+        {\PartialSumExpr};
+
+% Panel (c): N = 7
+\BuildPartialSum{7}
+\nextgroupplot[title={(c) $N=7$}]
+    \addplot[utnblue, very thick]
+        coordinates {
+            (-1.55, 0) (-1.125, 0) (-1.125, 1) (-0.875, 1) (-0.875, 0)
+            (-0.125, 0) (-0.125, 1) (0.125, 1) (0.125, 0)
+            (0.875, 0) (0.875, 1) (1.125, 1) (1.125, 0)
+            (1.55, 0)
+        };
+    \addplot[red!80!black, thick, domain=-1.5:1.5, samples=900, smooth]
+        {\PartialSumExpr};
+
+% Panel (d): N = 21
+\BuildPartialSum{21}
+\nextgroupplot[title={(d) $N=21$}]
+    \addplot[utnblue, very thick]
+        coordinates {
+            (-1.55, 0) (-1.125, 0) (-1.125, 1) (-0.875, 1) (-0.875, 0)
+            (-0.125, 0) (-0.125, 1) (0.125, 1) (0.125, 0)
+            (0.875, 0) (0.875, 1) (1.125, 1) (1.125, 0)
+            (1.55, 0)
+        };
+    \addplot[red!80!black, thick, domain=-1.5:1.5, samples=1500, smooth]
+        {\PartialSumExpr};
+
+\end{groupplot}
+
+\end{tikzpicture}
+\end{document}

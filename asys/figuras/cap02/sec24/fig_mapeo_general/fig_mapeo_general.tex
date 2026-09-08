@@ -1,0 +1,59 @@
+\documentclass[border=0mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=0.75, font=\small]
+        % --- PLANO Z (Dominio) ---
+        \begin{scope}
+            % Ejes con mismas dimensiones que Plano W para mantener escala visual
+            \draw[->] (-2.5,0) -- (5,0) node[right] {$x$};
+            \draw[->] (0,-0.5) -- (0,6.5) node[above] {$y$};
+            \node at (1.25, -1.5) {\textbf{Plano Z (Dominio)}};
+            
+            % Región rectangular: x en [1, 2], y en [0.5, 1.5]
+            \fill[utnblue!15] (1,0.5) rectangle (2,1.5);
+            \draw[utnblue, thin] (1,0.5) grid[step=0.5] (2,1.5);
+            \draw[utnblue, thick] (1,0.5) rectangle (2,1.5);
+            
+            % Punto P(2,1)
+            \fill[utnblue] (2,1) circle (2pt) node[right] {$P(2,1)$};
+        \end{scope}
+        
+        % Flecha de transformación
+        \draw[->, thick, bend left] (5.5, 3) to node[midway, above] {$f(z) = z^2$} (7.5, 3);
+        
+        % --- PLANO W (Imagen) ---
+        \begin{scope}[shift={(10,0)}]
+            \draw[->] (-2.5,0) -- (5,0) node[right] {$u$};
+            \draw[->] (0,-0.5) -- (0,6.5) node[above] {$v$};
+            \node at (1.25, -1.5) {\textbf{Plano W (Imagen)}};
+            
+            % Mapeo de la región: u = x^2 - y^2, v = 2xy
+            % Relleno (aproximado por vértices curvos)
+            \fill[red!15] 
+                plot[domain=0.5:1.5, samples=20, variable=\y] ({1*1 - \y*\y}, {2*1*\y}) -- % x=1
+                plot[domain=1:2, samples=20, variable=\x] ({\x*\x - 1.5*1.5}, {2*\x*1.5}) -- % y=1.5
+                plot[domain=1.5:0.5, samples=20, variable=\y] ({2*2 - \y*\y}, {2*2*\y}) -- % x=2
+                plot[domain=2:1, samples=20, variable=\x] ({\x*\x - 0.5*0.5}, {2*\x*0.5}) -- cycle; % y=0.5
+
+            % Líneas de cuadrícula transformadas (Parábolas)
+            % Verticales (x constante): u = c^2 - y^2, v = 2cy
+            \foreach \x in {1, 1.5, 2} {
+                \draw[red, thin] plot[domain=0.5:1.5, samples=20, variable=\y] ({\x*\x - \y*\y}, {2*\x*\y});
+            }
+            % Horizontales (y constante): u = x^2 - c^2, v = 2xc
+            \foreach \y in {0.5, 1, 1.5} {
+                \draw[red, thin] plot[domain=1:2, samples=20, variable=\x] ({\x*\x - \y*\y}, {2*\x*\y});
+            }
+             
+            % Bordes gruesos
+            \draw[red, thick] plot[domain=0.5:1.5, samples=20, variable=\y] ({1*1 - \y*\y}, {2*1*\y}); % x=1
+            \draw[red, thick] plot[domain=1:2, samples=20, variable=\x] ({\x*\x - 1.5*1.5}, {2*\x*1.5}); % y=1.5
+            \draw[red, thick] plot[domain=0.5:1.5, samples=20, variable=\y] ({2*2 - \y*\y}, {2*2*\y}); % x=2
+            \draw[red, thick] plot[domain=1:2, samples=20, variable=\x] ({\x*\x - 0.5*0.5}, {2*\x*0.5}); % y=0.5
+
+            % Punto P'(3,4) -> (2^2 - 1^2, 2*2*1) = (3, 4)
+            \fill[red] (3,4) circle (2pt) node[left] {$P'(3,4)$};
+        \end{scope} 
+    \end{tikzpicture}
+\end{document}

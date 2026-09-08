@@ -1,0 +1,36 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{groupplot}[
+            group style={group size=2 by 1, horizontal sep=1.6cm},
+            width=6cm, height=4.8cm,
+            axis lines=middle,
+            axis line style={->, thin, black},
+            xmin=-0.6, xmax=12.8,
+            xtick={0,3,6,9,12}, ytick=\empty,
+            xlabel={$n$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\scriptsize},
+            every tick label/.style={font=\scriptsize, fill=white, inner sep=0.8pt},
+            title style={font=\scriptsize, yshift=-1pt},
+            axis on top,
+            clip=false,
+        ]
+            % ----- Panel (a): r < 1, sinusoide amortiguada -----
+            \nextgroupplot[title={(a) $r=0{,}85$}, ymin=-1.2, ymax=1.2]
+                \addplot[domain=0:12, samples=200, dashed, gray!70] {pow(0.85,x)};
+                \addplot[domain=0:12, samples=200, dashed, gray!70] {-pow(0.85,x)};
+                \addplot[ycomb, mark=*, mark size=1.6pt, thick, utnblue,
+                         domain=0:12, samples=13] {pow(0.85,x)*cos(30*x)};
+
+            % ----- Panel (b): r > 1, sinusoide creciente -----
+            \nextgroupplot[title={(b) $r=1{,}12$}, ymin=-4.3, ymax=4.3]
+                \addplot[domain=0:12, samples=200, dashed, gray!70] {pow(1.12,x)};
+                \addplot[domain=0:12, samples=200, dashed, gray!70] {-pow(1.12,x)};
+                \addplot[ycomb, mark=*, mark size=1.6pt, thick, utnblue,
+                         domain=0:12, samples=13] {pow(1.12,x)*cos(30*x)};
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}

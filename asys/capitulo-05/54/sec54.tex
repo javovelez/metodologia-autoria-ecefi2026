@@ -1,0 +1,388 @@
+\documentclass[class=book, crop=false]{standalone}
+\input{../../setup.tex}
+
+\begin{document}
+\setcounter{chapter}{5}
+\section{Serie trigonométrica}
+\label{sec:serie_trigonometrica}
+
+La serie exponencial~\eqref{eq:sf_sintesis_box} desarrollada
+en la Sección~\ref{sec:serie_fourier} aplica a cualquier señal
+periódica, real o compleja. Cuando $x(t)$ es real ---el caso de
+prácticamente todas las señales que vamos a manipular en el
+libro--- los coeficientes $c_k$ están emparejados por la simetría
+conjugada $c_{-k} = \overline{c_k}$ probada en la
+Subsección~\ref{subsec:prop_conjugacion}. Esa restricción permite
+reescribir la serie en una forma equivalente con coeficientes
+reales, la \textbf{serie trigonométrica}, que separa cada armónico
+en una parte coseno y una parte seno. Aparece más a mano cuando la
+señal tiene una simetría par o impar ---cada simetría anula
+directamente una de las dos sumas--- y conecta de forma directa la
+representación de Fourier con la descomposición de $x(t)$ en parte
+par y parte impar.
+
+% ==============================================================================
+% 5.4.1 Conversión desde la exponencial
+% ==============================================================================
+\subsection{Conversión desde la exponencial}
+\label{subsec:trig_conversion}
+
+Partimos de la serie exponencial~\eqref{eq:sf_sintesis_box} y
+aprovechamos la simetría conjugada $c_{-k} = \overline{c_k}$
+de la Subsección~\ref{subsec:prop_conjugacion} para agrupar cada
+par de términos con índices $k$ y $-k$. Los expandimos con la
+identidad de Euler:
+\[
+    e^{jk\omega_0 t} = \cos(k\omega_0 t) + j\sin(k\omega_0 t),
+    \qquad
+    e^{-jk\omega_0 t} = \cos(k\omega_0 t) - j\sin(k\omega_0 t).
+\]
+Sumando los dos términos del par y agrupando coseno y seno por
+separado,
+\begin{equation*}
+    c_k\,e^{jk\omega_0 t} + c_{-k}\,e^{-jk\omega_0 t}
+    \;=\; (c_k + c_{-k})\cos(k\omega_0 t)
+        + j\,(c_k - c_{-k})\sin(k\omega_0 t).
+\end{equation*}
+Aparecen entonces dos coeficientes, uno multiplicando al coseno y
+otro al seno. Llamémoslos $a_k$ y $b_k$:
+\begin{equation*}
+    a_k = c_k + c_{-k},
+    \qquad
+    b_k = j\,(c_k - c_{-k}),
+    \qquad k \geq 1.
+\end{equation*}
+Sumando sobre $k\geq 1$ y separando el término $k = 0$, la serie
+queda
+\begin{equation}
+    x(t) \;=\; a_0 \;+\; \sum_{k=1}^{\infty}
+        \bigl[a_k\cos(k\omega_0 t) + b_k\sin(k\omega_0 t)\bigr],
+    \label{eq:sf_trig}
+\end{equation}
+con $a_0 = c_0$.
+
+Para que la serie hable directamente de $x(t)$ ---sin pasar por los
+$c_k$--- conviene tener fórmulas de $a_k$ y $b_k$ como integrales de
+análisis. Reemplazando $c_k$ y $c_{-k}$ por sus
+expresiones~\eqref{eq:ck_analisis_box} y sumando dentro de la
+integral,
+\begin{equation*}
+    a_k \;=\; c_k + c_{-k}
+        \;=\; \frac{1}{T_0}\int_{T_0} x(t)
+            \bigl[e^{-jk\omega_0 t} + e^{jk\omega_0 t}\bigr]\,dt
+        \;=\; \frac{2}{T_0}\int_{T_0} x(t)\cos(k\omega_0 t)\,dt,
+\end{equation*}
+donde la suma de las dos exponenciales vale $2\cos(k\omega_0 t)$ por
+Euler. Para $b_k$ el cálculo es análogo:
+\begin{equation*}
+    b_k \;=\; j\,(c_k - c_{-k})
+        \;=\; \frac{j}{T_0}\int_{T_0} x(t)
+            \bigl[e^{-jk\omega_0 t} - e^{jk\omega_0 t}\bigr]\,dt
+        \;=\; \frac{2}{T_0}\int_{T_0} x(t)\sin(k\omega_0 t)\,dt,
+\end{equation*}
+porque la diferencia entre paréntesis vale $-2j\sin(k\omega_0 t)$ y
+el $j$ de afuera cancela el $-j$ de adentro. El término $a_0$ sale
+de $a_0 = c_0$ y de la fórmula de análisis con $k = 0$:
+\begin{equation*}
+    a_0 \;=\; \frac{1}{T_0}\int_{T_0} x(t)\,dt,
+\end{equation*}
+es decir, el \textbf{valor medio} de $x$ sobre el período, en el
+sentido del Capítulo~\ref{cap03}.
+
+\paragraph{Convención del factor.}
+La fórmula general de~$a_k$, particularizada en $k = 0$, daría el
+doble del valor medio. Por convención se define $a_0$ con el factor
+$1/T_0$ en lugar de $2/T_0$, de modo que el primer término de la
+serie sea directamente el promedio.
+
+\begin{resultado}[Serie trigonométrica]
+Sea $x(t)$ una señal periódica real de período $T_0$ y frecuencia
+angular $\omega_0 = 2\pi/T_0$. Su serie de Fourier admite la forma
+\begin{equation}
+    x(t) \;=\; a_0 \;+\; \sum_{k=1}^{\infty}
+        \bigl[a_k\cos(k\omega_0 t) + b_k\sin(k\omega_0 t)\bigr],
+    \label{eq:sf_trig_box}
+\end{equation}
+con coeficientes
+\begin{align}
+    a_0 &\;=\; \frac{1}{T_0}\int_{T_0} x(t)\,dt,
+        \label{eq:trig_a0} \\[2pt]
+    a_k &\;=\; \frac{2}{T_0}\int_{T_0} x(t)\cos(k\omega_0 t)\,dt,
+        \qquad k \geq 1, \label{eq:trig_ak} \\[2pt]
+    b_k &\;=\; \frac{2}{T_0}\int_{T_0} x(t)\sin(k\omega_0 t)\,dt,
+        \qquad k \geq 1. \label{eq:trig_bk}
+\end{align}
+\end{resultado}
+
+La relación con los coeficientes exponenciales queda como un
+diccionario directo. Como $x$ es real, $c_{-k} = \overline{c_k}$, así
+que $c_k + c_{-k} = 2\operatorname{Re}\{c_k\}$ y $c_k - c_{-k} =
+2j\operatorname{Im}\{c_k\}$. Sustituyendo en las definiciones de
+$a_k$ y $b_k$,
+\begin{equation}
+    a_k \;=\; 2\operatorname{Re}\{c_k\},
+    \qquad
+    b_k \;=\; -2\operatorname{Im}\{c_k\},
+    \qquad k \geq 1.
+    \label{eq:diccionario_trig_exp}
+\end{equation}
+A la inversa, $c_k = (a_k - jb_k)/2$ y $c_{-k} = \overline{c_k} =
+(a_k + jb_k)/2$. Los $a_k$ leen la parte real del espectro complejo,
+y los $b_k$ ---con un signo--- la parte imaginaria.
+
+La figura~\ref{fig:base_trigonometrica} muestra las primeras tres
+parejas de la base armónica trigonométrica
+$\{\cos(k\omega_0 t),\,\sin(k\omega_0 t)\}$. Cualquier señal
+periódica real, sumándole un valor medio $a_0$, se reconstruye como
+combinación lineal de estas funciones (más sus armónicos
+superiores), con pesos $a_k$ para los cosenos y $b_k$ para los
+senos.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.80\linewidth]{figures/fig_base_trigonometrica/fig_base_trigonometrica}
+        \caption{Las primeras tres parejas de la base armónica
+                 trigonométrica $\{\cos(k\omega_0 t),\,\sin(k\omega_0 t)\}$
+                 sobre un período.
+                 Fila superior, cosenos:
+                 (a) $\cos(\omega_0 t)$, (b) $\cos(2\omega_0 t)$,
+                 (c) $\cos(3\omega_0 t)$.
+                 Fila inferior, senos:
+                 (d) $\sin(\omega_0 t)$, (e) $\sin(2\omega_0 t)$,
+                 (f) $\sin(3\omega_0 t)$. La serie trigonométrica
+                 reescribe cualquier señal periódica real como
+                 combinación lineal de estas funciones, sus armónicos
+                 superiores, y la constante $a_0$.}
+        \label{fig:base_trigonometrica}
+    \end{minipage}
+\end{figure}
+
+% ==============================================================================
+% 5.4.2 Lectura por simetría
+% ==============================================================================
+\subsection{Lectura por simetría}
+\label{subsec:trig_simetrias}
+
+La Subsección~\ref{subsec:par_impar} estableció que toda señal
+admite una descomposición única como suma de una parte par y una
+parte impar. La forma trigonométrica~\eqref{eq:sf_trig_box} se conecta
+directamente con esa descomposición: los cosenos $\cos(k\omega_0 t)$
+son funciones pares y los senos $\sin(k\omega_0 t)$ son impares, así
+que la primera suma es una señal par y la segunda es una señal
+impar. La paridad de $x$ se traduce entonces de forma inmediata en
+qué coeficientes pueden ser distintos de cero.
+
+Si $x(t)$ es \textbf{par}, todos los $b_k$ se anulan. La verificación
+es inmediata desde~\eqref{eq:trig_bk}: el integrando es
+$x(t)\sin(k\omega_0 t)$, producto de una función par por una impar,
+que es impar (regla de productos de la
+Subsección~\ref{subsubsec:productos_paridad}).
+Integrar una función impar sobre un intervalo simétrico da
+cero~\eqref{eq:integral_impar}, así que la integral
+de~\eqref{eq:trig_bk} se anula para todo $k\geq 1$.
+
+Si $x(t)$ es \textbf{impar}, los que se anulan son $a_0$ y los
+$a_k$. El argumento es paralelo: en~\eqref{eq:trig_a0} el integrando
+es $x(t)$, una función impar, y en~\eqref{eq:trig_ak} el integrando
+es $x(t)\cos(k\omega_0 t)$, también impar por la misma regla de
+productos. Las dos integrales se anulan sobre el intervalo simétrico.
+
+\begin{resultado}[Simetrías par e impar]
+Sea $x(t)$ una señal periódica real, con coeficientes
+trigonométricos $a_0$, $a_k$, $b_k$.
+\begin{itemize}
+    \item Si $x$ es \textbf{par}, entonces $b_k = 0$ para todo
+          $k \geq 1$ y la serie se reduce a una suma de cosenos:
+          \[
+              x(t) \;=\; a_0 \;+\; \sum_{k=1}^{\infty}
+                  a_k\cos(k\omega_0 t).
+          \]
+    \item Si $x$ es \textbf{impar}, entonces $a_0 = 0$ y $a_k = 0$
+          para todo $k \geq 1$, y la serie se reduce a una suma de
+          senos:
+          \[
+              x(t) \;=\; \sum_{k=1}^{\infty}
+                  b_k\sin(k\omega_0 t).
+          \]
+\end{itemize}
+\end{resultado}
+
+Para una señal que no es ni par ni impar, la
+descomposición~\eqref{eq:descomposicion_par_impar} sigue operando: los
+$a_k$ son los coeficientes trigonométricos de la parte par de $x$, y
+los $b_k$ los de la parte impar. La forma trigonométrica es esa
+descomposición leída sobre la base armónica.
+
+% ==============================================================================
+% 5.4.3 Ejemplos
+% ==============================================================================
+\subsection{Ejemplos}
+\label{subsec:ejemplos_trig}
+
+Aplicamos la receta trigonométrica a los dos ejemplos que ya
+trabajamos en exponencial en la Sección~\ref{sec:serie_fourier}: el
+tren de pulsos rectangulares y el diente de sierra. Para cada uno
+calculamos los coeficientes $a_0$, $a_k$, $b_k$ directamente desde
+las fórmulas~\eqref{eq:trig_a0}--\eqref{eq:trig_bk} y al final
+verificamos que coinciden con los $c_k$ ya conocidos por el
+diccionario~\eqref{eq:diccionario_trig_exp}.
+
+\paragraph{Pulso rectangular.}
+Retomamos el tren de pulsos de la
+Subsección~\ref{subsec:ejemplo_pulso}: $x(t) = 1$ sobre la ventana
+centrada $|t|\leq 1/2$ y $0$ en el resto del período $T_0 = 4$, con
+frecuencia angular $\omega_0 = \pi/2$.
+
+Como $x$ es real y par, la regla de simetría de la
+Subsección~\ref{subsec:trig_simetrias} da inmediatamente
+$b_k = 0$ para todo $k\geq 1$. El coeficiente $a_0$ es el valor
+medio de $x$ sobre el período. Por inspección ---ventana de ancho
+$1$ y amplitud $1$, dividida por el período de longitud $4$---,
+\begin{equation*}
+    a_0 \;=\; \frac{1}{4}.
+\end{equation*}
+
+Para los $a_k$ con $k\geq 1$, la fórmula~\eqref{eq:trig_ak} se
+reduce a la ventana central porque $x = 0$ fuera de ella:
+\begin{equation*}
+    a_k \;=\; \frac{2}{4}\int_{-1/2}^{1/2}\cos(k\omega_0 t)\,dt
+        \;=\; \frac{1}{2}\,
+            \left[\frac{\sin(k\omega_0 t)}{k\omega_0}\right]_{-1/2}^{1/2}
+        \;=\; \frac{1}{2}\cdot\frac{2\sin(k\omega_0/2)}{k\omega_0}
+        \;=\; \frac{\sin(k\omega_0/2)}{k\omega_0},
+\end{equation*}
+donde usamos $\sin(-\theta) = -\sin(\theta)$ para simplificar la
+diferencia en el numerador. Para reconocer el seno cardinal
+$\operatorname{sinc}(x) = \sin(x)/x$ ---introducido en la
+Subsección~\ref{subsec:sinc}--- basta notar que el denominador es el
+doble del argumento del seno:
+\begin{equation*}
+    a_k \;=\; \frac{1}{2}\,\frac{\sin(k\omega_0/2)}{k\omega_0/2}
+        \;=\; \frac{1}{2}\,\operatorname{sinc}\!\Bigl(\frac{k\omega_0}{2}\Bigr).
+\end{equation*}
+Sustituyendo $\omega_0 = \pi/2$,
+\begin{equation}
+    a_k \;=\; \frac{1}{2}\,\operatorname{sinc}\!\Bigl(\frac{k\pi}{4}\Bigr),
+    \qquad k\geq 1.
+    \label{eq:ak_pulso}
+\end{equation}
+La serie trigonométrica del pulso queda
+\begin{equation*}
+    x(t) \;=\; \frac{1}{4} \;+\;
+        \sum_{k=1}^{\infty}
+        \frac{1}{2}\,\operatorname{sinc}\!\Bigl(\frac{k\pi}{4}\Bigr)
+        \cos\!\Bigl(\frac{k\pi t}{2}\Bigr).
+\end{equation*}
+
+\textbf{Verificación.} El diccionario~\eqref{eq:diccionario_trig_exp}
+predice $a_k = 2\operatorname{Re}\{c_k\}$ y
+$b_k = -2\operatorname{Im}\{c_k\}$. Los $c_k$ del pulso calculados
+en~\eqref{eq:ck_pulso} son $c_k = (1/4)\operatorname{sinc}(k\pi/4)$,
+reales para todo $k$. Entonces
+$a_k = 2\cdot(1/4)\operatorname{sinc}(k\pi/4) = (1/2)\operatorname{sinc}(k\pi/4)$
+y $b_k = 0$, en concordancia con los valores obtenidos por
+integración directa.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.70\linewidth]{figures/fig_aprox_trig_pulso/fig_aprox_trig_pulso}
+        \caption{Aproximación trigonométrica del tren de pulsos
+                 rectangulares. Cada fila corresponde a un orden
+                 armónico $k = 1, 2, \dots, 5$. Columna izquierda:
+                 armónico individual $a_k\cos(k\omega_0 t)$ (rojo);
+                 en $k=4$ el armónico se anula porque
+                 $\operatorname{sinc}(\pi) = 0$. Columna derecha:
+                 suma parcial $\hat x_k(t) = a_0 + \sum_{m=1}^{k}
+                 a_m\cos(m\omega_0 t)$ (rojo) superpuesta a la señal
+                 original (azul). (a)(b)~$k=1$; (c)(d)~$k=2$;
+                 (e)(f)~$k=3$; (g)(h)~$k=4$; (i)(j)~$k=5$.}
+        \label{fig:aprox_trig_pulso}
+    \end{minipage}
+\end{figure}
+
+\paragraph{Diente de sierra.}
+Retomamos el diente de la
+Subsección~\ref{subsec:ejemplo_sierra}: $x(t) = t/2$ sobre el
+intervalo $[0, 4)$, periódico con $T_0 = 4$ y $\omega_0 = \pi/2$. A
+diferencia del pulso, esta señal no es par ni impar tal cual está
+definida, así que calculamos los tres coeficientes uno por uno.
+
+El valor medio sale directo, ya sea por la lectura geométrica de la
+rampa ---promedio entre el inicio $0$ y el final $2$--- o
+aplicando~\eqref{eq:trig_a0}:
+\begin{equation*}
+    a_0 \;=\; \frac{1}{4}\int_0^4 \frac{t}{2}\,dt
+        \;=\; \frac{1}{8}\cdot\frac{t^2}{2}\bigg|_0^4
+        \;=\; 1.
+\end{equation*}
+
+Los $a_k$ y $b_k$ con $k\geq 1$ piden integración por partes. Para
+los $a_k$, con $u = t$ y $v = \sin(k\omega_0 t)/(k\omega_0)$,
+\begin{equation*}
+    a_k \;=\; \frac{1}{4}\int_0^4 t\cos(k\omega_0 t)\,dt
+        \;=\; \frac{1}{4}\Biggl\{
+            \left[\frac{t\sin(k\omega_0 t)}{k\omega_0}\right]_0^4
+            - \int_0^4 \frac{\sin(k\omega_0 t)}{k\omega_0}\,dt
+            \Biggr\}.
+\end{equation*}
+El término de borde se anula porque
+$\sin(k\omega_0\cdot 4) = \sin(2k\pi) = 0$ para todo $k$ entero, y
+la integral restante es la de un seno armónico sobre un período
+completo, que vale cero. Entonces $a_k = 0$ para todo $k\geq 1$.
+
+Para los $b_k$, el procedimiento es análogo, con $u = t$ y
+$v = -\cos(k\omega_0 t)/(k\omega_0)$:
+\begin{equation*}
+    b_k \;=\; \frac{1}{4}\int_0^4 t\sin(k\omega_0 t)\,dt
+        \;=\; \frac{1}{4}\Biggl\{
+            \left[-\frac{t\cos(k\omega_0 t)}{k\omega_0}\right]_0^4
+            + \int_0^4 \frac{\cos(k\omega_0 t)}{k\omega_0}\,dt
+            \Biggr\}.
+\end{equation*}
+El término de borde evaluado entre $0$ y $4$ vale
+$-4\cos(2k\pi)/(k\omega_0) = -4/(k\omega_0)$, y la integral restante
+es la de un coseno armónico sobre un período completo, que vale
+cero. Reuniendo y reemplazando $\omega_0 = \pi/2$,
+\begin{equation}
+    b_k \;=\; \frac{1}{4}\cdot\frac{-4}{k\omega_0}
+        \;=\; -\frac{2}{k\pi}, \qquad k\geq 1.
+    \label{eq:bk_sierra}
+\end{equation}
+La serie trigonométrica del diente queda
+\begin{equation*}
+    x(t) \;=\; 1 \;-\; \frac{2}{\pi}\sum_{k=1}^{\infty}
+        \frac{1}{k}\sin\!\Bigl(\frac{k\pi t}{2}\Bigr),
+\end{equation*}
+la serie clásica del diente de sierra.
+
+\textbf{Verificación.} Los $c_k$ del diente calculados
+en~\eqref{eq:ck_sierra} son $c_0 = 1$ y $c_k = j/(\pi k)$ para
+$k\neq 0$, puramente imaginarios. El
+diccionario~\eqref{eq:diccionario_trig_exp} predice
+$a_k = 2\operatorname{Re}\{c_k\} = 0$ para $k\geq 1$, y
+$b_k = -2\operatorname{Im}\{c_k\} = -2/(\pi k)$, en concordancia con
+los valores obtenidos por integración directa.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.70\linewidth]{figures/fig_aprox_trig_sierra/fig_aprox_trig_sierra}
+        \caption{Aproximación trigonométrica del diente de sierra.
+                 Cada fila corresponde a un orden armónico
+                 $k = 1, 2, \dots, 5$. Columna izquierda: armónico
+                 individual $b_k\sin(k\omega_0 t)$ (rojo). Columna
+                 derecha: suma parcial $\hat x_k(t) = a_0 +
+                 \sum_{m=1}^{k} b_m\sin(m\omega_0 t)$ (rojo)
+                 superpuesta a la señal original (azul).
+                 (a)(b)~$k=1$; (c)(d)~$k=2$; (e)(f)~$k=3$;
+                 (g)(h)~$k=4$; (i)(j)~$k=5$.}
+        \label{fig:aprox_trig_sierra}
+    \end{minipage}
+\end{figure}
+
+\end{document}

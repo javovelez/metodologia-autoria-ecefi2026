@@ -1,0 +1,180 @@
+% ==============================================================================
+% SETUP.TEX - CONFIGURACIÓN GLOBAL DEL PROYECTO
+% ==============================================================================
+% Este archivo centraliza todos los paquetes y estilos.
+% Debe incluirse en el preámbulo del libro principal y de los archivos standalone.
+% \PassOptionsToPackage{gray}{xcolor}
+% --- 1. CODIFICACIÓN E IDIOMA ---
+% fix-cm habilita las fuentes Computer Modern en tamaños arbitrarios (por debajo
+% de 5 pt, entre otros). Debe cargarse antes que fontenc.
+\usepackage{fix-cm}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-tabla]{babel}  
+\usepackage{csquotes} % Recomendado para babel y citas
+
+\usepackage{import}
+% mode=image: Usa el PDF pre-compilado, nunca intenta recompilar.
+% Debes compilar cada figura manualmente antes de compilar el libro.
+\usepackage[mode=image, subpreambles=false]{standalone}
+
+% --- 2. MATEMÁTICAS Y CIENCIAS ---
+\usepackage{amsmath, amssymb, amsfonts, mathtools}
+\usepackage{enumitem}
+
+% LaTeX trae \DeclareMathSizes{5}{5}{5}{5}, así que a 5 pt (\tiny) los subíndices
+% salen del mismo tamaño que la base: en las etiquetas de figuras el M de
+% $\omega_M$ queda desproporcionado. Se restablece la proporción habitual.
+\DeclareMathSizes{5}{5}{3.7}{3}
+
+% --- 3. DISEÑO Y GEOMETRÍA --- 
+% Unificamos los márgenes para todo el documento
+\usepackage[left=2.5cm,right=2.5cm,top=3cm,bottom=3cm]{geometry}
+\makeatletter
+\ifstandalone % Evita que geometry dañe el recorte de las figuras bajándolas 3cm
+  \@ifclasswith{standalone}{crop=false}{
+    % Es un capítulo/sección: Dejamos que geometry actúe.
+  }{
+    % Es una figura: Neutralizamos geometry para que no las recorte mal.
+    \geometry{pass}
+  }
+\fi
+\makeatother
+\usepackage{parskip} % Espaciado entre párrafos sin sangría
+\usepackage{float}   % Para usar [H] en figura
+
+% Ajustes de flotantes para evitar espacios verticales exagerados
+\renewcommand{\topfraction}{0.95}      % Permite que las figuras ocupen hasta el 95% superior
+\renewcommand{\bottomfraction}{0.95}   % Permite que las figuras ocupen hasta el 95% inferior
+\renewcommand{\textfraction}{0.05}     % Permite hojas con tan solo un 5% de texto
+\renewcommand{\floatpagefraction}{0.8} % Requiere que una página de solo figuras esté 80% llena
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{4}
+\setcounter{totalnumber}{10}
+
+% --- 4. GRÁFICOS Y TABLAS ---
+\usepackage{graphicx}
+\usepackage{booktabs} % Tablas profesionales
+\usepackage{caption}  % Control de captions y \captionof
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, angles, quotes, babel, backgrounds}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{external}
+\usepgfplotslibrary{patchplots}
+\pgfplotsset{compat=1.18}
+\usepackage[american, straightvoltages]{circuitikz}
+
+% --- 5. COLORES Y CAJAS ---
+
+\usepackage[table]{xcolor}
+\usepackage{tcolorbox}
+
+% Definición de colores corporativos/estilo
+\definecolor{utnblue}{RGB}{0, 51, 102}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+% --- 6. ENTORNOS PERSONALIZADOS (CAJAS) ---
+
+% Caja "Resultado" (Azul Corporativo) — Definiciones, fórmulas clave, resultados importantes.
+% Uso: \begin{resultado}[Fórmula de Euler] ... \end{resultado}
+\newtcolorbox{resultado}[1][]{
+    colback=utnblue!5!white,
+    colframe=utnblue,
+    title=\textbf{#1},
+    fonttitle=\bfseries,
+    sharp corners,
+    boxrule=0.5mm
+}
+
+% Caja "Nota" (Gris) — Advertencias, aplicaciones, contexto secundario.
+% Uso: \begin{nota}[Cuidado con la calculadora] ... \end{nota}
+% Uso: \begin{nota} ... \end{nota}  → título por defecto "Nota"
+\newtcolorbox{nota}[1][Nota]{
+    colback=codegray!5!white,
+    colframe=codegray,
+    title=\textbf{#1},
+    fonttitle=\bfseries,
+    sharp corners,
+    boxrule=0.5mm
+}
+
+% Caja inline para resaltar un valor y enlazarlo con su otra aparición en una tabla
+% o en una cuenta: mismo color, mismo valor.
+% Uso: \marcavalor{$4$}  o  \marcavalor[codegreen]{$4$}
+\newtcbox{\marcavalor}[1][utnblue]{
+    on line,
+    boxsep=1pt, left=2pt, right=2pt, top=1pt, bottom=1pt,
+    colback=#1!10!white,
+    colframe=#1,
+    boxrule=0.4pt,
+    arc=2pt
+}
+
+% --- 7. CÓDIGO FUENTE (LISTINGS) ---
+\usepackage{listings}
+
+\lstdefinestyle{miestilo}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single,                    
+    rulecolor=\color{codegray}
+}
+
+\lstset{style=miestilo}
+% Soporte para tildes y ñ en bloques de código
+\lstset{literate={ñ}{{\~n}}1 {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1}
+
+% Operadores matemáticos personalizados
+
+% Vector en sentido discreto (lista finita de coordenadas): negrita + flecha.
+% Uso: \vect{v}, \vect{e}_k, \vect{0}.
+\newcommand{\vect}[1]{\vec{\mathbf{#1}}}
+
+% Fecha de versión y comando para capítulos standalone
+\providecommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+\newcommand{\chapterversion}{%
+    \vspace{-1.5cm}\begin{flushright}\small\textit{\color{codegray}Versión~\verdate}\end{flushright}\vspace{0.5cm}%
+}
+
+% --- 8. HIPERVÍNCULOS (DEBE SER EL ÚLTIMO PAQUETE) ---
+\usepackage[colorlinks=true, linkcolor=utnblue, urlcolor=utnblue, citecolor=utnblue]{hyperref}
+
+% --- 9. REFERENCIAS CRUZADAS ENTRE CAPÍTULOS STANDALONE ---
+% Cuando se compila un capítulo standalone, xr-hyper lee los .aux de los
+% otros capítulos (si existen) para resolver \ref{} a labels externos.
+% En la compilación del libro completo este bloque no se activa.
+\ifstandalone
+  \usepackage{xr-hyper}
+  \makeatletter
+  \newcommand{\xrchap}[1]{%
+    \edef\xrc@self{\detokenize{Capitulo#1}}%
+    \edef\xrc@job{\jobname}%
+    \ifx\xrc@self\xrc@job\else
+      \IfFileExists{../#1capitulo/Capitulo#1.aux}%
+        {\externaldocument{../#1capitulo/Capitulo#1}}{}%
+    \fi
+  }
+  \makeatother
+  \xrchap{01}\xrchap{02}\xrchap{03}\xrchap{04}
+  \xrchap{05}\xrchap{06}\xrchap{07}\xrchap{08}
+  \xrchap{09}\xrchap{10}\xrchap{11}\xrchap{12}
+  \xrchap{13}
+\fi

@@ -1,0 +1,169 @@
+% ============================================================
+% fig_regiones_convergencia.tex
+% Figura 3D: 2x2 — función original + tres regiones de convergencia
+%   f(z) = 1/((1-z)(2-z)), polos en z=1 y z=2
+%     (a) Función original completa   (b) Taylor    |z| < 1
+%     (c) Laurent 1 < |z| < 2         (d) Laurent   |z| > 2
+% ============================================================
+%\PassOptionsToPackage{gray}{xcolor}
+
+\documentclass[border=3mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}
+
+% -------------------------------------------------------
+% Panel (a): Función original  — fila 1, columna 1
+% -------------------------------------------------------
+\begin{axis}[
+    name=plotA,
+    title={\small \textbf{(a)} Función original: $\frac{1}{(1-z)(2-z)}$},
+    view={15}{35},
+    width=7.5cm, height=5.5cm,
+    xmin=-4.5, xmax=4.5,
+    ymin=-4.5, ymax=4.5,
+    zmin=0, zmax=8,
+    axis lines=box,
+    colormap/viridis,
+    shader=interp,
+    xlabel={$\mathrm{Re}(z)$},
+    ylabel={$\mathrm{Im}(z)$},
+    zlabel={$|f|$},
+    xlabel style={font=\footnotesize},
+    ylabel style={font=\footnotesize},
+    zlabel style={font=\footnotesize},
+    xtick={-4,-2,0,2,4}, ytick={-4,-2,0,2,4}, ztick={0,4,8},
+    tick label style={font=\tiny},
+    title style={font=\small},
+]
+    \addplot3[
+        surf, opacity=0.9, point meta={pow(z,0.25)},
+        domain=-4.4:4.4, domain y=-4.4:4.4, samples=65,
+    ] { min(8, 1/sqrt( ((x-1)^2+y^2)*((x-2)^2+y^2) + 0.001 )) };
+\end{axis}
+
+% -------------------------------------------------------
+% Panel (b): Serie de Taylor  — fila 1, columna 2
+% -------------------------------------------------------
+\begin{axis}[
+    name=plotB,
+    title={\small \textbf{(b)} Taylor: $|z| < 1$},
+    at={($(plotA.outer east)+(0.4cm,0)$)},
+    anchor=outer west,
+    view={15}{35},
+    width=7.5cm, height=5.5cm,
+    xmin=-4.5, xmax=4.5,
+    ymin=-4.5, ymax=4.5,
+    zmin=0, zmax=8,
+    axis lines=box,
+    colormap/viridis,
+    shader=interp,
+    xlabel={$\mathrm{Re}(z)$},
+    ylabel={$\mathrm{Im}(z)$},
+    zlabel={$|f|$},
+    xlabel style={font=\footnotesize},
+    ylabel style={font=\footnotesize},
+    zlabel style={font=\footnotesize},
+    xtick={-4,-2,0,2,4}, ytick={-4,-2,0,2,4}, ztick={0,4,8},
+    tick label style={font=\tiny},
+    title style={font=\small},
+]
+    \addplot3[
+        surf, opacity=0.9, point meta={pow(z,0.25)},
+        domain=0.02:0.97, domain y=0:360,
+        samples=30, samples y=50, variable=r, variable y=theta,
+    ] (
+        {r*cos(theta)}, {r*sin(theta)},
+        {min(8, 1/sqrt( ((r*cos(theta)-1)^2+(r*sin(theta))^2) *
+                        ((r*cos(theta)-2)^2+(r*sin(theta))^2) + 0.001 ))}
+    );
+\end{axis}
+
+% -------------------------------------------------------
+% Panel (c): Laurent 1 < |z| < 2  — fila 2, columna 1
+% -------------------------------------------------------
+\begin{axis}[
+    name=plotC,
+    title={\small \textbf{(c)} Laurent: $1 < |z| < 2$},
+    at={($(plotA.outer south)-(0,0.6cm)$)},
+    anchor=outer north,
+    view={15}{35},
+    width=7.5cm, height=5.5cm,
+    xmin=-4.5, xmax=4.5,
+    ymin=-4.5, ymax=4.5,
+    zmin=0, zmax=8,
+    axis lines=box,
+    colormap/viridis,
+    shader=interp,
+    xlabel={$\mathrm{Re}(z)$},
+    ylabel={$\mathrm{Im}(z)$},
+    zlabel={$|f|$},
+    xlabel style={font=\footnotesize},
+    ylabel style={font=\footnotesize},
+    zlabel style={font=\footnotesize},
+    xtick={-4,-2,0,2,4}, ytick={-4,-2,0,2,4}, ztick={0,4,8},
+    tick label style={font=\tiny},
+    title style={font=\small},
+]
+    \addplot3[
+        surf, opacity=0.9, point meta={pow(z,0.25)},
+        domain=1.04:1.96, domain y=0:360,
+        samples=30, samples y=60, variable=r, variable y=theta,
+    ] (
+        {r*cos(theta)}, {r*sin(theta)},
+        {min(8, 1/sqrt( ((r*cos(theta)-1)^2+(r*sin(theta))^2) *
+                        ((r*cos(theta)-2)^2+(r*sin(theta))^2) + 0.001 ))}
+    );
+\end{axis}
+
+% -------------------------------------------------------
+% Panel (d): Laurent |z| > 2  — fila 2, columna 2
+% -------------------------------------------------------
+\begin{axis}[
+    name=plotD,
+    title={\small \textbf{(d)} Laurent: $2 < |z| < \infty$},
+    at={($(plotB.outer south)-(0,0.6cm)$)},
+    anchor=outer north,
+    view={15}{35},
+    width=7.5cm, height=5.5cm,
+    xmin=-4.5, xmax=4.5,
+    ymin=-4.5, ymax=4.5,
+    zmin=0, zmax=3,
+    axis lines=box,
+    colormap/viridis,
+    shader=interp,
+    xlabel={$\mathrm{Re}(z)$},
+    ylabel={$\mathrm{Im}(z)$},
+    zlabel={$|f|$},
+    xlabel style={font=\footnotesize},
+    ylabel style={font=\footnotesize},
+    zlabel style={font=\footnotesize},
+    xtick={-4,-2,0,2,4}, ytick={-4,-2,0,2,4}, ztick={0,1,2,3},
+    tick label style={font=\tiny},
+    title style={font=\small},
+]
+    % Interpolación transfinita: u=0 → círculo r=2, u=1 → cuadrado [-4.4,4.4]
+    % R(u,v) = 2 + u*(4.4/max(|cos v|,|sin v|) - 2)
+    \addplot3[
+        surf, opacity=0.9, point meta={pow(z,0.25)},
+        domain=0:1, domain y=0:360,
+        samples=22, samples y=50,
+        variable=u, variable y=v,
+        z buffer=sort,
+    ] (
+        { (2 + u*(4.4/max(abs(cos(v)),abs(sin(v))) - 2)) * cos(v) },
+        { (2 + u*(4.4/max(abs(cos(v)),abs(sin(v))) - 2)) * sin(v) },
+        { min(3, 1/sqrt(
+            (  (2 + u*(4.4/max(abs(cos(v)),abs(sin(v))) - 2))^2
+             - 2*(2 + u*(4.4/max(abs(cos(v)),abs(sin(v))) - 2))*cos(v) + 1
+            ) *
+            (  (2 + u*(4.4/max(abs(cos(v)),abs(sin(v))) - 2))^2
+             - 4*(2 + u*(4.4/max(abs(cos(v)),abs(sin(v))) - 2))*cos(v) + 4
+            ) + 0.001
+        )) }
+    );
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

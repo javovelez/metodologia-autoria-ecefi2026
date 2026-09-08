@@ -1,0 +1,37 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur}
+
+% Sistema invertible: T seguido de T^{-1} recupera la entrada original.
+% x(t) → [T] → y(t) → [T^{-1}] → x(t)
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    block/.style={
+        draw=utnblue!60,
+        line width=0.5pt,
+        fill=utnblue!8,
+        minimum width=2.1cm,
+        minimum height=1cm,
+        rounded corners=2pt,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    signal/.style={->, thick, utnblue},
+    label_style/.style={font=\footnotesize},
+]
+
+\coordinate (in) at (0, 0);
+\node[block] (T)    at (2.2, 0) {$\mathcal{T}$};
+\node[block] (Tinv) at (5.8, 0) {$\mathcal{T}^{-1}$};
+\coordinate (out) at (8.0, 0);
+
+\draw[signal] (in) -- (T.west)        node[label_style, above, midway] {$x(t)$};
+\draw[signal] (T.east) -- (Tinv.west) node[label_style, above, midway] {$y(t)$};
+\draw[signal] (Tinv.east) -- (out)    node[label_style, above, midway] {$x(t)$};
+
+\node[font=\footnotesize, gray, above=0.3cm] at (2.2, 0.55) {Sistema};
+\node[font=\footnotesize, gray, above=0.3cm] at (5.8, 0.55) {Inverso};
+
+\end{tikzpicture}
+\end{document}

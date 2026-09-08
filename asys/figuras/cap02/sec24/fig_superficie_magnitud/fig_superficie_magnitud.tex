@@ -1,0 +1,50 @@
+  %\PassOptionsToPackage{gray}{xcolor}
+
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[
+            name=mainplot,
+            view={55}{25},
+            title={\textbf{Superficie de Magnitud $|f(z)|$}},
+            clip=true,
+            domain=-8:4,
+            y domain=-8:8,
+            samples=60,
+            zmin=0, zmax=15,
+            colormap/viridis,
+            shader=interp,
+            axis lines=box,
+            width=10cm,
+            height=8cm,
+            xtick={-8,-4,0,4},
+            ytick={-8,-4,0,4,8},
+            ztick={0,5,10,15},
+        ]
+            % Superficie principal
+            \addplot3[surf, opacity=0.85] {min(15, 10/sqrt((x+2)^2 + y^2))};
+
+            % El "Perfil" resaltado sobre la superficie (x=0)
+            \addplot3 [
+                samples y=0,
+                domain=-8:8,
+                ultra thick,
+                white,
+            ] (0, x, {min(15, 10/sqrt(4 + x^2))});
+            
+            % Etiqueta del corte
+            \node[white, anchor=west, font=\footnotesize\bfseries] at (axis cs:0,7,2) {Corte $jy$};
+        \end{axis}
+
+        % Labels
+        \node[anchor=north east, font=\footnotesize] at (mainplot.outer south west) 
+            [xshift=2.0cm, yshift=0.3cm] {Re};
+        \node[anchor=north west, font=\footnotesize] at (mainplot.outer south east) 
+            [xshift=-2.0cm, yshift=0.3cm] {Im};
+        \node[anchor=south, font=\footnotesize] at (mainplot.west) 
+            [xshift=-0.5cm, yshift=-0.3cm] {$|f(z)|$};
+    \end{tikzpicture}
+\end{document}
+
+

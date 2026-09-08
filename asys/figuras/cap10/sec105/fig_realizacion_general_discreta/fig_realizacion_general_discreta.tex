@@ -1,0 +1,128 @@
+\documentclass[border=6mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur, shapes.geometric}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Realización directa de una ecuación en diferencias general con retardos unitarios.
+% Columnas extremas: cadenas de retardos sobre x[n] (izq.) y sobre y[n] (der.).
+% Columna central: cadena de sumadores. El sumador superior entrega y[n].
+
+\begin{document}
+% Etiqueta de escalador en caja fija: todos los triángulos quedan del mismo tamaño
+% sin importar el ancho del coeficiente.
+\newcommand{\glab}[1]{\makebox[19.5pt][c]{$\vphantom{\dfrac{b_0}{a_0}}#1$}}
+
+\begin{tikzpicture}[>=Latex, font=\small,
+    gain_r/.style={
+        regular polygon, regular polygon sides=3, shape border rotate=30,
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum size=0.8cm, inner sep=0pt, font=\scriptsize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    gain_l/.style={
+        regular polygon, regular polygon sides=3, shape border rotate=210,
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum size=0.8cm, inner sep=0pt, font=\scriptsize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    delay/.style={
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum width=1.35cm, minimum height=0.8cm, font=\scriptsize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    sum/.style={
+        draw=utnblue!60, line width=0.5pt, circle, minimum size=0.8cm,
+        inner sep=0pt, fill=white,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.3pt, shadow yshift=-0.4pt, shadow opacity=20}
+    },
+    cross_line/.style={utnblue!40, line width=0.4pt},
+    signal/.style={->, thick, utnblue},
+    wire/.style={-, thick, utnblue},
+    tlab/.style={font=\scriptsize, inner sep=2pt},
+]
+
+\def\xL{-5.2}\def\xLg{-2.6}\def\xC{0}\def\xRg{2.6}\def\xR{5.2}
+\def\yA{1.4}\def\yB{-0.4}\def\yC{-1.8}\def\yD{-3.2}
+
+% sumador con cruz interna (macro manual)
+\newcommand{\suma}[1]{%
+  \node[sum] (#1) {};
+  \draw[cross_line] ($(#1)+(-0.28,-0.28)$) -- ($(#1)+(0.28,0.28)$);
+  \draw[cross_line] ($(#1)+(-0.28,0.28)$) -- ($(#1)+(0.28,-0.28)$);
+}
+
+% ---------------- columna central de sumadores ----------------
+\begin{scope}
+  \path (\xC,\yA) node[sum] (SA){}; \draw[cross_line] (\xC-0.28,\yA-0.28)--(\xC+0.28,\yA+0.28); \draw[cross_line] (\xC-0.28,\yA+0.28)--(\xC+0.28,\yA-0.28);
+  \path (\xC,\yB) node[sum] (SB){}; \draw[cross_line] (\xC-0.28,\yB-0.28)--(\xC+0.28,\yB+0.28); \draw[cross_line] (\xC-0.28,\yB+0.28)--(\xC+0.28,\yB-0.28);
+  \path (\xC,\yD) node[sum] (SD){}; \draw[cross_line] (\xC-0.28,\yD-0.28)--(\xC+0.28,\yD+0.28); \draw[cross_line] (\xC-0.28,\yD+0.28)--(\xC+0.28,\yD-0.28);
+\end{scope}
+
+% espina vertical de sumadores (de abajo hacia arriba)
+\draw[signal] (SD.north) -- (\xC,\yC-0.35);
+\node at (\xC,\yC) {\large$\vdots$};
+\draw[signal] (\xC,\yC+0.35) -- (SB.south);
+\draw[signal] (SB.north) -- (SA.south);
+
+% ---------------- columna izquierda: cadena sobre x[n] ----------------
+\coordinate (xn)  at (\xL,\yA);
+\coordinate (xn1) at (\xL,\yB);
+\coordinate (xnM) at (\xL,\yD);
+\node[delay] (DLa) at (\xL,{(\yA+\yB)/2}) {Retardo};
+\node[font=\footnotesize] at (\xL,\yA+0.55) {$x[n]$};
+\draw[signal] (xn) -- (DLa.north);
+\draw[signal] (DLa.south) -- (xn1);
+\node[font=\footnotesize, anchor=east] at (\xL-0.25,\yB+0.32) {$x[n{-}1]$};
+\draw[wire, dashed] (xn1) -- (\xL,\yC+0.2);
+\node at (\xL,\yC) {\large$\vdots$};
+\draw[wire, dashed] (\xL,\yC-0.2) -- (xnM);
+\node[font=\footnotesize] at (\xL,\yD-0.5) {$x[n{-}M]$};
+
+% taps y ganancias b_k/a_0
+\node[gain_r] (gb0) at (\xLg,\yA) {\glab{\dfrac{b_0}{a_0}}};
+\node[gain_r] (gb1) at (\xLg,\yB) {\glab{\dfrac{b_1}{a_0}}};
+\node[gain_r] (gbM) at (\xLg,\yD) {\glab{\dfrac{b_M}{a_0}}};
+\fill[utnblue] (xn)  circle (2pt);
+\fill[utnblue] (xn1) circle (2pt);
+\fill[utnblue] (xnM) circle (2pt);
+\draw[signal] (xn)  -- (gb0.west);
+\draw[signal] (gb0.east) -- (SA.west);
+\draw[signal] (xn1) -- (gb1.west);
+\draw[signal] (gb1.east) -- (SB.west);
+\draw[signal] (xnM) -- (gbM.west);
+\draw[signal] (gbM.east) -- (SD.west);
+
+% ---------------- columna derecha: cadena sobre y[n] ----------------
+\coordinate (yn)  at (\xR,\yA);
+\coordinate (yn1) at (\xR,\yB);
+\coordinate (ynN) at (\xR,\yD);
+\node[delay] (DRa) at (\xR,{(\yA+\yB)/2}) {Retardo};
+\draw[signal] (yn) -- (DRa.north);
+\draw[signal] (DRa.south) -- (yn1);
+\node[font=\footnotesize, anchor=west] at (\xR+0.25,\yB+0.32) {$y[n{-}1]$};
+\draw[wire, dashed] (yn1) -- (\xR,\yC+0.2);
+\node at (\xR,\yC) {\large$\vdots$};
+\draw[wire, dashed] (\xR,\yC-0.2) -- (ynN);
+\node[font=\footnotesize] at (\xR,\yD-0.5) {$y[n{-}N]$};
+
+% ganancias -a_k/a_0 (apuntan a la izquierda)
+\node[gain_l] (ga1) at (\xRg,\yB) {\glab{-\dfrac{a_1}{a_0}}};
+\node[gain_l] (gaN) at (\xRg,\yD) {\glab{-\dfrac{a_N}{a_0}}};
+\fill[utnblue] (yn1) circle (2pt);
+\fill[utnblue] (ynN) circle (2pt);
+\draw[signal] (yn1) -- (ga1.east);
+\draw[signal] (ga1.west) -- (SB.east);
+\draw[signal] (ynN) -- (gaN.east);
+\draw[signal] (gaN.west) -- (SD.east);
+
+% ---------------- salida y[n] ----------------
+\draw[wire] (SA.east) -- (yn);
+\fill[utnblue] (yn) circle (2pt);
+\draw[signal] (yn) -- (\xR+1.6,\yA) node[font=\footnotesize, above, pos=0.8, text=black] {$y[n]$};
+
+\end{tikzpicture}
+\end{document}

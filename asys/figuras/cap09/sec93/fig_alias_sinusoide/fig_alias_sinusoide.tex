@@ -1,0 +1,102 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_alias_sinusoide
+% Ejemplo concreto de §9.1 con valores de frecuencia angular:
+%   coseno de 9 ciclos/s  -> w0 = 18 pi rad/s
+%   muestreo de 8 por seg -> ws = 16 pi rad/s, ws/2 = 8 pi rad/s
+%   alias                 -> wa = |18pi - 16pi| = 2 pi rad/s (1 ciclo/s)
+% Unidad del eje: 1 unidad de dibujo = 2 pi rad/s.
+% (a) lineas del coseno en +-18pi, las dos fuera de la banda base.
+% (b) replicas a paso ws=16pi; las que caen en banda base (+-2pi) en rojo.
+%     Replicas tenues en +-18pi (originales) y +-14pi (de la familia opuesta).
+% Banda base sombreada en gris; eje de ordenadas y origen marcados.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=4pt]}, font=\scriptsize, xscale=0.45,
+    lin/.style={utnblue, thick, -{Latex[length=4pt]}},
+    linf/.style={utnblue!40, thick, -{Latex[length=3.5pt]}},
+    alias/.style={red!80!black, very thick, -{Latex[length=4pt]}},
+    nyq/.style={gray!70, thin, dashed},
+    ax/.style={->, thin, black},
+    tick/.style={thin},
+]
+    \def\H{0.9}
+
+    % ===================== (a) coseno antes de muestrear =====================
+    \begin{scope}[shift={(0,0)}]
+        \node at (-11.6,0.7) {(a)};
+        % banda base
+        \fill[gray!10] (-4,0) rectangle (4,\H+0.10);
+        \draw[ax] (-11,0) -- (11.4,0) node[right] {$\omega$};
+        % eje de ordenadas y origen
+        \draw[ax] (0,0) -- (0,\H+0.30);
+        \node[anchor=south east, font=\tiny, inner sep=1.5pt] at (-0.15,0.04) {$0$};
+        % bordes de la banda base
+        \draw[nyq] (4,0) -- (4,\H+0.10);
+        \draw[nyq] (-4,0) -- (-4,\H+0.10);
+        \node[gray!70, anchor=south, font=\tiny] at (4,\H+0.10) {$\tfrac{\omega_s}{2}$};
+        \node[gray!70, anchor=south, font=\tiny] at (-4,\H+0.10) {$-\tfrac{\omega_s}{2}$};
+        \node[gray!65, font=\tiny] at (2.1,0.45) {banda base};
+        % lineas del coseno
+        \draw[lin] (9,0) -- (9,\H);
+        \draw[lin] (-9,0) -- (-9,\H);
+        \node[utnblue, anchor=south, font=\tiny] at (9,\H) {$\omega_0$};
+        \node[utnblue, anchor=south, font=\tiny] at (-9,\H) {$-\omega_0$};
+        % marcas del eje
+        \foreach \x/\lab in {4/{8\pi}, 9/{18\pi}, -4/{-8\pi}, -9/{-18\pi} } {
+            \draw[tick] (\x,0.05) -- (\x,-0.05) node[below, font=\tiny] {$\lab$};
+        }
+    \end{scope}
+
+    % ===================== (b) despues de muestrear =====================
+    \begin{scope}[shift={(0,-3.0)}]
+        \node at (-11.6,0.7) {(b)};
+        % banda base
+        \fill[gray!10] (-4,0) rectangle (4,\H+0.10);
+        \draw[ax] (-11,0) -- (11.4,0) node[right] {$\omega$};
+        % eje de ordenadas y origen
+        \draw[ax] (0,0) -- (0,\H+0.30);
+        \node[anchor=south east, font=\tiny, inner sep=1.5pt] at (-0.15,0.04) {$0$};
+        % bordes de la banda base
+        \draw[nyq] (4,0) -- (4,\H+0.10);
+        \draw[nyq] (-4,0) -- (-4,\H+0.10);
+        \node[gray!70, anchor=south, font=\tiny] at (4,\H+0.10) {$\tfrac{\omega_s}{2}$};
+        \node[gray!70, anchor=south, font=\tiny] at (-4,\H+0.10) {$-\tfrac{\omega_s}{2}$};
+        % replicas fuera de la banda base (tenues)
+        \draw[linf] (9,0) -- (9,\H);
+        \draw[linf] (-9,0) -- (-9,\H);
+        \draw[linf] (7,0) -- (7,\H);
+        \draw[linf] (-7,0) -- (-7,\H);
+        % alias dentro de la banda base
+        \draw[alias] (1,0) -- (1,\H);
+        \draw[alias] (-1,0) -- (-1,\H);
+        \node[red!80!black, anchor=south west, font=\tiny, inner sep=1pt]
+            at (1,\H) {$\omega_a$};
+        % marcas del eje
+        \foreach \x/\lab in {1/{2\pi}, 4/{8\pi}, 9/{18\pi},
+                             -1/{-2\pi}, -4/{-8\pi}, -9/{-18\pi} } {
+            \draw[tick] (\x,0.05) -- (\x,-0.05) node[below, font=\tiny] {$\lab$};
+        }
+        \foreach \x/\lab in {7/{14\pi}, -7/{-14\pi} } {
+            \draw[tick, gray!60] (\x,0.05) -- (\x,-0.05)
+                node[below, font=\tiny, gray!70] {$\lab$};
+        }
+        % frecuencia de muestreo sobre el eje
+        \draw[tick, gray!70] (8,0.05) -- (8,-0.05);
+        \draw[tick, gray!70] (-8,0.05) -- (-8,-0.05);
+        \node[gray!70, anchor=north, font=\tiny] at (8,-0.42) {$\omega_s\!=\!16\pi$};
+        \draw[gray!70, thin, -{Latex[length=3pt]}] (8,-0.42) -- (8,-0.13);
+        \node[gray!70, anchor=north, font=\tiny] at (-8,-0.42) {$-\omega_s$};
+        \draw[gray!70, thin, -{Latex[length=3pt]}] (-8,-0.42) -- (-8,-0.13);
+        % traslado de +-18pi hasta +-2pi
+        \draw[red!80!black, thin, -{Latex[length=3pt]}]
+            (8.7,\H+0.42) to[bend right=14] (1.3,\H+0.42);
+        \node[red!80!black, anchor=south, font=\tiny] at (5,\H+0.52) {$-\,\omega_s$};
+        \draw[red!80!black, thin, -{Latex[length=3pt]}]
+            (-8.7,\H+0.42) to[bend left=14] (-1.3,\H+0.42);
+        \node[red!80!black, anchor=south, font=\tiny] at (-5,\H+0.52) {$+\,\omega_s$};
+    \end{scope}
+\end{tikzpicture}
+\end{document}

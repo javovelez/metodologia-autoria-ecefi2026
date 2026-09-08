@@ -1,0 +1,63 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+% fig_par_impulso_constante
+% Par delta(t) <-> X(jw) = 1.
+% El impulso se dibuja como flecha vertical con punta abierta (cabeza
+% indicando peso); la constante como recta horizontal.
+% Sizing: 2 paneles 1x2.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% Panel (a): delta(t)
+\begin{axis}[
+    name=panel_a,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-3, xmax=3, ymin=-0.2, ymax=1.4,
+    xtick={0},
+    ytick=\empty,
+    every tick label/.style={font=\tiny},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.13)}},
+    ylabel={$\delta(t)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:0,0) -- (axis cs:0,1.1);
+    \node[anchor=west, font=\footnotesize] at (axis cs:0.15, 1.05) {$1$};
+\end{axis}
+
+% Panel (b): X(jw) = 1
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.east)+(1.4cm,0)$)}, anchor=west,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-3, xmax=3, ymin=-0.2, ymax=1.4,
+    xtick={0},
+    ytick=\empty,
+    every tick label/.style={font=\tiny},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.13)}},
+    ylabel={$X(j\omega)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick, domain=-3:3, samples=2] {1};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.15, 1.0) {$1$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

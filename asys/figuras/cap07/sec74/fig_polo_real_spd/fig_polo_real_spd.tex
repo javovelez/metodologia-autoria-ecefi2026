@@ -1,0 +1,39 @@
+% ============================================================
+% fig_polo_real_spd.tex
+% Polo real simple en el semiplano derecho (p = a, a > 0).
+% Aporte a h(t): exponencial creciente A e^{a t} u(t) (inestable).
+% Proporciones segun la referencia (libro de circuitos): la curva
+% crece a lo ancho del panel y llega cerca del borde superior en
+% t_max, llenando el cuadro. Sin flecha de continuacion.
+% Layout: [plano s]  L^{-1}  [h(t)].
+% ============================================================
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% --- Plano s ---
+\draw[->, thin] (-1.3, 0) -- (2.0, 0) node[below right, font=\footnotesize] {$\sigma$};
+\draw[->, thin] (0, -1.7) -- (0, 1.9) node[above, font=\footnotesize] {$j\omega$};
+\fill[black] (0, 0) circle (0.8pt);
+\node[red, font=\large] at (1.3, 0) {$\times$};
+\draw (1.3, 0.08) -- (1.3, -0.08);
+\node[below, font=\footnotesize] at (1.3, -0.06) {$a$};
+
+% --- Conector ---
+\draw[->, gray, thin] (2.5, 0) -- (3.7, 0)
+    node[midway, above, font=\footnotesize, gray] {$\mathcal{L}^{-1}$};
+
+% --- h(t) ---
+\begin{scope}[shift={(4.2, 0)}]
+    \draw[->, thin] (-0.3, 0) -- (4.0, 0) node[right, font=\footnotesize] {$t$};
+    \draw[->, thin] (0, -0.5) -- (0, 1.9) node[above, font=\footnotesize] {$h(t)$};
+    % e^{a t}: crece de ~0.30 a ~1.72 sobre todo el ancho (factor ~5.8).
+    \draw[red!80!black, thick, smooth, samples=120, domain=0:3.8]
+        plot (\x, {0.30*exp(0.46*\x)});
+    \fill[red!80!black] (0, 0.30) circle (1.1pt);
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

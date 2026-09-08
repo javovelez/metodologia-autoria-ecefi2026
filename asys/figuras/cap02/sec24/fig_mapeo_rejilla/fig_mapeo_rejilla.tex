@@ -1,0 +1,58 @@
+\documentclass[border=0mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=0.6, font=\small]
+        % --- PLANO Z ---
+        % Semiplano Derecho (x > 0) para evitar solapamiento
+        \begin{scope}[shift={(-3,0)}, scale=1.5]
+            \draw[->] (-0.5,0) -- (2.5,0) node[right] {$x$};
+            \draw[->] (0,-2.5) -- (0,2.5) node[above] {$y$};
+            \node at (0, -3) {\textbf{Plano Z}};
+            
+            % Clip para la rejilla
+            \begin{scope}
+                \clip (-0.1, -2.1) rectangle (2.1, 2.1);
+                % Rejilla Vertical (Azul)
+                \foreach \val in {0, 0.5, ..., 2} {
+                    \pgfmathsetmacro{\per}{(\val)/2 * 100}
+                    \draw[line width=0.8pt, color=violet!\per!cyan] (\val, -3) -- (\val, 3);
+                }
+                % Rejilla Horizontal (Rojo)
+                \foreach \val in {-2, -1.5, ..., 2} {
+                    \pgfmathsetmacro{\per}{(\val + 2)/4 * 100}
+                    \draw[line width=0.8pt, color=red!\per!yellow] (0, \val) -- (3, \val);
+                }
+            \end{scope}
+        \end{scope}
+        
+        % Flecha
+        \draw[->, thick, bend left] (2, 1) to node[midway, above] {$w=z^2$} (4, 1);
+        
+        % --- PLANO W ---
+        \begin{scope}[shift={(8,0)}, scale=0.38]
+            \draw[->] (-9,0) -- (9,0) node[right] {$u$};
+            \draw[->] (0,-9) -- (0,9) node[above] {$v$};
+            \node at (0, -12) {\textbf{Plano W}};
+            
+            % Clip para las curvas
+            \begin{scope}
+                \clip (-8.5, -8.5) rectangle (8.5, 8.5);
+                
+                % Mapeo Verticales (Azul) -> u = c^2 - y^2, v = 2cy
+                \foreach \val in {0, 0.5, ..., 2} {
+                    \pgfmathsetmacro{\per}{(\val)/2 * 100}
+                    \draw[line width=0.8pt, color=violet!\per!cyan] plot[domain=-6:6, samples=100, smooth, variable=\t] ({\val*\val - \t*\t}, {2*\val*\t});
+                }
+                
+                % Mapeo Horizontales (Rojo) -> u = x^2 - c^2, v = 2xc
+                \foreach \val in {-2, -1.5, ..., 2} {
+                    \pgfmathsetmacro{\per}{(\val + 2)/4 * 100}
+                    \draw[line width=0.8pt, color=red!\per!yellow] plot[domain=0:6, samples=100, smooth, variable=\t] ({\t*\t - \val*\val}, {2*\t*\val});
+                }
+            \end{scope}
+        \end{scope}
+    \end{tikzpicture}
+\end{document}

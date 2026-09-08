@@ -1,0 +1,240 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{multicol}
+\usepackage{titling} % Para ajustar los espacios del título
+\usepackage{tasks} % Para listas en columnas
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=7cm,compat=1.18}
+\usepackage[mode=image]{standalone}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+% Ajusta la separación entre el encabezado y el contenido
+\setlength{\headsep}{10pt}
+
+% Ajuste del título:
+\setlength{\droptitle}{-0.5in} % Mueve el título ligeramente hacia arriba
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large}
+	\posttitle{\par\end{center}\vspace{-4em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+	\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Trabajo Práctico N$^\text{o}$2: Señales de tiempo continuo.}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Título optimizado con espacios reducidos
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Trabajo Práctico N$^{\text o}$2: Señales de tiempo continuo}%
+}
+\author{}
+\date{}
+
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+
+	% Entorno de dos columnas
+	\begin{multicols}{2}
+
+		\label{sec:enun}
+
+		% =========================================================
+		% PARTE I: CLASIFICACIÓN Y PROPIEDADES
+		% =========================================================
+		\vspace{0.2em}
+		\begin{center}
+			\textbf{\large Parte I: Clasificación y Propiedades}
+		\end{center}
+		\vspace{-0.5em}
+
+		\textbf{Paridad}
+		\begin{enumerate}
+			\item {Determinar las componentes par e impar y graficar. }
+			\begin{enumerate}
+				\item $x(t)=e^{-t}$.
+				\item $x(t)= u(t)$.
+				\item $x(t)= r(t)$.
+				\item $x(t)= t^3+2$.
+			\end{enumerate}
+
+            \textbf{Simetría en la Integración}
+            \item El análisis de paridad permite evitar cálculos extensos en integrales sobre intervalos simétricos. Determinar el resultado de las siguientes expresiones justificando el razonamiento:
+            \begin{enumerate}
+                \item $\int_{-2}^{2} t \cos(\pi t) dt$
+                \item $\int_{-5}^{5} t^2 \sin\left(\frac{\pi}{5} t\right) dt$
+                \item $\int_{-1}^{1} \left[ 3 + t^3 \cos(2\pi t) \right] dt$ \quad \textit{(Pista: separar la integral)}
+                \item $\int_{-\pi}^{\pi} t \sin(t) dt$
+                \item $\int_{-\pi/2}^{\pi/2} \cos(t) dt$
+                \item Demostrar que si $x(t)$ es una señal periódica par de período $T_0$, su potencia media se puede calcular integrando sobre una mitad del período fundamental: $P_x = \frac{2}{T_0} \int_{0}^{T_0/2} x^2(t) dt$.
+            \end{enumerate}
+
+			\textbf{Periodicidad}
+			\item {Determinar la periodicidad, frecuencia fundamental y período fundamental, en caso de existir, para las siguientes señales.}
+			\begin{enumerate}
+				\item $x(t)=3 \cos(60t)-4\sin(30t)-5\cos(10t)$
+				\item $x(t)=5\sin(\frac{\pi}{3}t)-3\cos(\frac{8\pi}{3}t)$
+				\item $x(t)=2\cos(2\pi t)+6\sin(10t)-3\cos(4t)$
+				\item $x(t)=e^{j\frac{5\pi}{6}t}+e^{j\frac{7\pi}{6}t}$
+			\end{enumerate}
+
+		% =========================================================
+		% PARTE II: OPERACIONES Y MEDIDAS
+		% =========================================================
+		\vspace{1em}
+		\begin{center}
+			\textbf{\large Parte II: Operaciones y Medidas}
+		\end{center}
+		\vspace{-0.5em}
+
+			\textbf{Transformaciones de la Variable Independiente}
+			\item Dada la señal $x(t)=
+			\begin{cases}
+			t+1, & ~~-1\leq t\leq 1, \\
+			2, & ~~~~~1<t\leq 2, \\
+			0, & \forall ~t<-1 \wedge t>2.
+			\end{cases}$
+
+			Determinar analítica y gráficamente:
+			\begin{enumerate}
+				\item $x(2t)$
+				\item $x\left(\frac{1}{2}t\right)$
+				\item $x(t-3)$
+				\item $x(-t)$
+				\item $x(3-t)$
+			\end{enumerate}
+
+			\item Dada la señal $x(t)=
+			\begin{cases}
+			t+1, & ~~-1\leq t\leq 0, \\
+			1, & ~~~~~0<t\leq 2, \\
+			-t+3, & ~~~~~2<t\leq 3, \\
+			0, & \forall ~t<-1 \wedge t>3.
+			\end{cases}$
+
+			Determinar analítica y gráficamente $x(3t-6)$
+
+			\textbf{Señales de Energía y Potencia}
+			\item {Determinar si las siguientes señales son de energía finita, de potencia finita o de ninguno de esos tipos. Justificar la respuesta indicando la magnitud.}
+			\begin{enumerate}
+				\item $x(t)=A\cos t$, para $-\infty<t<\infty$
+				\item $x(t)=A[u(t-1)-u(t+1)]$
+				\item $x(t)=tu(t)$
+				\item $x(t)=tu(t)u(1-t)$
+				\item $x(t)=Ae^{\beta t}$, para $\beta>0$
+			\end{enumerate}
+
+            \textbf{Superposición Frecuencial}
+            \item Dada la señal periódica compuesta $x(t) = 3\cos(10\pi t) + 4\sin(20\pi t)$:
+            \begin{enumerate}
+                \item Calcular el período fundamental $T_0$ de la señal compuesta.
+                \item Calcular numéricamente las potencias parciales individuales de la primera componente ($P_1$) y de la segunda ($P_2$).
+                \item Sabiendo que el aporte cruzado $\int_0^{T_0} \cos(10\pi t)\cdot \sin(20\pi t) dt$ se anula sobre el período $T_0$, demostrar elevando la señal genérica al cuadrado que la potencia total obedece exactamente a la relación $P_x = P_1 + P_2$.
+            \end{enumerate}
+
+            \textbf{Componente Continua y Alterna}
+            \item Considerar una señal cuadrada de amplitud $A=10\,$V, que oscila entre $0\,$V y $A$ con ciclo de trabajo de $50\%$ ($D=0{,}5$) y período $T_0=2\,$ms.
+            \begin{enumerate}
+                \item Calcular su valor medio $\bar{x}$ (componente DC).
+                \item Encontrar y graficar la componente alterna $x_{\mathrm{ac}}(t) = x(t) - \bar{x}$. Identificar si es una señal del catálogo.
+                \item Comprobar que la potencia total es la suma de las potencias de ambas componentes operando directamente con ellas: $P_x = (\bar{x})^2 + P_{\mathrm{ac}}$.
+            \end{enumerate}
+
+		% =========================================================
+		% PARTE III: SEÑALES ELEMENTALES
+		% =========================================================
+		\vspace{1em}
+		\begin{center}
+			\textbf{\large Parte III: Señales Elementales}
+		\end{center}
+		\vspace{-0.5em}
+
+		\textbf{Graficación y Expresión Matemática}
+			\item {Graficar las siguientes señales:}
+			\begin{enumerate}
+				\item $x_1(t)=2u(t)+u(t-1)-3u(t-4)$
+				\item $x_2(t)=tu(t)-(t-1)u(t-1)-2u(t-3)$
+				\item $x_3(t)=2u(t)-tu(t)+(t-2)u(t-2)$
+				\item $x_4(t)=u(t)u(2-t)$
+				\item $x_5(t)=tu(t)u(1-t)$
+			\end{enumerate}
+
+			\item {Expresar matemáticamente las siguientes señales utilizando señales elementales:}
+
+\begin{center}
+	\includestandalone{figures/fig_ejer2x1/fig_ejer2x1}
+	\hspace{1cm}
+	\includestandalone{figures/fig_ejer2x2/fig_ejer2x2}
+\end{center}
+
+            \textbf{Relación Íntegro-Diferencial de Señales Elementales}
+            \item Dada la señal $x(t) = r(t+1) - 2r(t) + r(t-1)$, donde $r(t)$ es la rampa unitaria:
+            \begin{enumerate}
+                \item Graficar la señal $x(t)$.
+                \item Derivar $x(t)$ para obtener una expresión analítica de su derivada $x^{\prime}(t)$ en función de escalones unitarios $u(t)$ y graficar el resultado.
+                \item Volver a derivar para expresar $x^{\prime\prime}(t)$ en función de impulsos de Dirac $\delta(t)$ y graficar el resultado identificando el área de cada impulso.
+            \end{enumerate}
+
+            \textbf{El Impulso de Dirac y sus Propiedades}
+            \item Simplificar las siguientes expresiones aplicando la propiedad de producto del impulso ($x(t)\delta(t-t_0) = x(t_0)\delta(t-t_0)$):
+            \begin{enumerate}
+                \item $t^2 \, \delta(t-3)$
+                \item $\cos\left(\frac{\pi}{2}t\right) \, \delta(t-1)$
+                \item $e^{-2t} \, \delta(t)$
+            \end{enumerate}
+
+            \item Evaluar las siguientes integrales utilizando la propiedad de muestreo del impulso:
+            \begin{enumerate}
+                \item $\int_{-\infty}^{\infty} (t^2 - 1) \delta(t-2) dt$
+                \item $\int_{0}^{5} e^{-2t} \delta(t-3) dt$
+                \item $\int_{-2}^{2} \sin(10t) \delta(t-3) dt$ \quad \textit{(Preste atención a los límites de integración)}
+                \item $\int_{-\infty}^{\infty} \delta(t+4) dt$
+            \end{enumerate}
+
+            \item \textbf{Muestreo:} Dada $x(t) = \cos(\pi t)$ y el tren de impulsos causal $\delta^{T_s}(t) = \sum_{k=0}^{\infty} \delta(t - k T_s)$:
+            \begin{enumerate}
+                \item Expresar analíticamente la señal de soporte discreto $x_m(t) = x(t) \cdot \delta^{1}(t)$ aplicando la propiedad de muestreo sobre cada impulso (para $T_s = 1$).
+                \item Graficar $x_m(t)$ en el intervalo $t \in [-1, 3]$.
+            \end{enumerate}
+
+		% =========================================================
+		% PARTE IV: SEÑALES DE USO RECURRENTE
+		% =========================================================
+		\vspace{1em}
+		\begin{center}
+			\textbf{\large Parte IV: Señales de Uso Recurrente}
+		\end{center}
+		\vspace{-0.5em}
+
+            \textbf{Catálogo de Señales y Enventanado}
+            \item Graficar las siguientes señales basadas en el catálogo de funciones e identificar explícitamente su soporte temporal:
+            \begin{enumerate}
+                \item $x_1(t) = 2 p_{4}(t - 2)$
+                \item $x_2(t) = \cos(\pi t) \cdot p_2(t)$
+                \item $x_3(t) = e^{-t/2} \cdot u(t)$
+                \item Demostrar analíticamente que un pulso rectangular genérico $p_\tau(t)$ equivale al producto de dos escalones temporales: $p_\tau(t) = u\left(t + \frac{\tau}{2}\right) \cdot u\left(\frac{\tau}{2} - t\right)$. Graficar los dos escalones y su producto.
+            \end{enumerate}
+
+		\end{enumerate}
+	\end{multicols}
+
+\end{document}

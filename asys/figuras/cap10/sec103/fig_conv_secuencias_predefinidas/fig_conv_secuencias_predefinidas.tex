@@ -1,0 +1,37 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{groupplot}[
+            group style={group size=1 by 2, vertical sep=0.95cm},
+            width=8.5cm, height=3.4cm,
+            axis lines=middle,
+            axis line style={->, thin, black},
+            xmin=-2.6, xmax=8.6,
+            xtick={-2,-1,0,1,2,3,4,5,6,7,8},
+            xlabel={$n$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\scriptsize},
+            ylabel style={rotate=0, anchor=south east, at={(axis description cs:0,1)}, font=\scriptsize},
+            every tick label/.style={font=\scriptsize, fill=white, inner sep=0.8pt},
+            title style={font=\scriptsize, yshift=-1pt},
+            clip=false,
+        ]
+            \nextgroupplot[title={(a)}, ylabel={$y[n]$},
+                ymin=-0.9, ymax=10.4, ytick={2,4,6,8}]
+                \addplot[ycomb, mark=*, mark size=2pt, thick, utnblue]
+                    coordinates {(0,1) (1,2) (2,3) (3,4) (4,5) (5,6) (6,7) (7,8) (8,9)};
+                \addplot[only marks, mark=*, mark size=2pt, utnblue]
+                    coordinates {(-2,0) (-1,0)};
+            \nextgroupplot[title={(b)}, ylabel={$y[n]$},
+                ymin=-0.09, ymax=1.05, ytick={0.25,0.5,0.75,1}]
+                \addplot[ycomb, mark=*, mark size=2pt, thick, utnblue]
+                    coordinates {(0,1) (1,0.833333) (2,0.527778) (3,0.300926)
+                                 (4,0.162809) (5,0.085520) (6,0.044132)
+                                 (7,0.022523) (8,0.011414)};
+                \addplot[only marks, mark=*, mark size=2pt, utnblue]
+                    coordinates {(-2,0) (-1,0)};
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}

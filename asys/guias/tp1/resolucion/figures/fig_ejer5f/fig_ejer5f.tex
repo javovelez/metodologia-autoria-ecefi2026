@@ -1,0 +1,39 @@
+\documentclass[border=3mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.4, font=\small]
+
+    % Cuadrícula
+    \draw[help lines, gray!30, step=1] (-1.6,-1.6) grid (1.6,1.6);
+
+    % Ejes
+    \draw[->, thick] (-1.7,0) -- (1.9,0) node[right] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-1.7) -- (0,1.9) node[above] {$\operatorname{Im}$};
+    \node[below left, font=\scriptsize] at (-0.05,-0.08) {$0$};
+
+    % Marcas
+    \foreach \x in {-1,1}
+        \draw (\x,0.06)--(\x,-0.06) node[below, font=\tiny]{$\x$};
+    \foreach \y in {-1,1}
+        \draw (0.06,\y)--(-0.06,\y) node[left, font=\tiny]{$\y$};
+
+    % Círculo de radio 2^{1/6} ≈ 1.122
+    \draw[gray, dashed] (0,0) circle (1.122);
+
+    % Triángulo (conecta las 3 raíces)
+    \draw[utnblue!40, thin] (1.084,0.290) -- (-0.794,0.794) -- (-0.290,-1.084) -- cycle;
+
+    % Raíces:
+    % w0 = 2^{1/6} * e^{j*pi/12}   --> ángulo 15°  --> (1.084, 0.290)
+    % w1 = 2^{1/6} * e^{j*3pi/4}   --> ángulo 135° --> (-0.794, 0.794)
+    % w2 = 2^{1/6} * e^{j*17pi/12} --> ángulo 255° --> (-0.290,-1.084)
+    \fill[utnblue] ( 1.084,  0.290) circle (2pt)
+        node[above right, font=\scriptsize] {$w_0$};
+    \fill[utnblue] (-0.794,  0.794) circle (2pt)
+        node[above left,  font=\scriptsize] {$w_1$};
+    \fill[utnblue] (-0.290, -1.084) circle (2pt)
+        node[below left,  font=\scriptsize] {$w_2$};
+
+\end{tikzpicture}
+\end{document}

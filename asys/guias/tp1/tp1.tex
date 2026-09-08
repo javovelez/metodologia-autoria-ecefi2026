@@ -1,0 +1,282 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{multicol}
+\usepackage{titling} % Para ajustar los espacios del título
+\usepackage{tasks} % Para listas en columnas
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+% Ajusta la separación entre el encabezado y el contenido
+\setlength{\headsep}{10pt}
+
+% Ajuste del título: 
+\setlength{\droptitle}{-0.5in} % Mueve el título ligeramente hacia arriba
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large}
+	\posttitle{\par\end{center}\vspace{-4em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+	\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Trabajo Práctico N$^\text{o}$1: Variable Compleja.}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Título optimizado con espacios reducidos
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Trabajo Práctico N$^{\text o}$1: Variable Compleja}%
+}
+\author{}
+\date{}
+
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+	
+	% Entorno de dos columnas
+	\begin{multicols}{2}
+		
+		\label{sec:enun}
+		% ***********************************************
+			% 					Ejercicio 1
+			% ***********************************************
+			\textbf{Aritmética de complejos}
+			\begin{enumerate}
+			\item {Dados $z_1=3-6j$; $z_2=2+5j$; $z_3=-3+4j$; resolver analíticamente:}
+			\begin{tasks}(2)
+				\task $z_1z_2$
+				\task $z_1\bar{z_2}$
+				\task $z_1^{-1}$
+				\task $\dfrac{z_2}{z_3}$
+				\task $[z_1+z_3]^2$
+				\task $[z_2 - z_3]^2$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 2
+			% ***********************************************
+			\item {Expresar los complejos dados en forma polar exponencial. Graficar.}
+			\begin{tasks}(2)
+				\task $1$
+				\task $-\dfrac{2}{5}$
+				\task $j$
+				\task $-\sqrt{3}j$
+				\task $4+4j$
+				\task $-1-j$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 3
+			% ***********************************************
+			\item {Expresar en forma cartesiana.}
+			\begin{tasks}(2)
+				\task $e^5$
+				\task $e^{5j}$
+				\task $e^{1+4j}$
+				\task $e^{-3-2j}$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 4
+			% ***********************************************
+			\item {Demostrar las siguientes igualdades.}
+			\begin{tasks}(2)
+				\task $z+\bar{z}=2x$
+				\task $z-\bar{z}=2yj$
+				\task $\overline{z_1 + z_2}=\bar{z_1}+\bar{z_2}$
+				\task $\overline{z_1 - z_2}=\bar{z_1}-\bar{z_2}$
+				\task $\overline{z_1 z_2}=\bar{z_1}\bar{z_2}$
+				\task $\overline{ \big( \dfrac{z_1}{z_2}\big)}=\dfrac{\overline{z_1}}{\overline{z_2}}$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 5
+			% ***********************************************
+			\textbf{Raíz enésima de un número complejo}
+			\item {Determinar el valor correspondiente y graficar.}
+			\begin{tasks}(2)
+				\task $\sqrt{1}$
+				\task $\sqrt[3]{1}$
+				\task $\sqrt[4]{1}$
+				\task $\sqrt{-16}$
+				\task $\sqrt[3]{j}$
+				\task $\sqrt[3]{1+j}$
+			\end{tasks}
+			
+			\textbf{Función Exponencial Dinámica}
+
+			% ***********************************************
+			% 					Ejercicio 6
+			% ***********************************************
+			\item {Bosquejar la trayectoria de la función $f(t) = e^{st}$ para $t \ge 0$ considerando los siguientes valores de $s$:}
+			\begin{tasks}(2)
+				\task $s = -1$
+				\task $s = j$
+				\task $s = -1+j$
+				\task $s = 0.5+j$
+			\end{tasks}
+
+			% ***********************************************
+			% 					Ejercicio 7
+			% ***********************************************
+			\item {Describir el efecto de multiplicar la señal $e^{st}$ por una constante compleja $c_k$. Para los siguientes valores de $c_k$:}
+			\begin{tasks}(2)
+				\task $c_k = 2$
+				\task $c_k = j$
+				\task $c_k = 1+j$
+				\task $c_k = 0.5$
+			\end{tasks}
+
+			% ***********************************************
+			% 					Ejercicio 8
+			% ***********************************************
+			\textbf{Regiones en el plano complejo}
+			\item {Graficar las siguientes regiones del plano complejo:}
+			\begin{tasks}(2)
+				\task $|z| \leq 3$
+				\task $\mathrm{Re}\{z\} \geq -2$
+				\task $\mathrm{Im}\{z\} < 4$
+				\task $0 < \mathrm{Arg}\{z\} < \frac{2\pi}{3}$
+				\task $|z+1| \leq 3 \,;\, -\frac{\pi}{4} \leq \mathrm{Arg}\{z\} \leq \frac{\pi}{4}$
+				\task $|z| \leq 1 \,;\, 0 \leq \mathrm{Arg}\{z\} \leq \frac{\pi}{3}$
+				\task $1 \leq |z-3| \leq 2$
+				\task $|z+3+3j| > 3$
+			\end{tasks}
+			
+			\vspace{0.3cm}
+			\textbf{Función compleja}
+			
+			% ***********************************************
+			% 					Ejercicio 9
+			% ***********************************************
+			\item {Expresar las siguientes funciones en la forma $f(z) =  u(x,y) + j v(x,y)$ 
+				\quad donde $z=x+jy$. Obtener la función $|f(z)|$ y la función $Arg \{f(z)\}$.}
+			\begin{tasks}(2)
+				\task $f(z)=5z^2+7z-12$
+				\task $f(z)=z^2$
+				\task $f(z)=e^z$
+				\task $f(z)=\dfrac{1}{z}$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 10
+			% ***********************************************
+			\item {Aplicando las condiciones de Cauchy-Riemann en forma cartesiana, determinar si las siguientes funciones son analíticas.}
+			\begin{tasks}(2)
+				\task $f(z)=\bar{z}$
+				\task $f(z)=z^2$
+				\task $f(z)=e^z$
+				\task $f(z)=\mathrm{Re}\{z\}$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 11
+			% ***********************************************
+			\item {Para las siguientes funciones racionales, obtener la expresión de la magnitud y la fase.}
+			\begin{tasks}(2)
+				\task $\dfrac{z-1}{z+1}$
+				\task $\dfrac{1}{z^2+1}$
+				\task $\dfrac{z}{z^2+2z+2}$
+				\task $\dfrac{z+1}{z^2-4}$
+			\end{tasks}
+			
+			\textbf{Fórmula de la Integral de Cauchy}
+			
+			% ***********************************************
+			% 					Ejercicio 12
+			% ***********************************************
+			\item Integrar la función $f(z)=\dfrac{z^2-2z}{z^2+4}$ alrededor de la curva indicada:
+			\begin{tasks}(2)
+				\task $|z-j|=2$
+				\task $\left| z+\frac{1}{2}\right| =1$
+				\task $|z+1+j|=2$
+				\task $|z+2-j|=3$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 13
+			% ***********************************************
+			\item {Resolver las siguientes integrales cerradas para las trayectorias $C_1:|z+1|=1$ y $C_2:|z-j|=1$:}
+			\begin{tasks}(2)
+				\task $\oint_{C}\dfrac{e^{3z}}{z^2+\tfrac{1}{4}}\,dz$
+				\task $\oint_{C}\dfrac{1}{z^4-1}\,dz$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 14
+			% ***********************************************
+			\textbf{Cálculo de residuos}
+			\item {Para las siguientes funciones, hallar todas las singularidades y calcular el residuo en cada una de ellas.}
+			\begin{tasks}(2)
+				\task $\dfrac{e^{2z}}{(z-1)^2}$
+				\task $\dfrac{z}{(z+1)(z+2)}$
+				\task $\dfrac{z+1}{z^2+2z}$
+				\task $\dfrac{z-\sin(z)}{z^3}$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 15
+			% ***********************************************
+			\textbf{Desarrollo en Fracciones Parciales}
+			\item {Dada las siguientes funciones racionales, obtener su desarrollo en fracciones parciales. Graficar el diagrama de polos y ceros.}
+			\begin{tasks}(2)
+				\task $\dfrac{1}{z(z-1)}$
+				\task $\dfrac{z+2}{(z+1)(z-3)}$
+				\task $\dfrac{2z+9}{(z+3)(z+4)}$
+				\task $\dfrac{z}{(z^2-4)}$
+				\task $\dfrac{5z}{(z+1)^2(z+4)}$
+				\task $\dfrac{z^2+1}{(z-1)(z-2)^2}$
+				\task $\dfrac{3(z+1)}{z^2+2z+5}$
+				\task $\dfrac{1}{(z^2+1)(z+2)}$
+			\end{tasks}
+			
+			% ***********************************************
+			% 					Ejercicio 16
+			% ***********************************************
+			\textbf{Análisis de módulo y fase}
+			\item {Para todas las funciones racionales del ejercicio anterior, encontrar la expresión analítica del módulo y la fase para los siguientes casos:}
+			\begin{enumerate}
+				\item $z=jy$ (Eje imaginario)
+				\item $|z|=1$ (Círculo unitario).
+			\end{enumerate}
+			
+			% ***********************************************
+			% 					Ejercicio 17
+			% ***********************************************
+			\textbf{Cálculo de integrales por el teorema de residuos}
+			\item {Evaluar las siguientes integrales siguiendo las trayectorias indicadas:}
+			\begin{enumerate}
+				\item $\displaystyle \oint_C \dfrac{z^3}{2z+1}dz$ \hfill $C:|z|=1$
+				\item $\displaystyle \oint_C \dfrac{e^{-z}}{(z-1)^2}dz$ \hfill $C:|z|=2$
+				\item $\displaystyle \oint_C \dfrac{1}{z(z+1)}dz$ \hfill $C_1:|z|=\frac{1}{2}$ \\
+				 \null\hfill $C_2:|z|=2$ \\
+				 \null\hfill $C_3:|z+1|=\frac{3}{4}$
+				\item $\displaystyle \oint_C \dfrac{z}{(z-1)(z-2)^2}dz$ \hfill $C_1:|z-2|=\frac{1}{2}$ \\
+				\null\hfill $C_2:|z-1|=2$
+			\end{enumerate}
+			
+
+			
+		\end{enumerate}
+		
+	\end{multicols}
+
+		
+
+\end{document}

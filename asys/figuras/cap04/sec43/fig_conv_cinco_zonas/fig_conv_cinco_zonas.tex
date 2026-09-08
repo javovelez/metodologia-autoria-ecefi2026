@@ -1,0 +1,157 @@
+\documentclass[border=0pt]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% =====================================================================
+% Procedimiento de invertir y desplazar — Ejemplo 3 (dos pulsos
+% rectangulares causales).
+%   x(τ) = pulso causal en [0, a],  con a = 1
+%   h(t-τ) = pulso en [t-b, t],     con b = 2
+% 
+% GEOMETRÍA DEL LIENZO:
+% Fila 1 (3 paneles)
+% Fila 2 (2 paneles), centrada respecto a la Fila 1.
+% El lienzo se ajusta automáticamente sin bounding box manual.
+%
+% Valores representativos de t por zona:
+%   Zona I:   t = -0.5
+%   Zona II:  t =  0.5
+%   Zona III: t =  1.5
+%   Zona IV:  t =  2.5
+%   Zona V:   t =  3.5
+% =====================================================================
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\colorlet{xcol}{utnblue}
+\colorlet{hcol}{red!80!black}
+
+\pgfplotsset{
+  panel/.style={
+    width=5.6cm, height=4.8cm,
+    axis lines=center,
+    xlabel={$\tau$},
+    xlabel style={anchor=north west, at={(axis cs:4.2,0)}, font=\scriptsize},
+    xmin=-3.2, xmax=4.2,
+    ymin=-0.65, ymax=1.55,
+    clip=true,
+    axis line style={->, thick},
+    ytick=\empty,
+    every tick label/.style={font=\tiny},
+    title style={font=\footnotesize, yshift=-1ex},
+    grid=none,
+  }
+}
+
+% =====================================================================
+% FILA 1 — Zonas I, II, III  (huecos g1 = 0.4 cm)
+% =====================================================================
+
+% --- ZONA I: t = -0.5 ---
+\begin{axis}[panel, name=z1,
+    xtick={-0.5, 0, 1},
+    xticklabels={$t$, $0$, $a$},
+    title={Zona~I:\; $t<0$}]
+  \fill[hcol, opacity=0.18] (axis cs:-2.5,0) rectangle (axis cs:-0.5,1);
+  \draw[hcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:-2.5,0) -- (axis cs:-2.5,1)
+      -- (axis cs:-0.5,1) -- (axis cs:-0.5,0) -- (axis cs:4.1,0);
+  \node[hcol, font=\scriptsize, above] at (axis cs:-1.5,1) {$h(t\!-\!\tau)$};
+
+  \fill[xcol, opacity=0.18] (axis cs:0,0) rectangle (axis cs:1,1);
+  \draw[xcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:0,0) -- (axis cs:0,1)
+      -- (axis cs:1,1) -- (axis cs:1,0) -- (axis cs:4.1,0);
+  \node[xcol, font=\scriptsize, above] at (axis cs:0.5,1) {$x(\tau)$};
+
+  \node[font=\scriptsize, gray, below] at (axis cs:2.0,-0.22) {$y(t)=0$};
+\end{axis}
+
+% --- ZONA II: t = 0.5 ---
+\begin{axis}[panel, name=z2, at={(z1.east)}, anchor=west, xshift=0.6cm,
+    xtick={-1.5, 0, 0.5, 1},
+    xticklabels={$t{-}b$, $0$, $t$, $a$},
+    title={Zona~II:\; $0\leq t\leq a$}]
+  \fill[hcol, opacity=0.18] (axis cs:-1.5,0) rectangle (axis cs:0.5,1);
+  \draw[hcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:-1.5,0) -- (axis cs:-1.5,1)
+      -- (axis cs:0.5,1) -- (axis cs:0.5,0) -- (axis cs:4.1,0);
+
+  \fill[xcol, opacity=0.18] (axis cs:0,0) rectangle (axis cs:1,1);
+  \draw[xcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:0,0) -- (axis cs:0,1)
+      -- (axis cs:1,1) -- (axis cs:1,0) -- (axis cs:4.1,0);
+
+  \fill[gray!55, opacity=0.55] (axis cs:0,0) rectangle (axis cs:0.5,1);
+
+  \node[font=\scriptsize, gray, below] at (axis cs:2.0,-0.22) {$y(t)=t$};
+\end{axis}
+
+% --- ZONA III: t = 1.5 ---
+\begin{axis}[panel, name=z3, at={(z2.east)}, anchor=west, xshift=0.6cm,
+    xtick={-0.5, 0, 1, 1.5},
+    xticklabels={$t{-}b$, $0$, $a$, $t$},
+    title={Zona~III:\; $a\leq t\leq b$}]
+  \fill[hcol, opacity=0.18] (axis cs:-0.5,0) rectangle (axis cs:1.5,1);
+  \draw[hcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:-0.5,0) -- (axis cs:-0.5,1)
+      -- (axis cs:1.5,1) -- (axis cs:1.5,0) -- (axis cs:4.1,0);
+
+  \fill[xcol, opacity=0.18] (axis cs:0,0) rectangle (axis cs:1,1);
+  \draw[xcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:0,0) -- (axis cs:0,1)
+      -- (axis cs:1,1) -- (axis cs:1,0) -- (axis cs:4.1,0);
+
+  \fill[gray!55, opacity=0.55] (axis cs:0,0) rectangle (axis cs:1,1);
+
+  \node[font=\scriptsize, gray, below] at (axis cs:2.0,-0.22) {$y(t)=a$};
+\end{axis}
+
+% =====================================================================
+% FILA 2 — Zonas IV, V  (huecos g2 = 2.4 cm)
+% =====================================================================
+
+% --- ZONA IV: t = 2.5 ---
+\begin{axis}[panel, name=z4,
+    at={(z2.south)}, anchor=north east, xshift=-0.5cm, yshift=-1.3cm,
+    xtick={0.5, 1, 2.5},
+    xticklabels={$t{-}b$, $a$, $t$},
+    title={Zona~IV:\; $b\leq t\leq a{+}b$}]
+  \fill[hcol, opacity=0.18] (axis cs:0.5,0) rectangle (axis cs:2.5,1);
+  \draw[hcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:0.5,0) -- (axis cs:0.5,1)
+      -- (axis cs:2.5,1) -- (axis cs:2.5,0) -- (axis cs:4.1,0);
+
+  \fill[xcol, opacity=0.18] (axis cs:0,0) rectangle (axis cs:1,1);
+  \draw[xcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:0,0) -- (axis cs:0,1)
+      -- (axis cs:1,1) -- (axis cs:1,0) -- (axis cs:4.1,0);
+
+  \fill[gray!55, opacity=0.55] (axis cs:0.5,0) rectangle (axis cs:1,1);
+
+  \node[font=\scriptsize, gray, below] at (axis cs:2.5,-0.22) {$y(t)=a{+}b{-}t$};
+\end{axis}
+
+% --- ZONA V: t = 3.5 ---
+\begin{axis}[panel, name=z5, at={(z2.south)}, anchor=north west, xshift=0.5cm, yshift=-1.3cm,
+    xtick={0, 1, 1.5, 3.5},
+    xticklabels={$0$, $a$, $t{-}b$, $t$},
+    title={Zona~V:\; $t>a{+}b$}]
+  \fill[xcol, opacity=0.18] (axis cs:0,0) rectangle (axis cs:1,1);
+  \draw[xcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:0,0) -- (axis cs:0,1)
+      -- (axis cs:1,1) -- (axis cs:1,0) -- (axis cs:4.1,0);
+
+  \fill[hcol, opacity=0.18] (axis cs:1.5,0) rectangle (axis cs:3.5,1);
+  \draw[hcol, very thick]
+      (axis cs:-3.1,0) -- (axis cs:1.5,0) -- (axis cs:1.5,1)
+      -- (axis cs:3.5,1) -- (axis cs:3.5,0) -- (axis cs:4.1,0);
+
+  \node[font=\scriptsize, gray, below] at (axis cs:2.5,-0.22) {$y(t)=0$};
+\end{axis}
+
+% (Bounding box calculado automáticamente por TikZ)
+
+\end{tikzpicture}
+\end{document}

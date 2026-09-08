@@ -1,0 +1,329 @@
+\documentclass[class=book, crop=false]{standalone}
+\input{../../setup.tex}
+
+\begin{document}
+\setcounter{chapter}{5}
+\section{Serie de Fourier y sistemas LIT}
+\label{sec:sf_lti}
+
+Las secciones anteriores construyeron la representación de Fourier de una señal periódica: tomamos como ejes una base de exponenciales armónicas y aprendimos a leer una señal en esas coordenadas. Esa lectura es íntegramente del lado de las señales ---es geometría sobre el espacio donde viven--- y no involucra todavía a ningún sistema.
+
+La pregunta de esta sección es la otra mitad del argumento. ¿Qué ocurre cuando una señal periódica atraviesa un sistema LIT? El Capítulo~\ref{cap04} resolvió ese cálculo con la convolución entre la entrada y la respuesta al impulso $h(t)$. La operación es exacta, pero costosa: hay que rehacerla desde cero para cada nueva entrada, y mirar la salida en el dominio del tiempo no permite ver fácilmente qué le hizo el sistema a cada componente frecuencial de la señal.
+
+Vamos a ver que, mirando a la señal en la base armónica, esas dos dificultades desaparecen. Conviene llegar al resultado por etapas, empezando con la pieza más simple: una sola exponencial armónica $e^{j\omega t}$ atravesando el sistema.
+
+% ==============================================================================
+% 5.5.1 Respuesta a una Exponencial Armónica
+% ==============================================================================
+\subsection{Respuesta a una exponencial armónica}
+\label{subsec:respuesta_exp_armonica}
+
+En la Sección~\ref{sec:producto_interno} la base armónica apareció por una razón geométrica: las exponenciales $e^{jk\omega_0 t}$ son ortogonales sobre cualquier período y, en consecuencia, los coeficientes de Fourier se calculan de manera independiente unos de otros. La nota que cerró aquella sección anticipó que existe una segunda razón ---más profunda--- por la que esa misma base es la natural para estudiar sistemas LIT. Esta subsección desarrolla esa segunda razón.
+
+La pista viene del álgebra lineal. Un vector $\vect{v}$ es \emph{vector propio} de una transformación lineal $A$ si $A\vect{v} = \lambda\vect{v}$: la transformación lo devuelve apuntando en la misma dirección, escalado por un número $\lambda$ ---el valor propio---. La pregunta análoga para señales tiene un planteo natural: ¿hay alguna señal que un sistema LIT transforme en sí misma, multiplicada apenas por una constante? La respuesta concreta ---y es lo que esta subsección verifica--- son las exponenciales armónicas $e^{j\omega t}$.
+
+Para verlo basta sustituir $x(t) = e^{j\omega t}$ con $\omega \in \mathbb{R}$ arbitrario en la integral de convolución y separar el exponente $j\omega(t - \tau) = j\omega t - j\omega\tau$, que descompone la exponencial como producto $e^{j\omega(t-\tau)} = e^{j\omega t}\,e^{-j\omega\tau}$:
+\begin{equation*}
+    y(t) \;=\; \int_{-\infty}^{\infty} h(\tau)\,e^{j\omega(t-\tau)}\,d\tau
+         \;=\; \int_{-\infty}^{\infty} h(\tau)\,e^{j\omega t}\,e^{-j\omega\tau}\,d\tau
+         \;=\; e^{j\omega t}\int_{-\infty}^{\infty} h(\tau)\,e^{-j\omega\tau}\,d\tau.
+\end{equation*}
+El factor $e^{j\omega t}$ depende solo de $t$, no de $\tau$, y por eso sale fuera de la integral. Lo que queda dentro es una integral en $\tau$ que, una vez resuelta, es un \emph{número complejo}: depende de la respuesta al impulso $h$ y del valor concreto de $\omega$ que se haya elegido, pero ya no del tiempo $t$. Llamemos a ese número $H(j\omega)$. La salida queda
+\begin{equation}
+    y(t) \;=\; H(j\omega)\,e^{j\omega t}.
+    \label{eq:funcion_propia}
+\end{equation}
+
+El sentido geométrico de esta igualdad ya lo conocemos. En el Capítulo~\ref{cap02} estudiamos qué efecto produce multiplicar una exponencial armónica $e^{j\omega t}$ por una constante compleja: el módulo escala la amplitud y la fase rota su orientación inicial, pero la velocidad de giro queda intacta. Aquí estamos exactamente en esa situación: la exponencial entra al sistema y aparece a la salida igual a sí misma, escalada y rotada por la constante compleja $H(j\omega)$. La forma de la señal se conserva.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.55\linewidth]{figures/fig_lit_vector_giratorio/fig_lit_vector_giratorio}
+        \caption{Acción de un sistema LIT sobre una exponencial armónica $e^{j\omega t}$, vista en el plano complejo. La entrada (azul) es un vector giratorio de módulo $1$; la salida (rojo) es el mismo vector escalado por $|H(j\omega)|$ y rotado por $\angle H(j\omega)$. La velocidad angular $\omega$ se conserva: ambos vectores giran a la misma frecuencia, en el mismo sentido. La instantánea muestra un caso con $|H| < 1$ y $\angle H < 0$ (el sistema atenúa y retarda).}
+        \label{fig:lit_vector_giratorio}
+    \end{minipage}
+\end{figure}
+
+\begin{resultado}[Respuesta a una exponencial armónica]
+Las exponenciales armónicas $e^{j\omega t}$ son \textbf{funciones propias} de cualquier sistema LIT. Si la entrada es $x(t) = e^{j\omega t}$, la salida es
+\begin{equation*}
+    y(t) \;=\; H(j\omega)\,e^{j\omega t},
+\end{equation*}
+donde el \textbf{valor propio} asociado a $\omega$ es
+\begin{equation}
+    H(j\omega) \;=\; \int_{-\infty}^{\infty} h(\tau)\,e^{-j\omega\tau}\,d\tau.
+    \label{eq:respuesta_frecuencia}
+\end{equation}
+La función $H(j\omega)$ se denomina \textbf{respuesta en frecuencia} del sistema.
+\end{resultado}
+
+Conviene insistir en la naturaleza de $H(j\omega)$: para un sistema fijo, es una función de variable real $\omega$ que asigna a cada frecuencia un número complejo. Lo que conviene leer son sus dos componentes. Escribiendo $H(j\omega) = |H(j\omega)|\,e^{j\angle H(j\omega)}$, la salida ante la entrada $e^{j\omega t}$ se reescribe como
+\begin{equation*}
+    y(t) \;=\; |H(j\omega)|\,e^{j\bigl(\omega t + \angle H(j\omega)\bigr)}.
+\end{equation*}
+El módulo $|H(j\omega)|$ dice cuánto escala el sistema al vector giratorio de frecuencia $\omega$, y el argumento $\angle H(j\omega)$ dice cuánto le corre la fase inicial. Estas son las dos cantidades que organizan todo lo que sigue del capítulo.
+
+\medskip
+\textbf{Ejemplo 1.}
+Tomemos un sistema con respuesta al impulso $h(t) = e^{-2t}\,u(t)$ y calculemos su respuesta en frecuencia aplicando \eqref{eq:respuesta_frecuencia}:
+\begin{equation*}
+    H(j\omega) \;=\; \int_0^{\infty} e^{-2\tau}\,e^{-j\omega\tau}\,d\tau
+              \;=\; \int_0^{\infty} e^{-(2 + j\omega)\tau}\,d\tau
+              \;=\; \left[\frac{e^{-(2+j\omega)\tau}}{-(2+j\omega)}\right]_0^{\infty}.
+\end{equation*}
+El término evaluado en $\tau = \infty$ se anula porque $|e^{-(2+j\omega)\tau}| = e^{-2\tau} \to 0$ ---el coeficiente real del exponente, $-2$, hace decaer el módulo a cero---, y el evaluado en $\tau = 0$ vale $1/[-(2+j\omega)]$. Restando,
+\begin{equation*}
+    H(j\omega) \;=\; \frac{1}{2 + j\omega}.
+\end{equation*}
+Para visualizar el efecto del sistema sobre exponenciales armónicas, evaluemos esa expresión en dos frecuencias.
+
+Para $\omega = 1$,
+\begin{equation*}
+    H(j) \;=\; \frac{1}{2 + j} \;=\; \frac{2 - j}{5},
+    \qquad |H(j)| \;=\; \tfrac{1}{\sqrt{5}} \;\approx\; 0{,}447,
+    \qquad \angle H(j) \;=\; -\arctan(1/2) \;\approx\; -0{,}4636 \text{ rad}\;(-26{,}57^\circ).
+\end{equation*}
+La entrada $x(t) = e^{jt}$ es un vector giratorio que rota antihorario con velocidad angular $1$, módulo constante igual a $1$. La salida resulta
+\begin{equation*}
+    y(t) \;=\; \frac{1}{\sqrt{5}}\,e^{j\,(t\,-\,0{,}4636)}.
+\end{equation*}
+El mismo vector giratorio, en rotación a la misma velocidad, pero con módulo reducido a $1/\sqrt{5}$ y fase inicial corrida en $-0{,}4636$.
+
+Para $\omega = 2$,
+\begin{equation*}
+    H(j2) \;=\; \frac{1}{2 + j2} \;=\; \frac{1 - j}{4},
+    \qquad |H(j2)| \;=\; \tfrac{1}{2\sqrt{2}} \;\approx\; 0{,}354,
+    \qquad \angle H(j2) \;=\; -\arctan(1) \;=\; -\tfrac{\pi}{4} \;\approx\; -0{,}785 \text{ rad}\;(-45^\circ).
+\end{equation*}
+La entrada $x(t) = e^{j2t}$ gira ahora al doble de velocidad y la salida resulta
+\begin{equation*}
+    y(t) \;=\; \frac{1}{2\sqrt{2}}\,e^{j\,(2t\,-\,\pi/4)}.
+\end{equation*}
+Al duplicar la frecuencia, el sistema atenúa más fuerte ---el módulo cayó de $0{,}447$ a $0{,}354$--- y desfasa más ---de $-0{,}464$ rad a $-\pi/4$ rad---. La frecuencia ---el aspecto más visible de la identidad del vector giratorio--- quedó intacta en cada caso: lo único que cambió fue su amplitud y su fase de partida.
+
+Para la entrada $x(t) = e^{jt} + e^{j2t}$ ---la suma de los dos vectores giratorios anteriores---, alcanza con explotar la linealidad del sistema: la salida frente a una suma de entradas es la suma de las salidas individuales. Combinando los dos resultados ya obtenidos,
+\begin{equation*}
+    y(t) \;=\; \frac{1}{\sqrt{5}}\,e^{j\,(t\,-\,0{,}4636)} \,+\, \frac{1}{2\sqrt{2}}\,e^{j\,(2t\,-\,\pi/4)}.
+\end{equation*}
+Cada vector giratorio se escala y desfasa por el valor de $H$ a su propia frecuencia, sin mezclarse con el otro. Esa independencia ---el sistema procesa armónico por armónico--- es lo que va a permitir, en lo que sigue, manejar entradas mucho más generales descomponiéndolas en exponenciales armónicas.
+
+La figura~\ref{fig:respuesta_frecuencia} grafica $|H(j\omega)|$ y $\angle H(j\omega)$ del sistema sobre todo el eje de frecuencias, con los dos puntos calculados en el ejemplo marcados sobre las curvas.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.65\linewidth]{figures/fig_respuesta_frecuencia/fig_respuesta_frecuencia}
+        \caption{Respuesta en frecuencia del sistema con $h(t) = e^{-2t}\,u(t)$, dada por $H(j\omega) = 1/(2 + j\omega)$. (a) Módulo $|H(j\omega)| = 1/\sqrt{4+\omega^2}$. (b) Fase $\angle H(j\omega) = -\arctan(\omega/2)$. Los puntos azules marcan los valores en $\omega = 1$ y $\omega = 2$ usados en el ejemplo.}
+        \label{fig:respuesta_frecuencia}
+    \end{minipage}
+\end{figure}
+
+% ==============================================================================
+% 5.5.2 Régimen Sinusoidal Permanente
+% ==============================================================================
+\subsection{Régimen sinusoidal permanente}
+\label{subsec:regimen_sinusoidal}
+
+La propiedad de función propia que acabamos de verificar describe cómo atraviesa el sistema una exponencial armónica $e^{j\omega t}$, pero las señales que aparecen en problemas concretos son sinusoides reales, no exponenciales complejas. El paso a sinusoides reales es directo y se apoya en un solo hecho del Capítulo~\ref{cap02}: toda sinusoide real se escribe como suma de dos exponenciales armónicas conjugadas.
+
+Tomemos $x(t) = A\cos(\omega_0 t + \varphi)$ con $A > 0$ y $\omega_0 > 0$. Por Euler,
+\begin{equation*}
+    x(t) \;=\; \frac{A\,e^{j\varphi}}{2}\,e^{j\omega_0 t} \,+\, \frac{A\,e^{-j\varphi}}{2}\,e^{-j\omega_0 t},
+\end{equation*}
+una combinación lineal de dos vectores giratorios, uno de frecuencia $\omega_0$ y otro de $-\omega_0$. Por linealidad del sistema y la propiedad de función propia, cada vector giratorio sale multiplicado por su respectivo $H$, así que la salida es
+\begin{equation}
+    y(t) \;=\; \frac{A\,e^{j\varphi}}{2}\,H(j\omega_0)\,e^{j\omega_0 t}
+              \,+\, \frac{A\,e^{-j\varphi}}{2}\,H(-j\omega_0)\,e^{-j\omega_0 t}.
+    \label{eq:salida_dos_terminos}
+\end{equation}
+
+Para volver de aquí a una sinusoide real necesitamos relacionar $H(j\omega_0)$ con $H(-j\omega_0)$. En todos los sistemas físicos que veremos $h(t)$ es real, y bajo esa hipótesis la respuesta en frecuencia toma valores conjugados en frecuencias opuestas:
+\begin{equation*}
+    H(-j\omega_0) \;=\; \overline{H(j\omega_0)}.
+\end{equation*}
+Para verlo, conjugamos dentro de la integral que define $H$. La exponencial cambia de signo en el exponente al conjugarse ($\overline{e^{-j\omega_0\tau}} = e^{j\omega_0\tau}$) y $h(\tau)$ no se altera porque es real, así que
+\begin{equation*}
+    H(-j\omega_0) \;=\; \int h(\tau)\,e^{j\omega_0\tau}\,d\tau
+                  \;=\; \int h(\tau)\,\overline{e^{-j\omega_0\tau}}\,d\tau
+                  \;=\; \overline{\int h(\tau)\,e^{-j\omega_0\tau}\,d\tau}
+                  \;=\; \overline{H(j\omega_0)}.
+\end{equation*}
+
+Volviendo a \eqref{eq:salida_dos_terminos} con esta identidad, los dos términos resultan conjugados entre sí, y su suma es el doble de la parte real de cualquiera:
+\begin{equation*}
+    y(t) \;=\; 2\,\operatorname{Re}\!\left\{\frac{A\,e^{j\varphi}}{2}\,H(j\omega_0)\,e^{j\omega_0 t}\right\}
+         \;=\; A\,\operatorname{Re}\bigl\{H(j\omega_0)\,e^{j(\omega_0 t + \varphi)}\bigr\}.
+\end{equation*}
+Escribiendo $H(j\omega_0) = |H(j\omega_0)|\,e^{j\angle H(j\omega_0)}$ en forma polar y usando $\operatorname{Re}\{r\,e^{j\theta}\} = r\cos\theta$,
+\begin{equation*}
+    y(t) \;=\; A\,|H(j\omega_0)|\,\cos\bigl(\omega_0 t + \varphi + \angle H(j\omega_0)\bigr).
+\end{equation*}
+
+\begin{resultado}[Régimen sinusoidal permanente]
+Si la entrada de un LIT con respuesta al impulso real es la sinusoide
+$x(t) = A\cos(\omega_0 t + \varphi)$, la salida es la sinusoide de la misma frecuencia
+\begin{equation}
+    y(t) \;=\; A\,|H(j\omega_0)|\,\cos\bigl(\omega_0 t + \varphi + \angle H(j\omega_0)\bigr).
+    \label{eq:rsp}
+\end{equation}
+El sistema escala la amplitud por $|H(j\omega_0)|$ y desfasa la sinusoide por $\angle H(j\omega_0)$.
+\end{resultado}
+
+El nombre \textbf{régimen sinusoidal permanente} alude a una situación física típica: cuando un sistema estable se excita con una sinusoide de manera sostenida, la salida arranca con una transición inicial ---el \emph{transitorio}, que depende del estado en que estaba el sistema y se extingue con el tiempo--- y después se estabiliza en otra sinusoide de la misma frecuencia. La fórmula \eqref{eq:rsp} describe exactamente ese régimen final, sin decir nada del transitorio; calcular también la transición inicial requiere herramientas que llegan más adelante en el libro. El resultado se resume en tres palabras: \emph{misma frecuencia, distinta amplitud, distinta fase}. Para predecir la salida no hace falta evaluar $H(j\omega)$ en todas las frecuencias: alcanza con conocer su valor en la única frecuencia $\omega_0$ presente en la entrada.
+
+\medskip
+\textbf{Ejemplo 2.}
+Volvamos al sistema $h(t) = e^{-2t}\,u(t)$, cuya respuesta en frecuencia ya conocemos: $H(j\omega) = 1/(2 + j\omega)$. Supongamos que la entrada es $x(t) = \cos t$ ---es decir, $A = 1$, $\omega_0 = 1$, $\varphi = 0$---. Para aplicar \eqref{eq:rsp} solo hace falta evaluar la respuesta en $\omega_0 = 1$, que ya hicimos en el Ejemplo 1:
+\begin{equation*}
+    |H(j)| \;\approx\; 0{,}447, \qquad \angle H(j) \;\approx\; -0{,}4636 \text{ rad}.
+\end{equation*}
+Reemplazando,
+\begin{equation*}
+    y(t) \;\approx\; 0{,}447\,\cos(t - 0{,}4636).
+\end{equation*}
+La sinusoide sale como sinusoide de la misma frecuencia, con la amplitud reducida a $\approx 0{,}447$ y desfasada en $\approx -0{,}4636$ rad. Estas dos cantidades quedan determinadas por leer $|H|$ y $\angle H$ en una sola frecuencia. La figura~\ref{fig:rsp_ejemplo} superpone entrada y salida sobre el eje del tiempo: la salida mantiene exactamente la cadencia de la entrada, pero su amplitud encoge y su pico de partida se corre hacia la derecha.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.85\linewidth]{figures/fig_rsp_ejemplo/fig_rsp_ejemplo}
+        \caption{Régimen sinusoidal permanente para el sistema $h(t) = e^{-2t}\,u(t)$ ante la entrada $x(t) = \cos t$. La entrada (azul) y la salida $y(t) \approx 0{,}447\cos(t - 0{,}4636)$ (rojo) tienen la misma frecuencia; lo que cambia es la amplitud y la fase inicial.}
+        \label{fig:rsp_ejemplo}
+    \end{minipage}
+\end{figure}
+
+% ==============================================================================
+% 5.5.3 Respuesta a una Señal Periódica
+% ==============================================================================
+\subsection{Respuesta a una señal periódica}
+\label{subsec:respuesta_periodica}
+
+El paso final es generalizar las dos subsecciones anteriores a una señal periódica cualquiera. La idea es la misma ---el sistema repite, armónico por armónico, lo que ya hace con una sola exponencial---, pero conviene escribirla con cuidado.
+
+Si la entrada se expresa en su serie de Fourier
+\begin{equation*}
+    x(t) \;=\; \sum_{k\in\mathbb{Z}} c_k\,e^{jk\omega_0 t},
+\end{equation*}
+la linealidad del LIT permite separar la suma:
+\begin{equation*}
+    y(t) \;=\; \sum_{k\in\mathbb{Z}} c_k\,\text{LIT}\bigl\{e^{jk\omega_0 t}\bigr\}.
+\end{equation*}
+La propiedad de función propia con $\omega = k\omega_0$ asigna a cada exponencial su valor propio $H(jk\omega_0)$, así que
+\begin{equation*}
+    y(t) \;=\; \sum_{k\in\mathbb{Z}} H(jk\omega_0)\,c_k\,e^{jk\omega_0 t}.
+\end{equation*}
+El coeficiente que multiplica a $e^{jk\omega_0 t}$ es, por construcción, el coeficiente de Fourier de la salida. Llamándolo $d_k$, queda la relación que organiza toda la sección.
+
+\begin{resultado}[Respuesta de un LIT a una señal periódica]
+Si la entrada de un sistema LIT es la señal periódica
+$x(t) = \sum_k c_k\,e^{jk\omega_0 t}$, la salida es periódica con el mismo período $T_0$ y sus coeficientes de Fourier valen
+\begin{equation}
+    d_k \;=\; H(jk\omega_0)\,c_k.
+    \label{eq:dk}
+\end{equation}
+\end{resultado}
+
+\eqref{eq:dk} es compacta pero dice algo conceptualmente fuerte. La acción del sistema sobre la señal, que en el dominio del tiempo era una integral de convolución ---una suma ponderada de copias desplazadas de la entrada---, se convierte, en la base armónica, en un producto coordenada a coordenada: cada $c_k$ se multiplica por el número $H(jk\omega_0)$, sin mezclarse con los demás coeficientes. El sistema actúa \emph{diagonalmente} sobre el espectro.
+
+Esa diagonalización es la consecuencia operativa de haber elegido como ejes a las funciones propias del sistema. La Sección~\ref{sec:producto_interno} insistió en mirar a las señales como vectores y a los sistemas LIT como transformaciones lineales sobre ese espacio; aquí esa lectura paga: la base armónica diagonaliza a los LIT, y por eso describir la señal en sus coordenadas hace transparente lo que el sistema hace.
+
+El régimen sinusoidal permanente que vimos en la subsección anterior es un caso particular de este resultado. Si la señal periódica tiene un solo armónico no nulo ---junto con su conjugado, para que la suma sea real---, hay solo dos $c_k$ no nulos, y aplicar \eqref{eq:dk} a cada uno reproduce exactamente la fórmula \eqref{eq:rsp}: la salida es la misma sinusoide, escalada por $|H|$ y desfasada por $\angle H$. La diferencia con \eqref{eq:rsp} es solamente de alcance: \eqref{eq:dk} hace lo mismo, pero simultáneamente sobre cada uno de los infinitos armónicos que pueda contener la entrada.
+
+A nivel operativo, \eqref{eq:dk} se separa en módulo y fase:
+\begin{equation*}
+    |d_k| \;=\; |H(jk\omega_0)|\,|c_k|,
+    \qquad
+    \angle d_k \;=\; \angle H(jk\omega_0) + \angle c_k.
+\end{equation*}
+Cada línea del espectro de la entrada se escala por $|H|$ y acumula un desfase $\angle H$ a la frecuencia correspondiente. El espectro de salida queda completamente determinado por dos ingredientes: el espectro de la entrada y los valores que toma $H(j\omega)$ sobre la grilla armónica $\{k\omega_0\}$.
+
+% ==============================================================================
+% 5.5.4 Filtrado y Selectividad Frecuencial
+% ==============================================================================
+\subsection{Filtrado y selectividad frecuencial}
+\label{subsec:filtrado}
+
+La fórmula $d_k = H(jk\omega_0)\,c_k$ pone a la vista una idea con consecuencias prácticas inmediatas: la respuesta en frecuencia $H(j\omega)$ funciona como una \emph{máscara} que el sistema impone sobre el espectro de la señal. Donde $|H(jk\omega_0)| > 1$, el armónico correspondiente se amplifica; donde $|H(jk\omega_0)| = 1$, pasa intacto; donde $|H(jk\omega_0)| < 1$, se atenúa; y donde vale $0$, desaparece de la salida.
+
+Esta observación invierte el orden habitual del problema. Hasta ahora pensábamos en sistemas a partir de su respuesta al impulso $h(t)$ y deducíamos su comportamiento frecuencial calculando $H(j\omega)$. Pero nada impide ir en sentido contrario: si queremos un sistema que conserve un rango de frecuencias y suprima otro, basta con \emph{elegir} adecuadamente la forma de $H(j\omega)$. Sistemas concebidos así, por su acción sobre el espectro, se denominan \textbf{filtros}.
+
+\begin{nota}[Frecuencias como abreviatura]
+De aquí en adelante usamos ``frecuencias'' como abreviatura de \emph{componentes del espectro en ese rango de frecuencias}. Cuando decimos que un filtro ``deja pasar las frecuencias bajas'', lo que deja pasar son las componentes cuya frecuencia cae en la banda baja ---en este capítulo, los armónicos $c_k\,e^{jk\omega_0 t}$ con $|k\omega_0|$ pequeño---. La señal no es un objeto al que se le puedan extraer frecuencias sueltas: es la superposición de sus componentes espectrales, y el filtro actúa sobre ellas.
+\end{nota}
+
+Los filtros se clasifican según la región de frecuencias que dejan pasar: \emph{pasabajos} si conservan las frecuencias bajas y atenúan las altas, \emph{pasaaltos} si hacen lo opuesto, \emph{pasabanda} si conservan una banda intermedia.
+
+El caso más simple es el filtro pasabajos en su versión idealizada. Lo definimos directamente por la forma de su respuesta en frecuencia:
+\begin{equation}
+    H(j\omega) \;=\;
+    \begin{cases}
+        1, & |\omega| \leq \omega_c, \\
+        0, & |\omega| > \omega_c.
+    \end{cases}
+    \label{eq:pasabajos_ideal}
+\end{equation}
+La frecuencia $\omega_c$ es la \textbf{frecuencia de corte}: separa la banda que pasa intacta ---donde $H$ vale $1$--- de la banda que el sistema elimina por completo ---donde $H$ vale $0$---. El calificativo \emph{ideal} alude a la transición abrupta entre ambas bandas: ningún sistema concreto reproduce ese salto con exactitud, pero la idealización deja ver con claridad el efecto del filtrado sin que la transición distraiga.
+
+Aplicar este filtro a una señal periódica es un cálculo de tres líneas. En la fórmula $d_k = H(jk\omega_0)\,c_k$, el factor $H(jk\omega_0)$ vale $1$ para los $k$ con $|k\omega_0| \leq \omega_c$ y $0$ para los demás. Es decir: los armónicos cuya frecuencia cae dentro de la banda pasante salen idénticos a como entraron, y los que caen fuera no salen. La salida se reconstruye sumando solamente los primeros.
+
+\medskip
+\textbf{Ejemplo 3.}
+Tomemos como entrada la señal periódica
+\begin{equation*}
+    x(t) \;=\; 1 \,+\, 2\cos(\omega_0 t) \,+\, \cos(3\omega_0 t),
+\end{equation*}
+con período fundamental $T_0 = 2\pi/\omega_0$. Para identificar sus coeficientes de Fourier reescribimos cada coseno como suma de exponenciales:
+\begin{equation*}
+    x(t) \;=\; 1 \,+\, e^{j\omega_0 t} + e^{-j\omega_0 t}
+            \,+\, \tfrac{1}{2}e^{j3\omega_0 t} + \tfrac{1}{2}e^{-j3\omega_0 t}.
+\end{equation*}
+Leyendo coeficientes,
+\begin{equation*}
+    c_0 = 1, \qquad c_{\pm 1} = 1, \qquad c_{\pm 3} = \tfrac{1}{2},
+\end{equation*}
+y los demás $c_k$ son nulos. El espectro de la entrada vive entonces sobre $\{0,\,\pm\omega_0,\,\pm 3\omega_0\}$.
+
+Hagamos pasar esta señal por un pasabajos ideal con frecuencia de corte $\omega_c = 2\omega_0$. Las frecuencias $0$ y $\pm\omega_0$ caen dentro de la banda pasante ($|k\omega_0| \leq 2\omega_0$) y el filtro las deja intactas; las $\pm 3\omega_0$ caen fuera y el filtro las elimina. Entonces
+\begin{equation*}
+    H(j0) \;=\; 1, \qquad H(\pm j\omega_0) \;=\; 1, \qquad H(\pm j3\omega_0) \;=\; 0.
+\end{equation*}
+Aplicando $d_k = H(jk\omega_0)\,c_k$ a cada $k$:
+\begin{equation*}
+    d_0 = 1\cdot 1 = 1, \qquad
+    d_{\pm 1} = 1\cdot 1 = 1, \qquad
+    d_{\pm 3} = 0\cdot \tfrac{1}{2} = 0.
+\end{equation*}
+La salida tiene espectro únicamente sobre $\{0,\,\pm\omega_0\}$, así que escribirla en forma exponencial es directo:
+\begin{equation*}
+    y(t) \;=\; d_0 \,+\, d_1\,e^{j\omega_0 t} \,+\, d_{-1}\,e^{-j\omega_0 t}
+         \;=\; 1 \,+\, e^{j\omega_0 t} \,+\, e^{-j\omega_0 t}.
+\end{equation*}
+Reagrupando las exponenciales conjugadas con la fórmula de Euler $e^{j\theta} + e^{-j\theta} = 2\cos\theta$, queda
+\begin{equation*}
+    y(t) \;=\; 1 \,+\, 2\cos(\omega_0 t).
+\end{equation*}
+La señal de entrada tenía tres componentes frecuenciales ---una constante, una sinusoide de frecuencia $\omega_0$ y otra de frecuencia $3\omega_0$---; a la salida del filtro sobreviven las dos primeras. La oscilación más rápida desapareció.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.6\linewidth]{figures/fig_pasabajos_ejemplo/fig_pasabajos_ejemplo}
+        \caption{Filtro pasabajos ideal de frecuencia de corte $\omega_c = 2\omega_0$ aplicado a la entrada $x(t) = 1 + 2\cos(\omega_0 t) + \cos(3\omega_0 t)$. (a) Entrada en el dominio del tiempo. (b) Salida $y(t) = 1 + 2\cos(\omega_0 t)$: la oscilación rápida del tercer armónico desapareció. (c) Máscara $|H(j\omega)|$ (gris) y espectro de la entrada sobre la grilla armónica. Los stems azules ($k = 0, \pm 1$) caen dentro de la banda pasante y sobreviven; los stems rojos punteados ($k = \pm 3$) caen fuera y se eliminan.}
+        \label{fig:pasabajos_ejemplo}
+    \end{minipage}
+\end{figure}
+
+\medskip
+Variar la frecuencia de corte modifica cuántos armónicos sobreviven, sin necesidad de rehacer integrales. Con $\omega_c$ entre $0$ y $\omega_0$ pasa solo la componente continua y la salida es $y(t) = 1$; con $\omega_c$ por encima de $3\omega_0$ pasan los tres armónicos y la salida coincide con la entrada. Todo el comportamiento del sistema sobre esta señal queda controlado por dónde se coloca $\omega_c$ respecto a la grilla armónica.
+
+\medskip
+Conviene cerrar el capítulo recogiendo el argumento entero. La Sección~\ref{sec:producto_interno} instaló la idea organizadora: las señales son vectores y un buen sistema de coordenadas se construye con bases ortogonales. Las secciones siguientes eligieron la base armónica y aprendieron a leer una señal periódica en esas coordenadas, llamadas su espectro. Esta última sección puso a la vista por qué esa base, y no otra, es la natural para sistemas: un LIT actúa diagonalmente sobre ella ---multiplicando cada coordenada por un número complejo---, y la convolución con $h(t)$, que en el Capítulo~\ref{cap04} aparecía como suma ponderada de copias desplazadas, se reduce a un producto armónico por armónico. La convolución no era difícil por ser intrínsecamente complicada; era difícil porque la mirábamos en la base equivocada.
+
+Esta observación es la que el resto del libro va a explotar. Las herramientas que vienen extienden la base armónica en dos direcciones: hacia señales no necesariamente periódicas, mediante un cambio de base al continuo de frecuencias, y hacia entradas exponenciales que crecen o decaen, mediante un cambio de base al plano complejo. La idea operativa permanece intacta: elegir la base en la que el sistema se vuelve transparente y trabajar ahí.
+
+\end{document}

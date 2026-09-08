@@ -1,0 +1,47 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    panel/.style={
+        width=6.2cm, height=4cm,
+        xmin=-2.5, xmax=2.5,
+        ymin=-0.3, ymax=1.5,
+        axis lines=center,
+        xtick={-2,-1,0,1,2},
+        ytick={0,1},
+        yticklabels={$0$,$1$},
+        tick style={thin},
+        xlabel={$t$}, xlabel style={anchor=north},
+        ylabel style={font=\small, rotate=0, anchor=south east,
+                      at={(axis description cs:0,1)}},
+        clip=false,
+    }
+}
+
+% Panel (a): pulso centrado p_tau(t), tau=2
+\begin{axis}[panel, name=ax1,
+    ylabel={$p_{\tau}(t)$},
+    title={(a) pulso centrado}, title style={font=\small\bfseries},]
+\addplot[utnblue, very thick] coordinates {(-2.5,0)(-1,0)(-1,1)(1,1)(1,0)(2.5,0)};
+\draw[<->, gray, thick] (axis cs:-1,-0.6) -- node[below, font=\scriptsize]{$\tau$} (axis cs:1,-0.6);
+\node[gray, font=\scriptsize, anchor=north] at (axis cs:-1,-0.3) {$-\tau/2$};
+\node[gray, font=\scriptsize, anchor=north] at (axis cs:1,-0.3) {$\tau/2$};
+\end{axis}
+
+% Panel (b): pulso causal p_tau(t - tau/2), tau=2 -> soporte [0,2]
+\begin{axis}[panel, name=ax2,
+    at={(ax1.right of north east)}, anchor=left of north west, xshift=10pt,
+    ylabel={$p_{\tau}(t-\tau/2)$},
+    title={(b) pulso causal}, title style={font=\small\bfseries},]
+\addplot[utnblue, very thick] coordinates {(-2.5,0)(0,0)(0,1)(2,1)(2,0)(2.5,0)};
+\draw[<->, gray, thick] (axis cs:0,-0.6) -- node[below, font=\scriptsize]{$\tau$} (axis cs:2,-0.6);
+\node[gray, font=\scriptsize, anchor=north] at (axis cs:0,-0.3) {$0$};
+\node[gray, font=\scriptsize, anchor=north] at (axis cs:2,-0.3) {$\tau$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

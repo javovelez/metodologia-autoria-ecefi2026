@@ -1,0 +1,161 @@
+% ============================================================
+% fig_roc_laurent.tex
+% Tres regiones de convergencia para f(z) = 1/((1-z)(2-z))
+% Polos en z=1 y z=2, centro z0=0 — dominio -4 a 4 en ambos ejes
+%   (a) Taylor:   |z| < 1
+%   (b) Laurent:  1 < |z| < 2
+%   (c) Laurent:  |z| > 2
+% Estilo 2D consistente con sec23 (fig_discos.tex, fig_regiones_combinadas.tex)
+% ============================================================
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.25, font=\small]
+
+% -------------------------------------------------------
+% Panel (a): Taylor — disco |z| < 1 
+% -------------------------------------------------------
+\begin{scope}[shift={(0,0)}]
+    % Región sombreada: disco |z| < 1
+    \fill[cyan!15] (0,0) circle (1);
+    \draw[dashed, thick] (0,0) circle (1);
+
+    % Ejes
+    \draw[->] (-2.8,0) -- (2.8,0) node[right] {Re};
+    \draw[->] (0,-2.8) -- (0,2.8) node[above] {Im};
+
+    % Centro z0 = 0
+    \fill[utnblue] (0,0) circle (2pt);
+    \node[utnblue, below left, font=\scriptsize] at (-0.05,-0.05) {$z_0$};
+
+    % Radio R=1
+    \draw[->, utnblue, dashed] (0,0) -- (135:1)
+        node[midway, below left, font=\scriptsize, utnblue, inner sep=1pt] {$R\!=\!1$};
+
+    % Polo z=1 (en la frontera, fuera de la ROC)
+    \node[red, font=\normalsize] at (1,0) {$\times$};
+    \node[red, above right, font=\scriptsize] at (1,0.1) {$z\!=\!1$};
+
+    % Polo z=2 (fuera de la ROC)
+    \node[red!55, font=\normalsize] at (2,0) {$\times$};
+    \node[red!55, above right, font=\scriptsize] at (2,0.1) {$z\!=\!2$};
+
+    % Ticks eje real
+    \foreach \x in {-2,-1,1,2} {
+        \draw (\x, 0.1) -- (\x,-0.1) node[below, font=\scriptsize] {$\x$};
+    }
+    % Ticks eje imaginario
+    \foreach \y/\lbl in {2/{2j}, -2/{-2j}} {
+        \draw (0.1,\y) -- (-0.1,\y) node[left, font=\scriptsize] {$\lbl$};
+    }
+
+    % Etiqueta ROC
+    \node[utnblue!80!black, font=\scriptsize] at (0.35, 0.55) {$|z|<1$};
+
+    % Título del panel
+    \node[font=\footnotesize\bfseries] at (0, -3.3) {(a)};
+\end{scope}
+
+% -------------------------------------------------------
+% Panel (b): Laurent — corona 1 < |z| < 2
+% -------------------------------------------------------
+\begin{scope}[shift={(7.0,0)}]
+    % Región: anillo entre r=1 y r=2
+    \fill[cyan!15, even odd rule] (0,0) circle (2) (0,0) circle (1);
+
+    % Fronteras
+    \draw[dashed, thick] (0,0) circle (1);
+    \draw[dashed, thick] (0,0) circle (2);
+
+    % Ejes
+    \draw[->] (-2.8,0) -- (2.8,0) node[right] {Re};
+    \draw[->] (0,-2.8) -- (0,2.8) node[above] {Im};
+
+    % Centro z0 = 0
+    \fill[utnblue] (0,0) circle (2pt);
+    \node[utnblue, below left, font=\scriptsize] at (-0.05,-0.05) {$z_0$};
+
+    % Radios R1=1 y R2=2
+    \draw[->, utnblue, dashed] (0,0) -- (-45:1)
+        node[midway, below left, font=\scriptsize, utnblue, inner sep=1pt] {$R_1$};
+    \draw[->, utnblue, dashed] (0,0) -- (135:2)
+        node[pos=0.75, below left, font=\scriptsize, utnblue, inner sep=1pt] {$R_2$};
+
+    % Polo z=1 (en la frontera interna)
+    \node[red, font=\normalsize] at (1,0) {$\times$};
+    \node[red, above right, font=\scriptsize] at (1,0.1) {$z\!=\!1$};
+
+    % Polo z=2 (en la frontera externa)
+    \node[red, font=\normalsize] at (2,0) {$\times$};
+    \node[red, above right, font=\scriptsize] at (2,0.1) {$z\!=\!2$};
+
+    % Ticks eje real
+    \foreach \x in {-2,-1,1,2} {
+        \draw (\x, 0.1) -- (\x,-0.1) node[below, font=\scriptsize] {$\x$};
+    }
+    % Ticks eje imaginario
+    \foreach \y/\lbl in {2/{2j}, -2/{-2j}} {
+        \draw (0.1,\y) -- (-0.1,\y) node[left, font=\scriptsize] {$\lbl$};
+    }
+
+    % Etiqueta ROC
+    \node[utnblue!80!black, font=\scriptsize] at (0.8, 1.3) {$1\!<\!|z|\!<\!2$};
+
+    % Título del panel
+    \node[font=\footnotesize\bfseries] at (0, -3.3) {(b)};
+\end{scope}
+
+% -------------------------------------------------------
+% Panel (c): Laurent — exterior |z| > 2
+% -------------------------------------------------------
+\begin{scope}[shift={(14.0,0)}]
+    % Región: exterior del disco r=2, recortado al viewport
+    \begin{scope}
+        \clip (-2.8,-2.8) rectangle (2.8,2.8);
+        \fill[cyan!15, even odd rule]
+            (-2.8,-2.8) rectangle (2.8,2.8)
+            (0,0) circle (2);
+    \end{scope}
+
+    % Frontera
+    \draw[dashed, thick] (0,0) circle (2);
+
+    % Ejes
+    \draw[->] (-2.8,0) -- (2.8,0) node[right] {Re};
+    \draw[->] (0,-2.8) -- (0,2.8) node[above] {Im};
+
+    % Centro z0 = 0
+    \fill[utnblue] (0,0) circle (2pt);
+    \node[utnblue, below left, font=\scriptsize] at (-0.05,-0.05) {$z_0$};
+
+    % Radio R2=2
+    \draw[->, utnblue, dashed] (0,0) -- (135:2)
+        node[midway, below left, font=\scriptsize, utnblue, inner sep=1pt] {$R_1\!=\!2$};
+
+    % Polo z=1 (dentro del disco, en el interior)
+    \node[red!55, font=\normalsize] at (1,0) {$\times$};
+    \node[red!55, above right, font=\scriptsize] at (1,0.1) {$z\!=\!1$};
+
+    % Polo z=2 (en la frontera)
+    \node[red, font=\normalsize] at (2,0) {$\times$};
+    \node[red, above right, font=\scriptsize] at (2,0.1) {$z\!=\!2$};
+
+    % Ticks eje real
+    \foreach \x in {-2,-1,1,2} {
+        \draw (\x, 0.1) -- (\x,-0.1) node[below, font=\scriptsize] {$\x$};
+    }
+    % Ticks eje imaginario
+    \foreach \y/\lbl in {2/{2j}, -2/{-2j}} {
+        \draw (0.1,\y) -- (-0.1,\y) node[left, font=\scriptsize] {$\lbl$};
+    }
+
+    % Etiqueta ROC
+    \node[utnblue!80!black, font=\scriptsize] at (1.8, 1.7) {$2<|z|<\infty$};
+
+    % Título del panel
+    \node[font=\footnotesize\bfseries] at (0, -3.3) {(c)};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

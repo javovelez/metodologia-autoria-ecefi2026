@@ -1,0 +1,94 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% phi = 30°:  cos(30°) = sqrt(3)/2 ≈ 0.866,  sin(30°) = 0.5
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ---- panel (a): plano complejo, punto en t=0 a ángulo phi ----
+\begin{axis}[
+    name=ax1,
+    width=6cm, height=6cm,
+    xmin=-1.5, xmax=1.5,
+    ymin=-1.5, ymax=1.8,
+    axis lines=center,
+    xtick={-1,0,1},
+    xticklabels={$-1$,$0$,$1$},
+    ytick={-1,0,1},
+    yticklabels={$-1$,$0$,$1$},
+    xlabel={Re}, xlabel style={anchor=north},
+    ylabel={Im},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    tick style={thin},
+    axis equal,
+    clip=false,
+    title={(a)}, title style={font=\small\bfseries},
+]
+% Círculo unitario
+\addplot[utnblue, thick, smooth, domain=0:360, samples=200]
+    ({cos(x)}, {sin(x)});
+% Punto en t=0: ángulo = phi = 30°
+\addplot[utnblue, mark=*, mark size=2.5pt, only marks]
+    coordinates {({cos(30)},{sin(30)})};
+% Radio al punto
+\draw[->, utnblue, thick] (axis cs:0,0) -- (axis cs:{cos(30)},{sin(30)});
+% Arco para phi: 0°→30°
+% radio = 0.9cm → 0.45 data units; inicio en (0.45, 0)
+\draw[->, orange!80!black, thick]
+    (axis cs:0.45, 0)
+    arc[start angle=0, end angle=23, radius=0.9cm];
+\node[font=\scriptsize, orange!80!black]
+    at (axis cs:0.60, 0.17) {$\varphi$};
+% Etiqueta del punto
+\node[anchor=south west, font=\scriptsize, utnblue]
+    at (axis cs:{cos(30)},{sin(30)}) {$e^{j\varphi}$};
+\node[anchor=north west, font=\scriptsize, gray]
+    at (axis cs:{cos(30)},{sin(30)}) {\textit{(t=0)}};
+\end{axis}
+
+% ---- panel (b): parte real e imaginaria con fase phi ----
+% cos(omega0*t + phi) y sin(omega0*t + phi), phi = pi/6 (30°)
+% En t=0: Re = cos(30°) ≈ 0.866, Im = sin(30°) = 0.5
+\begin{axis}[
+    name=ax2,
+    at={(ax1.right of north east)}, anchor=left of north west, xshift=14pt,
+    width=8cm, height=6cm,
+    xmin=0, xmax=6.5,
+    ymin=-1.4, ymax=1.6,
+    axis lines=center,
+    xtick={0,3.14159,6.28318},
+    xticklabels={$0$,$T_0/2$,$T_0$},
+    ytick={-1,0,1},
+    yticklabels={$-1$,$0$,$1$},
+    xlabel={$t$}, xlabel style={anchor=north},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    ylabel={$e^{j(\omega_0 t+\varphi)}$},
+    tick style={thin},
+    clip=false,
+    title={(b)}, title style={font=\small\bfseries},
+]
+% Re = cos(omega0*t + phi), phi=30°: cos(deg(x)+30)
+\addplot[utnblue, very thick, smooth, domain=0:6.5, samples=300]
+    {cos(deg(x) + 30)};
+\node[utnblue, font=\scriptsize, anchor=south] at (axis cs:1.2, 1.05)
+    {$\operatorname{Re} = \cos(\omega_0 t+\varphi)$};
+% Im = sin(omega0*t + phi)
+\addplot[red!80!black, very thick, smooth, domain=0:6.5, samples=300, dashed]
+    {sin(deg(x) + 30)};
+\node[red!80!black, font=\scriptsize, anchor=north] at (axis cs:4.6, -1.05)
+    {$\operatorname{Im} = \sin(\omega_0 t+\varphi)$};
+% Valores iniciales en t=0
+\addplot[utnblue,      mark=*, mark size=2.5pt, only marks] coordinates {(0, {cos(30)})};
+\addplot[red!80!black, mark=*, mark size=2.5pt, only marks] coordinates {(0, {sin(30)})};
+% Líneas punteadas horizontales mostrando los niveles iniciales
+% Etiquetas de los valores iniciales
+\node[utnblue,      font=\scriptsize, anchor=west] at (axis cs:-0.9, {cos(30)}) {$\cos\varphi$};
+\node[red!80!black, font=\scriptsize, anchor=west] at (axis cs:-0.9, {sin(30)}) {$\sin\varphi$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

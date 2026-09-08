@@ -1,0 +1,60 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.3, font=\small]
+    \useasboundingbox (-2.5, -2.5) rectangle (2.5, 2.5);
+
+    % --- CAPA 1: Grid ---
+    \begin{scope}
+        \clip (-2.5, -2.5) rectangle (2.5, 2.5);
+        \draw[help lines, gray!30, step=0.5] (-2.5,-2.5) grid (2.5, 2.5);
+    \end{scope}
+
+    % --- CAPA 2: Circunferencias (trayectorias para cada c_k) ---
+    \begin{scope}
+        \clip (-2.5, -2.5) rectangle (2.5, 2.5);
+
+        % c_k = 0.5: radio 0.5, arranca en (0.5, 0)
+        \draw[orange!80!black, thick, densely dotted] (0.5,0) arc(0:360:0.5);
+
+        % c_k = j: radio 1, arranca en (0, 1)
+        \draw[utnblue, thick, densely dotted] (0,1) arc(90:450:1);
+
+        % c_k = 1+j = sqrt(2)*e^{j*pi/4}: radio sqrt(2), arranca en (1,1)
+        \draw[green!50!black, thick, densely dotted] (1,1) arc(45:405:1.414);
+
+        % c_k = 2: radio 2, arranca en (2, 0)
+        \draw[red!70!black, thick, densely dotted] (2,0) arc(0:360:2);
+    \end{scope}
+
+    % --- CAPA 3: Ejes ---
+    \draw[->, thick] (-2.4,0) -- (2.4,0) node[right, font=\scriptsize] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-2.4) -- (0,2.4) node[above, font=\scriptsize] {$\operatorname{Im}$};
+
+    % --- CAPA 4: Etiquetas, marcas y puntos de arranque ---
+    \foreach \x in {-2,-1,1,2} {
+        \draw (\x, 0.07)--(\x,-0.07) node[below, font=\scriptsize] {$\x$};
+    }
+    \foreach \y in {-2,-1,1,2} {
+        \draw (0.07, \y)--(-0.07,\y) node[left, font=\scriptsize] {$\y$};
+    }
+    \node[below left, font=\scriptsize] at (0,0) {$0$};
+
+    % Punto de arranque: c_k = 2, (2,0)
+    \fill[red!70!black] (2,0) circle (1.5pt);
+    \node[below right, font=\scriptsize, red!70!black] at (2,0) {$c_k{=}2$};
+
+    % Punto de arranque: c_k = 1+j, (1,1)
+    \fill[green!50!black] (1,1) circle (1.5pt);
+    \node[above right, font=\scriptsize, green!50!black] at (1,1) {$c_k{=}1{+}j$};
+
+    % Punto de arranque: c_k = j, (0,1)
+    \fill[utnblue] (0,1) circle (1.5pt);
+    \node[above right, font=\scriptsize, utnblue] at (0,1) {$c_k{=}j$};
+
+    % Punto de arranque: c_k = 0.5, (0.5,0)
+    \fill[orange!80!black] (0.5,0) circle (1.5pt);
+    \node[below right, font=\scriptsize, orange!80!black] at (0.5,0) {$c_k{=}0.5$};
+\end{tikzpicture}
+\end{document}

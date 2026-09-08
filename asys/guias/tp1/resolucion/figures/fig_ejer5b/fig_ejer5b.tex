@@ -1,0 +1,39 @@
+\documentclass[border=3mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.4, font=\small]
+
+    % Cuadrícula
+    \draw[help lines, gray!30, step=1] (-1.6,-1.6) grid (1.6,1.6);
+
+    % Ejes
+    \draw[->, thick] (-1.7,0) -- (1.9,0) node[right] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-1.7) -- (0,1.9) node[above] {$\operatorname{Im}$};
+    \node[below left, font=\scriptsize] at (-0.05,-0.08) {$0$};
+
+    % Marcas
+    \foreach \x in {-1,1}
+        \draw (\x,0.06)--(\x,-0.06) node[below, font=\tiny]{$\x$};
+    \foreach \y in {-1,1}
+        \draw (0.06,\y)--(-0.06,\y) node[left, font=\tiny]{$\y$};
+
+    % Círculo unitario
+    \draw[gray, dashed] (0,0) circle (1);
+
+    % Triángulo equilátero (conecta las 3 raíces)
+    \draw[utnblue!40, thin] (1,0) -- (-0.5,0.866) -- (-0.5,-0.866) -- cycle;
+
+    % Raíces
+    % w0 = e^{j*0}    = (1, 0)
+    % w1 = e^{j*2pi/3} = (-1/2, sqrt(3)/2) = (-0.5, 0.866)
+    % w2 = e^{j*4pi/3} = (-1/2,-sqrt(3)/2) = (-0.5,-0.866)
+    \fill[utnblue] ( 1,      0    ) circle (2pt)
+        node[above right, font=\scriptsize] {$w_0$};
+    \fill[utnblue] (-0.5,    0.866) circle (2pt)
+        node[above left,  font=\scriptsize] {$w_1$};
+    \fill[utnblue] (-0.5,   -0.866) circle (2pt)
+        node[below left,  font=\scriptsize] {$w_2$};
+
+\end{tikzpicture}
+\end{document}

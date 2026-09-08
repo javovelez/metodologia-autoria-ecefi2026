@@ -1,0 +1,69 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_modelo_impulsos
+% Tres paneles apilados:
+%   (a) x(t) continua;
+%   (b) peine de Dirac (impulsos iguales cada Delta t);
+%   (c) x_s(t) = x(t)*peine: impulsos ponderados por las muestras, con envolvente x(t).
+% Muestras en t = n (Delta t = 1), n = 0..7, alturas h_n.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=4pt]}, font=\scriptsize,
+    sig/.style={utnblue, thick},
+    imp/.style={utnblue, thick, -{Latex[length=4pt]}},
+    env/.style={utnblue!55, thick, dotted},
+    ax/.style={->, thin, black},
+]
+    \def\dx{0.85}     % paso horizontal entre muestras
+    \def\x0{0}        % origen x
+    \def\W{7.3}       % largo del eje (en unidades de dx*7 + margen)
+
+    % alturas de las muestras h_0..h_7
+    % {0.30,0.70,1.00,0.80,0.20,-0.40,-0.60,-0.30}
+
+    \newcommand{\timeaxis}{\draw[ax] (-0.5*\dx,0) -- (7.7*\dx,0) node[right] {$t$};}
+
+    % ===================== (a) x(t) =====================
+    \begin{scope}[shift={(0,0)}]
+        \node at (-1.4*\dx,0.5) {(a)};
+        \node[utnblue, anchor=west] at (6.4*\dx,1.05) {$x(t)$};
+        \timeaxis
+        \draw[sig] plot[smooth, tension=0.7] coordinates {
+            (-0.4*\dx,0.10) (0*\dx,0.30) (1*\dx,0.70) (2*\dx,1.00) (3*\dx,0.80)
+            (4*\dx,0.20) (5*\dx,-0.40) (6*\dx,-0.60) (7*\dx,-0.30) (7.5*\dx,-0.10)
+        };
+    \end{scope}
+
+    % ===================== (b) peine =====================
+    \begin{scope}[shift={(0,-2.6)}]
+        \node at (-1.4*\dx,0.5) {(b)};
+        \node[utnblue, anchor=west] at (5.7*\dx,1.05) {$\delta^{\Delta t}(t)$};
+        \timeaxis
+        \foreach \n in {0,1,2,3,4,5,6,7} {
+            \draw[imp] (\n*\dx,0) -- (\n*\dx,0.85);
+        }
+        % marca del paso Delta t entre n=0 y n=1
+        \draw[<->, gray!70] (0,-0.28) -- (\dx,-0.28);
+        \node[gray!70, anchor=north, font=\tiny] at (0.5*\dx,-0.28) {$\Delta t$};
+    \end{scope}
+
+    % ===================== (c) x_s(t) =====================
+    \begin{scope}[shift={(0,-5.2)}]
+        \node at (-1.4*\dx,0.5) {(c)};
+        \node[utnblue, anchor=west] at (6.0*\dx,1.05) {$x_s(t)$};
+        \timeaxis
+        % envolvente punteada = x(t)
+        \draw[env] plot[smooth, tension=0.7] coordinates {
+            (-0.4*\dx,0.10) (0*\dx,0.30) (1*\dx,0.70) (2*\dx,1.00) (3*\dx,0.80)
+            (4*\dx,0.20) (5*\dx,-0.40) (6*\dx,-0.60) (7*\dx,-0.30) (7.5*\dx,-0.10)
+        };
+        % impulsos ponderados por las muestras
+        \foreach \n/\h in {0/0.30, 1/0.70, 2/1.00, 3/0.80, 4/0.20,
+                           5/-0.40, 6/-0.60, 7/-0.30} {
+            \draw[imp] (\n*\dx,0) -- (\n*\dx,\h);
+        }
+    \end{scope}
+\end{tikzpicture}
+\end{document}

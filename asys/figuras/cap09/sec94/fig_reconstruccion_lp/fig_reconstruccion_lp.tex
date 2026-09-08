@@ -1,0 +1,45 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_reconstruccion_lp
+% X_s(jw): copias en 0, +-ws, +-2ws (ws=3, wM=1). Pasabajos ideal H(jw): recuadro
+% punteado rojo, altura Delta t, corte en ws/2=1.5. Deja la copia central (azul) = X.
+% Layout: yscale=2 para que la figura no quede achatada; la altura Delta t se rotula
+% debajo de la meseta y a la izquierda del eje, para no pisar ni el eje ni H(jw).
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=4pt]}, font=\scriptsize, xscale=0.72, yscale=2.0,
+    tri/.style={utnblue, thick, fill=utnblue!14},
+    tricopy/.style={gray!55, thick, fill=gray!8},
+    lp/.style={red!80!black, thick, dotted},
+    ax/.style={->, thin, black},
+]
+    \draw[ax] (-8,0) -- (8,0) node[right] {$\omega$};
+    \draw[ax] (0,-0.05) -- (0,1.30);
+
+    % copias laterales (grises)
+    \draw[tricopy] (-7,0) -- (-6,0.85) -- (-5,0) -- cycle;
+    \draw[tricopy] (-4,0) -- (-3,0.85) -- (-2,0) -- cycle;
+    \draw[tricopy] ( 2,0) -- ( 3,0.85) -- ( 4,0) -- cycle;
+    \draw[tricopy] ( 5,0) -- ( 6,0.85) -- ( 7,0) -- cycle;
+    % copia central (azul) = X
+    \draw[tri] (-1,0) -- (0,0.85) -- (1,0) -- cycle;
+
+    % pasabajos ideal: recuadro de altura Delta t y corte en +-1.5
+    \draw[lp] (-1.5,0) -- (-1.5,0.95) -- (1.5,0.95) -- (1.5,0) ;
+    \node[red!80!black, anchor=south] at (0.95,0.98) {$H(j\omega)$};
+    \node[red!80!black, anchor=north east] at (-0.30,0.91) {$\Delta t$};
+
+    % ticks
+    \draw[semithick] (1.5,0.085) -- (1.5,-0.085) node[below] {$\tfrac{\omega_s}{2}$};
+    \draw[semithick] (3,0.085) -- (3,-0.085) node[below] {$\omega_s$};
+    \draw[semithick] (-3,0.085) -- (-3,-0.085) node[below] {$-\omega_s$};
+    \draw[semithick] (6,0.085) -- (6,-0.085) node[below] {$2\omega_s$};
+    \draw[semithick] (-6,0.085) -- (-6,-0.085) node[below] {$-2\omega_s$};
+
+    % etiqueta de la copia central: debajo del eje, porque dentro del recuadro no
+    % entra sin pisar el corte en ws/2
+    \node[utnblue, anchor=north] at (-0.30,-0.12) {$X(j\omega)$};
+\end{tikzpicture}
+\end{document}

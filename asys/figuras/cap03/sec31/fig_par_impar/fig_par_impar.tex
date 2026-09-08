@@ -1,0 +1,100 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+    % Escalas: 1.2 cm por unidad de tiempo
+    %          0.6 cm por unidad de amplitud  (paneles a y b)
+    %          0.5 cm por unidad de amplitud  (panel c)
+    % Separación entre orígenes: 8 cm
+
+    % ================================================================
+    % PANEL (a) — x(t) = e^t  (señal asimétrica)
+    % ================================================================
+    \begin{scope}
+        \clip (-2.6, -0.25) rectangle (3.0, 2.9);
+        \draw[utnblue, very thick, smooth, samples=100, domain=-2.2:2.2]
+            plot ({1.2*\x}, {0.6*exp(\x)});
+    \end{scope}
+    % Ejes
+    \draw[->, thick] (-2.6, 0) -- (3.1, 0) node[right] {$t$};
+    \draw[->, thick] (0, -0.2) -- (0, 3.0);
+    % Marcas en eje t
+    \foreach \tt in {-2,-1,1,2}
+        \draw ({1.2*\tt}, 0.07) -- ({1.2*\tt}, -0.07)
+              node[below, inner sep=1pt] {$\tt$};
+    \node[anchor=north east, inner sep=1pt] at (0, 0) {$0$};
+    % Marcas en eje vertical
+    \foreach \yy in {2,4}
+        \draw (0.08, {0.6*\yy}) -- (-0.08, {0.6*\yy})
+              node[left, inner sep=2pt] {$\yy$};
+    % Etiqueta de curva
+    \node[utnblue, anchor=south west] at (0.95, 1.1) {$e^{t}$};
+    % Título del panel
+    \node[anchor=north, inner sep=0pt, yshift=-10pt] at (0.2, 0)
+          {(a)};
+
+    % ================================================================
+    % PANEL (b) — x_p(t) = cosh(t)  (componente par, simétrica)
+    % ================================================================
+    \begin{scope}[shift={(8, 0)}]
+        \clip (-2.6, -0.25) rectangle (3.0, 2.9);
+        \draw[utnblue, very thick, smooth, samples=100, domain=-2.2:2.2]
+            plot ({1.2*\x}, {0.6*((exp(\x)+exp(-\x))/2)});
+        % Indicador de simetría: línea punteada horizontal en cosh(1.7)
+        % cosh(1.7) = (e^1.7 + e^{-1.7})/2 ≈ 2.828  →  y ≈ 1.697 cm
+        \draw[gray!70, dashed, thin]
+            ({1.2*(-1.7)}, {0.6*((exp(1.7)+exp(-1.7))/2)}) --
+            ({1.2*(1.7)},  {0.6*((exp(1.7)+exp(-1.7))/2)});
+    \end{scope}
+    \begin{scope}[shift={(8, 0)}]
+        \draw[->, thick] (-2.6, 0) -- (3.1, 0) node[right] {$t$};
+        \draw[->, thick] (0, -0.2) -- (0, 3.0);
+        \foreach \tt in {-2,-1,1,2}
+            \draw ({1.2*\tt}, 0.07) -- ({1.2*\tt}, -0.07)
+                  node[below, inner sep=1pt] {$\tt$};
+        \node[anchor=north east, inner sep=1pt] at (0, 0) {$0$};
+        \foreach \yy in {2,4}
+            \draw (0.08, {0.6*\yy}) -- (-0.08, {0.6*\yy})
+                  node[left, inner sep=2pt] {$\yy$};
+        % Puntos simétricos que evidencian la igualdad cosh(-t) = cosh(t)
+        \fill[black] ({1.2*1.7},  {0.6*((exp(1.7)+exp(-1.7))/2)}) circle (2pt);
+        \fill[black] ({1.2*(-1.7)},{0.6*((exp(1.7)+exp(-1.7))/2)}) circle (2pt);
+        % Etiqueta de curva
+        \node[utnblue, anchor=south west] at (0.72, 1.65) {$\cosh(t)$};
+        % Título del panel
+        \node[anchor=north, inner sep=0pt, yshift=-10pt] at (0.2, 0)
+              {(b)};
+    \end{scope}
+
+    % ================================================================
+    % PANEL (c) — x_i(t) = sinh(t)  (componente impar, antisimétrica)
+    % ================================================================
+    \begin{scope}[shift={(16, 0)}]
+        \clip (-2.6, -2.2) rectangle (3.0, 2.2);
+        \draw[utnblue, very thick, smooth, samples=100, domain=-2.2:2.2]
+            plot ({1.2*\x}, {0.5*((exp(\x)-exp(-\x))/2)});
+    \end{scope}
+    \begin{scope}[shift={(16, 0)}]
+        \draw[->, thick] (-2.6, 0) -- (3.1, 0) node[right] {$t$};
+        \draw[->, thick] (0, -2.35) -- (0, 2.5);
+        \foreach \tt in {-2,-1,1,2}
+            \draw ({1.2*\tt}, 0.07) -- ({1.2*\tt}, -0.07)
+                  node[below, inner sep=1pt] {$\tt$};
+        \node[anchor=north east, inner sep=1pt] at (0.05, 0) {$0$};
+        \foreach \yy in {-4,-2,2,4}
+            \draw (0.08, {0.5*\yy}) -- (-0.08, {0.5*\yy})
+                  node[left, inner sep=2pt] {$\yy$};
+        % Punto en el origen: verifica sinh(0) = 0
+        \fill[black] (0, 0) circle (2.5pt);
+        % Etiqueta de curva
+        \node[utnblue, anchor=south west] at (0.72, 0.85) {$\sinh(t)$};
+        % Título del panel
+        \node[anchor=north, inner sep=0pt, yshift=-10pt] at (0.2, -2.2)
+              {(c)};
+    \end{scope}
+
+\end{tikzpicture}
+\end{document}

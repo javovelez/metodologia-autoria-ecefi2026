@@ -1,0 +1,167 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Setup para la convolución de una rampa unitaria con un tren de impulsos.
+%   x(τ)  = (τ/a)·[u(τ) - u(τ-a)],        a   = 1
+%   h(τ)  = Σ_k δ(τ - k T_0),              T_0 = 2  (T_0 > a)
+%   y(t)  = x(t) * h(t) = Σ_k x(t - k T_0)
+%
+% Tres paneles horizontales con rangos de t alineados:
+%   (a) x(τ)         — rampa de soporte acotado
+%   (b) h(τ)         — tren de impulsos de período fundamental T_0
+%   (c) y(t)         — sucesión de copias desplazadas para T_0 > a
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\colorlet{xcol}{utnblue}
+\colorlet{hcol}{red!80!black}
+
+\pgfmathsetmacro{\aval}{1}
+\pgfmathsetmacro{\Tcero}{2}
+
+\pgfmathsetmacro{\xmn}{-3.2}
+\pgfmathsetmacro{\xmx}{5.5}
+\pgfmathsetmacro{\ymn}{-0.22}
+\pgfmathsetmacro{\ymx}{1.45}
+
+% =====================================================================
+% PANEL (a): x(τ) — rampa de soporte acotado
+% =====================================================================
+\begin{axis}[
+    name=panA,
+    width=6.6cm, height=4.6cm,
+    axis lines=center,
+    xlabel={$\tau$},
+    xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    xmin=\xmn, xmax=\xmx,
+    ymin=\ymn, ymax=\ymx,
+    clip=true,
+    axis line style={->, thick},
+    xtick={0, \aval},
+    xticklabels={$0$, $a$},
+    ytick={0, 1},
+    every tick label/.style={font=\tiny},
+    title={\footnotesize (a)\; $x(\tau)$},
+]
+    % Relleno del triángulo (sólo soporte de x)
+    \fill[xcol!18]
+        (axis cs:0,0) -- (axis cs:\aval,1) -- (axis cs:\aval,0) -- cycle;
+
+    % Tramos de x(τ): cero — rampa — caída — cero
+    \addplot[xcol, very thick, domain=\xmn:0,    samples=2] {0};
+    \addplot[xcol, very thick, domain=0:\aval,   samples=2] {x/\aval};
+    \draw[xcol, very thick] (axis cs:\aval,1) -- (axis cs:\aval,0);
+    \addplot[xcol, very thick, domain=\aval:\xmx, samples=2] {0};
+
+    % Marcadores de continuidad
+    \fill[xcol]  (axis cs:0,0) circle (1.6pt);
+    \fill[xcol]  (axis cs:\aval,1) circle (1.6pt);
+    \fill[white] (axis cs:\aval,0) circle (1.6pt);
+    \draw[xcol]  (axis cs:\aval,0) circle (1.6pt);
+\end{axis}
+
+% =====================================================================
+% PANEL (b): h(τ) — tren de impulsos
+% =====================================================================
+\begin{axis}[
+    name=panB,
+    at={(panA.east)}, anchor=west, xshift=0.6cm,
+    width=6.6cm, height=4.6cm,
+    axis lines=center,
+    xlabel={$\tau$},
+    xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    xmin=\xmn, xmax=\xmx,
+    ymin=\ymn, ymax=\ymx,
+    clip=false,
+    axis line style={->, thick},
+    xtick={-2, 0, 2, 4},
+    xticklabels={$-T_0$, $0$, $T_0$, $2T_0$},
+    ytick={1},
+    every tick label/.style={font=\tiny},
+    title={\footnotesize (b)\; $\delta^{T_0}(\tau)$},
+]
+    % Impulsos del tren (foreach no funciona dentro de pgfplots)
+    \draw[->, hcol, very thick, line width=1.4pt] (axis cs:-2, 0) -- (axis cs:-2, 1);
+    \draw[->, hcol, very thick, line width=1.4pt] (axis cs: 0, 0) -- (axis cs: 0, 1);
+    \draw[->, hcol, very thick, line width=1.4pt] (axis cs: 2, 0) -- (axis cs: 2, 1);
+    \draw[->, hcol, very thick, line width=1.4pt] (axis cs: 4, 0) -- (axis cs: 4, 1);
+
+    % Marca del período fundamental T_0
+    \draw[<->, gray!70, thin]
+        (axis cs:0, 0.30) -- node[below, font=\tiny, gray]{$T_0$} (axis cs:2, 0.30);
+\end{axis}
+
+% =====================================================================
+% PANEL (c): y(t) — sucesión de copias desplazadas (T_0 > a)
+% =====================================================================
+\begin{axis}[
+    name=panC,
+    at={(panB.east)}, anchor=west, xshift=0.6cm,
+    width=6.6cm, height=4.6cm,
+    axis lines=center,
+    xlabel={$t$},
+    xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    xmin=\xmn, xmax=\xmx,
+    ymin=\ymn, ymax=\ymx,
+    clip=true,
+    axis line style={->, thick},
+    xtick={-2, 0, 2, 4},
+    xticklabels={$-T_0$, $0$, $T_0$, $2T_0$},
+    ytick={0, 1},
+    every tick label/.style={font=\tiny},
+    title={\footnotesize (c)\; $y(t) = x(t) * \delta^{T_0}(t)$},
+]
+    % Réplica k=-1 sobre [-2, -1]
+    \fill[xcol!18] (axis cs:-2,0) -- (axis cs:-1,1) -- (axis cs:-1,0) -- cycle;
+    \addplot[xcol, very thick, domain=-2:-1, samples=2] {x + 2};
+    \draw[xcol, very thick] (axis cs:-1,1) -- (axis cs:-1,0);
+    \fill[xcol]  (axis cs:-2,0) circle (1.4pt);
+    \fill[xcol]  (axis cs:-1,1) circle (1.4pt);
+    \fill[white] (axis cs:-1,0) circle (1.4pt);
+    \draw[xcol]  (axis cs:-1,0) circle (1.4pt);
+
+    % Réplica k=0 sobre [0, 1]
+    \fill[xcol!18] (axis cs:0,0) -- (axis cs:1,1) -- (axis cs:1,0) -- cycle;
+    \addplot[xcol, very thick, domain=0:1, samples=2] {x};
+    \draw[xcol, very thick] (axis cs:1,1) -- (axis cs:1,0);
+    \fill[xcol]  (axis cs:0,0) circle (1.4pt);
+    \fill[xcol]  (axis cs:1,1) circle (1.4pt);
+    \fill[white] (axis cs:1,0) circle (1.4pt);
+    \draw[xcol]  (axis cs:1,0) circle (1.4pt);
+
+    % Réplica k=1 sobre [2, 3]
+    \fill[xcol!18] (axis cs:2,0) -- (axis cs:3,1) -- (axis cs:3,0) -- cycle;
+    \addplot[xcol, very thick, domain=2:3, samples=2] {x - 2};
+    \draw[xcol, very thick] (axis cs:3,1) -- (axis cs:3,0);
+    \fill[xcol]  (axis cs:2,0) circle (1.4pt);
+    \fill[xcol]  (axis cs:3,1) circle (1.4pt);
+    \fill[white] (axis cs:3,0) circle (1.4pt);
+    \draw[xcol]  (axis cs:3,0) circle (1.4pt);
+
+    % Réplica k=2 sobre [4, 5]
+    \fill[xcol!18] (axis cs:4,0) -- (axis cs:5,1) -- (axis cs:5,0) -- cycle;
+    \addplot[xcol, very thick, domain=4:5, samples=2] {x - 4};
+    \draw[xcol, very thick] (axis cs:5,1) -- (axis cs:5,0);
+    \fill[xcol]  (axis cs:4,0) circle (1.4pt);
+    \fill[xcol]  (axis cs:5,1) circle (1.4pt);
+    \fill[white] (axis cs:5,0) circle (1.4pt);
+    \draw[xcol]  (axis cs:5,0) circle (1.4pt);
+
+    % Tramos nulos entre réplicas
+    \addplot[xcol, very thick, domain=\xmn:-2, samples=2] {0};
+    \addplot[xcol, very thick, domain=-1:0,    samples=2] {0};
+    \addplot[xcol, very thick, domain=1:2,     samples=2] {0};
+    \addplot[xcol, very thick, domain=3:4,     samples=2] {0};
+    \addplot[xcol, very thick, domain=5:\xmx,  samples=2] {0};
+
+    % Marca del hueco T_0 - a entre dos réplicas
+    \draw[<->, gray!70, thin]
+        (axis cs:1, 0.30) --
+        node[below, font=\tiny, gray]{$T_0{-}a$}
+        (axis cs:2, 0.30);
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

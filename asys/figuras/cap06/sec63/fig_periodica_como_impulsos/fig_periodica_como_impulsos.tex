@@ -1,0 +1,121 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_periodica_como_impulsos
+% Tres paneles lado a lado sobre el tren periodico de pulsos rectangulares.
+% Parametros: tau = 1, T_0 = 4, omega_0 = pi/2.
+% (a) x(t): tren de pulsos en el tiempo.
+% (b) c_k vs k: espectro de lineas (sticks sobre indice discreto).
+% (c) X(jw) vs omega: tren de impulsos ponderados por 2*pi*c_k en omega = k*omega_0.
+% c_k = (tau/T_0) * sinc(k*omega_0*tau/2) = (1/4) * sinc(k*pi/4).
+% 2*pi*c_k = (pi/2)*sinc(k*pi/4).
+% Sizing: 3 paneles lado a lado, w 4.5cm, h 4cm.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=3pt,width=3pt]}, font=\scriptsize]
+
+% ===== Panel (a): x(t) tren de pulsos =====
+\begin{axis}[
+    name=panel_a,
+    width=4.5cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-7, xmax=7, ymin=-0.35, ymax=1.55,
+    xtick={-4,0,4},
+    xticklabels={$-T_0$,$0$,$T_0$},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.20)}},
+    ylabel={$x(t)$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\scriptsize, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Tren de pulsos: ancho tau=1 centrado en multiplos de T_0=4
+    \addplot[utnblue, thick] coordinates {
+        (-7,0) (-4.5,0) (-4.5,1) (-3.5,1) (-3.5,0)
+        (-0.5,0) (-0.5,1) (0.5,1) (0.5,0)
+        (3.5,0) (3.5,1) (4.5,1) (4.5,0) (7,0)
+    };
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.1, 1.0) {$1$};
+    \node[font=\scriptsize] at (axis cs:-6.3, 0.5) {$\cdots$};
+    \node[font=\scriptsize] at (axis cs:6.3, 0.5)  {$\cdots$};
+\end{axis}
+
+% ===== Panel (b): c_k vs k (indice discreto) =====
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.east)+(1.2cm,0)$)}, anchor=west,
+    width=4.5cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-6.5, xmax=6.5, ymin=-0.10, ymax=0.38,
+    xtick={-4,0,4},
+    ytick={0, 0.25},
+    yticklabels={$0$, $\tfrac{1}{4}$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$k$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.25)}},
+    ylabel={$c_k$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\scriptsize, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot+[ycomb, mark=*, mark size=0.5pt, utnblue, thick,
+              mark options={fill=utnblue, draw=utnblue}]
+        coordinates {
+            (-6,0.0530) (-5,-0.0450) (-4,0) (-3,0.0750) (-2,0.1592)
+            (-1,0.2251) (0,0.2500) (1,0.2251) (2,0.1592) (3,0.0750)
+            (4,0) (5,-0.0450) (6,0.0530)
+        };
+\end{axis}
+
+% ===== Panel (c): X(jw) impulsos en w = k*omega_0 =====
+\begin{axis}[
+    name=panel_c,
+    at={($(panel_b.east)+(1.2cm,0)$)}, anchor=west,
+    width=4.5cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-10.5, xmax=10.5, ymin=-0.55, ymax=2.25,
+    xtick={-6.2832, 0, 6.2832},
+    xticklabels={$-4\omega_0$,$0$,$4\omega_0$},
+    ytick={0, 1.5708},
+    yticklabels={$0$, $\tfrac{\pi}{2}$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.25)}},
+    ylabel={$X(j\omega)$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(c)},
+    title style={font=\scriptsize, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Impulsos como flechas verticales en omega = k*omega_0 = k*pi/2.
+    % Altura = 2*pi*c_k.
+    \draw[utnblue, thick, ->] (axis cs:0,0)         -- (axis cs:0,1.5708);
+    \draw[utnblue, thick, ->] (axis cs:1.5708,0)    -- (axis cs:1.5708,1.4142);
+    \draw[utnblue, thick, ->] (axis cs:-1.5708,0)   -- (axis cs:-1.5708,1.4142);
+    \draw[utnblue, thick, ->] (axis cs:3.1416,0)    -- (axis cs:3.1416,1.0);
+    \draw[utnblue, thick, ->] (axis cs:-3.1416,0)   -- (axis cs:-3.1416,1.0);
+    \draw[utnblue, thick, ->] (axis cs:4.7124,0)    -- (axis cs:4.7124,0.4714);
+    \draw[utnblue, thick, ->] (axis cs:-4.7124,0)   -- (axis cs:-4.7124,0.4714);
+    % k=4 es cero, no se dibuja.
+    \draw[utnblue, thick, ->] (axis cs:7.8540,0)    -- (axis cs:7.8540,-0.2828);
+    \draw[utnblue, thick, ->] (axis cs:-7.8540,0)   -- (axis cs:-7.8540,-0.2828);
+    \draw[utnblue, thick, ->] (axis cs:9.4248,0)    -- (axis cs:9.4248,0.3331);
+    \draw[utnblue, thick, ->] (axis cs:-9.4248,0)   -- (axis cs:-9.4248,0.3331);
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

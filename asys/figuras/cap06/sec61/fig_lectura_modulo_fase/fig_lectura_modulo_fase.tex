@@ -1,0 +1,96 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_lectura_modulo_fase
+% Tres paneles lado a lado sobre la exponencial unilateral x(t) = e^{-at} u(t)
+% con a = 1.
+% (a) x(t) en el tiempo.
+% (b) |X(jw)| = 1 / sqrt(a^2 + w^2), par.
+% (c) arg X(jw) = -arctan(w/a), impar.
+% Sizing: 3 paneles lado a lado, w 4.5cm, h 4cm.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\scriptsize]
+
+% Panel (a): x(t) = e^{-t} u(t)
+\begin{axis}[
+    name=panel_a,
+    width=4.5cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-1.5, xmax=5, ymin=-0.30, ymax=1.40,
+    xtick={0, 2, 4},
+    ytick={0, 1},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.20)}},
+    ylabel={$x(t)$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\scriptsize, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, thick, domain=-1.5:0, samples=2] {0};
+    \addplot[utnblue, thick, domain=0:5, samples=200, smooth]
+        {exp(-x)};
+    \addplot[utnblue, dashed, thin] coordinates {(0,0) (0,1)};
+    \fill[utnblue] (axis cs:0,1) circle (1.0pt);
+\end{axis}
+
+% Panel (b): |X(jw)| = 1/sqrt(1+w^2)
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.east)+(1.2cm,0)$)}, anchor=west,
+    width=4.5cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5.5, xmax=5.5, ymin=-0.30, ymax=1.40,
+    xtick={0},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.20)}},
+    ylabel={$|X(j\omega)|$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\scriptsize, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, thick, domain=-5.5:5.5, samples=300, smooth]
+        {1/sqrt(1 + x*x)};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.25, 1.02) {$1$};
+\end{axis}
+
+% Panel (c): arg X(jw) = -arctan(w)
+\begin{axis}[
+    name=panel_c,
+    at={($(panel_b.east)+(1.2cm,0)$)}, anchor=west,
+    width=4.5cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5.5, xmax=5.5, ymin=-2.25, ymax=2.25,
+    xtick={0},
+    ytick={-1.5708, 0, 1.5708},
+    yticklabels={$-\pi/2$, $0$, $\pi/2$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.50)}},
+    ylabel={$\angle X(j\omega)$},
+    ylabel style={font=\scriptsize, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(c)},
+    title style={font=\scriptsize, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, thick, domain=-5.5:5.5, samples=300, smooth]
+        {-rad(atan(x))};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

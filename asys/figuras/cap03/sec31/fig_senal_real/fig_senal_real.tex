@@ -1,0 +1,67 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ---------------------------------------------------------------
+% Panel (a): Señal real  x(t) = e^{-t^2/2} cos(3πt)
+% ---------------------------------------------------------------
+\begin{axis}[
+    name=panelA,
+    width=7cm, height=5.5cm,
+    axis lines=center,
+    xlabel={$t$},
+    ylabel={$x(t)$},
+    xlabel style={right},
+    ylabel style={above},
+    xmin=-0.3, xmax=4.3,
+    ymin=-1.2, ymax=1.4,
+    xtick={1,2,3,4},
+    ytick={-1,1},
+    ticklabel style={font=\footnotesize},
+    clip=true,
+]
+    % Señal real: coseno amortiguado, dominio extendido al tramo negativo visible
+    \addplot[utnblue, thick, domain=-0.3:4.3, samples=120]
+        {exp(-0.5*x)*cos(deg(2*pi*x))};
+    % Etiqueta de la función
+    \node[utnblue, anchor=west, font=\footnotesize]
+        at (axis cs:0.2, 1.25) {$x(t)=e^{-t/2}\cos(2\pi t)$};
+\end{axis}
+
+% ---------------------------------------------------------------
+% Panel (b): Señal compleja  x(t) = e^{(-0.3 + j2π)t},  t ≥ 0
+%            Representada como espiral en (t, Re, Im)
+% ---------------------------------------------------------------
+\begin{axis}[
+    name=panelB,
+    at={($(panelA.east)+(1.2cm,0)$)},
+    anchor=west,
+    width=5.5cm, height=5.5cm,
+    scale only axis,
+    view={55}{30},
+    axis lines=center,
+    axis line style={->},
+    xlabel={$t$},
+    ylabel={Re},
+    zlabel={Im},
+    xlabel style={anchor=north east, inner sep=1pt},
+    ylabel style={anchor=north west, inner sep=1pt},
+    zlabel style={anchor=south, inner sep=1pt},
+    xmin=-0.2, xmax=4.2,
+    ymin=-1.2, ymax=1.2,
+    zmin=-1.2, zmax=1.4,
+    ticks=none,
+    clip=false,
+]
+    \addplot3[domain=0:4, samples=200, samples y=0, thick, utnblue]
+        ({x}, {exp(-0.3*x)*cos(deg(2*pi*x))}, {exp(-0.3*x)*sin(deg(2*pi*x))});
+\end{axis}
+% Etiquetas (a) y (b) alineadas al mismo nivel vertical
+\node[anchor=north, yshift=-2mm] at (panelA.south |- panelB.south) {\textbf{(a)}};
+\node[anchor=north, yshift=-2mm] at (panelB.south)                 {\textbf{(b)}};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,81 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    block/.style={
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum width=1.9cm, minimum height=1cm, rounded corners=2pt,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    equiv/.style={
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!15,
+        minimum width=2.9cm, minimum height=1cm, rounded corners=2pt,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    sum/.style={
+        draw=utnblue!60, line width=0.5pt, circle, minimum size=0.85cm,
+        inner sep=0pt, fill=white,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.3pt, shadow yshift=-0.4pt, shadow opacity=20}
+    },
+    cross_line/.style={utnblue!40, line width=0.4pt},
+    signal/.style={->, thick, utnblue},
+    wire/.style={-, thick, utnblue},
+    lab/.style={font=\footnotesize, above},
+]
+
+% ====================== CASCADA (arriba) ======================
+\begin{scope}[shift={(0,1.7)}]
+    \coordinate (in1) at (0,0);
+    \node[block] (H1) at (1.9,0) {$h_1[n]$};
+    \node[block] (H2) at (4.6,0) {$h_2[n]$};
+    \coordinate (out1) at (6.3,0);
+    \draw[signal] (in1) -- (H1.west) node[lab, midway] {$x[n]$};
+    \draw[signal] (H1.east) -- (H2.west) node[lab, midway] {$w[n]$};
+    \draw[signal] (H2.east) -- (out1) node[lab, midway] {$y[n]$};
+    \node[font=\large] at (7.4,0) {$\equiv$};
+    \coordinate (in1b) at (8.5,0);
+    \node[equiv] (Heq1) at (10.7,0) {$h_1[n]*h_2[n]$};
+    \coordinate (out1b) at (12.9,0);
+    \draw[signal] (in1b) -- (Heq1.west) node[lab, midway] {$x[n]$};
+    \draw[signal] (Heq1.east) -- (out1b) node[lab, midway] {$y[n]$};
+    \node[font=\footnotesize, gray] at (3.25,1.15) {Cascada};
+\end{scope}
+
+% ====================== PARALELO (abajo) ======================
+\begin{scope}[shift={(0,-2.0)}]
+    \coordinate (in2) at (0,0);
+    \coordinate (split) at (1.2,0);
+    \node[block] (P1) at (3.3,0.95) {$h_1[n]$};
+    \node[block] (P2) at (3.3,-0.95) {$h_2[n]$};
+    \node[sum] (S) at (5.4,0) {};
+    \draw[cross_line] (5.4-0.30,-0.30) -- (5.4+0.30,0.30);
+    \draw[cross_line] (5.4-0.30,0.30) -- (5.4+0.30,-0.30);
+    \node[font=\scriptsize] at (5.13,0.0) {$+$};
+    \node[font=\scriptsize] at (5.4,0.27) {$+$};
+    \coordinate (out2) at (7.1,0);
+
+    \draw[signal] (in2) -- (split) node[lab, midway] {$x[n]$};
+    \fill[utnblue] (split) circle (2.2pt);
+    \draw[signal] (split) |- (P1.west);
+    \draw[signal] (split) |- (P2.west);
+    \draw[signal] (P1.east) -| (S.north);
+    \draw[signal] (P2.east) -| (S.south);
+    \draw[signal] (S.east) -- (out2) node[lab, midway] {$y[n]$};
+
+    \node[font=\large] at (7.4,0) {$\equiv$};
+    \coordinate (in2b) at (8.5,0);
+    \node[equiv] (Heq2) at (10.7,0) {$h_1[n]+h_2[n]$};
+    \coordinate (out2b) at (12.9,0);
+    \draw[signal] (in2b) -- (Heq2.west) node[lab, midway] {$x[n]$};
+    \draw[signal] (Heq2.east) -- (out2b) node[lab, midway] {$y[n]$};
+    \node[font=\footnotesize, gray] at (3.3,1.95) {Paralelo};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

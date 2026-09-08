@@ -1,0 +1,98 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+% Par de vectores giratorios conjugados c e^{j w_0 t} y conj(c) e^{-j w_0 t}
+% cuya suma cae sobre el eje real. Imagen geometrica de la simetria
+% conjugada (sec 5.3.6): la figura ilustra la cancelacion entre un
+% vector rotando a +w_0 y otro a -w_0; el principio es identico para
+% cualquier par (c_k, c_{-k}) de la serie con c_{-k} = conj(c_k).
+%
+% Ambos paneles dibujados con TikZ puro para que la escala vertical
+% sea identica (1.3 cm/unidad). Panel (a) usa scale=1.3 uniforme;
+% panel (b) usa x=5cm/unidad de tiempo, y=1.3cm/unidad de amplitud.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% =====================================================
+% Panel (a): plano complejo rotado 90 grados CCW
+% Re vertical (hacia arriba), Im horizontal (positivo a la izquierda)
+% =====================================================
+\begin{scope}[scale=1.3]
+    \draw[dashed, gray!50, thin] (0,0) circle (1);
+
+    \draw[->, thick, black] (0, -2.2) -- (0, 2.2) node[right, font=\small] {Re};
+    \draw[->, thick, black] (1.3, 0) -- (-1.3, 0) node[left, font=\small] {Im};
+
+    \draw[thick, black] (-0.07, 2)  -- (0.07, 2);
+    \draw[thick, black] (-0.07, -2) -- (0.07, -2);
+    \node[anchor=east, font=\tiny] at (-0.10, 2)  {$2|c|$};
+    \node[anchor=east, font=\tiny] at (-0.10, -2) {$-2|c|$};
+
+    % Diagonales del paralelogramo (rombo) hacia la punta del sum
+    \draw[dashed, gray!60, thin] ({-sin(45)}, {cos(45)}) -- (0, {2*cos(45)});
+    \draw[dashed, gray!60, thin] ({ sin(45)}, {cos(45)}) -- (0, {2*cos(45)});
+
+    % Vector suma sobre el eje Re
+    \draw[->, thick, black] (0, 0) -- (0, {2*cos(45)});
+    \fill[black] (0, {2*cos(45)}) circle (1pt);
+
+    % Vector giratorio c e^{j w_0 t}: angulo 45 + 90 = 135 (rotado 90 CCW)
+    \draw[->, thick, utnblue] (0, 0) -- ({-sin(45)}, {cos(45)});
+    \fill[utnblue] ({-sin(45)}, {cos(45)}) circle (1pt);
+
+    % Vector giratorio conj(c) e^{-j w_0 t}: angulo -45 + 90 = 45
+    \draw[->, thick, red!80!black] (0, 0) -- ({sin(45)}, {cos(45)});
+    \fill[red!80!black] ({sin(45)}, {cos(45)}) circle (1pt);
+
+    % Flechas de sentido de rotacion
+    \draw[->, thin, gray!85] ({1.13*cos(145)}, {1.13*sin(145)}) arc (145:168:1.13);
+    \draw[->, thin, gray!85] ({1.13*cos(35)}, {1.13*sin(35)}) arc (35:12:1.13);
+
+    \node[anchor=south east, font=\footnotesize, utnblue]
+        at ({-sin(45)-0.04}, {cos(45)+0.08}) {$c\,e^{j\omega_0 t}$};
+    \node[anchor=south west, font=\footnotesize, red!80!black]
+        at ({sin(45)+0.04}, {cos(45)+0.08}) {$\bar{c}\,e^{-j\omega_0 t}$};
+\end{scope}
+
+% =====================================================
+% Panel (b): coseno en el tiempo
+% Mismo TikZ; x=5cm/unidad de t, y=1.3cm/unidad (igual que panel a)
+% =====================================================
+\begin{scope}[shift={(3.7cm, 0)}, x=5cm, y=1.3cm]
+    \draw[->, thick, black] (0, -2.2) -- (0, 2.2);
+    \draw[->, thick, black] (-0.04, 0) -- (1.15, 0) node[right, font=\small] {$t$};
+
+    \draw[thick, black] ([xshift=-0.08cm]0, 2)  -- ([xshift=0.08cm]0, 2);
+    \draw[thick, black] ([xshift=-0.08cm]0, -2) -- ([xshift=0.08cm]0, -2);
+    \node[anchor=east, font=\tiny] at ([xshift=-0.115cm]0, 2)  {$2|c|$};
+    \node[anchor=east, font=\tiny] at ([xshift=-0.115cm]0, -2) {$-2|c|$};
+
+    \draw[thick, black] ([yshift=0.08cm]0.125, 0) -- ([yshift=-0.08cm]0.125, 0);
+    \draw[thick, black] ([yshift=0.08cm]0.5, 0)   -- ([yshift=-0.08cm]0.5, 0);
+    \draw[thick, black] ([yshift=0.08cm]1, 0)     -- ([yshift=-0.08cm]1, 0);
+    \node[anchor=north, font=\tiny] at ([yshift=-0.10cm]0.125, 0) {$\tfrac{T_0}{8}$};
+    \node[anchor=north, font=\tiny] at ([yshift=-0.10cm]0.5, 0)   {$\tfrac{T_0}{2}$};
+    \node[anchor=north, font=\tiny] at ([yshift=-0.10cm]1, 0)     {$T_0$};
+
+    % Coseno 2 cos(w_0 t); con t escalado a periodo 1 -> 2 cos(2 pi t)
+    \draw[thick, black, smooth, samples=200, domain=0:1.05]
+        plot (\x, {2*cos(deg(2*pi*\x))});
+
+    % Vertical de la instantanea en t = T_0/8
+    \draw[dashed, gray!70, thin] (0.125, 0) -- (0.125, 1.4142);
+    \fill[black] (0.125, 1.4142) circle (1pt);
+\end{scope}
+
+% Linea punteada conectando la punta del vector suma (panel a) con
+% el valor del coseno en t=T_0/8 (panel b). Ambos a TikZ y =
+% 2cos(45) * 1.3 = 1.838 cm.
+\draw[dotted, thick, gray!85]
+    (0, {2*cos(45)*1.3}) -- ({3.7 + 0.125*5}, {2*cos(45)*1.3});
+
+% Marcadores de panel (misma altura)
+\node[anchor=south, font=\small] at (0, {2.2*1.3 + 0.3}) {(a)};
+\node[anchor=south, font=\small] at ({3.7 + 0.555*5}, {2.2*1.3 + 0.3}) {(b)};
+
+\end{tikzpicture}
+\end{document}

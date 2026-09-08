@@ -1,0 +1,87 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\usepgfplotslibrary{groupplots}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    every axis/.append style={
+        axis lines=middle,
+        axis line style={->, thin, black},
+        xlabel style={font=\footnotesize, at={(axis description cs:1,0)}, anchor=west, xshift=2pt},
+        ylabel style={font=\footnotesize, rotate=0, anchor=south east, at={(axis description cs:0,1)}},
+        title style={font=\footnotesize, yshift=-2pt},
+        tick label style={font=\footnotesize},
+        xticklabel style={anchor=north, yshift=-1pt},
+        width=8cm,
+        height=3.5cm,
+        xmin=-9, xmax=9,
+        ymin=0, ymax=0.7,
+        ytick=\empty,
+        xlabel={$\omega$},
+        clip=false,
+    }
+}
+
+\begin{groupplot}[
+    group style={
+        group size=1 by 4,
+        vertical sep=0.9cm,
+    },
+]
+
+% Panel (a): espectro recibido con tres emisoras
+\nextgroupplot[
+    title={(a)},
+    ylabel={$|R(j\omega)|$},
+    xtick={-6,-4,-2,2,4,6},
+    xticklabels={$-\omega_{c2}$,$-\omega_c$,$-\omega_{c1}$,$\omega_{c1}$,$\omega_c$,$\omega_{c2}$},
+]
+\foreach \xc in {-6,-4,-2,2,4,6} {
+    \addplot[utnblue, very thick]
+        coordinates {(\xc-0.6, 0) (\xc, 0.5) (\xc+0.6, 0)};
+}
+
+% Panel (b): tras filtro pasabanda en omega_c
+\nextgroupplot[
+    title={(b)},
+    ylabel={$|V(j\omega)|$},
+    xtick={-4,4},
+    xticklabels={$-\omega_c$,$\omega_c$},
+]
+\foreach \xc in {-4,4} {
+    \addplot[utnblue, very thick]
+        coordinates {(\xc-0.6, 0) (\xc, 0.5) (\xc+0.6, 0)};
+}
+
+% Panel (c): tras segunda multiplicación por coseno
+\nextgroupplot[
+    title={(c)},
+    ylabel={$|W(j\omega)|$},
+    xtick={-8,0,8},
+    xticklabels={$-2\omega_c$,$0$,$2\omega_c$},
+]
+\addplot[utnblue, very thick]
+    coordinates {(-0.6, 0) (0, 0.5) (0.6, 0)};
+\foreach \xc in {-8,8} {
+    \addplot[utnblue, very thick]
+        coordinates {(\xc-0.6, 0) (\xc, 0.25) (\xc+0.6, 0)};
+}
+
+% Panel (d): tras filtro pasabajos
+\nextgroupplot[
+    title={(d)},
+    ylabel={$|Y(j\omega)|$},
+    xtick={0},
+    xticklabels={$0$},
+]
+\addplot[utnblue, very thick]
+    coordinates {(-0.6, 0) (0, 0.5) (0.6, 0)};
+
+\end{groupplot}
+
+\end{tikzpicture}
+\end{document}

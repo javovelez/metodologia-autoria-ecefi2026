@@ -1,0 +1,138 @@
+\documentclass[class=article, crop=false, oneside]{standalone}
+\input{../../setup.tex}
+
+% ------------------------------------------------------------------
+% Trabajo Práctico Nº 4 — Filtros: Teoría Imagen
+% PARTE I: Enunciado + respuestas de la guía.
+% (La resolución completa está en TC-TP4-24-resolucion.tex.)
+% Cátedra Teoría de Circuitos 2 — UTN-FRM — C. J. Larriqueta.
+% ------------------------------------------------------------------
+
+\begin{document}
+
+% ===================== PORTADA / TÍTULO =====================
+\begin{center}
+    {\Large\bfseries Universidad Tecnológica Nacional --- F.R. Mendoza}\\[2pt]
+    {\large Teoría de Circuitos 2}\\[10pt]
+    {\huge\bfseries\color{utnblue} Trabajo Práctico Nº 4}\\[4pt]
+    {\LARGE\bfseries Filtros: Teoría Imagen}\\[10pt]
+    {\large Enunciado y respuestas}\\[2pt]
+\end{center}
+
+\vspace{0.5ex}
+\hrule
+\vspace{1ex}
+
+% ============================================================
+% ============== ENUNCIADO ====================================
+% ============================================================
+\section*{\color{utnblue}Enunciado}
+
+\begin{enumerate}
+    \item Esquematizar el diseño de un filtro completo según la Teoría Imagen.
+
+    \item Calcular el prototipo de un filtro pasabajo de configuración ``T'' con
+    los siguientes parámetros:
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \omega_c &= 20.000 \ \tfrac{\text{rad}}{\text{s}}\\
+            R_L &= 500 \ \Omega
+        \end{aligned}
+        \right.
+    \end{equation*}
+
+    \item Calcular el ejercicio anterior partiendo del circuito normalizado.
+
+    \item Tomando el prototipo del ejercicio Nº 2, diseñar la sección
+    $m$-derivada para una frecuencia de atenuación infinita
+    $\omega_\infty = 22.500 \ \tfrac{\text{rad}}{\text{s}}$.
+
+    \item Calcular la hemi-sección de adaptación correspondiente al ejercicio
+    anterior.
+
+    \item A partir del filtro pasabajos obtener, mediante la transformación en
+    frecuencia:
+    \begin{enumerate}
+        \item[a)] un pasaaltos, especificando la transformación de elementos, la
+        frecuencia de corte, el ancho de banda y la impedancia característica;
+        \item[b)] un pasabanda.
+    \end{enumerate}
+
+    \item El circuito de la figura representa el prototipo de un filtro pasa
+    altos imagen, donde $C = 10^{-7}\ \text{F}$:
+    \begin{figure}[H]
+        \centering
+        \input{figures/fig_ej07_enunciado}
+    \end{figure}
+    Calcular:
+    \begin{enumerate}
+        \item[a)] el valor del elemento ``$L$'' sabiendo que la impedancia
+        característica $z_{0T}(\infty) = 100\ \Omega$ cuando $\omega\to\infty$;
+        \item[b)] la frecuencia de corte $\omega_c$.
+    \end{enumerate}
+
+    \item Dado el circuito $m$-derivada normalizado de un filtro pasaalto
+    (designados como $C_1'$, $L'$, $C_2'$), calcular la hemisección. Determinar
+    los valores normalizados.
+    \begin{figure}[H]
+        \centering
+        \input{figures/fig_ej08_enunciado}
+    \end{figure}
+    \begin{equation*}
+        C_1' = \frac{2}{m L_1}\ ;\qquad
+        C_2' = \frac{4m}{L_1(1-m^2)}\ ;\qquad
+        L' = \frac{1}{m C_2}
+    \end{equation*}
+    Tener en cuenta que los valores del pasabajos normalizado son:
+    $L_1 = 2$; $C_2 = 2$ y $\omega_\infty = \sqrt{1-m^2}$.
+
+    \item Calcular un filtro completo pasabanda con $R_L = 600\ \Omega$;
+    $\omega_1 = 45.000\ \tfrac{\text{rad}}{\text{s}}$;
+    $\omega_2 = 90.000\ \tfrac{\text{rad}}{\text{s}}$;
+    $\omega_{\infty 1} = 38.000\ \tfrac{\text{rad}}{\text{s}}$.
+
+    \item Calcular un filtro completo suprimebanda con $R_L = 75\ \Omega$;
+    $f_1 = 1.000\ \text{Hz}$; $f_2 = 3.500\ \text{Hz}$; $f_{\infty 2} = 3.100\ \text{Hz}$.
+\end{enumerate}
+
+% -------------------- RESPUESTAS OFICIALES --------------------
+\subsection*{Respuestas (guía)}
+
+\begin{description}
+    \item[1)] Esquema de filtro completo (ver resolución).
+    \item[2)] $L_1 = 50\ \text{mH}$; $C_2 = 200\ \text{nF}$. Los valores finales
+    de la rama serie se obtienen dividiendo $L_1$ por dos.
+    \item[4)] $L_1 = 23\ \text{mH}$; $L_2 = 21{,}6\ \text{mH}$;
+    $C_2 = 91{,}6\ \text{nF}$. Ídem anterior.
+    \item[5)] $L_1 = 30\ \text{mH}$; $L_2 = 26{,}7\ \text{mH}$;
+    $C_2 = 60\ \text{nF}$. Ídem anterior.
+    \item[6a)] Transformación $s\to\dfrac{1}{s'}$; elementos
+    $C_1 = \dfrac{2}{L_1}$, $L_2 = \dfrac{1}{C_2}$; frecuencia de corte
+    $\omega_c = \dfrac{1}{2\sqrt{L_2 C_1}}$; impedancia característica en
+    $\omega\to\infty$: $z_{0T(\infty)} = \sqrt{\dfrac{L_2}{C_1}}$; ancho de
+    banda $AB:(\omega_c\ ;\ \infty)$.
+    \item[7)] a) $L = 500\ \mu\text{H}$; \qquad b) $\omega_c = 100.000\ \tfrac{\text{rad}}{\text{s}}$.
+    \item[8)] Hemisección de entrada del pasaaltos:
+    $C_s = C_1' = \dfrac{2}{m L_1} = 1{,}67\ \text{F}$;
+    $L_d = 2L' = \dfrac{2}{m C_2} = 1{,}67\ \text{H}$;
+    $C_d = \dfrac{C_2'}{2} = \dfrac{2m}{(1-m^2)L_1} = 0{,}94\ \text{F}$.
+    \item[9)] Prototipo: $L_1 = 13\ \text{mH}$; $C_1 = 18{,}5\ \text{nF}$;
+    $L_2 = 3{,}3\ \text{mH}$; $C_2 = 74\ \text{nF}$.\\
+    $m$-Derivada: $L_1 = 10\ \text{mH}$; $C_1 = 24{,}5\ \text{nF}$;
+    $L_2 = 4{,}4\ \text{mH}$; $C_2 = 56\ \text{nF}$; $L_3 = 3{,}8\ \text{mH}$;
+    $C_3 = 65\ \text{nF}$.\\
+    Hemisección de adaptación: $L_1 = 8\ \text{mH}$; $C_1 = 31\ \text{nF}$;
+    $L_2 = 11{,}1\ \text{mH}$; $C_2 = 22{,}2\ \text{nF}$; $L_3 = 14{,}2\ \text{mH}$;
+    $C_3 = 17{,}4\ \text{nF}$.
+    \item[10)] Prototipo: $L_1 = 8{,}5\ \text{mH}$; $C_1 = 849\ \text{nF}$;
+    $L_2 = 2{,}4\ \text{mH}$; $C_2 = 3.030\ \text{nF}$.\\
+    Sección $m$-Derivada: $L_1 = 5{,}3\ \text{mH}$; $C_1 = 1.380\ \text{nF}$;
+    $L_2 = 3{,}9\ \text{mH}$; $C_2 = 1.860\ \text{nF}$; $L_3 = 4{,}3\ \text{mH}$;
+    $C_3 = 1.680\ \text{nF}$.\\
+    Hemisección de adaptación: $L_1 = 5{,}1\ \text{mH}$; $C_1 = 1.415\ \text{nF}$;
+    $L_2 = 9{,}1\ \text{mH}$; $C_2 = 796\ \text{nF}$; $L_3 = 8{,}0\ \text{mH}$;
+    $C_3 = 910\ \text{nF}$.
+\end{description}
+
+\end{document}

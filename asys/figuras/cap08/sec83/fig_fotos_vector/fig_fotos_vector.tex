@@ -1,0 +1,88 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+
+        \tikzset{etq/.style={font=\scriptsize, gray!55!black, fill=white, inner sep=0.8pt}}
+
+        % ===== Fila 1 (centrada): la hélice discreta en 3D (estilo Cap. 2) =====
+        % Vector giratorio muestreado: (n, cos(lambda n), sin(lambda n)), lambda = pi/4 = 45.
+        % La envolvente continua va en gris; cada muestra es un punto azul. Sin vectores.
+        \begin{axis}[
+            at={(4.1cm,6cm)},
+            anchor=center,
+            name=plot3d,
+            width=6cm, height=6cm,
+            scale only axis,
+            view={55}{28},
+            axis lines=center,
+            xlabel={$n$},
+            ylabel={$\operatorname{Re}$},
+            zlabel={$\operatorname{Im}$},
+            xlabel style={anchor=north east, inner sep=1pt},
+            ylabel style={anchor=north west, inner sep=1pt},
+            zlabel style={anchor=south, inner sep=1pt},
+            xmin=-0.5, xmax=16.6,
+            ymin=-1.25, ymax=1.25,
+            zmin=-1.25, zmax=1.25,
+            ticks=none,
+            axis line style={->},
+            clip=false
+        ]
+            % Envolvente: la hélice continua del vector giratorio, en gris
+            % Eje de muestras comprimido (mismo largo, n = 0..16): se ven el doble de fotos
+            \addplot3[domain=0:16, samples=360, samples y=0, thin, gray!60]
+                ({x}, {cos(45*x)}, {sin(45*x)});
+            % Muestras: un punto azul por foto, n = 0..16
+            \addplot3[domain=0:16, samples=17, samples y=0, only marks,
+                      mark=*, mark size=1.4pt, utnblue]
+                ({x}, {cos(45*x)}, {sin(45*x)});
+        \end{axis}
+        \node[font=\footnotesize] at (4.1,2.7) {(a)};
+
+        % ===== Fila 2, izquierda: vista desde el eje n, el plano complejo =====
+        \begin{scope}[shift={(0,0)}]
+            \def\R{1.8}
+            \draw[->, thin, black] (-\R-0.5,0) -- (\R+0.7,0) node[right] {$\operatorname{Re}$};
+            \draw[->, thin, black] (0,-\R-0.5) -- (0,\R+0.7) node[above left] {$\operatorname{Im}$};
+            \draw[gray!55, thin] (0,0) circle (\R);
+            % fotos n = 0..8 (una vuelta completa: 8 pasos de 45): el vector y su punta
+            \foreach \ang in {0,45,90,135,180,225,270,315} {
+                \draw[utnblue, thick, -{Latex[length=4pt]}] (0,0) -- (\ang:\R);
+                \fill[utnblue] (\ang:\R) circle (1.7pt);
+            }
+            % arco que marca el paso angular lambda entre la foto 0 y la 1
+            \draw[red!80!black, semithick] (0.62,0) arc (0:45:0.62);
+            \node[red!80!black, font=\small] at (24:0.95) {$\lambda$};
+            % numeración de las fotos
+            \foreach \k/\ang in {1/45, 2/90, 3/135, 5/225, 6/270, 7/315} {
+                \node[etq] at (\ang:\R+0.34) {$\k$};
+            }
+            \node[etq] at (180:\R+0.30) [yshift=8pt] {$4$};
+            \node[etq] at (0:\R+0.30) [yshift=7pt]  {$0$};
+            \node[etq] at (0:\R+0.30) [yshift=-7pt] {$8$};
+        \end{scope}
+        \node[font=\footnotesize] at (0,-2.75) {(b)};
+
+        % ===== Fila 2, derecha: la parte real, coseno discreto =====
+        \begin{scope}[shift={(6.0,0)}]
+            \def\dx{0.55}
+            \def\A{1.5}
+            \draw[->, thin, black] (-0.4,0) -- (8*\dx+0.7,0) node[right] {$n$};
+            \draw[->, thin, black] (0,-\A-0.5) -- (0,\A+0.7)
+                node[above, font=\footnotesize] {$\cos(\lambda n)$};
+            \foreach \n/\v in {0/1, 1/0.7071, 2/0, 3/-0.7071, 4/-1,
+                               5/-0.7071, 6/0, 7/0.7071, 8/1} {
+                \draw[utnblue, thick] (\n*\dx,0) -- (\n*\dx, \v*\A);
+                \fill[utnblue] (\n*\dx, \v*\A) circle (1.7pt);
+            }
+            \foreach \n in {0,1,2,3,4,5,6,7,8} {
+                \node[etq, below=1pt] at (\n*\dx,0) {$\n$};
+            }
+        \end{scope}
+        \node[font=\footnotesize] at (6.0+2.2,-2.75) {(c)};
+
+    \end{tikzpicture}
+\end{document}

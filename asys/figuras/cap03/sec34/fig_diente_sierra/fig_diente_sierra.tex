@@ -1,0 +1,36 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\begin{axis}[
+    width=13cm, height=4.5cm,
+    xmin=-0.3, xmax=6.5,
+    ymin=-0.3, ymax=1.6,
+    axis lines=center,
+    xtick={0,2,4,6},
+    xticklabels={$0$,$T_0$,$2T_0$,$3T_0$},
+    ytick={0,1},
+    yticklabels={$0$,$A$},
+    xlabel={$t$}, xlabel style={anchor=north},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    ylabel={$x(t)$},
+    clip=false,
+]
+% Sawtooth: T0=2, A=1 — 3 full periods [0,6]
+% Each period: linear ramp from 0 to A, then jump back
+\addplot[utnblue, very thick] coordinates {(0,0)(2,1)};
+\addplot[utnblue, very thick, dashed] coordinates {(2,1)(2,0)};  % discontinuity
+\addplot[utnblue, very thick] coordinates {(2,0)(4,1)};
+\addplot[utnblue, very thick, dashed] coordinates {(4,1)(4,0)};
+\addplot[utnblue, very thick] coordinates {(4,0)(6,1)};
+\addplot[utnblue, very thick, dashed] coordinates {(6,1)(6,0)};
+
+% Period annotation
+\draw[<->, gray, thick] (axis cs:2,1.35) -- node[above, font=\scriptsize]{$T_0$} (axis cs:4,1.35);
+\end{axis}
+\end{tikzpicture}
+\end{document}

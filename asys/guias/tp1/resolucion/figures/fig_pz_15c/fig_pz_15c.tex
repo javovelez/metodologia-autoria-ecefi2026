@@ -1,0 +1,28 @@
+\documentclass[border=4mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.0, font=\scriptsize]
+    \useasboundingbox (-5.2,-1.5) rectangle (0.8,1.5);
+
+    % Grid
+    \begin{scope}
+        \clip (-5.2,-1.5) rectangle (0.8,1.5);
+        \draw[help lines, gray!25, step=1] (-6,-2) grid (1,2);
+    \end{scope}
+
+    % Ejes
+    \draw[->, thick] (-5.2,0) -- (0.8,0) node[right] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-1.5) -- (0,1.5) node[above] {$\operatorname{Im}$};
+    \draw (-4,0.07)--(-4,-0.07) node[below] {$-4$};
+    \draw (-3,0.07)--(-3,-0.07) node[below] {$-3$};
+    \draw (-2,0.07)--(-2,-0.07) node[below] {$-2$};
+    \draw (-1,0.07)--(-1,-0.07) node[below] {$-1$};
+    \node[red!70!black, font=\normalsize] at (-3,0) {$\times$};
+    \node[below right, red!70!black] at (-3,0) {$-3$};
+    \node[red!70!black, font=\normalsize] at (-4,0) {$\times$};
+    \node[below left, red!70!black] at (-4,0) {$-4$};
+    \draw[utnblue!70!black, thick] (-4.5,0) circle (3pt);
+    \node[below left, utnblue!70!black] at (-4.5,0) {$-\tfrac{9}{2}$};
+\end{tikzpicture}
+\end{document}

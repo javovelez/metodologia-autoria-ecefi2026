@@ -1,0 +1,92 @@
+\documentclass[border=6mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur, shapes.geometric}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    gain_r/.style={
+        regular polygon, regular polygon sides=3, shape border rotate=30,
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum size=1.4cm, inner sep=0pt, font=\footnotesize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    gain_l/.style={
+        regular polygon, regular polygon sides=3, shape border rotate=210,
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum size=1.4cm, inner sep=0pt, font=\footnotesize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    delay/.style={
+        draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+        minimum width=1.5cm, minimum height=0.9cm, font=\scriptsize,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    sum/.style={
+        draw=utnblue!60, line width=0.5pt, circle, minimum size=0.85cm,
+        inner sep=0pt, fill=white,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.3pt, shadow yshift=-0.4pt, shadow opacity=20}
+    },
+    cross_line/.style={utnblue!40, line width=0.4pt},
+    signal/.style={->, thick, utnblue},
+    wire/.style={-, thick, utnblue},
+    tlab/.style={font=\footnotesize, inner sep=2pt, text=black},
+]
+
+% ===================== (a) FIR: promediador móvil =====================
+\begin{scope}[shift={(0,0)}]
+    \node[font=\footnotesize, gray] at (0.75,2.1) {(a) \ FIR:\ \ $y[n]=\tfrac{1}{2}x[n]+\tfrac{1}{2}x[n-1]$};
+
+    \coordinate (in) at (-3.4,0);
+    \coordinate (split) at (-2.6,0);
+    \node[gain_r] (gtop) at (0.0,1.2) {$\tfrac{1}{2}$};
+    \node[delay]  (D)    at (-0.9,-1.3) {Retardo};
+    \node[gain_r] (gbot) at (1.65,-1.3) {$\tfrac{1}{2}$};
+    \node[sum] (S) at (3.2,0) {};
+    \draw[cross_line] (3.2-0.30,-0.30) -- (3.2+0.30,0.30);
+    \draw[cross_line] (3.2-0.30,0.30) -- (3.2+0.30,-0.30);
+    \node[font=\scriptsize] at (2.93,0) {$+$};
+    \node[font=\scriptsize] at (3.2,0.27) {$+$};
+    \coordinate (out) at (4.5,0);
+
+    \draw[signal] (in) -- (split) node[tlab, above, midway] {$x[n]$};
+    \fill[utnblue] (split) circle (2.2pt);
+    \draw[signal] (split) |- (gtop.west);
+    \draw[signal] (gtop.east) -| (S.north);
+    \draw[signal] (split) |- (D.west);
+    \draw[signal] (D.east) -- (gbot.west) node[tlab, above, midway] {$x[n{-}1]$};
+    \draw[signal] (gbot.east) -| (S.south);
+    \draw[signal] (S.east) -- (out) node[tlab, above, midway] {$y[n]$};
+\end{scope}
+
+% ===================== (b) IIR: primer orden =====================
+\begin{scope}[shift={(8.7,0)}]
+    \node[font=\footnotesize, gray] at (0.3,2.1) {(b) \ IIR:\ \ $y[n]=x[n]+a\,y[n-1]$};
+
+    \coordinate (in) at (-3.0,0);
+    \node[sum] (S) at (-1.4,0) {};
+    \draw[cross_line] (-1.4-0.30,-0.30) -- (-1.4+0.30,0.30);
+    \draw[cross_line] (-1.4-0.30,0.30) -- (-1.4+0.30,-0.30);
+    \node[font=\scriptsize] at (-1.67,0) {$+$};
+    \node[font=\scriptsize] at (-1.4,0.27) {$+$};
+    \coordinate (tap) at (2.4,0);
+    \coordinate (out) at (3.6,0);
+
+    \node[delay]  (D) at (2.4,-1.5) {Retardo};
+    \node[gain_l] (g) at (-0.1,-1.5) {$a$};
+
+    \draw[signal] (in) -- (S.west) node[tlab, above, midway] {$x[n]$};
+    \draw[wire]   (S.east) -- (tap);
+    \fill[utnblue] (tap) circle (2.2pt);
+    \draw[signal] (tap) -- (out) node[tlab, above, midway] {$y[n]$};
+    \draw[signal] (tap) -- (D.north);
+    \draw[signal] (D.west) -- (g.east) node[tlab, below, midway] {$y[n{-}1]$};
+    \draw[signal] (g.west) -| (S.south);
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

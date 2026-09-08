@@ -1,0 +1,46 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Régimen sinusoidal permanente para el sistema h(t) = e^{-2t} u(t)
+% con entrada x(t) = cos(t) (A=1, omega_0=1, phi=0).
+% Salida: y(t) = (1/sqrt(5)) cos(t - arctan(1/2)) ~ 0.447 cos(t - 0.4636).
+% Una sola gráfica con ambas curvas superpuestas: entrada en utnblue,
+% salida en red!80!black.
+% Sizing: preset S1 (panel único, w 13 cm, h 5.5 cm; aspect ~2.4:1).
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\begin{axis}[
+    width=13cm,
+    height=5.5cm,
+    xmin=-0.6, xmax=14.0,
+    ymin=-1.35, ymax=1.35,
+    axis lines=center,
+    axis line style={->, thick},
+    xtick={0, 1.5708, 3.14159, 4.7124, 6.2832, 7.854, 9.4248, 10.9956, 12.5664},
+    xticklabels={$0$, $\pi/2$, $\pi$, $3\pi/2$, $2\pi$, $5\pi/2$, $3\pi$, $7\pi/2$, $4\pi$},
+    ytick={-1, -0.4472, 0, 0.4472, 1},
+    yticklabels={$-1$, $-1/\sqrt{5}$, $0$, $1/\sqrt{5}$, $1$},
+    every tick label/.style={font=\tiny},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.5)}},
+    enlarge x limits=0.0,
+    clip mode=individual,
+]
+    % Entrada x(t) = cos(t)
+    \addplot[utnblue, very thick, domain=-0.6:14.0, samples=500, smooth]
+        {cos(deg(x))};
+    % Salida y(t) = (1/sqrt(5)) cos(t - arctan(1/2))
+    \addplot[red!80!black, very thick, domain=-0.6:14.0, samples=500, smooth]
+        {0.4472*cos(deg(x - 0.4636))};
+
+    % Líneas guía: amplitud 1/sqrt(5) en horizontal punteada
+    \draw[gray!50, dotted, thin] (axis cs:-0.6, 0.4472) -- (axis cs:14.0, 0.4472);
+    \draw[gray!50, dotted, thin] (axis cs:-0.6, -0.4472) -- (axis cs:14.0, -0.4472);
+
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

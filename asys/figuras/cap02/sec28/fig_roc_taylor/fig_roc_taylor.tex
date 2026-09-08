@@ -1,0 +1,50 @@
+% ============================================================
+% fig_roc_taylor.tex 
+% Disco de convergencia de Taylor para f(z) = 1/(1-z)
+% Polo en z=1, centro z0=0, ROC: |z| < 1
+% Estilo 2D consistente con sec23 (fig_discos.tex)
+% ============================================================
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.1, font=\small]
+
+    % --- Disco de convergencia (interior) ---
+    \fill[cyan!15] (0,0) circle (1.5);
+    \draw[dashed, thick] (0,0) circle (1.5);
+
+    % --- Ejes ---
+    \draw[->] (-2.8,0) -- (3,0) node[right] {Re};
+    \draw[->] (0,-2.5) -- (0,2.5) node[above] {Im};
+
+    % --- Origen (centro de expansión z0 = 0) ---
+    \fill[utnblue] (0,0) circle (2.5pt);
+    \node[utnblue, below left, font=\footnotesize] at (0,0) {$z_0=0$};
+
+    % --- Radio R = 1 ---
+    \draw[utnblue, dashed] (0,0) -- (1.5,0)
+        node[midway, above, font=\footnotesize, utnblue] {$R=1$};
+
+    % --- Polo en z = 1 ---
+    \node[red, font=\large] at (1.5,0) {$\times$};
+    \node[red, above right, font=\footnotesize] at (1.5,0.1) {$z_k=1$};
+
+    % --- Etiqueta de la ROC ---
+    \node[utnblue!70!black, font=\footnotesize] at (0.55, 0.9) {ROC};
+    \node[utnblue!70!black, font=\footnotesize] at (0.55, 0.6) {$|z|<1$};
+
+    % --- Tick en eje real ---
+    \draw (1.5, 0.07) -- (1.5, -0.07);
+    \node[below, font=\footnotesize] at (1.5,-0.1) {$1$};
+    \draw (-1.5, 0.07) -- (-1.5, -0.07);
+    \node[below, font=\footnotesize] at (-1.5,-0.1) {$-1$};
+
+    % --- Tick en eje imaginario ---
+    \draw (0.07,1.5) -- (-0.07,1.5);
+    \node[left, font=\footnotesize] at (-0.08,1.5) {$j$};
+    \draw (0.07,-1.5) -- (-0.07,-1.5);
+    \node[left, font=\footnotesize] at (-0.08,-1.5) {$-j$};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,267 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{multicol}
+\usepackage{titling} % Para ajustar los espacios del título
+\usepackage{tasks} % Para listas en columnas
+\usepackage{float}
+\usepackage[mode=image]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=7cm,compat=1.15}
+\usepackage{caption}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+% Ajusta la separación entre el encabezado y el contenido
+\setlength{\headsep}{10pt}
+
+% Ajuste del título:
+\setlength{\droptitle}{-0.5in} % Mueve el título ligeramente hacia arriba
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large}
+	\posttitle{\par\end{center}\vspace{-4em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+	\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Trabajo Práctico N$^\text{o}$4 -- Parte B}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Título optimizado con espacios reducidos
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Trabajo Práctico N$^{\text o}$4 -- Parte B: Transformada de Fourier de tiempo continuo}%
+}
+\author{}
+\date{}
+
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+
+	% Entorno de dos columnas
+	\begin{multicols}{2}
+
+		\label{sec:enun}
+		% ***********************************************
+			\textbf{De la serie a la transformada}
+			\begin{enumerate}
+			% ***********************************************
+			% 				Ejercicio 1
+			% ***********************************************
+			\item Considerar el pulso rectangular aislado de ancho $\tau$ y amplitud $A$,
+			\[
+				p_\tau(t) =
+				\begin{cases}
+					A, & -\tfrac{\tau}{2} < t < \tfrac{\tau}{2}, \\
+					0, & |t| > \tfrac{\tau}{2}.
+				\end{cases}
+			\]
+			\begin{enumerate}
+				\item Calcular la transformada de Fourier $P_\tau(j\omega)$ a partir de la definición e identificar el seno cardinal en el resultado.
+				\item Para $A=1$ y $\tau=2$, graficar el espectro de amplitud $|P_\tau(j\omega)|$ y el de fase $\angle P_\tau(j\omega)$.
+				\item Indicar dónde están los cruces por cero y explicar hacia dónde se desplazan al achicar $\tau$.
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 2
+			% ***********************************************
+			\item Considerar la exponencial bilateral $x(t) = e^{-a|t|}$, con $a>0$.
+			\begin{enumerate}
+				\item Calcular $X(j\omega)$ a partir de la definición, separando la integral en los tramos $t<0$ y $t>0$.
+				\item Determinar si $X(j\omega)$ resulta real, imaginaria pura o compleja, y relacionarlo con la simetría de $x(t)$.
+				\item Graficar $|X(j\omega)|$ para $a=1$.
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 3
+			% ***********************************************
+			\item Tomar el pulso del Ej.~1 con amplitud $A = 1/\tau$, de modo que su área valga $1$ para todo $\tau$.
+			\begin{enumerate}
+				\item Escribir $P_\tau(j\omega)$ para este caso.
+				\item Calcular $\lim_{\tau\to 0} P_\tau(j\omega)$.
+				\item Interpretar el par límite obtenido: ¿qué dice sobre el contenido en frecuencia del impulso?
+			\end{enumerate}
+
+			% ***********************************************
+			\textbf{Propiedades de la transformada}
+			% ***********************************************
+			% 				Ejercicio 4
+			% ***********************************************
+			\item Sea el pulso del Ej.~1 desplazado a $t_0$, es decir $x(t) = p_\tau(t - t_0)$.
+			\begin{enumerate}
+				\item Sin volver a integrar, aplicar la propiedad de desplazamiento temporal para obtener $X(j\omega)$ a partir de $P_\tau(j\omega)$.
+				\item ¿Qué le ocurre al espectro de amplitud? ¿Y al de fase?
+				\item Para $t_0 = 10$ y $\tau = 2$, escribir explícitamente la fase de $X(j\omega)$.
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 5
+			% ***********************************************
+			\item Dado que $x(t)$ tiene transformada de Fourier $X(j\omega)$, y utilizando solo las propiedades de la transformada, expresar en función de $X(j\omega)$ las transformadas de las siguientes señales:
+			\begin{enumerate}
+				\item $x_1(t) = x(1-t) + x(-1-t)$.
+				\item $x_2(t) = x(3t-6)$.
+				\item $x_3(t) = \dfrac{d^2}{dt^2}x(t-1)$.
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 6
+			% ***********************************************
+			\item La Figura~\ref{fig:espectros_simetria} muestra el espectro de amplitud y el espectro de fase de la transformada de nueve señales, rotuladas (a)--(i). Algunas corresponden a señales periódicas: su espectro consta de impulsos sobre frecuencias discretas (flechas en el módulo, puntos en la fase), pero la lectura de simetría es la misma que para las demás. Para cada una, apoyándose en la propiedad de simetría conjugada, decidir:
+			\begin{enumerate}
+				\item Si la señal $x(t)$ es \emph{real}.
+				\item En caso de serlo, si además es \emph{par}, \emph{impar}, o ninguna de las dos.
+			\end{enumerate}
+			Justificar cada respuesta. Recordar que una señal real tiene espectro de amplitud par y espectro de fase impar; que si además es par su transformada es real (fase $0$ o $\pi$); y que si es impar su transformada es imaginaria pura (fase $\pm\pi/2$).
+
+			% ***********************************************
+			% 				Ejercicio 7
+			% ***********************************************
+			\item Comprobar analíticamente las lecturas del ejercicio anterior sobre dos casos ya calculados.
+			\begin{enumerate}
+				\item Para el pulso del Ej.~1, calcular $P_\tau(j\omega)$ y analizar si resulta real, imaginaria pura o compleja, y qué simetría del pulso lo explica.
+				\item Para la exponencial causal $x(t) = e^{-at}u(t)$, con $a>0$, calcular $X(j\omega)$ y estudiar la paridad de $|X(j\omega)|$ y de $\angle X(j\omega)$.
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 8
+			% ***********************************************
+			\item Aplicando la propiedad de convolución, encontrar la señal $x(t)$ cuya transformada de Fourier es
+			\[
+				X(j\omega) = \frac{1}{(a+j\omega)^2}, \qquad a>0.
+			\]
+
+			% ***********************************************
+			\textbf{Transformada de Fourier de señales periódicas}
+			% ***********************************************
+			% 				Ejercicio 9
+			% ***********************************************
+			\item Partiendo de la transformada de la exponencial armónica $e^{j\omega_0 t} \leftrightarrow 2\pi\,\delta(\omega - \omega_0)$ y de la linealidad:
+			\begin{enumerate}
+				\item Obtener las transformadas de $\cos(\omega_0 t)$ y de $\sin(\omega_0 t)$.
+				\item Graficar ambos espectros sobre el eje de frecuencias.
+				\item Clasificar cada transformada (real, imaginaria pura o compleja) a partir de su paridad, y vincularlo con la clasificación del Ej.~6.
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 10
+			% ***********************************************
+			\item Considerar el tren de impulsos periódico de período $T_0$,
+			\[
+				\delta^{T_0}(t) = \sum_{n=-\infty}^{\infty} \delta(t - nT_0).
+			\]
+			\begin{enumerate}
+				\item Calcular los coeficientes $c_k$ de su serie exponencial de Fourier.
+				\item Escribir su transformada de Fourier como un tren de impulsos en frecuencia e indicar el peso y el paso de esos impulsos.
+				\item Comparar la forma del par en el tiempo y en frecuencia, y analizar qué le ocurre al paso en frecuencia cuando se achica $T_0$.
+				\item Para una señal periódica genérica con coeficientes $c_k$, escribir la forma general de su transformada como tren de impulsos ponderados.
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 11
+			% ***********************************************
+			\item Obtener la transformada de Fourier de las siguientes señales utilizando propiedades y la tabla de pares, y representar el espectro de cada una:
+			\begin{enumerate}
+				\item $x(t) = 1$.
+				\item $x(t) = e^{j\omega_0(t-2)}$.
+				\item $x(t) = \sin(\omega_0(5-t))$.
+				\item $x(t) = \dfrac{d}{dt}\{u(t+2) + u(t-2)\}$.
+				\item $x(t) = 1 + \cos\!\left(6\pi t + \dfrac{\pi}{8}\right)$.
+			\end{enumerate}
+
+			% ***********************************************
+			\textbf{Transformada de Fourier y sistemas LIT}
+			% ***********************************************
+			% 				Ejercicio 12
+			% ***********************************************
+			\item Para cada uno de los siguientes sistemas LIT de primer orden, con $a>0$: transformar la ecuación diferencial y despejar la respuesta en frecuencia $H(j\omega)$; graficar $|H(j\omega)|$ y $\angle H(j\omega)$; identificar el tipo de filtro; y antitransformar para recuperar la respuesta al impulso $h(t)$.
+			\begin{enumerate}
+				\item $\dot{y}(t) + a\,y(t) = x(t)$.
+				\item $\dot{y}(t) + a\,y(t) = \dot{x}(t)$.
+			\end{enumerate}
+			Comparar las dos respuestas en frecuencia y explicar cómo influye el numerador de $H(j\omega)$ en el tipo de filtro resultante.
+
+			% ***********************************************
+			% 				Ejercicio 13
+			% ***********************************************
+			\item La relación entrada--salida de un sistema LIT causal está dada por la ecuación diferencial
+			\[
+				\frac{d^2 y(t)}{dt^2} + 6\,\frac{d y(t)}{dt} + 8\,y(t) = 2\,x(t).
+			\]
+			\begin{enumerate}
+				\item Encontrar la respuesta en frecuencia $H(j\omega)$ del sistema.
+				\item Encontrar la respuesta al impulso $h(t)$.
+				\item ¿Cuál es la respuesta del sistema a la entrada $x(t) = e^{-3t}u(t)$?
+			\end{enumerate}
+
+			% ***********************************************
+			% 				Ejercicio 14
+			% ***********************************************
+			\item Considerar un sistema LIT causal con respuesta en frecuencia $H(j\omega) = \dfrac{1}{j\omega + 3}$. Para una entrada particular $x(t)$, se observa que el sistema produce la salida
+			\[
+				y(t) = e^{-3t}u(t) - e^{-4t}u(t).
+			\]
+			Determinar $x(t)$.
+
+			% ***********************************************
+			% 				Ejercicio 15
+			% ***********************************************
+			\item Considerar el filtro pasabajos ideal con respuesta en frecuencia
+			\[
+				H(j\omega) =
+				\begin{cases}
+					1, & |\omega| < \omega_c, \\
+					0, & |\omega| \geq \omega_c.
+				\end{cases}
+			\]
+			\begin{enumerate}
+				\item Obtener la respuesta al impulso $h(t)$ antitransformando $H(j\omega)$. Sugerencia: en lugar de integrar, aprovechar la propiedad de dualidad junto con el par pulso--seno cardinal del Ej.~1.
+				\item A partir de $h(t)$, determinar si el sistema es causal y si resulta físicamente realizable. Justificar.
+				\item ¿Qué característica de $H(j\omega)$ está detrás del comportamiento hallado?
+			\end{enumerate}
+
+			% ***********************************************
+			\textbf{Modulación de amplitud y multiplexado en frecuencia}
+			% ***********************************************
+			% 				Ejercicio 16
+			% ***********************************************
+			\item Sea el mensaje $m(t) = \cos(\omega_1 t) + \tfrac{1}{2}\cos(\omega_2 t)$, con $\omega_1 = 1000$ rad/s y $\omega_2 = 2000$ rad/s, de modo que su espectro ocupa la banda base $|\omega| \leq W$ con $W = 2000$ rad/s. Se lo modula con una portadora $\cos(\omega_c t)$ de frecuencia $\omega_c = 10\,000$ rad/s, formando la señal modulada $s(t) = m(t)\cos(\omega_c t)$.
+			\begin{enumerate}
+				\item Obtener el espectro $M(j\omega)$ del mensaje y, aplicando linealidad y desplazamiento en frecuencia, el espectro $S(j\omega)$ de la señal modulada.
+				\item Graficar $S(j\omega)$, indicando la ubicación y el peso de cada impulso.
+				\item Analizar si las copias del espectro se solapan y enunciar la condición general sobre $\omega_c$ que evita el solapamiento.
+				\item \emph{Demodulación}: se multiplica $s(t)$ nuevamente por $\cos(\omega_c t)$. Obtener el espectro del producto y proponer un filtro pasabajos que recupere $m(t)$, indicando un valor posible para su frecuencia de corte.
+			\end{enumerate}
+
+		\end{enumerate}
+
+	\end{multicols}
+
+	% ***********************************************
+	% 			Figura del Ejercicio 6
+	% ***********************************************
+	\begin{figure*}[tp]
+		\centering
+		\includestandalone[width=\textwidth]{figures/fig_espectros_simetria/fig_espectros_simetria}
+		\caption{Transformada de Fourier de nueve señales, rotuladas (a)--(i). En cada caso, el panel superior es el espectro de amplitud $|X(j\omega)|$ (azul) y el inferior el espectro de fase $\angle X(j\omega)$ (rojo). Los casos (b), (e) y (g) corresponden a señales periódicas: su espectro consta de impulsos sobre frecuencias discretas, dibujados como flechas en el módulo y como puntos en la fase. En todos los paneles el eje horizontal es la frecuencia $\omega$, con las marcas $\pm\pi$ señaladas sobre el eje de fase. Material del Ej.~6.}
+		\label{fig:espectros_simetria}
+	\end{figure*}
+
+\end{document}

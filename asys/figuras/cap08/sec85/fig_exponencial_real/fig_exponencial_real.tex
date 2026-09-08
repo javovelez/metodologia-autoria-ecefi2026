@@ -1,0 +1,32 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{groupplot}[
+            group style={group size=2 by 1, horizontal sep=1.7cm},
+            width=5.6cm, height=4.4cm,
+            axis lines=middle,
+            axis line style={->, thin, black},
+            xmin=-0.6, xmax=8.6, xtick={0,2,4,6,8},
+            ymin=-0.35, ymax=2.35, ytick={1},
+            every tick label/.style={font=\scriptsize, fill=white, inner sep=0.8pt},
+            title style={font=\scriptsize, yshift=-1pt},
+            xlabel={$n$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0.5)},
+                          font=\scriptsize},
+            clip=false,
+        ]
+            % ===== r > 0 (monótonas) =====
+            \nextgroupplot[title={(a) $r=0{,}8$}]
+                \addplot[ycomb, mark=*, mark size=1.6pt, thick, utnblue]
+                    coordinates {(0,1) (1,0.8) (2,0.64) (3,0.512) (4,0.4096)
+                                 (5,0.32768) (6,0.262144) (7,0.209715) (8,0.167772)};
+            \nextgroupplot[title={(b) $r=1{,}1$}]
+                \addplot[ycomb, mark=*, mark size=1.6pt, thick, utnblue]
+                    coordinates {(0,1) (1,1.1) (2,1.21) (3,1.331) (4,1.4641)
+                                 (5,1.61051) (6,1.771561) (7,1.9487171) (8,2.14358881)};
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}

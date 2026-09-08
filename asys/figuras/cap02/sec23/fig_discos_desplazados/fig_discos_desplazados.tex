@@ -1,0 +1,17 @@
+\documentclass[border={5mm 5mm 5mm 0mm}]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=1.2, font=\small]
+        \coordinate (Z0) at (2,1);
+        \fill[cyan!15] (Z0) circle (1);
+        \draw[thick] (Z0) circle (1);
+        \fill[utnblue] (Z0) circle (1.5pt) node[above right] {$z_0 = 2+j1$};
+        \draw[<->] (Z0) -- ++(135:1) node[midway, above right] {$1$};
+        \draw[dashed] (2,0) node[below]{2} -- (Z0) -- (0,1) node[left]{1};
+        \draw[->] (-1,0) -- (4,0) node[right] {Re};
+        \draw[->] (0,-1) -- (0,2.2) node[above] {Im};
+    \end{tikzpicture}
+\end{document}

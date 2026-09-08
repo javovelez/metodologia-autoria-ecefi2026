@@ -1,0 +1,54 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    panel/.style={
+        width=13cm, height=3cm,
+        xmin=-2, xmax=7,
+        ymin=-0.2, ymax=1.5,
+        axis lines=center,
+        xtick={-2,-1,0,1,2,3,4,5,6},
+        ytick={0,1},
+        yticklabels={$0$,$1$},
+        tick style={thin},
+        xlabel={$t$},
+        xlabel style={anchor=north},
+        ylabel style={
+            font=\small, rotate=0, anchor=south east,
+            at={(axis description cs:0,1)}
+        },
+        clip=false,
+    }
+}
+
+% ---- panel (a): x(t) ----
+\begin{axis}[panel, name=ax1,
+    ylabel={$x(t)$},
+    title={(a)}, title style={font=\small\bfseries}]
+\addplot[utnblue, very thick] coordinates {(-2,0)(0,0)(0,1)(2,1)(2,0)(7,0)};
+\end{axis}
+
+% ---- panel (b): y(t)=x(t-3) ----
+\begin{axis}[panel, name=ax2,
+    at={(ax1.below south west)}, anchor=above north west, yshift=-6pt,
+    ylabel={$y(t)=x(t{-}3)$},
+    title={(b)}, title style={font=\small\bfseries}]
+\addplot[red!80!black, very thick] coordinates {(-2,0)(3,0)(3,1)(5,1)(5,0)(7,0)};
+\draw[->, gray, thick] (axis cs:1,1.3) -- node[above, font=\scriptsize]{retardo $t_0=3$} (axis cs:4,1.3);
+\end{axis}
+
+% ---- panel (c): z(t)=x(t+1) ----
+\begin{axis}[panel, name=ax3,
+    at={(ax2.below south west)}, anchor=above north west, yshift=-6pt,
+    ylabel={$z(t)=x(t{+}1)$},
+    title={(c)}, title style={font=\small\bfseries}]
+\addplot[red!80!black, very thick] coordinates {(-2,0)(-1,0)(-1,1)(1,1)(1,0)(7,0)};
+\draw[->, gray, thick] (axis cs:1,1.3) -- node[above, font=\scriptsize]{adelanto $|t_0|=1$} (axis cs:0,1.3);
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

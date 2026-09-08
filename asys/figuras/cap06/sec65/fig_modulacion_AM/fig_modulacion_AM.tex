@@ -1,0 +1,71 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_modulacion_AM
+% Multiplexado por division de frecuencia: tres emisoras AM con
+% portadoras w_c1, w_c2, w_c3 y senales de audio limitadas en banda
+% [-w_M, w_M]. Cada emisora ocupa una banda de ancho 2 w_M alrededor
+% de +/- su portadora. Las bandas no se solapan.
+% Parametros: w_M = 2, w_c1 = 8, w_c2 = 18, w_c3 = 28.
+% Un solo panel.
+% Sizing: preset S1 (1 panel, w 13 cm, h 5 cm; aspect 2.6:1).
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\begin{axis}[
+    width=13cm, height=5cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-32, xmax=32, ymin=-0.3, ymax=1.0,
+    xtick={-28, -18, -8, 0, 8, 18, 28},
+    xticklabels={$-\omega_{c3}$, $-\omega_{c2}$, $-\omega_{c1}$, $0$,
+                 $\omega_{c1}$, $\omega_{c2}$, $\omega_{c3}$},
+    ytick={0, 0.5},
+    yticklabels={$0$, $1/2$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.30)}},
+    ylabel={$R(j\omega)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    enlarge x limits=0.01,
+    clip mode=individual,
+]
+    % Estacion 1: portadora w_c1 = 8, ancho de banda 4 (de 6 a 10 y de -10 a -6)
+    \addplot[utnblue, very thick]
+        coordinates {(-32,0) (-30,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(-30,0) (-28,0.5) (-26,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(-26,0) (-20,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(-20,0) (-18,0.5) (-16,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(-16,0) (-10,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(-10,0) (-8,0.5) (-6,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(-6,0) (6,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(6,0) (8,0.5) (10,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(10,0) (16,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(16,0) (18,0.5) (20,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(20,0) (26,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(26,0) (28,0.5) (30,0)};
+    \addplot[utnblue, very thick]
+        coordinates {(30,0) (32,0)};
+
+    % Anotaciones de cada estacion (solo en el lado positivo, para no recargar)
+    \node[font=\tiny, anchor=south] at (axis cs:8, 0.55) {Em.\ 1};
+    \node[font=\tiny, anchor=south] at (axis cs:18, 0.55) {Em.\ 2};
+    \node[font=\tiny, anchor=south] at (axis cs:28, 0.55) {Em.\ 3};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,119 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_tf_coseno_seno
+% 2x2 paneles. Fila superior: cos(omega_0 t) y su TFTC (real, par).
+% Fila inferior: sin(omega_0 t) y su TFTC (imaginaria pura, impar).
+% Para el seno, los impulsos son imaginarios; convencion: dibujar Im{X(jw)},
+% impulso hacia arriba en -omega_0 (peso +pi) y hacia abajo en +omega_0 (peso -pi).
+% Sizing: 4 paneles 2x2, w 7cm, h 4cm cada uno.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ===== Panel (a): cos(omega_0 t) =====
+\begin{axis}[
+    name=panel_a,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-7, xmax=7, ymin=-1.4, ymax=1.4,
+    xtick={-6.2832, 0, 6.2832},
+    xticklabels={$-T_0$, $0$, $T_0$},
+    ytick={-1, 0, 1},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.5)}},
+    ylabel={$\cos(\omega_0 t)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick, domain=-7:7, samples=200] {cos(deg(x))};
+\end{axis}
+
+% ===== Panel (b): TFTC del cos: dos impulsos reales en +/- omega_0, peso pi =====
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.east)+(1.6cm,0)$)}, anchor=west,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-3.5, xmax=3.5, ymin=-1.4, ymax=1.4,
+    xtick={-1, 0, 1},
+    xticklabels={$-\omega_0$, $0$, $\omega_0$},
+    ytick={0, 1},
+    yticklabels={$0$, $\pi$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.5)}},
+    ylabel={$X(j\omega)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:1,0)  -- (axis cs:1,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:-1,0) -- (axis cs:-1,1);
+\end{axis}
+
+% ===== Panel (c): sin(omega_0 t) =====
+\begin{axis}[
+    name=panel_c,
+    at={($(panel_a.south)+(0,-1.6cm)$)}, anchor=north,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-7, xmax=7, ymin=-1.4, ymax=1.4,
+    xtick={-6.2832, 0, 6.2832},
+    xticklabels={$-T_0$, $0$, $T_0$},
+    ytick={-1, 0, 1},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.5)}},
+    ylabel={$\sin(\omega_0 t)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(c)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick, domain=-7:7, samples=200] {sin(deg(x))};
+\end{axis}
+
+% ===== Panel (d): TFTC del sin: dos impulsos imaginarios opuestos =====
+\begin{axis}[
+    name=panel_d,
+    at={($(panel_c.east)+(1.6cm,0)$)}, anchor=west,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-3.5, xmax=3.5, ymin=-1.4, ymax=1.4,
+    xtick={-1, 0, 1},
+    xticklabels={$-\omega_0$, $0$, $\omega_0$},
+    ytick={-1, 0, 1},
+    yticklabels={$-j\pi$, $0$, $j\pi$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.5)}},
+    ylabel={$X(j\omega)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(d)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:-1,0) -- (axis cs:-1,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:1,0)  -- (axis cs:1,-1);
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

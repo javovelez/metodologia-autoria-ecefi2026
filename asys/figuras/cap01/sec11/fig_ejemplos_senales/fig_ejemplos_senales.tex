@@ -1,0 +1,93 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        
+        \pgfplotsset{
+            width=7.5cm, height=4cm,
+            axis lines=center,
+            axis line style={->, thick},
+            ticks=none,
+            every axis title/.style={at={(0.5,-0.18)}, anchor=north, font=\footnotesize\bfseries},
+        }
+
+        % =============================================
+        % (a) VOZ / AUDIO
+        % =============================================
+        \begin{axis}[
+            at={(0cm,0cm)}, anchor=center,
+            xlabel={$t$}, ylabel={Presión},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\footnotesize},
+            ylabel style={anchor=south east, at={(axis description cs:0,1)}, font=\footnotesize},
+            xmin=0, xmax=10, ymin=-1.5, ymax=1.5,
+            title={(a) Señal de voz}
+        ]
+            % Forma de onda de audio irregular
+            \addplot[domain=0:10, samples=300, thick, utnblue, smooth] 
+                {0.8*sin(deg(2*x))*exp(-0.05*x) + 0.4*sin(deg(5.3*x)) + 0.3*cos(deg(8.7*x))*sin(deg(1.2*x))};
+        \end{axis}
+
+        % =============================================
+        % (b) ECG
+        % =============================================
+        \begin{axis}[
+            at={(8cm,0cm)}, anchor=center,
+            xlabel={$t$}, ylabel={$v(t)$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\footnotesize},
+            ylabel style={anchor=south east, at={(axis description cs:0,1)}, font=\footnotesize},
+            xmin=0, xmax=10, ymin=-0.8, ymax=1.8,
+            title={(b) Electrocardiograma (ECG)}
+        ]
+            % ECG simplificado: baseline + QRS spikes
+            \addplot[domain=0:10, samples=500, thick, red!70!black] 
+                {0.1*sin(deg(0.5*x)) 
+                + 1.5*exp(-50*(x-2)^2) - 0.3*exp(-30*(x-1.7)^2) - 0.2*exp(-30*(x-2.3)^2)
+                + 1.5*exp(-50*(x-5)^2) - 0.3*exp(-30*(x-4.7)^2) - 0.2*exp(-30*(x-5.3)^2)
+                + 1.5*exp(-50*(x-8)^2) - 0.3*exp(-30*(x-7.7)^2) - 0.2*exp(-30*(x-8.3)^2)
+                + 0.3*exp(-10*(x-3)^2) + 0.3*exp(-10*(x-6)^2) + 0.3*exp(-10*(x-9)^2)};
+        \end{axis}
+
+        % =============================================
+        % (c) TEMPERATURA
+        % =============================================
+        \begin{axis}[
+            at={(0cm,-4.5cm)}, anchor=center,
+            xlabel={$t$ }, ylabel={$T$ ($^\circ$C)},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\footnotesize},
+            ylabel style={anchor=south east, at={(axis description cs:0,1)}, font=\footnotesize},
+            xmin=0, xmax=24, ymin=10, ymax=38,
+            xtick={0,6,12,18,24},
+            ytick={15,25,35},
+            every tick label/.style={font=\tiny},
+            title={(c) Temperatura ambiente}
+        ]
+            % Curva suave de temperatura diaria
+            \addplot[domain=0:24, samples=100, thick, codegreen!70!black, smooth] 
+                {24 + 10*sin(deg(pi*(x-6)/12))*0.5*(1+0.3*sin(deg(pi*x/6)))};
+        \end{axis}
+
+        % =============================================
+        % (d) COMUNICACIONES
+        % =============================================
+        \begin{axis}[
+            at={(8cm,-4.5cm)}, anchor=center,
+            xlabel={$t$}, ylabel={$v(t)$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\footnotesize},
+            ylabel style={anchor=south east, at={(axis description cs:0,1)}, font=\footnotesize},
+            xmin=0, xmax=10, ymin=-1.5, ymax=1.5,
+            title={(d) Señal de radiofrecuencia}
+        ]
+            % AM: portadora modulada en amplitud
+            \addplot[domain=0:10, samples=500, thick, orange!80!black] 
+                {(0.5 + 0.4*sin(deg(0.8*x)))*sin(deg(12*x))};
+            % Envolvente
+            \addplot[domain=0:10, samples=100, thick, orange!80!black, dashed] 
+                {0.5 + 0.4*sin(deg(0.8*x))};
+            \addplot[domain=0:10, samples=100, thick, orange!80!black, dashed] 
+                {-(0.5 + 0.4*sin(deg(0.8*x)))};
+        \end{axis}
+
+    \end{tikzpicture}
+\end{document}

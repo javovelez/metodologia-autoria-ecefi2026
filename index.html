@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Material de respaldo — Metodología de autoría (ECEFI 2026)</title>
+<meta name="description" content="Muestra parcial del material didáctico producido con la metodología de autoría agéntica presentada en ECEFI 2026. UTN Facultad Regional Mendoza.">
+<style>
+:root{
+  --fondo:#fbfaf7; --panel:#ffffff; --borde:#e2ded4; --borde-fuerte:#cfc9ba;
+  --texto:#26231e; --tenue:#6a6459; --acento:#7a4a1e; --acento-suave:#f4ece1;
+  --aviso-fondo:#fdf6e3; --aviso-borde:#d9c48a; --aviso-texto:#5c4813;
+  --radio:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --fondo:#16150f; --panel:#1e1c16; --borde:#33302a; --borde-fuerte:#4a463d;
+    --texto:#e9e5db; --tenue:#a09a8c; --acento:#e0a366; --acento-suave:#2a251c;
+    --aviso-fondo:#2a2415; --aviso-borde:#6b5a2c; --aviso-texto:#e8d9a8;
+  }
+}
+:root[data-theme="dark"]{
+  --fondo:#16150f; --panel:#1e1c16; --borde:#33302a; --borde-fuerte:#4a463d;
+  --texto:#e9e5db; --tenue:#a09a8c; --acento:#e0a366; --acento-suave:#2a251c;
+  --aviso-fondo:#2a2415; --aviso-borde:#6b5a2c; --aviso-texto:#e8d9a8;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--fondo); color:var(--texto);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.envoltura{max-width:940px; margin:0 auto; padding:0 24px 96px}
+
+header{padding:64px 0 40px; border-bottom:1px solid var(--borde)}
+.rotulo{
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:12px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--acento); font-weight:600; margin:0 0 14px;
+}
+h1{font-size:clamp(28px,4.4vw,40px); line-height:1.18; margin:0 0 18px; font-weight:600; letter-spacing:-.01em}
+.subtitulo{font-size:19px; color:var(--tenue); margin:0 0 26px; max-width:62ch}
+.autores{font-size:15px; color:var(--tenue); margin:0; line-height:1.55}
+.autores strong{color:var(--texto); font-weight:600}
+
+.aviso{
+  margin:36px 0 0; padding:18px 22px; border-radius:var(--radio);
+  background:var(--aviso-fondo); border:1px solid var(--aviso-borde); color:var(--aviso-texto);
+  font-size:15.5px; line-height:1.6;
+}
+.aviso b{font-weight:700}
+
+section{padding-top:52px}
+h2{
+  font-size:13px; letter-spacing:.1em; text-transform:uppercase; font-weight:700;
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--acento); margin:0 0 6px; padding-bottom:10px; border-bottom:1px solid var(--borde);
+}
+.intro{font-size:16.5px; color:var(--tenue); margin:16px 0 26px; max-width:66ch}
+h3{font-size:19px; font-weight:600; margin:32px 0 4px}
+h3:first-of-type{margin-top:22px}
+.pie-h3{font-size:14.5px; color:var(--tenue); margin:0 0 14px; max-width:68ch}
+
+.fichas{list-style:none; padding:0; margin:0; display:grid; gap:10px}
+.fichas.dos{grid-template-columns:repeat(auto-fill,minmax(285px,1fr))}
+.ficha{
+  background:var(--panel); border:1px solid var(--borde); border-radius:var(--radio);
+  padding:13px 16px; display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px;
+}
+.ficha .nombre{font-weight:600; font-size:16px}
+.ficha .detalle{font-size:14px; color:var(--tenue); flex:1 1 auto; min-width:0}
+.ficha .enlaces{display:flex; gap:8px; flex-wrap:wrap; margin-left:auto}
+a{color:var(--acento); text-decoration:none}
+a:hover{text-decoration:underline}
+.pastilla{
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:12.5px; font-weight:600; letter-spacing:.02em;
+  padding:3px 10px; border-radius:999px; border:1px solid var(--borde-fuerte);
+  background:var(--acento-suave); color:var(--acento); white-space:nowrap;
+}
+.pastilla:hover{text-decoration:none; border-color:var(--acento)}
+.destacada{background:var(--acento); color:var(--fondo); border-color:var(--acento)}
+
+.tabla-envoltura{overflow-x:auto; border:1px solid var(--borde); border-radius:var(--radio); background:var(--panel)}
+table{border-collapse:collapse; width:100%; font-size:15.5px; min-width:520px}
+th,td{text-align:left; padding:11px 16px; border-bottom:1px solid var(--borde)}
+th{
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--tenue); font-weight:600;
+}
+tr:last-child td{border-bottom:none}
+td.enunciado{font-weight:600}
+
+footer{margin-top:64px; padding-top:28px; border-top:1px solid var(--borde); font-size:14.5px; color:var(--tenue)}
+footer p{margin:0 0 12px; max-width:70ch}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.88em;
+  background:var(--acento-suave); padding:1px 5px; border-radius:4px;
+}
+</style>
+</head>
+<body>
+<div class="envoltura">
+
+<header>
+  <p class="rotulo">IX Congreso Internacional de Educadores en Ciencias Empíricas en Facultades de Ingeniería · ECEFI 2026</p>
+  <h1>Material de respaldo</h1>
+  <p class="subtitulo">Una metodología agéntica y reproducible para producir material didáctico
+  en ingeniería: tres cátedras, un mismo método.</p>
+  <p class="autores">
+    <strong>Javier Ignacio Velez</strong>; <strong>Enrique Puliafito</strong><br>
+    Departamento de Ingeniería en Tecnologías Electrónicas<br>
+    Universidad Tecnológica Nacional, Facultad Regional Mendoza
+  </p>
+
+  <p class="aviso"><b>Esto es una muestra parcial de un trabajo en proceso.</b> El material de
+  las tres asignaturas está en producción y acá se publica solo una selección, elegida para
+  que el lector pueda examinar el método y sus resultados sin acceder a los repositorios
+  completos. Falta la mayor parte de los capítulos, de las guías, de las presentaciones, de
+  las animaciones y de los bancos de evaluación. Lo publicado corresponde al estado de avance
+  del 7 de septiembre de 2026 y está sujeto a revisión. Tampoco se publica material resuelto
+  que esté en uso.</p>
+</header>
+
+<section>
+  <h2>El método</h2>
+  <p class="intro">El objeto del trabajo no es ningún artefacto sino el procedimiento que los
+  produce. Estos archivos son ese procedimiento: las especificaciones declaran las decisiones
+  estables de la obra —estilo, notación, profundidad, criterios pedagógicos ya tomados— y las
+  instrucciones modulares (<em>skills</em>) fijan los pasos y las verificaciones de cada tarea
+  recurrente. El agente los lee antes de escribir y queda obligado por ellos. Cada corrección
+  del docente que se generaliza como regla entra a estos archivos.</p>
+
+  <h3>Especificaciones</h3>
+  <p class="pie-h3">Análisis de Señales y Sistemas. Cuatro de los cinco archivos en vigencia.</p>
+  <ul class="fichas dos">
+    <li class="ficha"><span class="nombre">CLAUDE.md</span>
+      <span class="detalle">Ruteo del proyecto y reglas que dirigen toda decisión</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/metodo/especificaciones/CLAUDE.md">ver</a></span></li>
+    <li class="ficha"><span class="nombre">STYLE.md</span>
+      <span class="detalle">Convenciones de redacción y de estructura de la explicación</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/metodo/especificaciones/STYLE.md">ver</a></span></li>
+    <li class="ficha"><span class="nombre">NOTATION.md</span>
+      <span class="detalle">Símbolo asignado a cada magnitud, para todo el corpus</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/metodo/especificaciones/NOTATION.md">ver</a></span></li>
+    <li class="ficha"><span class="nombre">WORKFLOW.md</span>
+      <span class="detalle">Circuito de trabajo entre el autor y el agente</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/metodo/especificaciones/WORKFLOW.md">ver</a></span></li>
+  </ul>
+
+  <h3>Instrucciones modulares</h3>
+  <p class="pie-h3">Cuatro de las diez que usa la asignatura. Se cargan solo cuando la tarea
+  las requiere, lo que acota el volumen de información que el modelo procesa.</p>
+  <ul class="fichas dos">
+    <li class="ficha"><span class="nombre">write_section</span>
+      <span class="detalle">Redacción de una sección del desarrollo teórico</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/metodo/skills/write_section/SKILL.md">ver</a></span></li>
+    <li class="ficha"><span class="nombre">review_section</span>
+      <span class="detalle">Revisión de una sección ya escrita, con sus verificaciones</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/metodo/skills/review_section/SKILL.md">ver</a></span></li>
+    <li class="ficha"><span class="nombre">create_2d_figures</span>
+      <span class="detalle">Construcción de una figura vectorial como programa TikZ</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/metodo/skills/create_2d_figures/SKILL.md">ver</a></span></li>
+    <li class="ficha"><span class="nombre">3d_figures</span>
+      <span class="detalle">Lo mismo para superficies y trayectorias en tres dimensiones</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/metodo/skills/3d_figures/SKILL.md">ver</a></span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Análisis de Señales y Sistemas · elaboración original</h2>
+  <p class="intro">Electrónica y Telecomunicaciones. La asignatura no disponía de material
+  propio: el libro y todos los materiales derivados se produjeron con el método. De ese
+  conjunto se publica acá el catálogo completo de figuras, un capítulo entero, las siete guías
+  de trabajos prácticos con sus resoluciones y diez animaciones.</p>
+
+  <h3>Catálogo de figuras</h3>
+  <p class="pie-h3">Las 201 figuras del libro, capítulo por capítulo, cada una con su leyenda,
+  su PDF vectorial y el programa TikZ que la produce. Están todas las que el texto de los diez primeros capítulos
+  referencia: sostiene la afirmación de que ninguna figura del libro es una imagen insertada
+  desde otra aplicación, sino código que se compila. Del capítulo 11 en adelante no se publica
+  nada, porque el material todavía no está revisado.</p>
+  <ul class="fichas">
+    <li class="ficha"><span class="nombre">Catálogo completo de figuras</span>
+      <span class="detalle">10 capítulos · 201 figuras · fuente y salida de cada una</span>
+      <span class="enlaces">
+        <a class="pastilla destacada" href="catalogo.html">abrir el catálogo</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/tree/main/asys/figuras">fuentes</a>
+      </span></li>
+  </ul>
+
+  <h3>Capítulo 5 — Serie de Fourier de tiempo continuo</h3>
+  <p class="pie-h3">Un capítulo completo, compilado y con su fuente al lado: cinco secciones en
+  LaTeX y las diecisiete figuras que las acompañan.</p>
+  <ul class="fichas">
+    <li class="ficha"><span class="nombre">Capítulo completo</span>
+      <span class="detalle">Las cinco secciones en un solo PDF</span>
+      <span class="enlaces">
+        <a class="pastilla destacada" href="asys/capitulo-05/Capitulo05.pdf">PDF</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/tree/main/asys/capitulo-05">fuentes</a>
+      </span></li>
+    <li class="ficha"><span class="nombre">5.1 Las señales como vectores</span>
+      <span class="detalle">Producto interno y ortogonalidad</span>
+      <span class="enlaces">
+        <a class="pastilla" href="asys/capitulo-05/51/sec51.pdf">PDF</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/asys/capitulo-05/51/sec51.tex">.tex</a>
+      </span></li>
+    <li class="ficha"><span class="nombre">5.2 Serie de Fourier exponencial y armónica</span>
+      <span class="detalle">De la proyección al espectro</span>
+      <span class="enlaces">
+        <a class="pastilla" href="asys/capitulo-05/52/sec52.pdf">PDF</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/asys/capitulo-05/52/sec52.tex">.tex</a>
+      </span></li>
+    <li class="ficha"><span class="nombre">5.3 Serie trigonométrica</span>
+      <span class="detalle">Con una figura cuyos datos genera un script</span>
+      <span class="enlaces">
+        <a class="pastilla" href="asys/capitulo-05/53/sec53.pdf">PDF</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/asys/capitulo-05/53/sec53.tex">.tex</a>
+      </span></li>
+    <li class="ficha"><span class="nombre">5.4 Convergencia y propiedades</span>
+      <span class="detalle">Fenómeno de Gibbs</span>
+      <span class="enlaces">
+        <a class="pastilla" href="asys/capitulo-05/54/sec54.pdf">PDF</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/asys/capitulo-05/54/sec54.tex">.tex</a>
+      </span></li>
+    <li class="ficha"><span class="nombre">5.5 Serie de Fourier y sistemas LIT</span>
+      <span class="detalle">Respuesta en régimen permanente</span>
+      <span class="enlaces">
+        <a class="pastilla" href="asys/capitulo-05/55/sec55.pdf">PDF</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/asys/capitulo-05/55/sec55.tex">.tex</a>
+      </span></li>
+  </ul>
+
+  <h3>Guías de trabajos prácticos</h3>
+  <p class="pie-h3">Las siete guías del ciclo, con la resolución de cada una. Enunciado y
+  resolución se generan a partir de la sección del libro que les corresponde y bajo las mismas
+  especificaciones, de modo que comparten notación y vocabulario con el material de estudio.</p>
+  <div class="tabla-envoltura">
+  <table>
+    <thead><tr><th>Guía</th><th>Tema</th><th>Enunciado</th><th>Resolución</th></tr></thead>
+    <tbody>
+      <tr><td class="enunciado">TP 1</td><td>Variable compleja</td>
+        <td><a href="asys/guias/tp1/tp1.pdf">PDF</a></td>
+        <td><a href="asys/guias/tp1/resolucion/resolucion_tp1.pdf">PDF</a></td></tr>
+      <tr><td class="enunciado">TP 2</td><td>Señales de tiempo continuo</td>
+        <td><a href="asys/guias/tp2/tp2.pdf">PDF</a></td>
+        <td><a href="asys/guias/tp2/resolucion/resolucion_tp2.pdf">PDF</a></td></tr>
+      <tr><td class="enunciado">TP 3</td><td>Sistemas de tiempo continuo</td>
+        <td><a href="asys/guias/tp3/tp3.pdf">PDF</a></td>
+        <td><a href="asys/guias/tp3/resolucion/resolucion_tp3.pdf">PDF</a></td></tr>
+      <tr><td class="enunciado">TP 4 · A</td><td>Serie de Fourier de tiempo continuo</td>
+        <td><a href="asys/guias/tp4/parte-a/tp4a.pdf">PDF</a></td>
+        <td><a href="asys/guias/tp4/parte-a/resolucion/resolucion_tp4a.pdf">PDF</a></td></tr>
+      <tr><td class="enunciado">TP 4 · B</td><td>Transformada de Fourier de tiempo continuo</td>
+        <td><a href="asys/guias/tp4/parte-b/tp4b.pdf">PDF</a></td>
+        <td><a href="asys/guias/tp4/parte-b/resolucion/resolucion_tp4b.pdf">PDF</a></td></tr>
+      <tr><td class="enunciado">TP 5</td><td>Transformada de Laplace</td>
+        <td><a href="asys/guias/tp5/tp5.pdf">PDF</a></td>
+        <td><a href="asys/guias/tp5/resolucion/resolucion_tp5.pdf">PDF</a></td></tr>
+      <tr><td class="enunciado">TP 6</td><td>Señales discretas y muestreo</td>
+        <td><a href="asys/guias/tp6/tp6.pdf">PDF</a></td>
+        <td><a href="asys/guias/tp6/resolucion/resolucion_tp6.pdf">PDF</a></td></tr>
+      <tr><td class="enunciado">TP 7</td><td>Sistemas de tiempo discreto</td>
+        <td><a href="asys/guias/tp7/tp7.pdf">PDF</a></td>
+        <td><a href="asys/guias/tp7/resolucion/resolucion_tp7.pdf">PDF</a></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="pie-h3" style="margin-top:12px">Las fuentes en LaTeX de cada guía y de cada
+  resolución están junto al PDF, en
+  <a href="https://github.com/javovelez/metodologia-autoria-ecefi2026/tree/main/asys/guias">asys/guias</a>.</p>
+
+  <h3>Animaciones interactivas</h3>
+  <p class="pie-h3">Cada una es una página HTML autónoma: no hay servidor, no hay build y no
+  hay pedidos de red, el archivo trae adentro todo lo que necesita. Cubren lo que una figura
+  impresa no puede mostrar, el movimiento y la dependencia de un parámetro. Quedan fuera las
+  del capítulo 10, todavía sin terminar.</p>
+  <ul class="fichas dos">
+    <li class="ficha"><span class="nombre">Convolución de dos pulsos</span>
+      <span class="detalle">Cap. 4</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/convolucion_dos_pulsos/convolucion_dos_pulsos.html">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Convolución de pulso y exponencial</span>
+      <span class="detalle">Cap. 4</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/convolucion_pulso_exp/convolucion_pulso_exp.html">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Convolución de dos exponenciales</span>
+      <span class="detalle">Cap. 4</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/convolucion_dos_exp/convolucion_dos_exp.html">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Exponencial compleja en 3D</span>
+      <span class="detalle">Cap. 2</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/exponencial_copleja/exponencial_compleja.html">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Serie de Fourier · la cadena de fasores</span>
+      <span class="detalle">Cap. 5 · onda cuadrada, vista 1</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/serie_fourier_cuadrada/v1_reloj_2d/v1_reloj_2d.html">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Serie de Fourier · la cadena en el tiempo</span>
+      <span class="detalle">Cap. 5 · onda cuadrada, vista 2</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/serie_fourier_cuadrada/v2_helice_3d/v2_helice_3d.html">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Serie de Fourier · el aporte de cada armónico</span>
+      <span class="detalle">Cap. 5 · onda cuadrada, vista 3</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/serie_fourier_cuadrada/v3_engranajes/v3_engranajes.html">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Serie de Fourier · armónicos y espectro</span>
+      <span class="detalle">Cap. 5 · onda cuadrada, vista 4</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/serie_fourier_cuadrada/v4_componentes_espectro/v4_componentes_espectro.html">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Muestreo · el peine de Dirac y su espectro</span>
+      <span class="detalle">Cap. 9 · con Δt variable</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/muestreo_espectro/v1_peine_espectro/v1_peine_espectro.html">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Muestreo · la convolución que replica el espectro</span>
+      <span class="detalle">Cap. 9</span>
+      <span class="enlaces"><a class="pastilla" href="asys/animaciones/muestreo_espectro/v2_replicacion_convolucion/v2_replicacion_convolucion.html">abrir</a></span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Teoría de los Circuitos II · material heredado</h2>
+  <p class="intro">Electrónica. La asignatura disponía de un apunte de cátedra en papel, de
+  valor reconocido y sin fuente digital. Se transcribió a LaTeX, se reorganizó en ocho
+  capítulos y sus circuitos se reconstruyeron como código. Se publica un trabajo práctico
+  completo: enunciado, resolución y presentación de clase, los tres derivados de la misma
+  fuente.</p>
+
+  <h3>Trabajo práctico 4</h3>
+  <ul class="fichas">
+    <li class="ficha"><span class="nombre">Enunciado</span>
+      <span class="detalle">Consigna entregada al estudiante</span>
+      <span class="enlaces">
+        <a class="pastilla" href="tc2/gabinete/tp4/TC-TP4-24-enunciado.pdf">PDF</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/tc2/gabinete/tp4/TC-TP4-24-enunciado.tex">.tex</a>
+      </span></li>
+    <li class="ficha"><span class="nombre">Resolución</span>
+      <span class="detalle">Fundada en la teoría del propio apunte de la cátedra</span>
+      <span class="enlaces">
+        <a class="pastilla" href="tc2/gabinete/tp4/TC-TP4-24-resolucion.pdf">PDF</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/tc2/gabinete/tp4/TC-TP4-24-resolucion.tex">.tex</a>
+      </span></li>
+    <li class="ficha"><span class="nombre">Presentación de clase</span>
+      <span class="detalle">Derivada del mismo enunciado</span>
+      <span class="enlaces">
+        <a class="pastilla" href="tc2/gabinete/tp4/TC-TP4-24-presentacion.pdf">PDF</a>
+        <a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/tc2/gabinete/tp4/TC-TP4-24-presentacion.tex">.tex</a>
+      </span></li>
+  </ul>
+  <p class="pie-h3" style="margin-top:18px">Los dieciséis archivos <code>.sch</code> de
+  <a href="https://github.com/javovelez/metodologia-autoria-ecefi2026/tree/main/tc2/gabinete/tp4/figures">tc2/gabinete/tp4/figures</a>
+  son la entrada de la biblioteca de esquemáticos: una descripción textual del circuito de la
+  que se genera el código del dibujo. La reconstrucción de los esquemáticos era la principal
+  restricción de productividad del proceso, y la herramienta que la levantó se construyó
+  dentro del mismo método.</p>
+</section>
+
+<section>
+  <h2>Redes Neuronales Profundas · guías de laboratorio</h2>
+  <p class="intro">Sistemas de Información. El formato de entrega es un cuaderno ejecutable que
+  combina consigna, código y salida. Se adoptó una fuente en texto plano que se compila al
+  cuaderno final: la guía queda bajo control de versiones y el cuaderno pasa a ser un producto
+  generado. Lo que se publica es el cuaderno tal como lo recibe el estudiante, sin resolver.</p>
+  <ul class="fichas dos">
+    <li class="ficha"><span class="nombre">Laboratorio 3a</span>
+      <span class="detalle">Cuaderno entregable</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/rnp/laboratorios/Laboratorio_3a.ipynb">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Laboratorio 4a</span>
+      <span class="detalle">Cuaderno entregable</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/rnp/laboratorios/Laboratorio_4a.ipynb">abrir</a></span></li>
+    <li class="ficha"><span class="nombre">Laboratorio 5a</span>
+      <span class="detalle">Cuaderno entregable</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/metodologia-autoria-ecefi2026/blob/main/rnp/laboratorios/Laboratorio_5a.ipynb">abrir</a></span></li>
+  </ul>
+  <p class="pie-h3" style="margin-top:18px">Ni las fuentes <code>.lab.md</code> ni las
+  resoluciones ni las rúbricas de estos laboratorios se publican: llevan las respuestas
+  adentro y los laboratorios están en uso. El formato de la fuente está documentado en
+  <a href="https://github.com/javovelez/lab-corrector">lab-corrector</a>.</p>
+</section>
+
+<section>
+  <h2>Herramientas del mismo método</h2>
+  <p class="intro">Ya son repositorios públicos por su cuenta, así que no se duplican acá. El
+  método produce, además del material didáctico, las herramientas de dominio que ese material
+  requiere.</p>
+  <ul class="fichas">
+    <li class="ficha"><span class="nombre">netlist2tikz</span>
+      <span class="detalle">Biblioteca de cincuenta y un módulos que traduce una descripción
+      textual de un circuito al código de su esquemático</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/netlist2tikz">repositorio</a></span></li>
+    <li class="ficha"><span class="nombre">Curso de introducción a Python</span>
+      <span class="detalle">Nueve módulos y seis laboratorios de apoyo para Análisis de Señales
+      y Sistemas</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/ASyS-utn-frm/python">repositorio</a></span></li>
+    <li class="ficha"><span class="nombre">lab-corrector</span>
+      <span class="detalle">Aplicación de apoyo a la corrección de laboratorios y contrato de
+      autoría de los cuadernos</span>
+      <span class="enlaces"><a class="pastilla" href="https://github.com/javovelez/lab-corrector">repositorio</a></span></li>
+  </ul>
+</section>
+
+<footer>
+  <p><strong>Cómo citar.</strong> Velez, J. I., y Puliafito, E. (2026). <em>Una metodología
+  agéntica y reproducible para producir material didáctico en ingeniería: tres cátedras, un
+  mismo método</em> [Trabajo presentado]. IX Congreso Internacional de Educadores en Ciencias
+  Empíricas en Facultades de Ingeniería (ECEFI 2026), Valparaíso, Chile.</p>
+  <p><strong>Licencia.</strong> El material didáctico de este repositorio se distribuye bajo
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">CC BY-NC-SA 4.0</a>. Las
+  herramientas enlazadas conservan la licencia de su propio repositorio.</p>
+  <p>Departamento de Ingeniería en Tecnologías Electrónicas · Universidad Tecnológica Nacional,
+  Facultad Regional Mendoza ·
+  <a href="https://github.com/javovelez/metodologia-autoria-ecefi2026">repositorio de esta página</a></p>
+</footer>
+
+</div>
+</body>
+</html>

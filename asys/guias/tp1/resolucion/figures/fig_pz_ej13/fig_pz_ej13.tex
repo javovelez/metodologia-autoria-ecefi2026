@@ -1,0 +1,114 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.0, font=\small]
+
+    % ============================================================
+    % PANEL IZQUIERDO: Ejercicio 13a
+    % f(z) = e^{3z} / (z^2 + 1/4)
+    % Polos: p1 = j/2,  p2 = -j/2
+    % C1:|z+1|=1  →  ningún polo dentro
+    % C2:|z-j|=1  →  p1 = j/2 dentro
+    % ============================================================
+    \begin{scope}
+        \useasboundingbox (-3.5, -3.0) rectangle (3.0, 3.2);
+
+        % Grid
+        \begin{scope}
+            \clip (-3.3,-2.5) rectangle (2.5,2.8);
+            \draw[help lines, gray!25, step=1] (-4,-3) grid (3,3);
+        \end{scope}
+
+        % Trayectorias
+        \begin{scope}
+            \clip (-3.3,-2.5) rectangle (2.5,2.8);
+            % C1: |z+1|=1, centro(-1,0), r=1  → ningún polo
+            \draw[utnblue, thick] (-1,0) circle (1);
+            % C2: |z-j|=1, centro(0,1), r=1   → p1=j/2 dentro
+            \draw[orange!80!black, thick] (0,1) circle (1);
+        \end{scope}
+
+        % Ejes
+        \draw[->, thick] (-3.1,0) -- (2.3,0) node[right, font=\scriptsize] {$\operatorname{Re}$};
+        \draw[->, thick] (0,-2.3) -- (0,2.6) node[above, font=\scriptsize] {$\operatorname{Im}$};
+        \foreach \x in {-2,-1,1,2} {
+            \draw (\x,0.07)--(\x,-0.07) node[below, font=\scriptsize] {$\x$};
+        }
+        \foreach \y in {-1,1} {
+            \draw (0.07,\y)--(-0.07,\y) node[left, font=\scriptsize] {$\y$};
+        }
+        \node[below left, font=\scriptsize] at (0,0) {$0$};
+
+        % Polos
+        \node[red!70!black, font=\large] at (0, 0.5) {$\times$};
+        \node[right, font=\scriptsize, red!70!black] at (0.1,0.5) {$\tfrac{j}{2}$};
+        \node[red!70!black, font=\large] at (0,-0.5) {$\times$};
+        \node[right, font=\scriptsize, red!70!black] at (0.1,-0.5) {$-\tfrac{j}{2}$};
+
+        % Etiquetas curvas
+        \node[utnblue, font=\scriptsize, anchor=north] at (-1,-1.1) {$C_1$};
+        \node[orange!80!black, font=\scriptsize, anchor=north] at (1.3,1.3) {$C_2$};
+
+        % Título panel
+        \node[anchor=north, font=\footnotesize\bfseries] at (0,-2.3)
+            {(a)\enspace $e^{3z}\!/\bigl(z^2{+}\tfrac{1}{4}\bigr)$};
+    \end{scope}
+
+    % ============================================================
+    % PANEL DERECHO: Ejercicio 13b  (desplazado 6.5 cm a la derecha)
+    % f(z) = 1/(z^4-1)
+    % Polos: ±1, ±j
+    % C1:|z+1|=1  →  p=-1 dentro
+    % C2:|z-j|=1  →  p=j dentro
+    % ============================================================
+    \begin{scope}[xshift=6.5cm]
+        \useasboundingbox (-3.3,-2.5) rectangle (2.5,2.8);
+
+        % Grid
+        \begin{scope}
+            \clip (-3.3,-2.5) rectangle (2.5,2.8);
+            \draw[help lines, gray!25, step=1] (-4,-3) grid (3,3);
+        \end{scope}
+
+        % Trayectorias
+        \begin{scope}
+            \clip (-3.3,-2.5) rectangle (2.5,2.8);
+            % C1: |z+1|=1, centro(-1,0), r=1  → p=-1 dentro
+            \draw[utnblue, thick] (-1,0) circle (1);
+            % C2: |z-j|=1, centro(0,1), r=1   → p=j dentro
+            \draw[orange!80!black, thick] (0,1) circle (1);
+        \end{scope}
+
+        % Ejes
+        \draw[->, thick] (-3.1,0) -- (2.3,0) node[right, font=\scriptsize] {$\operatorname{Re}$};
+        \draw[->, thick] (0,-2.3) -- (0,2.6) node[above, font=\scriptsize] {$\operatorname{Im}$};
+        \foreach \x in {-2,-1,1,2} {
+            \draw (\x,0.07)--(\x,-0.07) node[below, font=\scriptsize] {$\x$};
+        }
+        \foreach \y in {-1,1} {
+            \draw (0.07,\y)--(-0.07,\y) node[left, font=\scriptsize] {$\y$};
+        }
+        \node[below left, font=\scriptsize] at (0,0) {$0$};
+
+        % Polos
+        \node[red!70!black, font=\large] at ( 1, 0) {$\times$};
+        \node[below right, font=\scriptsize, red!70!black] at (1,0) {$1$};
+        \node[red!70!black, font=\large] at (-1, 0) {$\times$};
+        \node[below left, font=\scriptsize, red!70!black] at (-1,0) {$-1$};
+        \node[red!70!black, font=\large] at ( 0, 1) {$\times$};
+        \node[above right, font=\scriptsize, red!70!black] at (0,1) {$j$};
+        \node[red!70!black, font=\large] at ( 0,-1) {$\times$};
+        \node[below right, font=\scriptsize, red!70!black] at (0,-1) {$-j$};
+
+        % Etiquetas curvas
+        \node[utnblue, font=\scriptsize, anchor=north] at (-1,-1.1) {$C_1$};
+        \node[orange!80!black, font=\scriptsize, anchor=west] at (0.9,1.0) {$C_2$};
+
+        % Título panel
+        \node[anchor=north, font=\footnotesize\bfseries] at (0,-2.3)
+            {(b)\enspace $1/(z^4{-}1)$};
+    \end{scope}
+
+\end{tikzpicture}
+\end{document}

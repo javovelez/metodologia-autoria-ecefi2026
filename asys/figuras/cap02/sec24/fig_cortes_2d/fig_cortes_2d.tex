@@ -1,0 +1,53 @@
+\documentclass[border=10pt]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{groupplot}[
+            group style={
+                group size=2 by 1,
+                horizontal sep=1.8cm,
+            },
+            width=7.2cm,
+            height=6cm,
+            xlabel={Eje Imaginario $y$},
+            grid=both,
+            grid style={line width=.1pt, draw=gray!15},
+            major grid style={line width=.2pt, draw=gray!40},
+            domain=-10:10,
+            samples=151,
+            axis line style={gray!60},
+            tick label style={font=\footnotesize},
+            label style={font=\small},
+            title style={font=\bfseries\small},
+            no markers,
+            enlarge x limits=false,
+        ]
+        
+        % Gráfica de Magnitud
+        \nextgroupplot[
+            ylabel={Magnitud $|f(jy)|$},
+            title={Perfil de Magnitud $|f(jy)|$},
+            ymin=0, ymax=6,
+            ytick={0,1,2,3,4,5},
+        ]
+        \addplot[very thick, utnblue] {10/sqrt(4 + x^2)};
+        \addplot[fill=utnblue, fill opacity=0.08, draw=none] {10/sqrt(4 + x^2)} \closedcycle;
+        
+        % Gráfica de Fase
+        \nextgroupplot[
+            ylabel={Fase $\arg(f(jy))$ (rad)},
+            title={Perfil de Fase $\arg(f(jy))$},
+            ymin=-2, ymax=2,
+            ytick={-1.5708, -0.7854, 0, 0.7854, 1.5708},
+            yticklabels={$-\pi/2$, $-\pi/4$, $0$, $\pi/4$, $\pi/2$},
+        ]
+        \addplot[very thick, red!70!black] {-rad(atan(x/2))};
+        \draw[dashed, gray!60] (axis cs:-10,0) -- (axis cs:10,0);
+        
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}
+
+
+

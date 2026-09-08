@@ -1,0 +1,679 @@
+\documentclass[class=book, crop=false]{standalone}
+\input{../../setup.tex}
+
+\begin{document}
+\setcounter{chapter}{5}
+\section{Serie de Fourier exponencial y armónica}
+\label{sec:serie_fourier}
+
+En esta sección construimos la representación de una señal
+\textbf{periódica} $x(t)$, de período $T_0$ y frecuencia angular
+$\omega_0 = 2\pi/T_0$, como combinación lineal de las exponenciales
+armónicas $\{e^{jk\omega_0 t}\}_{k\in\mathbb{Z}}$. La sección anterior
+dejó las dos piezas que necesitamos para hacerlo: el producto interno
+entre señales y la verificación de que esas exponenciales son
+ortogonales sobre cualquier intervalo de longitud $T_0$. Con esos dos
+ingredientes, la fórmula de descomposición sobre base ortogonal de
+$\mathbb{R}^n$ ---ecuación~\eqref{eq:coefs_ortogonal_Rn}--- se traslada
+literalmente al espacio de señales: dada una base ortogonal
+$\{\phi_k\}$ y una señal $x(t)$, los coeficientes de la combinación
+$x(t) = \sum_k c_k\,\phi_k(t)$ son
+\begin{equation}
+    c_k \;=\; \frac{\langle x,\phi_k\rangle}{\|\phi_k\|^2}.
+    \label{eq:coefs_generalizados}
+\end{equation}
+Lo único que cambia entre el caso finito y el de señales es la forma
+del producto interno: en $\mathbb{R}^n$ era una suma sobre coordenadas;
+en señales es la integral $\int x(t)\,\overline{\phi_k(t)}\,dt$
+definida en~\eqref{eq:pi_senales}. La estructura es idéntica. Lo que
+sigue del capítulo aplica esta fórmula al caso particular en que los
+$\phi_k$ son las exponenciales armónicas. Ahí los coeficientes dejan
+de ser etiquetas abstractas y empiezan a hablar de \emph{frecuencia}.
+
+% ==============================================================================
+% 5.2.1 Serie exponencial compleja
+% ==============================================================================
+\subsection{Serie exponencial compleja}
+\label{subsec:serie_exp_compleja}
+
+Aplicamos la receta~\eqref{eq:coefs_generalizados} al sistema de
+exponenciales armónicas $\phi_k(t) = e^{jk\omega_0 t}$ sobre un
+período. La norma cuadrática de cada elemento de la base es inmediata:
+con $n = m = k$ en la ortogonalidad exponencial~\eqref{eq:ort_exp},
+\begin{equation*}
+    \|\phi_k\|^2
+    \;=\; \int_{T_0} e^{jk\omega_0 t}\,\overline{e^{jk\omega_0 t}}\,dt
+    \;=\; \int_{T_0} 1\,dt
+    \;=\; T_0,
+\end{equation*}
+independientemente de $k$. Y el producto interno de $x$ con $\phi_k$,
+recordando que $\overline{e^{jk\omega_0 t}} = e^{-jk\omega_0 t}$, es
+\begin{equation*}
+    \langle x,\phi_k\rangle
+    \;=\; \int_{T_0} x(t)\,e^{-jk\omega_0 t}\,dt.
+\end{equation*}
+Reemplazando en~\eqref{eq:coefs_generalizados}, los coeficientes
+quedan
+\begin{equation}
+    c_k \;=\; \frac{1}{T_0}\int_{T_0} x(t)\,e^{-jk\omega_0 t}\,dt,
+    \qquad k \in \mathbb{Z},
+    \label{eq:ck_analisis}
+\end{equation}
+y la combinación lineal correspondiente,
+\begin{equation}
+    x(t) \;=\; \sum_{k=-\infty}^{\infty} c_k\,e^{jk\omega_0 t},
+    \label{eq:sf_sintesis}
+\end{equation}
+es la \textbf{serie de Fourier exponencial} de la señal periódica
+$x(t)$. La igualdad en~\eqref{eq:sf_sintesis} requiere precisar en
+qué sentido se entiende ---convergencia puntual, en norma cuadrática,
+comportamiento en las discontinuidades---, y eso es el tema de la
+sección siguiente; en lo que resta de la actual la tomamos como
+asumida. La fórmula~\eqref{eq:ck_analisis} se llama de \emph{análisis}
+---calcula cada $c_k$ a partir de la señal--- y
+la~\eqref{eq:sf_sintesis} de \emph{síntesis} ---reconstruye la señal a
+partir de los coeficientes---.
+
+Hasta aquí la receta. Lo que vuelve esto interpretable, y lo que
+conecta la serie de Fourier con lo construido en el
+Capítulo~\ref{cap02}, es leer cada término $c_k\,e^{jk\omega_0 t}$
+geométricamente. La exponencial $e^{jk\omega_0 t}$ es el
+\textbf{vector giratorio} de~\eqref{eq:vector_giratorio} con
+$\omega = k\omega_0$: para cada $t$, un punto de módulo $1$ en el
+plano complejo; como función de $t$, recorre la circunferencia
+unitaria a velocidad angular $k\omega_0$. Multiplicarlo por el
+coeficiente complejo $c_k = |c_k|\,e^{j\angle c_k}$ escala su
+módulo a $|c_k|$ y desplaza su fase inicial en $\angle c_k$, sin
+alterar la velocidad de giro. Cada término $c_k\,e^{jk\omega_0 t}$
+de la síntesis es entonces una versión escalada y desfasada del
+vector giratorio $e^{jk\omega_0 t}$.
+
+Conviene leer la suma~\eqref{eq:sf_sintesis} término a término.
+Desplegándola alrededor del cero,
+\begin{equation*}
+    x(t) \;=\; \cdots
+            + c_{-2}\,e^{-j 2\omega_0 t}
+            + c_{-1}\,e^{-j\omega_0 t}
+            + c_{0}
+            + c_{1}\,e^{j\omega_0 t}
+            + c_{2}\,e^{j 2\omega_0 t}
+            + \cdots,
+\end{equation*}
+a cada sumando $c_k\,e^{jk\omega_0 t}$ lo llamamos
+\textbf{armónico} de la señal y lo nombramos por su orden $k$:
+el armónico de $k=1$, de frecuencia $\omega_0$ ---la del propio
+período $T_0$---, es el \textbf{armónico fundamental} (o
+simplemente la \emph{fundamental}); el de $k=2$, el
+\textbf{segundo armónico}; el de $k=3$, el \textbf{tercer
+armónico}; y así sucesivamente. La frecuencia $\omega_0$ se
+llama también \textbf{frecuencia fundamental} de la señal, y los
+múltiplos enteros $k\omega_0$ son las frecuencias de los
+armónicos sucesivos. La síntesis reconstruye $x(t)$ como
+superposición de todos sus armónicos, uno por cada
+$k\in\mathbb{Z}$.
+
+El armónico $k=0$ es la única excepción al giro. Su exponencial
+vale $e^{j\cdot 0\cdot \omega_0 t} = 1$ ---no rota, no oscila,
+no depende del tiempo---, así que el sumando se reduce a la
+constante $c_0$. Es el único armónico constante de toda la
+suma; los demás oscilan en el tiempo. Su valor sale directo de
+la fórmula de análisis~\eqref{eq:ck_analisis} con $k=0$, donde
+el integrando se reduce a $x(t)$:
+\begin{equation*}
+    c_0 \;=\; \frac{1}{T_0}\int_{T_0} x(t)\,dt.
+\end{equation*}
+El segundo miembro es exactamente el \textbf{valor medio} de
+$x(t)$ sobre un período ---introducido en el
+Capítulo~\ref{cap03} y también llamado \emph{componente
+continua} o \emph{componente DC}---. La serie de Fourier
+descompone entonces a la señal en un valor medio $c_0$,
+alrededor del cual no hay oscilación, más la superposición de
+los armónicos $c_k\,e^{jk\omega_0 t}$ con $k\neq 0$ que sí
+oscilan.
+
+El índice $k$ corre sobre todos los enteros, positivos y
+negativos. El vector giratorio $e^{jk\omega_0 t}$ con $k > 0$
+rota antihorariamente; con $k < 0$, en sentido horario, según
+la convención de signo del Capítulo~\ref{cap02}. Cuando $x(t)$
+es real ---el caso usual del libro---, los coeficientes quedan
+ligados por la simetría conjugada $c_{-k} = \overline{c_k}$, y
+entonces las componentes $c_k\,e^{jk\omega_0 t}$ y
+$c_{-k}\,e^{-jk\omega_0 t}$ son vectores giratorios conjugados
+---uno antihorario, uno horario, con módulos iguales---, cuya
+suma es una sinusoide real, como vimos en el
+Capítulo~\ref{cap02}. La formalizaremos como propiedad en la
+Subsección~\ref{subsec:prop_conjugacion}.
+
+\begin{resultado}[Serie de Fourier exponencial]
+Sea $x(t)$ una señal periódica de período $T_0$ y frecuencia angular
+$\omega_0 = 2\pi/T_0$. Sus coeficientes de Fourier son
+\begin{equation}
+    c_k \;=\; \frac{1}{T_0}\int_{T_0} x(t)\,e^{-jk\omega_0 t}\,dt,
+    \qquad k \in \mathbb{Z},
+    \label{eq:ck_analisis_box}
+\end{equation}
+y la síntesis de la señal a partir de ellos es
+\begin{equation}
+    x(t) \;=\; \sum_{k=-\infty}^{\infty} c_k\,e^{jk\omega_0 t}.
+    \label{eq:sf_sintesis_box}
+\end{equation}
+\end{resultado}
+
+\paragraph{Señales complejas y reales.}
+La fórmula de análisis~\eqref{eq:ck_analisis_box} acepta
+cualquier señal periódica $x(t)$, sea esta real o compleja; las
+afirmaciones de las secciones siguientes que dependan de la
+hipótesis ``$x$ real'' las marcaremos explícitamente.
+
+\begin{nota}[Animaciones del capítulo]
+Las exponenciales armónicas son objetos en movimiento, y la imagen
+estática del libro pierde parte de la geometría. Junto al capítulo
+se incluyen animaciones que muestran el giro de los vectores
+$c_k\,e^{jk\omega_0 t}$ y la formación de la señal periódica como
+superposición de pares conjugados que giran en sentidos opuestos.
+\end{nota}
+
+% ==============================================================================
+% 5.2.2 Ejemplo: pulso rectangular periódico
+% ==============================================================================
+\subsection{Ejemplo: pulso rectangular periódico}
+\label{subsec:ejemplo_pulso}
+
+Aplicamos la receta a un \textbf{tren periódico de pulsos
+rectangulares} con valores numéricos concretos: la señal toma
+amplitud $1$ sobre una ventana centrada de ancho $\tau = 1$ y vale
+$0$ en el resto del período $T_0 = 4$,
+\begin{equation*}
+    x(t) \;=\;
+    \begin{cases}
+        1, & |t| \leq 1/2, \\
+        0, & 1/2 < |t| \leq 2,
+    \end{cases}
+    \qquad
+    x(t + 4) \;=\; x(t),
+\end{equation*}
+con frecuencia angular $\omega_0 = 2\pi/T_0 = \pi/2$. La
+figura~\ref{fig:tren_pulsos} grafica dos períodos de la señal. Para
+aprovechar la simetría par del pulso integramos sobre el intervalo
+simétrico $[-2,\,2]$.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.75\linewidth]{figures/fig_tren_pulsos/fig_tren_pulsos}
+        \caption{Tren periódico de pulsos rectangulares de período
+                 $T_0 = 4$ y ancho $\tau = 1$. La amplitud vale $1$
+                 sobre la ventana centrada en cada múltiplo de $T_0$
+                 y $0$ entre ventanas.}
+        \label{fig:tren_pulsos}
+    \end{minipage}
+\end{figure}
+
+\paragraph{Cálculo de $c_0$.}
+Por la lectura de $c_0$ como valor medio de la señal, el
+coeficiente sale por inspección: el pulso vale $1$ sobre una
+ventana de ancho $1$ y $0$ sobre el resto del período de
+longitud $T_0=4$, así que su promedio es la cuarta parte de su
+amplitud,
+\begin{equation*}
+    c_0 \;=\; \frac{1}{4}.
+\end{equation*}
+Aplicar la fórmula de análisis~\eqref{eq:ck_analisis_box} con
+$k=0$ ---el camino general, útil cuando la inspección no es tan
+directa--- da el mismo número:
+\begin{equation*}
+    c_0 \;=\; \frac{1}{T_0}\int_{T_0} x(t)\,dt
+        \;=\; \frac{1}{4}\int_{-1/2}^{1/2} 1\,dt
+        \;=\; \frac{1}{4}.
+\end{equation*}
+
+\paragraph{Cálculo de $c_k$ para $k \neq 0$.}
+Como $x(t) = 1$ dentro de la ventana central y $0$ fuera, la
+integral de análisis se reduce a la ventana:
+\begin{equation*}
+    c_k \;=\; \frac{1}{4}\int_{-1/2}^{1/2} e^{-jk\omega_0 t}\,dt.
+\end{equation*}
+La primitiva de $e^{-jk\omega_0 t}$ es
+$e^{-jk\omega_0 t}/(-jk\omega_0)$. Evaluando entre $-1/2$ y $1/2$,
+\begin{equation*}
+    c_k \;=\; \frac{1}{4}\cdot
+        \frac{e^{-jk\omega_0/2} - e^{jk\omega_0/2}}{-jk\omega_0}.
+\end{equation*}
+Conviene reordenar el numerador en el orden estándar de la
+identidad de Euler $e^{j\theta} - e^{-j\theta} = 2j\sin\theta$.
+Para eso intercambiamos los dos términos de la resta y absorbemos
+el signo negativo en el prefactor:
+\begin{equation*}
+    c_k \;=\; \frac{1}{4}\cdot
+        \frac{e^{jk\omega_0/2} - e^{-jk\omega_0/2}}{jk\omega_0}.
+\end{equation*}
+Aplicando ahora la identidad de Euler con $\theta = k\omega_0/2$,
+\begin{equation*}
+    c_k \;=\; \frac{1}{4}\cdot
+        \frac{2j\sin(k\omega_0/2)}{jk\omega_0}
+    \;=\; \frac{\sin(k\omega_0/2)}{2\,k\omega_0},
+\end{equation*}
+donde el factor $j$ del numerador canceló contra el del
+denominador. Para reconocer el seno cardinal
+$\operatorname{sinc}(x) = \sin(x)/x$ ---introducido
+en la Subsección~\ref{subsec:sinc}--- conviene un último paso de cosmética:
+multiplicar numerador y denominador por $2$ de modo que el
+argumento del seno aparezca también en el denominador,
+\begin{equation*}
+    c_k \;=\; \frac{1}{4}\cdot
+        \frac{\sin(k\omega_0/2)}{k\omega_0/2}
+        \;=\; \frac{1}{4}\,\operatorname{sinc}\!\Bigl(\frac{k\omega_0}{2}\Bigr).
+\end{equation*}
+Sustituyendo el valor concreto $\omega_0 = \pi/2$ del ejemplo,
+\begin{equation}
+    c_k \;=\; \frac{1}{4}\,\operatorname{sinc}\!\Bigl(\frac{k\pi}{4}\Bigr),
+    \qquad k \in \mathbb{Z}.
+    \label{eq:ck_pulso}
+\end{equation}
+La fórmula vale también para $k=0$ con la convención
+$\operatorname{sinc}(0) = 1$: recupera $c_0 = 1/4$ y deja una sola
+expresión para todos los enteros. Se ve ahora por qué convenía
+calcular $c_0$ aparte: la primitiva $e^{-jk\omega_0 t}/(-jk\omega_0)$
+de la que partimos tiene $k$ en el denominador, y la cuenta entera
+no estaba definida en $k=0$. La sinc al final unifica los dos casos,
+pero para llegar a ella hubo que pasar por una primitiva que excluía
+el cero.
+
+\paragraph{Coeficientes uno a uno.}
+Evaluemos~\eqref{eq:ck_pulso} en los primeros enteros, agregando
+en cada fila la \textbf{forma polar} ---\emph{módulo} $\angle$
+\emph{fase}---, que es la que hace falta para leer cada
+coeficiente como un vector en el plano. Como los $c_k$ del pulso
+son reales, la fase vale $0$ cuando $c_k > 0$ y $\pi$ cuando
+$c_k < 0$ (porque $-|c_k| = |c_k|\,e^{j\pi}$). El armónico
+$k=0$ va aparte; el resto lo agrupamos en columnas paralelas,
+$c_k$ a la izquierda y $c_{-k}$ a la derecha:
+\begin{align*}
+    c_0  &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(0)
+                \;=\; \tfrac{1}{4}
+                \;=\; \tfrac{1}{4}\,\angle\,0, \\[2pt]
+    c_1  &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(\pi/4)
+                \;\approx\; 0{,}225
+                \;\approx\; 0{,}225\,\angle\,0,
+    & c_{-1} &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(-\pi/4)
+                \;\approx\; 0{,}225
+                \;\approx\; 0{,}225\,\angle\,0, \\[2pt]
+    c_2  &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(\pi/2)
+                \;\approx\; 0{,}159
+                \;\approx\; 0{,}159\,\angle\,0,
+    & c_{-2} &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(-\pi/2)
+                \;\approx\; 0{,}159
+                \;\approx\; 0{,}159\,\angle\,0, \\[2pt]
+    c_3  &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(3\pi/4)
+                \;\approx\; 0{,}075
+                \;\approx\; 0{,}075\,\angle\,0,
+    & c_{-3} &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(-3\pi/4)
+                \;\approx\; 0{,}075
+                \;\approx\; 0{,}075\,\angle\,0, \\[2pt]
+    c_4  &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(\pi)
+                \;=\; 0,
+    & c_{-4} &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(-\pi)
+                \;=\; 0, \\[2pt]
+    c_5  &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(5\pi/4)
+                \;\approx\; -0{,}045
+                \;\approx\; 0{,}045\,\angle\,\pi,
+    & c_{-5} &\;=\; \tfrac{1}{4}\,\operatorname{sinc}(-5\pi/4)
+                \;\approx\; -0{,}045
+                \;\approx\; 0{,}045\,\angle\,\pi.
+\end{align*}
+Las dos columnas coinciden número a número: $c_{-k} = c_k$
+porque el seno cardinal es par en su argumento.
+
+Dos observaciones se desprenden del listado, y vale la pena
+nombrarlas porque vamos a retomar este ejemplo en la
+Sección~\ref{sec:convergencia_propiedades}. Primero, los $c_k$ del pulso
+resultan \textbf{reales} para todo $k$ ---en polar, las fases solo
+toman los valores $0$ y $\pi$, sin valores intermedios---. Segundo,
+sus módulos son \textbf{pares} en $k$ ---$|c_{-k}| = |c_k|$--- y la
+sucesión cambia de signo en cada cero del seno cardinal: positiva para
+$|k| \leq 3$, nula en $|k| = 4$, negativa entre $|k|=5$ y $|k|=7$,
+y así sucesivamente. Las dos observaciones no son casualidad: en la
+sección siguiente vamos a ver que son consecuencias directas de la
+simetría conjugada de las señales reales y de la simetría par del
+pulso.
+
+\paragraph{Lectura geométrica de los términos.}
+Cada término $c_k\,e^{jk\omega_0 t}$ de la
+síntesis~\eqref{eq:sf_sintesis_box} es un vector giratorio de
+módulo $|c_k|$ y velocidad angular $k\omega_0$, en la lectura
+desarrollada en la Subsección~\ref{subsec:serie_exp_compleja}. Para nuestro
+ejemplo, la velocidad angular del armónico $k$ es
+$k\omega_0 = k\pi/2$, y los módulos $|c_k|$ son los del listado en
+forma polar.
+
+La figura~\ref{fig:vectores_pulso} muestra ocho vectores
+---correspondientes a $k = \pm 1, \pm 2, \pm 3, \pm 4$---: los de
+$k>0$ giran antihorariamente sobre circunferencias de radio
+$|c_k|$, y los de $k<0$ giran horariamente sobre circunferencias
+del mismo radio (los módulos son pares en $k$, como acabamos de
+ver). La superposición de estos vectores, junto con los infinitos
+restantes, reconstruye la señal real $x(t)$.
+
+La fase ya quedó leída en el listado polar. Para $|k| \leq 3$ vale
+$0$: el vector arranca apuntando al semieje real positivo. Recién
+a partir de $|k|=5$ ---donde el seno cardinal cruza por su primer cero y
+vuelve con signo opuesto--- la fase pasa a $\pi$, y los vectores
+arrancan apuntando al semieje real negativo (rotación inicial de
+media vuelta).
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=\linewidth]{figures/fig_vectores_pulso/fig_vectores_pulso}
+        \caption{Vectores giratorios $c_k\,e^{jk\omega_0 t}$ del
+                 tren de pulsos rectangulares con $\tau = 1$,
+                 $T_0 = 4$. Cada panel muestra la circunferencia
+                 de radio $|c_k|$ y el sentido de giro, con el
+                 orden $k$ del armónico marcado arriba. La fila
+                 superior corresponde a los $k$ positivos (giro
+                 antihorario) y la inferior a los negativos (giro
+                 horario). El armónico $k = \pm 4$ tiene módulo
+                 nulo porque $\operatorname{sinc}(\pi) = 0$.}
+        \label{fig:vectores_pulso}
+    \end{minipage}
+\end{figure}
+
+\paragraph{Función de síntesis.}
+Reuniendo todo, la serie de Fourier del pulso tiene en forma
+compacta la expresión
+\begin{equation*}
+    x(t) \;=\; \sum_{k=-\infty}^{\infty}
+        \frac{1}{4}\,\operatorname{sinc}\!\Bigl(\frac{k\pi}{4}\Bigr)
+        \,e^{j k \pi t/2},
+\end{equation*}
+y, sustituyendo los valores numéricos de los primeros armónicos,
+se despliega como
+\begin{align*}
+    x(t) \;\approx\; \cdots
+        & + 0{,}075\,e^{-j 3\pi t/2}
+        + 0{,}159\,e^{-j\pi t}
+        + 0{,}225\,e^{-j\pi t/2}
+        + \tfrac{1}{4} \\
+        & + 0{,}225\,e^{j\pi t/2}
+        + 0{,}159\,e^{j\pi t}
+        + 0{,}075\,e^{j 3\pi t/2}
+        + \cdots
+\end{align*}
+La señal queda escrita como un nivel medio $1/4$ más una
+superposición simétrica de armónicos en pares conjugados.
+
+\paragraph{Reconstrucción truncada.}
+Recuperamos la señal aplicando la síntesis~\eqref{eq:sf_sintesis_box},
+pero truncando la suma a un número finito de armónicos:
+\begin{equation*}
+    \hat{x}_N(t) \;=\; \sum_{k=-N}^{N} c_k\,e^{jk\omega_0 t}.
+\end{equation*}
+La figura~\ref{fig:pulso_reconstruccion} muestra $\hat{x}_N(t)$ para
+$N = 1, 3, 7, 21$ superpuesta al pulso original. Al aumentar $N$ la
+aproximación se ajusta cada vez mejor sobre los tramos donde la señal
+es constante, pero \emph{persiste un sobrepico junto a las
+discontinuidades} que no se atenúa al aumentar $N$: solo se vuelve más
+angosto y se desplaza más cerca del salto. Este comportamiento
+puntual, conocido como \emph{fenómeno de Gibbs}, queda completamente
+explicado en la sección siguiente.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.7\linewidth]{figures/fig_pulso_reconstruccion/fig_pulso_reconstruccion}
+        \caption{Aproximación $\hat{x}_N(t) = \sum_{k=-N}^{N} c_k
+                 e^{jk\omega_0 t}$ del tren de pulsos rectangulares
+                 ($\tau = 1$, $T_0 = 4$). En cada panel, la señal
+                 original en azul y la aproximación truncada en rojo.
+                 (a) $N = 1$. (b) $N = 3$. (c) $N = 7$. (d) $N = 21$.
+                 Al aumentar $N$ la curva se acerca a la señal en los
+                 tramos constantes, pero el sobrepico junto a las
+                 discontinuidades no se atenúa.}
+        \label{fig:pulso_reconstruccion}
+    \end{minipage}
+\end{figure}
+
+% ==============================================================================
+% 5.2.3 Espectros de líneas
+% ==============================================================================
+\subsection{Espectros de líneas}
+\label{subsec:espectros_lineas}
+
+Los coeficientes $c_k$ son números complejos indexados por un
+entero, y como tales se grafican naturalmente como dos
+sucesiones discretas: el \textbf{espectro de módulos} $|c_k|$
+y el \textbf{espectro de fases} $\angle c_k$. Cada coeficiente
+ocupa un punto de la \emph{grilla armónica} ---el eje
+horizontal discreto, con un lugar reservado para cada
+$k\in\mathbb{Z}$--- y se dibuja como un \emph{stem}
+---segmento vertical con un punto en el extremo---. La imagen
+resultante, llamada \textbf{espectro de líneas}, es la
+representación gráfica más usada de una señal periódica en el
+dominio de la frecuencia.
+
+El eje horizontal admite dos convenciones equivalentes para
+rotularse: por la frecuencia $k\omega_0$ ---grilla separada
+por $\omega_0$, con unidades físicas--- o por el índice entero
+$k$ ---grilla unitaria, números más limpios---. Las dos
+aparecen en la práctica; lo que importa es elegir una y
+mantenerla dentro de un mismo gráfico. En esta subsección
+usamos el índice $k$.
+
+El espectro de líneas determina por completo a $x(t)$ vía la
+fórmula de síntesis~\eqref{eq:sf_sintesis_box}: dos
+representaciones equivalentes de la misma señal, una sobre el
+eje del tiempo y otra sobre la grilla armónica.
+
+\paragraph{Espectro del pulso rectangular.}
+Con los $c_k$ ya calculados, el espectro de líneas del pulso
+sale por simple graficación. La
+figura~\ref{fig:espectro_pulso} muestra el módulo $|c_k|$ y la
+fase $\angle c_k$ contra el índice $k$.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.65\linewidth]{figures/fig_espectro_pulso/fig_espectro_pulso}
+        \caption{Espectro de líneas del tren de pulsos rectangulares
+                 con $\tau = 1$, $T_0 = 4$.
+                 (a) Módulo $|c_k|$ con la envolvente sinc en línea
+                 punteada; los ceros aparecen en los múltiplos enteros
+                 de $T_0/\tau = 4$.
+                 (b) Fase $\angle c_k$, que alterna entre $0$ y $\pi$.}
+        \label{fig:espectro_pulso}
+    \end{minipage}
+\end{figure}
+
+Mirando los gráficos hay un hecho que sumar a las observaciones
+del listado: la fase $\angle c_k$ es \textbf{impar} en $k$
+---los stems de $k$ y $-k$ son opuestos en signo---. Es otra
+firma gráfica de las señales periódicas reales, que se
+formaliza junto con la paridad del módulo en la
+Subsección~\ref{subsec:prop_conjugacion}.
+
+% ==============================================================================
+% 5.2.4 Ejemplo: diente de sierra
+% ==============================================================================
+\subsection{Ejemplo: diente de sierra}
+\label{subsec:ejemplo_sierra}
+
+Como segundo ejemplo desarrollaremos el \textbf{diente de
+sierra}. La señal crece linealmente desde $0$ hasta $2$ a lo
+largo de un período y vuelve a $0$ por un salto en cada
+múltiplo entero del período. Trabajamos con el mismo período
+$T_0 = 4$ del pulso ---y la misma frecuencia fundamental
+$\omega_0 = \pi/2$---, ubicamos el salto en $t = 0$ y
+definimos
+\begin{equation*}
+    x(t) \;=\; \frac{t}{2}, \qquad t \in [0, 4),
+    \qquad x(t+4) = x(t).
+\end{equation*}
+La figura~\ref{fig:diente_sierra_sf} grafica dos períodos.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.75\linewidth]{figures/fig_diente_sierra/fig_diente_sierra}
+        \caption{Diente de sierra de período $T_0 = 4$. La
+                 rampa sube de $0$ a $2$ dentro de cada
+                 período y vuelve a $0$ por el salto en los
+                 múltiplos enteros de $T_0$.}
+        \label{fig:diente_sierra_sf}
+    \end{minipage}
+\end{figure}
+
+A diferencia del pulso, el diente de sierra crece de manera
+monótona y termina en un salto. Tiene \textbf{nivel medio} $1$
+---el promedio entre el inicio en $0$ y el final en $2$---, y
+oscila alrededor de ese valor.
+
+\paragraph{Cálculo de $c_0$.}
+$c_0$ es el valor medio de la señal sobre un período. Para la
+rampa basta mirar la figura~\ref{fig:diente_sierra_sf}: como sube
+linealmente desde $0$ hasta $2$ a lo largo del período, su
+promedio es el punto medio entre los dos extremos,
+$c_0 = (0+2)/2 = 1$. Dicho de otro modo, la línea horizontal
+$y = 1$ cruza la rampa en la mitad del período y deja igual área
+arriba y abajo de ella.
+
+La cuenta analítica lo confirma. Tomando $k=0$ en la fórmula de
+análisis~\eqref{eq:ck_analisis_box},
+\begin{equation*}
+    c_0 \;=\; \frac{1}{4}\int_{0}^{4} \frac{t}{2}\,dt
+        \;=\; \frac{1}{8}\int_{0}^{4} t\,dt
+        \;=\; \frac{1}{8}\left[\frac{t^2}{2}\right]_{0}^{4}
+        \;=\; \frac{1}{8}\cdot 8
+        \;=\; 1.
+\end{equation*}
+
+\paragraph{Cálculo de $c_k$ para $k \neq 0$.}
+Aplicando la fórmula de análisis~\eqref{eq:ck_analisis_box}
+sobre el período $[0, T_0)$,
+\begin{equation*}
+    c_k \;=\; \frac{1}{4}\int_{0}^{4} \frac{t}{2}\,
+            e^{-jk\omega_0 t}\,dt
+        \;=\; \frac{1}{8}\int_{0}^{4} t\,e^{-jk\omega_0 t}\,dt.
+\end{equation*}
+La integral pide \emph{integración por partes}, con $u = t$ y
+$dv = e^{-jk\omega_0 t}\,dt$:
+\begin{equation*}
+    \int_{0}^{4} t\,e^{-jk\omega_0 t}\,dt
+    \;=\; \left[\frac{t\,e^{-jk\omega_0 t}}{-jk\omega_0}\right]_{0}^{4}
+    \;-\; \int_{0}^{4} \frac{e^{-jk\omega_0 t}}{-jk\omega_0}\,dt.
+\end{equation*}
+La segunda integral se anula: el integrando es una exponencial
+armónica de orden $k\neq 0$ y se integra sobre un período
+completo. Queda solo el término de borde. Como
+$e^{-jk\omega_0 \cdot 4} = e^{-2jk\pi} = 1$ para todo entero
+$k$,
+\begin{equation*}
+    \left[\frac{t\,e^{-jk\omega_0 t}}{-jk\omega_0}\right]_{0}^{4}
+    \;=\; \frac{4\cdot 1 - 0}{-jk\omega_0}
+    \;=\; \frac{4}{-jk\omega_0}
+    \;=\; \frac{4j}{-j^2\,k\omega_0}
+    \;=\; \frac{4j}{k\omega_0},
+\end{equation*}
+donde multiplicamos numerador y denominador por $j$ y usamos
+$j^2 = -1$. Sustituyendo en $c_k$,
+\begin{equation*}
+    c_k \;=\; \frac{1}{8}\cdot\frac{4j}{k\omega_0}
+        \;=\; \frac{j}{2\,k\omega_0},
+\end{equation*}
+y reemplazando $\omega_0 = \pi/2$,
+\begin{equation}
+    c_k \;=\; \frac{j}{\pi k},
+        \qquad k \neq 0.
+    \label{eq:ck_sierra}
+\end{equation}
+
+\paragraph{Coeficientes uno a uno.}
+Los $c_k$ del diente de sierra son \textbf{puramente
+imaginarios} para $k\neq 0$: la fase vale $+\pi/2$ para los
+$k>0$ y $-\pi/2$ para los $k<0$, y el módulo $1/(\pi|k|)$
+decrece como $1/|k|$. Listando los primeros enteros en pares
+de índice opuesto, ya en forma polar:
+\begin{align*}
+    c_0 &\;=\; 1, \\[2pt]
+    c_1 &\;=\; j/\pi
+            \;\approx\; 0{,}318\,\angle\,(\pi/2),
+    & c_{-1} &\;=\; -j/\pi
+            \;\approx\; 0{,}318\,\angle\,(-\pi/2), \\[2pt]
+    c_2 &\;=\; j/(2\pi)
+            \;\approx\; 0{,}159\,\angle\,(\pi/2),
+    & c_{-2} &\;=\; -j/(2\pi)
+            \;\approx\; 0{,}159\,\angle\,(-\pi/2), \\[2pt]
+    c_3 &\;=\; j/(3\pi)
+            \;\approx\; 0{,}106\,\angle\,(\pi/2),
+    & c_{-3} &\;=\; -j/(3\pi)
+            \;\approx\; 0{,}106\,\angle\,(-\pi/2), \\[2pt]
+    c_4 &\;=\; j/(4\pi)
+            \;\approx\; 0{,}080\,\angle\,(\pi/2),
+    & c_{-4} &\;=\; -j/(4\pi)
+            \;\approx\; 0{,}080\,\angle\,(-\pi/2), \\[2pt]
+    c_5 &\;=\; j/(5\pi)
+            \;\approx\; 0{,}064\,\angle\,(\pi/2),
+    & c_{-5} &\;=\; -j/(5\pi)
+            \;\approx\; 0{,}064\,\angle\,(-\pi/2).
+\end{align*}
+Los pares de índices opuestos tienen igual módulo y fases
+opuestas: $|c_{-k}|=|c_k|$, $\angle c_{-k} = -\angle c_k$
+---la firma de la simetría conjugada que también apareció en
+el pulso, esta vez con la fase tomando un valor constante a
+cada lado del cero---.
+
+\paragraph{Espectro de líneas.}
+La figura~\ref{fig:espectro_sierra} muestra el módulo $|c_k|$ y
+la fase $\angle c_k$ contra el índice $k$.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.65\linewidth]{figures/fig_espectro_sierra/fig_espectro_sierra}
+        \caption{Espectro de líneas del diente de sierra con
+                 $T_0 = 4$. (a) Módulo: $|c_0| = 1$ y
+                 $|c_k| = 1/(\pi|k|)$ para $k\neq 0$, con
+                 decaimiento $1/|k|$. (b) Fase: $0$ en $k=0$,
+                 $+\pi/2$ para los $k>0$ y $-\pi/2$ para los
+                 $k<0$.}
+        \label{fig:espectro_sierra}
+    \end{minipage}
+\end{figure}
+
+\paragraph{Función de síntesis.}
+Reuniendo todo, la serie de Fourier del diente de sierra tiene
+en forma compacta la expresión
+\begin{equation*}
+    x(t) \;=\; 1 \;+\;
+        \sum_{\substack{k=-\infty \\ k\neq 0}}^{\infty}
+        \frac{j}{\pi k}\,e^{j k \pi t/2},
+\end{equation*}
+y, sustituyendo los valores numéricos de los primeros
+armónicos, se despliega como
+\begin{align*}
+    x(t) \;\approx\; \cdots
+        & - \tfrac{j}{3\pi}\,e^{-j 3\pi t/2}
+        - \tfrac{j}{2\pi}\,e^{-j\pi t}
+        - \tfrac{j}{\pi}\,e^{-j\pi t/2}
+        + 1 \\
+        & + \tfrac{j}{\pi}\,e^{j\pi t/2}
+        + \tfrac{j}{2\pi}\,e^{j\pi t}
+        + \tfrac{j}{3\pi}\,e^{j 3\pi t/2}
+        + \cdots
+\end{align*}
+La señal queda como un nivel medio $1$ más una superposición
+de armónicos puramente imaginarios, antisimétrica entre
+índices opuestos.
+
+\paragraph{Comparando con el pulso.}
+El contraste es directo: el pulso ---par--- da coeficientes
+reales, y el diente de sierra los da puramente imaginarios
+para $k\neq 0$. Ambos espectros decaen como $1/|k|$, ritmo
+característico de las señales con saltos de discontinuidad.
+
+\end{document}

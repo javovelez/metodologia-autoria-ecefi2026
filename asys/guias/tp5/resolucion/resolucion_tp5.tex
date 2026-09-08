@@ -1,0 +1,1524 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+\usepackage{lastpage,xcolor}
+\usepackage[a4paper, top=0.9in, bottom=1in, left=0.9in, right=0.9in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[mode=image]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+\usepackage{caption}
+
+\usetikzlibrary{arrows.meta}
+\definecolor{utnblue}{RGB}{0, 51, 102}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+% Incisos con letras: a), b), c), ...
+\setlist[enumerate,1]{label=\textbf{\alph*)}, leftmargin=*, itemsep=4pt}
+
+\setlength{\headsep}{12pt}
+\setlength{\droptitle}{-0.5in}
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large}
+	\posttitle{\par\end{center}\vspace{-2.5em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+	\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Resolución del Trabajo Práctico N$^\text{o}$5}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Encabezado de ejercicio
+\newcommand{\ejercicio}[1]{\bigskip\noindent{\large\textbf{Ejercicio #1}}\par\nobreak\smallskip}
+% Marco teórico breve
+\newcommand{\teoria}[1]{\noindent\textit{Marco teórico.}\enspace #1\par\smallskip}
+
+% Diagrama de polos y ceros mínimo: ejes sigma / j-omega
+\tikzset{
+  pzaxis/.style={->, >=Latex, gray!60},
+  polo/.style={utnblue, thick},
+  cero/.style={utnblue, thick},
+}
+
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Resolución del Trabajo Práctico N$^{\text o}$5: Transformada de Laplace}%
+}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\noindent
+En los Ejercicios 1 a 12, 15 y 16 se trabaja con señales y sistemas causales
+y se usa siempre la transformada de Laplace bilateral. Para una señal
+derecha ---en particular, causal--- con transformada racional, la región
+de convergencia es siempre el semiplano a la derecha del polo de mayor
+parte real. Fijar esa convención de antemano es lo que permite invertir sin
+ambigüedad: cada polo aporta su rama causal, $A/(s-p)$ se antitransforma
+como $A\,e^{pt}u(t)$, y no hace falta decidir nada más en cada caso. Sin la
+ROC, la misma expresión racional admitiría varias señales temporales
+distintas; con la convención causal fijada, el problema inverso queda con
+solución única.
+
+Los Ejercicios 13 y 14 se apartan de este esquema: allí los sistemas
+parten con condiciones iniciales no nulas, y se resuelven con la
+transformada de Laplace unilateral, que incorpora esas condiciones
+directamente en la propiedad de derivación.
+
+% ==========================================================================
+\ejercicio{1: cálculo de la transformada por definición}
+
+\teoria{La idea es no volver a la integral de definición: una señal de
+duración finita se arma sumando escalones y rampas que empiezan en distintos
+instantes, y cada inicio desplazado se traduce con
+$x(t-t_0)\overset{\mathcal{L}}{\longleftrightarrow}e^{-st_0}X(s)$ sobre los
+pares básicos $u(t)\leftrightarrow 1/s$ y $t\,u(t)\leftrightarrow 1/s^2$.
+
+Un rasgo común a las cuatro: como la integral se extiende sobre un intervalo
+acotado, converge para todo $s$ y la ROC es el plano completo. Por eso un
+factor $(1-e^{-s\tau})$ en el numerador siempre cancela el polo aparente en
+$s=0$.}
+
+Las cuatro señales están representadas en la Figura~\ref{fig:res_senales}.
+
+\begin{figure}[h]
+	\centering
+	\includestandalone[width=0.6\textwidth]{../figures/fig_tp5_senales/fig_tp5_senales}
+	\caption{Señales de duración finita del Ejercicio 1.}
+	\label{fig:res_senales}
+\end{figure}
+
+\begin{enumerate}
+	\item \emph{Pulso rectangular} de amplitud $A$ y duración $\tau$. Lo pensamos
+	como un escalón que enciende la señal en $t=0$, menos otro idéntico
+	desplazado a $t=\tau$ que la apaga: $x(t)=A\,[\,u(t)-u(t-\tau)\,]$. El primer
+	escalón no está desplazado, así que toma directamente su par básico
+	$u(t)\leftrightarrow 1/s$. El segundo, $u(t-\tau)$, es ese mismo escalón con
+	el argumento corrido a $t=\tau$: para transformarlo aplicamos la 
+	\emph{propiedad de desplazamiento temporal} ---atrasar una señal $t_0$
+	unidades en el tiempo multiplica su transformada por $e^{-st_0}$---, que con
+	$t_0=\tau$ entrega $u(t-\tau)\leftrightarrow e^{-s\tau}/s$. Restando las dos
+	transformadas se obtiene
+	\[
+		X(s)=A\,\frac{1}{s}-A\,\frac{e^{-s\tau}}{s}=\frac{A}{s}\,\bigl(1-e^{-s\tau}\bigr),
+		\qquad \operatorname{ROC}:\ \mathbb{C}.
+	\]
+	El $1/s$ haría sospechar un polo en el origen, pero el factor $1-e^{-s\tau}$
+	se anula exactamente allí ---en $s=0$ vale $1-1=0$---, así que cancela ese
+	polo y no queda ninguno: la ROC es todo el plano, como anticipaba el marco
+	teórico.
+
+	\item \emph{Rampa que crece de $0$ a $A$ en $[0,\tau]$ y luego se anula.} La
+	recta sube una altura $A$ mientras el tiempo avanza un lapso $\tau$, así que su pendiente es $A/\tau$.
+	La armamos por superposición. Encendemos en $t=0$ una rampa de pendiente
+	$A/\tau$, $\dfrac{A}{\tau}\,t\,u(t)$, que subiría sin techo. En $t=\tau$ esa rampa ya
+	vale $A$; le restamos otra rampa de la misma pendiente iniciada en $\tau$,
+	$\dfrac{A}{\tau}\,(t-\tau)\,u(t-\tau)$, que cancela la subida y deja la señal plana en
+	$A$. Un escalón de altura $A$ iniciado en $\tau$, $-A\,u(t-\tau)$, baja ese tramo
+	a cero:
+	\[
+		x(t)=\frac{A}{\tau}\,t\,u(t)-\frac{A}{\tau}\,(t-\tau)\,u(t-\tau)-A\,u(t-\tau).
+	\]
+	Cada pieza quedó en función de su propio inicio ---la primera rampa sin
+	desplazar; la segunda y el escalón corridos a $\tau$---, así que el
+	desplazamiento temporal se aplica directo: la rampa da $1/s^2$, el escalón
+	$1/s$, y cada tramo corrido a $\tau$ agrega su $e^{-s\tau}$, con lo que
+	\[
+		X(s)=\frac{A}{\tau s^2}\,\bigl(1-e^{-s\tau}\bigr)-\frac{A\,e^{-s\tau}}{s},
+		\qquad \operatorname{ROC}:\ \mathbb{C}.
+	\]
+
+	\item \emph{Señal trapezoidal.} La señal sube de $0$ a $A$ en $[0,\tau_1]$ con
+	pendiente $A/\tau_1$, se mantiene en $A$ hasta $\tau_2$ y cae a $0$. La
+	armamos por superposición de tres efectos: una rampa que empieza en $0$ y
+	subiría indefinidamente, otra de pendiente opuesta que empieza en $\tau_1$
+	y cancela la subida ---dejando el tramo plano en $A$--- y un escalón
+	negativo en $\tau_2$ que tira la señal a cero:
+	\[
+		x(t)=\frac{A}{\tau_1}\,t\,u(t)-\frac{A}{\tau_1}\,(t-\tau_1)\,u(t-\tau_1)
+		     -A\,u(t-\tau_2).
+	\]
+	Cada rampa ya está escrita en función de su propio inicio, así que toma
+	su par básico $1/s^2$: la primera empieza en $0$ y no lleva exponencial; la
+	segunda, corrida a $\tau_1$, recibe por el desplazamiento temporal el factor
+	$e^{-s\tau_1}$; y el escalón final, corrido a $\tau_2$, su $e^{-s\tau_2}$
+	sobre $1/s$:
+	\[
+		X(s)=\frac{A}{\tau_1 s^2}\,\bigl(1-e^{-s\tau_1}\bigr)
+		     -\frac{A\,e^{-s\tau_2}}{s},
+		\qquad \operatorname{ROC}:\ \mathbb{C}.
+	\]
+
+	\item \emph{Rampa decreciente.} La señal parte de $A$ en $t=0$ y baja con pendiente
+	$-A/\tau$ hasta anularse en $t=\tau$. La leemos como un escalón de altura
+	$A$ del que se descuenta una rampa de pendiente $A/\tau$; esa resta sola
+	seguiría cayendo por debajo de cero, así que sumamos una tercera rampa que
+	empieza en $\tau$ y deja la señal plana en cero a partir de allí:
+	\[
+		x(t)=A\,u(t)-\frac{A}{\tau}\,t\,u(t)+\frac{A}{\tau}\,(t-\tau)\,u(t-\tau).
+	\]
+	El escalón da $A/s$ y las dos rampas, $1/s^2$; la segunda empieza en $0$ y
+	va sin exponencial, mientras que la tercera, corrida a $\tau$, recibe por el
+	desplazamiento temporal su factor $e^{-s\tau}$, de modo que
+	\[
+		X(s)=\frac{A}{s}-\frac{A}{\tau s^2}\,\bigl(1-e^{-s\tau}\bigr),
+		\qquad \operatorname{ROC}:\ \mathbb{C}.
+	\]
+\end{enumerate}
+
+% ==========================================================================
+\ejercicio{2: propiedades}
+
+\teoria{Cada operación sobre la señal en el tiempo se corresponde con una
+manipulación sencilla de $X(s)$, y así no hace falta volver a integrar. Las
+tres propiedades que usamos son
+\[
+	\begin{aligned}
+		\text{desplazamiento temporal:}&\quad x(t-t_0)\leftrightarrow e^{-st_0}X(s),\\[2pt]
+		\text{desplazamiento en }s:&\quad e^{s_0 t}x(t)\leftrightarrow X(s-s_0),\\[2pt]
+		\text{derivación en }s:&\quad -t\,x(t)\leftrightarrow \frac{dX}{ds}.
+	\end{aligned}
+\]
+En cada inciso alcanza con reconocer la señal básica escondida y elegir la
+propiedad que la lleva a la forma pedida.}
+
+\begin{enumerate}
+	\item $x(t)=e^{-a(t-t_0)}u(t-t_0)$. Reconocemos aquí la exponencial básica
+	$g(t)=e^{-at}u(t)$ ---con $G(s)=1/(s+a)$ y ROC
+	$\operatorname{Re}\{s\}>-a$--- pero con todo su argumento corrido a $t_0$,
+	es decir $g(t-t_0)$. Por desplazamiento temporal solo hay que multiplicar
+	$G(s)$ por $e^{-st_0}$:
+	\[
+		X(s)=e^{-st_0}\,G(s)=\frac{e^{-st_0}}{s+a},
+		\qquad \operatorname{Re}\{s\}>-a.
+	\]
+	El desplazamiento no mueve el polo, así que la ROC es la misma que la de
+	$g$.
+
+	\item $x(t)=e^{-at}\cos(\omega_0 t)\,u(t)$. La señal de fondo es el coseno
+	causal $\cos(\omega_0 t)u(t)$, cuya transformada es $s/(s^2+\omega_0^2)$, y
+	lo que la modifica es el factor $e^{-at}$ que la multiplica. Multiplicar
+	por una exponencial en el tiempo es justamente el desplazamiento en $s$:
+	con $s_0=-a$ hay que reemplazar $s$ por $s+a$ en toda la transformada,
+	\[
+		X(s)=\frac{(s+a)}{(s+a)^2+\omega_0^2},
+		\qquad \operatorname{Re}\{s\}>-a.
+	\]
+	El reemplazo desplaza los polos de $\pm j\omega_0$ a $-a\pm j\omega_0$: la
+	exponencial los corre hacia la izquierda, lo que en el tiempo es la
+	envolvente que amortigua al coseno.
+
+	\item $x(t)=t\,e^{-at}u(t)$. Partimos de nuevo de $g(t)=e^{-at}u(t)$,
+	$G(s)=1/(s+a)$, pero ahora la señal aparece multiplicada por $t$.
+	Multiplicar por $t$ corresponde a derivar respecto de $s$ con un signo,
+	$t\,g(t)\leftrightarrow -G'(s)$, así que
+	\[
+		X(s)=-\frac{d}{ds}\,(s+a)^{-1}=(s+a)^{-2}=\frac{1}{(s+a)^2},
+		\qquad \operatorname{Re}\{s\}>-a.
+	\]
+	El factor $t$ se manifiesta como un polo doble: cada potencia de $t$
+	agrega una multiplicidad al polo.
+
+	\item $x(t)=t\sin(at)\,u(t)$. Mismo mecanismo que el inciso anterior,
+	ahora sobre el seno causal $\sin(at)u(t)\leftrightarrow a/(s^2+a^2)$.
+	Derivando respecto de $s$ y cambiando el signo,
+	\[
+		X(s)=-\frac{d}{ds}\,\frac{a}{s^2+a^2}
+		    =-a\cdot\frac{-2s}{(s^2+a^2)^2}
+		    =\frac{2as}{(s^2+a^2)^2},
+		\qquad \operatorname{Re}\{s\}>0.
+	\]
+	Otra vez el factor $t$ eleva la potencia del denominador: el par de polos
+	en $\pm ja$ pasa a ser doble.
+\end{enumerate}
+
+% ==========================================================================
+\ejercicio{3: convolución como producto}
+
+\teoria{El teorema de convolución establece que
+$x(t)*h(t)\overset{\mathcal{L}}{\longleftrightarrow}X(s)\,H(s)$: lo que en el
+tiempo es una convolución ---una integral--- en el plano $s$ es un simple
+producto. La convolución de las dos exponenciales se reduce entonces a
+multiplicar sus transformadas y antitransformar el resultado.
+
+Para antitransformar, los residuos de la descomposición en fracciones
+parciales se obtienen por cobertura: se multiplica por el factor del polo,
+que se cancela, y se evalúa allí. Si el polo $p$ tiene multiplicidad $m$, la
+fórmula se generaliza derivando antes de evaluar: para la descomposición
+$A_m/(s-p)^m+\cdots+A_1/(s-p)$,
+\[
+	A_k=\frac{1}{(m-k)!}\,\frac{d^{\,m-k}}{ds^{\,m-k}}\bigl[(s-p)^m\,X(s)\bigr]\bigg|_{s=p},
+	\qquad k=m,m-1,\ldots,1.
+\]
+Con $k=m$ no hay derivada y se recupera la cobertura simple sobre el
+coeficiente de mayor potencia; cada potencia $k$ más baja suma una
+derivada.}
+
+Con $X(s)=\dfrac{1}{s+a}$ y $H(s)=\dfrac{1}{s+b}$:
+
+\begin{enumerate}
+	\item El teorema de convolución convierte la integral temporal en un
+	producto, así que sin calcular ninguna integral
+	\[
+		Y(s)=X(s)\,H(s)=\frac{1}{s+a}\cdot\frac{1}{s+b}=\frac{1}{(s+a)(s+b)}.
+	\]
+
+	\item Con $a\neq b$ el producto tiene dos polos simples, en $-a$ y $-b$.
+	Los residuos se obtienen por la \emph{fórmula de cobertura}: se
+	multiplica $Y(s)$ por el factor del polo correspondiente, que así se
+	cancela, y se evalúa el resultado en ese polo:
+	\[
+		A=\frac{1}{s+b}\bigg|_{s=-a}=\frac{1}{b-a},
+		\qquad
+		B=\frac{1}{s+a}\bigg|_{s=-b}=\frac{1}{a-b}=-\frac{1}{b-a}.
+	\]
+	Los dos residuos resultan opuestos, de modo que
+	$Y(s)=\dfrac{1}{b-a}\left[\dfrac{1}{s+a}-\dfrac{1}{s+b}\right]$ y, leyendo
+	cada término en su rama causal,
+	\[
+		y(t)=\frac{1}{b-a}\,\bigl(e^{-at}-e^{-bt}\bigr)\,u(t).
+	\]
+	La convolución de las dos exponenciales resultó ser su diferencia,
+	normalizada por la separación $b-a$ entre los polos.
+
+	\item Con $a=b$ los dos polos se confunden en uno solo, ahora doble:
+	$Y(s)=1/(s+a)^2$, con polo $p=-a$ y multiplicidad $m=2$. La
+	descomposición en fracciones parciales es
+	\[
+		Y(s)=\frac{A_1}{s+a}+\frac{A_2}{(s+a)^2}.
+	\]
+	Con $m=2$, la fórmula generalizada de cobertura da primero el
+	coeficiente de mayor potencia, $A_2$, con $k=2$ (sin derivar):
+	\[
+		A_2=(s+a)^2Y(s)\big|_{s=-a}=1.
+	\]
+	Con $A_2$ en mano, el caso $k=1$ da $A_1$, derivando antes de evaluar:
+	\[
+		A_1=\frac{d}{ds}\bigl[(s+a)^2Y(s)\bigr]\bigg|_{s=-a}
+		   =\frac{d}{ds}[1]_{s=-a}=0.
+	\]
+	La descomposición resulta entonces $Y(s)=\dfrac{0}{s+a}+\dfrac{1}{(s+a)^2}
+	=\dfrac{1}{(s+a)^2}$: un único polo doble no deja nada para separar, y la
+	fórmula de multiplicidad lo confirma en vez de
+	asumirlo. Con el par $1/(s+a)^2\leftrightarrow t\,e^{-at}u(t)$ del
+	inciso 2.c),
+	\[
+		y(t)=t\,e^{-at}\,u(t).
+	\]
+	Conviene mirar qué pasó al comparar con el inciso anterior: las dos
+	exponenciales distintas colapsan en un único modo, la exponencial
+	$e^{-at}$ modulada por el factor $t$ ---el rasgo característico del polo
+	doble---. Es el mismo par $1/(a+j\omega)^2$ que aparecía al convolucionar
+	estas señales en el dominio de la frecuencia; la transformada de Laplace lo
+	recupera con un polo doble en $s=-a$.
+\end{enumerate}
+
+\begin{figure}[h]
+	\centering
+	\includestandalone[width=0.6\textwidth]{../figures/fig_tp5_conv/fig_tp5_conv}
+	\caption{Convolución $y(t)$ del Ejercicio 3. (a) Con $a\neq b$ ($a=1$,
+	$b=2$): diferencia de dos exponenciales. (b) Con $a=b$ ($a=1$): los dos
+	polos se funden en uno doble y aparece el término $t\,e^{-at}$, que sube
+	hasta un máximo y luego decae.}
+	\label{fig:res_conv}
+\end{figure}
+
+% ==========================================================================
+\ejercicio{4: transformada inversa con polos reales}
+
+\teoria{Para una $X(s)=P(s)/Q(s)$ propia con polos reales distintos, la
+descomposición $X(s)=\sum_k A_k/(s-p_k)$ es única. Los residuos se obtienen
+por la fórmula de cobertura $A_k=[(s-p_k)X(s)]_{s=p_k}$: se multiplica por el factor
+del polo, que así se cancela, y se evalúa allí.
+
+Cada término aporta su exponencial causal $A_k\,e^{p_k t}u(t)$. Dos casos para
+tener a mano: un polo en el origen deja una constante (escalón), y un polo
+doble agrega un factor $t$, con sus coeficientes por la fórmula generalizada
+de cobertura del Ejercicio 3.}
+
+\begin{enumerate}
+	\item $F(s)=\dfrac{2s+9}{(s+3)(s+4)}$. El denominador ya está factorizado,
+	con polos simples en $-3$ y $-4$, así que planteamos
+	$F(s)=\dfrac{A}{s+3}+\dfrac{B}{s+4}$ y sacamos los residuos por cobertura:
+	\[
+		A=\frac{2s+9}{s+4}\bigg|_{s=-3}=\frac{3}{1}=3,
+		\qquad
+		B=\frac{2s+9}{s+3}\bigg|_{s=-4}=\frac{1}{-1}=-1.
+	\]
+	Cada término aporta su exponencial causal,
+	\[
+		f(t)=\bigl(3\,e^{-3t}-e^{-4t}\bigr)\,u(t),
+	\]
+	una suma de dos exponenciales que decaen, con ambos polos en el semiplano
+	izquierdo.
+
+	\item $F(s)=\dfrac{4s+8}{s^2+4s-5}$. Aquí el denominador viene sin
+	factorizar, y ese es el primer paso: $s^2+4s-5=(s+5)(s-1)$, que deja un
+	polo en $-5$ y otro en $+1$. Con los factores a la vista, la cobertura da
+	\[
+		A=\frac{4s+8}{s-1}\bigg|_{s=-5}=\frac{-12}{-6}=2,
+		\qquad
+		B=\frac{4s+8}{s+5}\bigg|_{s=1}=\frac{12}{6}=2,
+	\]
+	y entonces
+	\[
+		f(t)=\bigl(2\,e^{-5t}+2\,e^{t}\bigr)\,u(t).
+	\]
+	El polo en $s=1$ ---en el semiplano derecho--- da un término creciente
+	$e^{t}$: el sistema es causal pero \emph{inestable}. La posición de un
+	único polo basta para delatarlo.
+
+	\item $F(s)=\dfrac{12}{s(s+1)(s+4)}=\dfrac{A}{s}+\dfrac{B}{s+1}+\dfrac{C}{s+4}$.
+	Son tres polos simples, uno de ellos en el origen. La cobertura se aplica
+	igual a los tres:
+	\[
+		A=\frac{12}{(s+1)(s+4)}\bigg|_{s=0}=\frac{12}{4}=3,\quad
+		B=\frac{12}{s(s+4)}\bigg|_{s=-1}=\frac{12}{-3}=-4,\quad
+		C=\frac{12}{s(s+1)}\bigg|_{s=-4}=\frac{12}{12}=1,
+	\]
+	de donde
+	\[
+		f(t)=\bigl(3-4\,e^{-t}+e^{-4t}\bigr)\,u(t).
+	\]
+	El polo en el origen aporta la constante $3\,u(t)$ ---un escalón---, y a
+	ella se le suman las dos exponenciales que se apagan.
+
+	\item $F(s)=\dfrac{2s}{(s+1)^2(s+2)}$, con un polo doble en $-1$ y uno
+	simple en $-2$. La descomposición es
+	\[
+		F(s)=\frac{A_1}{s+1}+\frac{A_2}{(s+1)^2}+\frac{B}{s+2}.
+	\]
+	Sobre el polo doble en $-1$, la fórmula generalizada con $m=2$ da
+	primero $A_2$, con $k=2$ (sin derivar):
+	\[
+		A_2=(s+1)^2 F(s)\big|_{s=-1}=\frac{2s}{s+2}\bigg|_{s=-1}=-2.
+	\]
+	Con $k=1$ se obtiene $A_1$, derivando antes de evaluar:
+	\[
+		A_1=\frac{d}{ds}\!\left[\frac{2s}{s+2}\right]_{s=-1}
+		   =\frac{2(s+2)-2s}{(s+2)^2}\bigg|_{s=-1}=\frac{4}{1}=4.
+	\]
+	El coeficiente simple $B$ sale por cobertura directa sobre el polo en
+	$-2$:
+	\[
+		B=(s+2)F(s)\big|_{s=-2}=\frac{2s}{(s+1)^2}\bigg|_{s=-2}=-4.
+	\]
+	Con $1/(s+1)^2\leftrightarrow t\,e^{-t}u(t)$,
+	\[
+		f(t)=\bigl(4\,e^{-t}-2t\,e^{-t}-4\,e^{-2t}\bigr)\,u(t).
+	\]
+	El término $t\,e^{-t}$ es el rasgo característico del polo doble.
+\end{enumerate}
+
+% ==========================================================================
+\ejercicio{5: transformada inversa con polos complejos}
+
+\teoria{Un par de polos complejos conjugados de una señal real aporta una
+sinusoide amortiguada, y hay dos métodos equivalentes para llegar a ella.
+
+El \emph{Método 1} ---residuo--- trata el par como dos polos simples: con
+$p=-a+j\omega_0$ se calcula el residuo $A=|A|e^{j\varphi}$, y la
+antitransformada del par es el coseno único
+$2|A|\,e^{-at}\cos(\omega_0 t+\varphi)\,u(t)$.
+ 
+El \emph{Método 2} ---factor cuadrático--- arma el denominador
+$(s+a)^2+\omega_0^2$ a partir del par de polos $-a\pm j\omega_0$; después
+acomoda el numerador a la forma $B(s+a)+C\,\omega_0$, que la tabla lee como
+$e^{-at}[\,B\cos(\omega_0 t)+C\sin(\omega_0 t)\,]u(t)$.
+
+El Método~1 pasa por los residuos complejos y llega a la respuesta como un único
+coseno con desfasaje; el Método~2, el más frecuente en la bibliografía, deja la
+respuesta real de entrada en términos de coseno y seno. Resolvemos cada inciso
+por ambos, en ese orden, y verificamos que coinciden.}
+
+\begin{enumerate}
+	\item $F(s)=\dfrac{3(s+1)}{s^2+2s+5}$. El denominador es un cuadrático
+	sin raíces reales: aporta un par de polos complejos conjugados. Lo
+	resolvemos por los dos métodos.
+
+	\emph{Método 1.} Ubicamos primero los polos con la resolvente,
+	\[
+		s=\frac{-2\pm\sqrt{4-20}}{2}=\frac{-2\pm\sqrt{-16}}{2}=-1\pm 2j,
+	\]
+	es decir $p=-1+2j$ y su conjugado $\bar p=-1-2j$, de donde se leen la
+	atenuación $a=1$ y la frecuencia $\omega_0=2$. El residuo del polo $p$
+	se obtiene multiplicando por su factor $(s-p)$, que se cancela, y
+	evaluando lo que queda en $s=p$:
+	\[
+		A=\frac{3(s+1)}{s-\bar p}\bigg|_{s=p}
+	 =\frac{3(-1+2j+1)}{p-\bar p}
+	 =\frac{3(2j)}{4j}=\frac32,
+	\]
+	El residuo resulta real,
+	así que su módulo es $|A|=3/2$ y su fase $\varphi=\arg A=0$. La fórmula del par,
+	$2|A|\,e^{-at}\cos(\omega_0 t+\varphi)$, entrega
+	\[
+		f(t)=2\cdot\tfrac32\,e^{-t}\cos(2t)\,u(t)=3\,e^{-t}\cos(2t)\,u(t),
+	\]
+	un coseno puro amortiguado por $e^{-t}$: la fase nula indica que no hay
+	desfasaje, y por eso no aparece el seno.
+
+	\emph{Método 2.} Las raíces del denominador son $-1\pm2j$, con $a=1$ y
+	$\omega_0=2$, así que el par fija el denominador $(s+1)^2+2^2$ y la función
+	racional es
+	\[
+		F(s)=\frac{3(s+1)}{(s+1)^2+2^2}.
+	\]
+	La tabla lee este cuadrático cuando el numerador tiene la forma
+	$B(s+1)+C\cdot2$, con el bloque $(s+1)$ para el coseno y la constante para
+	el seno. El numerador $3(s+1)$ ya está así, sin término constante, de modo
+	que $B=3$ y $C=0$, y la función queda en la forma de tabla
+	\[
+		F(s)=3\cdot\frac{s+1}{(s+1)^2+2^2}.
+	\]
+	Esa única fila se antitransforma directo:
+	\[
+		f(t)=3\,e^{-t}\cos(2t)\,u(t),
+	\]
+	el mismo resultado. Que $C=0$ es la contracara de la fase nula del
+	Método~1: sin desfasaje no aparece el seno.
+
+	\item $F(s)=\dfrac{5s-11}{s^2+4s+13}$. Otro cuadrático irreducible, que
+	resolvemos por los dos métodos.
+
+	\emph{Método 1.} Ubicamos los polos con la resolvente,
+	\[
+		s=\frac{-4\pm\sqrt{16-52}}{2}=\frac{-4\pm\sqrt{-36}}{2}=-2\pm 3j,
+	\]
+	o sea $p=-2+3j$ y $\bar p=-2-3j$, con $a=2$ y $\omega_0=3$. El residuo en
+	$p$ se obtiene por cobertura,
+	\[
+		A=\frac{5s-11}{s-\bar p}\bigg|_{s=p}
+		 =\frac{5(-2+3j)-11}{6j}
+		 =\frac{-21+15j}{6j}
+		 =\frac52+\frac72\,j,
+	\]
+	donde, al separar el cociente, $15j/6j$ da la parte real $\tfrac52$ y
+	$-21/6j$ la imaginaria $\tfrac72\,j$ (racionalizando por $j$). Esta vez
+	el residuo es complejo, así que su módulo y su fase no son inmediatos:
+	\[
+		|A|=\frac{\sqrt{5^2+7^2}}{2}=\frac{\sqrt{74}}{2},
+		\qquad
+		\varphi=\arctan\frac{7}{5}\approx 0{,}951\ \text{rad}.
+	\]
+	La fórmula del par condensa todo en un coseno con desfasaje,
+	\[
+		f(t)=\sqrt{74}\,e^{-2t}\cos(3t+0{,}951)\,u(t).
+	\]
+
+	\emph{Método 2.} Las raíces del denominador son $-2\pm3j$, con $a=2$ y
+	$\omega_0=3$, así que el par fija el denominador $(s+2)^2+3^2$ y la función
+	racional es
+	\[
+		F(s)=\frac{5s-11}{(s+2)^2+3^2}.
+	\]
+	Para leerla en la tabla, el numerador debe tener la forma $B(s+2)+3C$. A
+	diferencia del inciso anterior, el numerador $5s-11$ no está escrito así, y
+	hay que acomodarlo: forzamos la aparición del bloque $(s+2)$ y dejamos el
+	resto como término constante,
+	\[
+		5s-11=5(s+2)-10-11=5(s+2)-21=5(s+2)+3(-7),
+	\]
+	donde el $-21$ se escribió como $3\cdot(-7)$ para que la constante quede
+	multiplicada por $\omega_0=3$, como pide la tabla. Con $B=5$ y $C=-7$, la
+	función se separa en sus dos términos de tabla,
+	\[
+		F(s)=5\cdot\frac{s+2}{(s+2)^2+3^2}-7\cdot\frac{3}{(s+2)^2+3^2},
+	\]
+	y cada término se antitransforma por separado:
+	\[
+		f(t)=e^{-2t}\bigl[\,5\cos(3t)-7\sin(3t)\,\bigr]\,u(t).
+	\]
+	Es la misma señal que el Método~1 entregó como un solo coseno desfasado,
+	ahora repartida entre coseno y seno. La equivalencia se comprueba sin
+	recalcular: la parte real del residuo fija la amplitud del coseno y la
+	imaginaria la del seno,
+	\[
+		2\operatorname{Re}\{A\}=5=B, \qquad -2\operatorname{Im}\{A\}=-7=C.
+	\]
+
+	\item $F(s)=\dfrac{s+2}{s(s^2+4)}$. Este caso mezcla los dos tipos de
+	polo: uno real y simple en el origen, $s=0$, y un par conjugado que
+	proviene de $s^2+4=0$. Antitransformamos la contribución de cada polo por
+	separado y sumamos las señales resultantes.
+
+	El polo del origen es real y simple, así que su residuo se obtiene por
+	la misma cobertura del Ejercicio~4:
+	\[
+		A_0=\frac{s+2}{s^2+4}\bigg|_{s=0}=\frac24=\frac12
+		\quad\Longrightarrow\quad \tfrac12\,u(t),
+	\]
+	un escalón de altura $1/2$. Para el par conjugado mostramos los dos métodos.
+
+	\emph{Método 1.} Los polos del par son las raíces de $s^2+4=0$, esto es
+	$s=\pm 2j$, con $a=0$ y $\omega_0=2$; que la parte real sea nula ---el par
+	cae justo sobre el eje imaginario--- anticipa una oscilación que ni crece
+	ni se apaga. Por residuos, el del par en $p=2j$ es
+	\[
+		A=\frac{s+2}{s\,(s-\bar p)}\bigg|_{s=2j}
+		 =\frac{2+2j}{(2j)(4j)}
+		 =\frac{2+2j}{-8}
+		 =-\frac{1+j}{4},
+	\]
+	donde el denominador se armó con el factor del propio polo, $s=2j$, y el
+	del conjugado, $s-\bar p=4j$. En forma polar, $|A|=\dfrac{\sqrt2}{4}$ y
+	$\varphi=\arg A=-\dfrac{3\pi}{4}$. Como $a=0$, la exponencial desaparece y
+	el par queda como un coseno puro con desfasaje:
+	\[
+		2|A|\cos\!\Bigl(2t-\frac{3\pi}{4}\Bigr)
+		=\frac{\sqrt2}{2}\cos\!\Bigl(2t-\frac{3\pi}{4}\Bigr)
+		=-\tfrac12\cos(2t)+\tfrac12\sin(2t).
+	\]
+	Sumando ese escalón de altura $1/2$ a la oscilación se obtiene
+	\[
+		f(t)=\frac12\bigl[\,1-\cos(2t)+\sin(2t)\,\bigr]\,u(t).
+	\]
+
+	\emph{Método 2.} El par de polos es $\pm2j$, con $a=0$ y $\omega_0=2$, de
+	modo que fija el denominador $(s+0)^2+2^2=s^2+4$. Planteamos la
+	descomposición con el par agrupado en ese factor,
+	\[
+		F(s)=\frac{1/2}{s}+\frac{B\,s+2C}{s^2+4},
+	\]
+	y para hallar $B$ y $C$ igualamos los numeradores tras llevar todo a
+	común denominador,
+	\[
+		s+2=\tfrac12(s^2+4)+(B s+2C)\,s.
+	\]
+	Comparamos coeficientes de cada potencia de $s$:
+	\[
+		\text{(coef. }s^2)\!:\ 0=\tfrac12+B\Rightarrow B=-\tfrac12,
+		\qquad
+		\text{(coef. }s)\!:\ 1=2C\Rightarrow C=\tfrac12.
+	\]
+	Como $a=0$, el factor de amortiguamiento $e^{-at}$ vale $1$ y el par
+	aporta sin envolvente
+	\[
+		B\cos(2t)+C\sin(2t)=-\tfrac12\cos(2t)+\tfrac12\sin(2t),
+	\]
+	idéntico al del Método~1. Sumándole el escalón del origen se obtiene
+	\[
+		f(t)=\frac12\bigl[\,1-\cos(2t)+\sin(2t)\,\bigr]\,u(t).
+	\]
+	El polo en el origen deja la constante $1/2$; el par imaginario, una
+	oscilación que ni crece ni se amortigua ($a=0$).
+\end{enumerate}
+
+\begin{figure}[h]
+	\centering
+	\includestandalone[width=0.85\textwidth]{../figures/fig_tp5_polos_complejos/fig_tp5_polos_complejos}
+	\caption{Antitransformadas con polos complejos del Ejercicio 5. (a) Inciso a:
+	coseno amortiguado $3e^{-t}\cos 2t$, con envolvente $\pm 3e^{-t}$ (par de
+	polos en $-1\pm 2j$). (b) Inciso b: coseno y seno amortiguados
+	$e^{-2t}[5\cos 3t-7\sin 3t]$, con envolvente $\pm\sqrt{74}\,e^{-2t}$ (par de
+	polos en $-2\pm 3j$). (c) Inciso c: oscilación sostenida, que ni crece ni se
+	apaga (par sobre el eje imaginario, $\pm 2j$).}
+	\label{fig:res_polos_complejos}
+\end{figure}
+
+% ==========================================================================
+\ejercicio{6: de la EDLCC a la función de transferencia}
+
+\teoria{La propiedad de derivación temporal arrastra en general las
+condiciones iniciales. Pero acá el sistema parte en reposo, con condiciones
+iniciales nulas, así que esos términos se cancelan y cada derivada $d^k/dt^k$
+se reduce, sin nada más, a un factor $s^k$. Con esa hipótesis, la ecuación
+diferencial colapsa en la función racional $H(s)=P(s)/Q(s)$, que hereda los
+mismos coeficientes de la ecuación, y la relación entrada-salida queda
+$Y(s)=H(s)X(s)$: es justamente la hipótesis de reposo la que permite definir
+$H(s)$ como ese cociente, sin ella habría que arrastrar también la respuesta
+natural del estado inicial.
+
+Sus polos ---las raíces de $Q$--- fijan los modos y, con ellos, la estabilidad:
+el sistema es BIBO estable si y solo si todos tienen parte real negativa. La
+respuesta al impulso se recupera antitransformando $H(s)$ con la ROC causal.}
+
+Para $\ddot y+5\dot y+6y=\dot x+x$:
+
+\begin{enumerate}
+	\item Cada derivada pasa a un factor $s$ del orden correspondiente, sin
+	términos de condición inicial porque el sistema parte en reposo, y la
+	ecuación se vuelve $(s^2+5s+6)Y=(s+1)X$. La función de transferencia es el
+	cociente de esos dos polinomios,
+	\[
+		H(s)=\frac{P(s)}{Q(s)}=\frac{s+1}{s^2+5s+6}=\frac{s+1}{(s+2)(s+3)},
+	\]
+	donde factorizamos el denominador para dejar los polos a la vista.
+
+	\item El numerador tiene un cero en $z=-1$ y el denominador, polos en
+	$p_1=-2$ y $p_2=-3$; la ganancia es $K=b_1/a_2=1$. Los tres están sobre
+	el eje real (Figura~\ref{fig:res_pz_ej6}).
+	\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}[scale=0.85, font=\footnotesize]
+			\draw[pzaxis] (-3.8,0)--(0.8,0) node[below right]{$\sigma$};
+			\draw[pzaxis] (0,-1.1)--(0,1.1) node[left]{$j\omega$};
+			\node[polo] at (-2,0) {$\times$};
+			\node[polo] at (-3,0) {$\times$};
+			\node[cero] at (-1,0) {$\circ$};
+			\node[below=3pt] at (-3,0) {$-3$};
+			\node[below=3pt] at (-2,0) {$-2$};
+			\node[below=3pt] at (-1,0) {$-1$};
+		\end{tikzpicture}
+		\caption{Constelación del Ejercicio 6: polos ($\times$) en $-2$ y
+		         $-3$, cero ($\circ$) en $-1$.}
+		\label{fig:res_pz_ej6}
+	\end{figure}
+
+	\item La respuesta al impulso es la antitransformada de $H(s)$. Como hay
+	dos polos simples, descomponemos $H(s)=\dfrac{A}{s+2}+\dfrac{B}{s+3}$ y
+	sacamos los residuos por cobertura,
+	\[
+		A=\frac{s+1}{s+3}\bigg|_{s=-2}=\frac{-1}{1}=-1,
+		\qquad
+		B=\frac{s+1}{s+2}\bigg|_{s=-3}=\frac{-2}{-1}=2,
+	\]
+	y cada uno aporta su exponencial causal,
+	\[
+		h(t)=\bigl(-e^{-2t}+2\,e^{-3t}\bigr)\,u(t).
+	\]
+
+	\item Ambos polos tienen parte real negativa ($-2$ y $-3$), es decir caen
+	en el semiplano izquierdo: el sistema es estable, y eso se refleja en que
+	su respuesta al impulso decae a cero.
+\end{enumerate}
+
+% ==========================================================================
+\ejercicio{7: identificación}
+
+\teoria{Si se conocen la entrada $x(t)$ y la salida $y(t)$ de un sistema en
+reposo, la relación $Y(s)=H(s)X(s)$ se da vuelta para despejar la transferencia
+como el cociente $H(s)=Y(s)/X(s)$.
+
+De $H(s)$ se obtienen después la respuesta al impulso ---antitransformando--- y la
+ecuación diferencial ---leyendo $P(s)$ y $Q(s)$ como los polinomios de $x$ y de
+$y$ con sus derivadas---.}
+
+\begin{enumerate}
+	\item Transformamos las dos señales: $X(s)=\dfrac{1}{s+3}$ y
+	$Y(s)=\dfrac{1}{s+1}-\dfrac{1}{s+2}=\dfrac{1}{(s+1)(s+2)}$. El cociente
+	deja la transferencia
+	\[
+		H(s)=\frac{Y(s)}{X(s)}=\frac{s+3}{(s+1)(s+2)},
+	\]
+	donde dividir por $X$ ---multiplicar por $s+3$--- convirtió el polo de la
+	entrada en un cero de $H$. Por cobertura, $A=\dfrac{s+3}{s+2}\big|_{-1}=2$ y
+	$B=\dfrac{s+3}{s+1}\big|_{-2}=-1$, de modo que
+	$h(t)=(2e^{-t}-e^{-2t})u(t)$. Finalmente, leyendo numerador y denominador
+	de $H(s)=\dfrac{s+3}{s^2+3s+2}$ como los coeficientes de la ecuación,
+	\[
+		\ddot y+3\dot y+2y=\dot x+3x.
+	\]
+
+	\item Misma salida, pero ahora $X(s)=\dfrac{2}{s}$:
+	\[
+		H(s)=\frac{Y(s)}{X(s)}
+		    =\frac{1/[(s+1)(s+2)]}{2/s}
+		    =\frac{s}{2\,(s+1)(s+2)}.
+	\]
+	Descomponemos $\dfrac{s}{(s+1)(s+2)}=\dfrac{-1}{s+1}+\dfrac{2}{s+2}$
+	(cobertura: $\,s/(s+2)|_{-1}=-1$, $\,s/(s+1)|_{-2}=2$), con lo que
+	\[
+		h(t)=\tfrac12\bigl(-e^{-t}+2e^{-2t}\bigr)u(t)
+		    =\Bigl(-\tfrac12 e^{-t}+e^{-2t}\Bigr)u(t),
+	\]
+	y de $H(s)=\dfrac{s}{2s^2+6s+4}$,
+	\[
+		2\ddot y+6\dot y+4y=\dot x
+		\qquad\Longleftrightarrow\qquad
+		\ddot y+3\dot y+2y=\tfrac12\,\dot x.
+	\]
+	Los incisos a) y b) comparten la salida pero no la entrada, y conducen a
+	sistemas distintos: la salida sola no identifica al sistema; lo identifica
+	la relación entrada--salida.
+
+	\item Con $X(s)=\dfrac{1}{s}$ y el par
+	$e^{-at}\sin(\omega_0 t)u(t)\leftrightarrow\omega_0/[(s+a)^2+\omega_0^2]$,
+	leyendo $a=2$ y $\omega_0=4$ directo de $y(t)=e^{-2t}\sin(4t)u(t)$,
+	$Y(s)=\mathcal{L}\{e^{-2t}\sin(4t)u(t)\}=\dfrac{4}{(s+2)^2+16}
+	=\dfrac{4}{s^2+4s+20}$:
+	\[
+		H(s)=\frac{Y(s)}{X(s)}=\frac{4s}{s^2+4s+20}.
+	\]
+	El denominador de $H(s)$ es el mismo de $Y(s)$, así que sus polos ya
+	están identificados: $p=-2\pm j4$, con $a$ y $\omega_0$ leídos de la señal
+	de partida. Para antitransformar $h(t)$ acomodamos el numerador:
+	$4s=4(s+2)-8$,
+	\[
+		H(s)=\frac{4(s+2)}{(s+2)^2+16}-2\cdot\frac{4}{(s+2)^2+16},
+	\]
+	\[
+		h(t)=\bigl[\,4\,e^{-2t}\cos(4t)-2\,e^{-2t}\sin(4t)\,\bigr]u(t).
+	\]
+	De $H(s)=\dfrac{4s}{s^2+4s+20}$,
+	\[
+		\ddot y+4\dot y+20y=4\dot x.
+	\]
+	Los polos están en el semiplano izquierdo: el sistema es estable.
+\end{enumerate}
+
+% ==========================================================================
+\ejercicio{8: leer el plano a partir de $h(t)$}
+
+\teoria{Transformando $h(t)$ se obtiene $H(s)$, y de su forma factorizada se
+leen polos y ceros. La parte real del polo gobierna la envolvente
+$e^{-\sigma t}$, y la imaginaria, la frecuencia de oscilación.
+
+Esa lectura ya decide la estabilidad: un par sobre el eje imaginario da una
+oscilación que no decae ---marginalmente estable, no BIBO---, mientras que un
+par en el semiplano izquierdo da una oscilación que decrese en el tiempo ---estable---.}
+
+\begin{enumerate}
+	\item $h(t)=2[\cos(5t)+3\sin(5t)]\,u(t)$. Con
+	$\cos(5t)u(t)\leftrightarrow s/(s^2+25)$ y
+	$\sin(5t)u(t)\leftrightarrow 5/(s^2+25)$, transformamos término a término:
+	el $2\cos(5t)$ da $2s/(s^2+25)$, y el $6\sin(5t)$ ---el factor $2$ por el
+	$3$ del enunciado--- da $6\cdot 5/(s^2+25)=30/(s^2+25)$. Sumando ambos términos se obtiene
+	\[
+		H(s)=\frac{2s}{s^2+25}+\frac{30}{s^2+25}=\frac{2(s+15)}{s^2+25}.
+	\]
+	Polos en $p=\pm j5$ ---sobre el eje imaginario--- y cero en $z=-15$. La
+	parte real y la imaginaria del polo ya estaban a la vista en $h(t)$ antes
+	de transformar: sin exponencial que la module, $a=0$, y la frecuencia de
+	la oscilación fija $\omega_0=5$.
+	De $(s^2+25)Y=(2s+30)X$,
+	\[
+		\ddot y+25y=2\dot x+30x.
+	\]
+	Los polos están sobre el eje imaginario: el sistema es marginalmente
+	estable (su $h(t)$ oscila sin amortiguarse), y por lo tanto \emph{no} es
+	BIBO estable.
+
+	\item $h(t)=2e^{-t}[\cos(5t)+3\sin(5t)]\,u(t)$. Es la señal anterior
+	multiplicada por $e^{-t}$; por desplazamiento en $s$ ($s\to s+1$),
+	\[
+		H(s)=\frac{2(s+1)+30}{(s+1)^2+25}=\frac{2s+32}{s^2+2s+26}.
+	\]
+	Polos en $p=-1\pm j5$ y cero en $z=-16$. Igual que en el inciso anterior,
+	la parte real y la imaginaria del polo se leen directo de $h(t)$: la
+	envolvente $e^{-t}$ fija $a=1$ y la frecuencia de la oscilación,
+	$\omega_0=5$. De
+	$(s^2+2s+26)Y=(2s+32)X$,
+	\[
+		\ddot y+2\dot y+26y=2\dot x+32x.
+	\]
+	Ahora los polos tienen parte real $-1<0$: el sistema es estable.
+
+	\medskip
+	Las dos respuestas oscilan a la misma frecuencia $\omega_0=5$, pero en
+	a) la parte real del polo es nula y la oscilación se sostiene, mientras
+	que en b) es $-1$ y la oscilación se apaga. Es la parte real del polo
+	---su distancia al eje imaginario--- la coordenada que gobierna esa
+	diferencia (Figura~\ref{fig:res_pz_ej8}).
+	\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}[scale=0.7, font=\footnotesize]
+			% panel a)
+			\begin{scope}
+			\draw[pzaxis] (-2.2,0)--(1.2,0) node[below right]{$\sigma$};
+			\draw[pzaxis] (0,-1.7)--(0,1.7) node[left]{$j\omega$};
+			\node[polo] at (0,1.2) {$\times$};
+			\node[polo] at (0,-1.2) {$\times$};
+			\node[below=2pt] at (-1.4,1.7) {a)};
+			\end{scope}
+			% panel b)
+			\begin{scope}[xshift=5cm]
+			\draw[pzaxis] (-2.2,0)--(1.2,0) node[below right]{$\sigma$};
+			\draw[pzaxis] (0,-1.7)--(0,1.7) node[left]{$j\omega$};
+			\node[polo] at (-0.9,1.2) {$\times$};
+			\node[polo] at (-0.9,-1.2) {$\times$};
+			\node[below=2pt] at (-1.4,1.7) {b)};
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Polos del Ejercicio 8. a) Sobre el eje imaginario
+		         ($\pm j5$): oscilación sostenida. b) En el semiplano
+		         izquierdo ($-1\pm j5$): oscilación amortiguada. (Los ceros,
+		         en $-15$ y $-16$, quedan fuera del recuadro.)}
+		\label{fig:res_pz_ej8}
+	\end{figure}
+\end{enumerate}
+
+\begin{figure}[h]
+	\centering
+	\includestandalone[width=0.6\textwidth]{../figures/fig_tp5_h_oscil/fig_tp5_h_oscil}
+	\caption{Respuesta al impulso del Ejercicio 8. (a) Inciso a: oscilación
+	sostenida (polos en $\pm j5$). (b) Inciso b: la misma frecuencia amortiguada
+	por $e^{-t}$, con envolvente $\pm 2\sqrt{10}\,e^{-t}$ (polos en $-1\pm j5$).}
+	\label{fig:res_h_oscil}
+\end{figure}
+
+% ==========================================================================
+\ejercicio{9: leer el plano a partir de la constelación}
+
+\teoria{Una constelación de polos y ceros con su ganancia $K$ determina la
+forma factorizada $H(s)=K\,\prod(s-z_i)/\prod(s-p_k)$. De allí se obtienen la
+respuesta al impulso, la ecuación diferencial y la estabilidad, que depende de
+que todos los polos estén en el semiplano izquierdo.}
+
+De la figura del enunciado: cero en $z=-1$, polos en $p_1=-2$ y $p_2=-6$,
+ganancia $K=4$. Entonces
+\[
+	H(s)=K\,\frac{s-z}{(s-p_1)(s-p_2)}=\frac{4(s+1)}{(s+2)(s+6)}.
+\]
+
+\begin{enumerate}
+	\item $\displaystyle H(s)=\frac{4(s+1)}{(s+2)(s+6)}$.
+
+	\item Son dos polos simples, así que la antitransformada se obtiene por
+	cobertura sobre $H(s)=\dfrac{A}{s+2}+\dfrac{B}{s+6}$:
+	\[
+		A=\frac{4(s+1)}{s+6}\bigg|_{s=-2}=\frac{4(-1)}{4}=-1,
+		\qquad
+		B=\frac{4(s+1)}{s+2}\bigg|_{s=-6}=\frac{4(-5)}{-4}=5,
+	\]
+	y cada residuo acompaña a su exponencial,
+	\[
+		h(t)=\bigl(-e^{-2t}+5\,e^{-6t}\bigr)\,u(t).
+	\]
+
+	\item Reagrupando $H(s)=\dfrac{4s+4}{s^2+8s+12}$, sus coeficientes son los
+	de la ecuación,
+	\[
+		\ddot y+8\dot y+12y=4\dot x+4x.
+	\]
+
+	\item Los polos $-2$ y $-6$ caen en el semiplano izquierdo: el sistema es
+	estable. El cero en $-1$ no juega aquí ---la estabilidad la deciden solo
+	los polos---; su papel es dar forma a la respuesta, no sostenerla o
+	apagarla.
+\end{enumerate}
+
+% ==========================================================================
+\ejercicio{10: interconexión de sistemas}
+
+\teoria{Como la relación $Y=HX$ es algebraica, componer sistemas es operar con
+sus transferencias: la cascada las multiplica, el paralelo las suma y la
+realimentación negativa ---camino directo $G$, retorno $F$--- da
+$G/(1+GF)$. Hay una diferencia decisiva entre las tres: la serie y el paralelo
+reúnen los polos de los subsistemas sin moverlos, mientras que la
+realimentación los reubica, porque sus polos son las raíces de $1+GF=0$.}
+
+Con $H_1(s)=\dfrac{1}{s+1}$ y $H_2(s)=\dfrac{1}{s+2}$:
+
+\begin{enumerate}
+	\item \emph{Serie.} Las transferencias se multiplican,
+	\[
+		H_{\text{serie}}(s)=H_1(s)\,H_2(s)=\frac{1}{(s+1)(s+2)}.
+	\]
+	Los polos son los de los dos subsistemas juntos, $s=-1$ y $s=-2$: la
+	cascada los apila sin cambiarlos de lugar. Ambos en el semiplano izquierdo,
+	así que el sistema es estable.
+
+	\item \emph{Paralelo.} Las transferencias se suman,
+	\[
+		H_{\text{paralelo}}(s)=H_1(s)+H_2(s)
+		    =\frac{1}{s+1}+\frac{1}{s+2}
+		    =\frac{(s+2)+(s+1)}{(s+1)(s+2)}=\frac{2s+3}{(s+1)(s+2)}.
+	\]
+	El denominador es el mismo de la serie, así que los polos siguen en $s=-1$
+	y $s=-2$. Lo que aparece es un cero en $s=-3/2$, a mitad de camino entre los
+	polos: el paralelo tampoco mueve los polos, solo agrega un cero.
+
+	\item \emph{Realimentación.} Con $G(s)=\dfrac{1}{s-1}$ en el camino directo y
+	una ganancia $F(s)=k$ en el de retorno,
+	\[
+		H(s)=\frac{G(s)}{1+k\,G(s)}
+		    =\frac{\dfrac{1}{s-1}}{1+\dfrac{k}{s-1}}
+		    =\frac{1}{(s-1)+k}=\frac{1}{s-(1-k)},
+	\]
+	multiplicando numerador y denominador por $(s-1)$. El polo a lazo cerrado
+	quedó en $s=1-k$: la realimentación lo desplazó desde $s=1$ hacia la
+	izquierda una distancia $k$. El sistema es estable cuando $1-k<0$, es decir
+	$k>1$. El camino directo era inestable ---polo en $+1$---; con $k>1$ la
+	realimentación lo lleva al semiplano izquierdo y lo estabiliza.
+\end{enumerate}
+
+Las tres configuraciones dejan ver el mismo contraste: la serie y el paralelo
+reúnen los polos de los subsistemas sin moverlos ---quedan en $-1$ y $-2$---,
+mientras que solo la realimentación reubica el polo. La
+Figura~\ref{fig:res_realim} sigue ese corrimiento: el polo de $G$ parte de
+$s=1$, en el semiplano derecho, y la realimentación lo corre hacia la izquierda
+hasta cruzar al semiplano izquierdo cuando $k>1$.
+
+\begin{figure}[h]
+	\centering
+	\includestandalone[width=0.5\textwidth]{../figures/fig_tp5_realim/fig_tp5_realim}
+	\caption{Polo a lazo cerrado del Ejercicio 10, en $s=1-k$. Parte de $s=1$
+	---en el semiplano derecho, inestable, sombreado--- y la realimentación lo
+	corre hacia la izquierda; cruza al semiplano izquierdo y el sistema se
+	estabiliza cuando $k>1$.}
+	\label{fig:res_realim}
+\end{figure}
+
+% ==========================================================================
+\ejercicio{11: una misma transferencia, distintas entradas}
+
+\teoria{Para un sistema en reposo, la salida a cualquier entrada se obtiene
+de $Y(s)=H(s)X(s)$ y una antitransformación. Cada entrada aporta sus propios
+polos a los del sistema, y la forma de $y(t)$ se lee de los polos resultantes
+de $Y(s)$.}
+
+Con $H(s)=\dfrac{2}{(s+1)(s+2)}$:
+
+\begin{enumerate}
+	\item $x(t)=\delta(t)$, $X(s)=1$. Como el impulso transforma a $1$, la
+	salida es la propia transferencia, $Y(s)=H(s)$, y antitransformando por
+	cobertura ($2/(s+2)|_{-1}=2$, $2/(s+1)|_{-2}=-2$) se obtiene
+	\[
+		y(t)=h(t)=2\bigl(e^{-t}-e^{-2t}\bigr)u(t).
+	\]
+	Excitar con $\delta$ es leer directamente la respuesta al impulso.
+
+	\item $x(t)=u(t)$, $X(s)=1/s$: $Y(s)=\dfrac{2}{s(s+1)(s+2)}$. Por
+	cobertura $A=2/[(1)(2)]=1$, $B=2/[(-1)(1)]=-2$, $C=2/[(-2)(-1)]=1$:
+	\[
+		y(t)=\bigl(1-2e^{-t}+e^{-2t}\bigr)u(t).
+	\]
+	El término permanente es la constante $1=H(0)$; el resto,
+	$-2e^{-t}+e^{-2t}$, es el transitorio que se extingue.
+
+	\item $x(t)=e^{-3t}u(t)$, $X(s)=1/(s+3)$. La entrada agrega su propio polo
+	en $-3$, distinto de los del sistema, así que
+	$Y(s)=\dfrac{2}{(s+1)(s+2)(s+3)}$ tiene tres polos simples. Por cobertura,
+	\[
+		A=\frac{2}{(s+2)(s+3)}\bigg|_{-1}=\frac{2}{2}=1,\;
+		B=\frac{2}{(s+1)(s+3)}\bigg|_{-2}=\frac{2}{-1}=-2,\;
+		C=\frac{2}{(s+1)(s+2)}\bigg|_{-3}=\frac{2}{2}=1,
+	\]
+	de donde
+	\[
+		y(t)=\bigl(e^{-t}-2e^{-2t}+e^{-3t}\bigr)u(t).
+	\]
+	Los dos primeros términos son los modos del sistema; el tercero es el que
+	trae la entrada.
+
+	\item $x(t)=e^{-t}u(t)$, $X(s)=1/(s+1)$: el polo de la entrada coincide
+	con un polo del sistema, y $Y(s)=\dfrac{2}{(s+1)^2(s+2)}$ tiene un polo
+	doble en $-1$. Por las fórmulas del Ejercicio 4.d),
+	$A_2=2/(s+2)|_{-1}=2$, $B=2/(s+1)^2|_{-2}=2$,
+	$A_1=\frac{d}{ds}[2/(s+2)]_{-1}=-2$:
+	\[
+		y(t)=\bigl(-2e^{-t}+2t\,e^{-t}+2e^{-2t}\bigr)u(t).
+	\]
+	Para este ejemplo, el factor $t\,e^{-t}$ es el efecto de la coincidencia entre
+	el polo de la entrada y el del sistema.
+\end{enumerate}
+
+% ==========================================================================
+\ejercicio{12: transitorio y permanente ante una sinusoide}
+
+\teoria{La salida se parte en dos: el \emph{transitorio}, formado por los modos
+del sistema, que se extingue, y la \emph{respuesta permanente}, sostenida por la entrada.
+
+Para una entrada sinusoidal de frecuencia $\omega_0$, la respuesta permanente es una
+sinusoide de la misma frecuencia, con amplitud $|H(j\omega_0)|$ y fase
+$\arg H(j\omega_0)$ ---la respuesta en frecuencia evaluada en $\omega_0$---.}
+
+Con $H(s)=\dfrac{1}{s+1}$ y $x(t)=\cos(t)u(t)$, $X(s)=\dfrac{s}{s^2+1}$,
+\[
+	Y(s)=X(s)H(s)=\frac{s}{(s+1)(s^2+1)}=\frac{s}{(s+1)(s-j)(s+j)},
+\]
+con un polo real en $-1$ y un par complejo conjugado en $\pm j$. Planteamos
+la descomposición en fracciones parciales sobre los tres polos simples,
+\[
+	Y(s)=\frac{A}{s+1}+\frac{A_p}{s-j}+\frac{\bar A_p}{s+j},
+\]
+donde el residuo del polo $-j$ es el conjugado del de $j$, porque $Y(s)$
+es real.
+
+\begin{enumerate}
+	\item El residuo del polo real se obtiene por cobertura,
+	\[
+		A=\frac{s}{s^2+1}\bigg|_{s=-1}=\frac{-1}{2}=-\frac12.
+	\]
+	Para el par complejo $s=\pm j$ ---con $a=0$ y $\omega_0=1$--- lo tratamos
+	por el Método~1 del Ejercicio~5: el residuo en $p=j$ se obtiene
+	multiplicando por su factor $(s-j)$, que se cancela, y evaluando lo que
+	queda en $s=j$,
+	\[
+		A_p=\frac{s}{(s+1)(s+j)}\bigg|_{s=j}=\frac{j}{(j+1)(2j)}=\frac{1}{2(j+1)}=\frac{1-j}{4}.
+	\]
+	En forma polar, $|A_p|=\dfrac{\sqrt2}{4}$ y $\varphi=\arg A_p=-\dfrac{\pi}{4}$.
+	Como $a=0$, la exponencial desaparece y el par queda como un coseno puro
+	con desfasaje, $2|A_p|\cos(t+\varphi)=\tfrac{1}{\sqrt2}\cos(t-\pi/4)$.
+	Sumando la exponencial del polo real se obtiene
+	\[
+		y(t)=\Bigl(-\tfrac12 e^{-t}+\tfrac{1}{\sqrt2}\cos\!\bigl(t-\tfrac{\pi}{4}\bigr)\Bigr)u(t).
+	\]
+
+	\item El término $-\tfrac12 e^{-t}$ es el \emph{transitorio} ---el modo
+	del sistema, asociado al polo $s=-1$, que se apaga---. El coseno
+	$\tfrac{1}{\sqrt2}\cos(t-\pi/4)$ es el \emph{permanente}, que subsiste:
+	su amplitud y su fase salen directo del residuo del par complejo,
+	$2|A_p|$ y $\varphi$.
+
+	\item La respuesta en frecuencia en $\omega_0=1$ es
+	$H(j)=\dfrac{1}{1+j}=\dfrac{1-j}{2}$, con
+	\[
+		|H(j)|=\frac{1}{\sqrt2},
+		\qquad
+		\arg H(j)=-\frac{\pi}{4}\ \text{rad}\ (-45^\circ).
+	\]
+	La entrada $\cos t$ tiene amplitud $1$, así que la respuesta permanente resulta con
+	amplitud $|H(j)|=1/\sqrt2$ y desfasaje $\arg H(j)=-\pi/4$, exactamente lo
+	obtenido en b).
+\end{enumerate}
+
+\begin{figure}[h]
+	\centering
+	\includestandalone[width=0.6\textwidth]{../figures/fig_tp5_trans_perm/fig_tp5_trans_perm}
+	\caption{Salida del Ejercicio 12. En rojo, $y(t)$; en azul punteado, el
+	término permanente $\tfrac{1}{\sqrt2}\cos(t-\pi/4)$. El transitorio
+	$-\tfrac12 e^{-t}$ aparta a $y(t)$ de ese término al comienzo y, al
+	extinguirse, las dos curvas se confunden.}
+	\label{fig:res_trans_perm}
+\end{figure}
+
+% ==========================================================================
+\ejercicio{13: EDLCC con condiciones iniciales}
+
+\teoria{La transformada unilateral incorpora el estado inicial: cada derivada
+arrastra sus condiciones,
+$\mathcal{L}_u\{\dot y\}=sY(s)-y(0^-)$ y
+$\mathcal{L}_u\{\ddot y\}=s^2Y(s)-s\,y(0^-)-\dot y(0^-)$.
+
+Transformar la EDLCC la vuelve algebraica; al despejar $Y(s)$ y antitransformar,
+la solución aparece ya separada en la parte que se extingue ---el transitorio---
+y la que subsiste ---la respuesta permanente---.}
+
+\begin{enumerate}
+	\item $\dot y+3y=u(t)$, $y(0)=2$. Aplicamos la propiedad de derivación
+	unilateral a $\dot y$, sustituyendo el dato $y(0)=2$:
+	\[
+		\mathcal{L}_u\{\dot y\}=sY(s)-y(0)=sY(s)-2.
+	\]
+	El escalón de la derecha transforma a $1/s$, así que la ecuación
+	diferencial se vuelve
+	\[
+		sY-2+3Y=\frac1s.
+	\]
+	Agrupamos los términos en $Y$ y pasamos el $-2$ al otro miembro, escribiendo
+	$2$ como $2s/s$ para sumar con común denominador:
+	\[
+		(s+3)\,Y=\frac1s+2=\frac{1+2s}{s}=\frac{2s+1}{s}
+		\quad\Longrightarrow\quad
+		Y(s)=\frac{2s+1}{s\,(s+3)}.
+	\]
+	Quedan dos polos simples, uno en el origen y otro en $-3$; planteamos
+	$Y(s)=\dfrac{A}{s}+\dfrac{B}{s+3}$ y sacamos los residuos por cobertura,
+	multiplicando por el factor del polo, que se cancela, y evaluando allí:
+	\[ 
+		A=\frac{2s+1}{s+3}\bigg|_{s=0}=\frac{1}{3},
+		\qquad
+		B=\frac{2s+1}{s}\bigg|_{s=-3}=\frac{-5}{-3}=\frac{5}{3}.
+	\]
+	El polo en el origen antitransforma a una constante y el de $-3$, a su
+	exponencial causal:
+	\[
+		y(t)=\Bigl(\tfrac13+\tfrac53\,e^{-3t}\Bigr)u(t).
+	\]
+	Conviene chequear que la condición inicial quedó bien incorporada: en
+	$t=0$, $y(0)=\tfrac13+\tfrac53=2$, que coincide con el dato de partida. El
+	permanente es la constante $1/3$, el valor al que tiende $y(t)$ una vez
+	que se apaga el modo propio del sistema; el transitorio es
+	$\tfrac53\,e^{-3t}u(t)$, asociado al polo en $-3$, que se extingue.
+
+	\item $\ddot y+4y=0$, $y(0)=1$, $\dot y(0)=2$. Aplicamos la derivación
+	unilateral a $\ddot y$, sustituyendo las dos condiciones iniciales:
+	\[
+		\mathcal{L}_u\{\ddot y\}=s^2Y(s)-s\,y(0)-\dot y(0)=s^2Y(s)-s-2.
+	\]
+	No hay entrada ---el miembro derecho de la ecuación es cero---, así que la
+	ecuación transformada queda directamente
+	\[
+		s^2Y-s-2+4Y=0.
+	\]
+	Agrupamos los términos en $Y$ y pasamos $-s-2$ al otro miembro:
+	\[
+		(s^2+4)\,Y=s+2
+		\quad\Longrightarrow\quad
+		Y(s)=\frac{s+2}{s^2+4}.
+	\]
+	El denominador ya tiene la forma de tabla $s^2+\omega_0^2$ con
+	$\omega_0=2$; alcanza con separar el numerador en la parte que acompaña a
+	$s$ y la constante,
+	\[
+		Y(s)=\frac{s}{s^2+4}+\frac{2}{s^2+4},
+	\]
+	donde el primer término es exactamente el par
+	$\cos(\omega_0 t)u(t)\leftrightarrow s/(s^2+\omega_0^2)$ y el segundo,
+	con la constante igual a $\omega_0=2$, es exactamente el par
+	$\sin(\omega_0 t)u(t)\leftrightarrow \omega_0/(s^2+\omega_0^2)$ ---no hace
+	falta acomodar nada, porque el numerador ya vino con el $2$ necesario---.
+	Antitransformando término a término,
+	\[
+		y(t)=\bigl(\cos 2t+\sin 2t\bigr)\,u(t).
+	\]
+	Chequeamos las dos condiciones iniciales: $y(0)=\cos 0+\sin 0=1$, y
+	derivando, $\dot y(t)=-2\sin 2t+2\cos 2t$, con $\dot y(0)=2\cos 0=2$;
+	ambas coinciden con los datos. No hay entrada: la salida es íntegramente
+	respuesta libre, sostenida por la energía inicial. Como los polos $\pm j2$
+	están sobre el eje imaginario, la oscilación no se amortigua: no hay un
+	transitorio que se apague, y tampoco hay un permanente en el sentido de
+	``resto que deja la entrada'', porque aquí no hay entrada.
+
+	\item $\ddot y+2\dot y+5y=e^{-t}u(t)$, $y(0)=0$, $\dot y(0)=1$. Aplicamos
+	la derivación unilateral a las dos derivadas, sustituyendo los datos; como
+	$y(0)=0$, el término $-s\,y(0)$ de la segunda derivada se anula y solo
+	queda $-\dot y(0)=-1$, y en la primera derivada $-y(0)=0$ tampoco aporta:
+	\[
+		\mathcal{L}_u\{\ddot y\}=s^2Y-s\,y(0)-\dot y(0)=s^2Y-1,
+		\qquad
+		\mathcal{L}_u\{\dot y\}=sY-y(0)=sY.
+	\]
+	Con $e^{-t}u(t)\leftrightarrow 1/(s+1)$, la ecuación transformada es
+	\[
+		s^2Y-1+2sY+5Y=\frac{1}{s+1}.
+	\]
+	Agrupamos los términos en $Y$ y pasamos el $-1$ al otro miembro sumando
+	$1$ de los dos lados:
+	\[
+		(s^2+2s+5)\,Y=1+\frac{1}{s+1}=\frac{(s+1)+1}{s+1}=\frac{s+2}{s+1},
+	\]
+	de donde
+	\[
+		Y(s)=\frac{s+2}{(s+1)(s^2+2s+5)}.
+	\]
+	El denominador cuadrático no tiene raíces reales: aporta un par de polos
+	complejos conjugados, y lo antitransformamos por el Método~1 del
+	Ejercicio~5, tratando el par como dos polos simples.
+
+	Ubicamos primero los polos del par con la resolvente sobre
+	$s^2+2s+5=0$,
+	\[
+		s=\frac{-2\pm\sqrt{4-20}}{2}=\frac{-2\pm\sqrt{-16}}{2}=-1\pm 2j,
+	\]
+	es decir $p=-1+2j$ y $\bar p=-1-2j$, de donde se leen $a=1$ y
+	$\omega_0=2$. Planteamos la descomposición sobre los tres polos simples,
+	\[
+		Y(s)=\frac{A}{s+1}+\frac{A_p}{s-p}+\frac{\bar A_p}{s-\bar p}.
+	\]
+	El residuo del polo real sale por cobertura, multiplicando por su factor
+	$(s+1)$, que se cancela, y evaluando en $s=-1$:
+	\[
+		A=\frac{s+2}{s^2+2s+5}\bigg|_{s=-1}=\frac14.
+	\]
+	El residuo del par, en $p$, se obtiene multiplicando por $(s-p)$, que se
+	cancela, y evaluando lo que queda en $s=p$:
+	\[
+		A_p=\frac{s+2}{(s+1)(s-\bar p)}\bigg|_{s=p}
+		   =\frac{p+2}{(p+1)(p-\bar p)}
+		   =\frac{1+2j}{(2j)(4j)}
+		   =\frac{1+2j}{-8}
+		   =-\frac18-\frac14\,j,
+	\]
+	donde el denominador se armó con el factor del propio polo, $p+1=2j$, y
+	el del conjugado, $p-\bar p=4j$. El residuo es complejo, así que su
+	módulo y su fase salen de sus partes real e imaginaria:
+	\[
+		|A_p|=\sqrt{\left(\tfrac18\right)^2+\left(\tfrac14\right)^2}=\frac{\sqrt5}{8},
+		\qquad
+		\varphi=\arg A_p=\arctan(2)-\pi\approx -2{,}034\ \text{rad}\ (-116{,}57^\circ),
+	\]
+	donde restamos $\pi$ porque el residuo cae en el tercer cuadrante (parte
+	real y parte imaginaria negativas). Con $a=1$ y $\omega_0=2$, la fórmula
+	del par $2|A_p|\,e^{-at}\cos(\omega_0 t+\varphi)$ entrega su
+	contribución,
+	\[
+		2\cdot\frac{\sqrt5}{8}\,e^{-t}\cos(2t+\varphi)
+		=\frac{\sqrt5}{4}\,e^{-t}\cos(2t+\varphi).
+	\]
+	Sumando la exponencial del polo real se obtiene
+	\[
+		y(t)=e^{-t}\left[\frac14+\frac{\sqrt5}{4}\cos(2t+\varphi)\right]u(t),
+		\qquad \varphi=\arctan(2)-\pi\ \text{rad}\ (-116{,}57^\circ).
+	\]
+	Esta es la misma señal que el Método~2 (completar cuadrados) entregaría
+	como $e^{-t}[\tfrac14-\tfrac14\cos 2t+\tfrac12\sin 2t]$: al expandir el
+	coseno desfasado, $\cos\varphi=-1/\sqrt5$ y $\sin\varphi=-2/\sqrt5$
+	---las partes real e imaginaria de $A_p$ normalizadas por
+	$|A_p|$--- reconstruyen exactamente esos dos coeficientes. Chequeamos la
+	condición inicial: en $t=0$,
+	\[
+		y(0)=\frac14+\frac{\sqrt5}{4}\cos\varphi
+		    =\frac14+\frac{\sqrt5}{4}\left(-\frac{1}{\sqrt5}\right)
+		    =\frac14-\frac14=0,
+	\]
+	que coincide con el dato. Todos los términos decaen con $e^{-t}$: como
+	la propia entrada se extingue, la respuesta es toda transitoria y el
+	permanente es nulo.
+\end{enumerate}
+
+% ==========================================================================
+\ejercicio{14: un circuito con energía inicial}
+
+\teoria{La transformada unilateral resuelve el circuito con su condición
+inicial de un solo paso.
+
+Sobre la solución conviene distinguir dos cortes que no coinciden. Por su
+causa, se separa en la respuesta forzada ---debida a la fuente, con el
+capacitor inicialmente descargado--- y la respuesta libre ---debida
+únicamente a la energía inicial, con la fuente apagada---. Por su destino
+temporal, se separa en el transitorio que se apaga y el régimen permanente
+al que tiende la tensión. Los dos cortes usan el mismo material pero lo reparten
+distinto: la respuesta forzada trae consigo su propio transitorio, así que
+no es igual al régimen permanente ni la libre es igual al transitorio completo.}
+
+Con $R=2\ \text{k}\Omega$ y $C=1\ \text{mF}$, la constante de tiempo es
+$\tau=RC=2\ \text{s}$, y con $E=10\ \text{V}$ la ecuación del circuito es
+$2\,\dot v_C+v_C=10\,u(t)$, con $v_C(0)=4\ \text{V}$. Transformamos con la
+propiedad de derivación unilateral, sustituyendo el dato $v_C(0)=4$:
+\[
+	2\bigl(sV-4\bigr)+V=\frac{10}{s}
+	\quad\Longrightarrow\quad
+	(2s+1)\,V=\frac{10}{s}+8.
+\]
+
+\begin{enumerate}
+	\item Despejamos $V(s)$ y separamos en el término que trae la fuente y
+	el que trae la condición inicial:
+	\[
+		V(s)=\frac{10}{s\,(2s+1)}+\frac{8}{2s+1}.
+	\]
+	Para aplicar cobertura conviene sacar el $2$ como factor común,
+	$2s+1=2(s+\tfrac12)$, con lo que el polo distinto del origen queda a la
+	vista en $s=-\tfrac12$. El primer término se reescribe
+	\[
+		\frac{10}{s\cdot 2(s+\frac12)}=\frac{5}{s\,(s+\frac12)}
+		=\frac{A}{s}+\frac{B}{s+\frac12},
+	\]
+	y los residuos salen multiplicando por el factor del polo, que se
+	cancela, y evaluando allí:
+	\[
+		A=\frac{5}{s+\frac12}\bigg|_{s=0}=10,
+		\qquad
+		B=\frac{5}{s}\bigg|_{s=-\frac12}=-10.
+	\]
+	El segundo término de $V(s)$ comparte el mismo polo y el mismo factor
+	$2$ en el denominador,
+	\[
+		\frac{8}{2(s+\frac12)}=\frac{4}{s+\frac12},
+	\]
+	así que sumando los tres términos sobre los dos polos,
+	\[
+		V(s)=\frac{10}{s}+\frac{-10+4}{s+\frac12}
+		    =\frac{10}{s}-\frac{6}{s+\frac12}.
+	\]
+	Antitransformando,
+	\[
+		v_C(t)=\Bigl[\,10-6\,e^{-t/2}\,\Bigr]u(t)\ \text{V}.
+	\]
+	El exponente es $t/2=t/\tau$ con $\tau=RC=2\ \text{s}$, como corresponde
+	al polo en $s=-1/\tau$. Chequeamos la condición inicial:
+	$v_C(0)=10-6=4\ \text{V}$, que coincide con el dato.
+
+	\item El término constante $10\ \text{V}$ es el \emph{permanente}: la
+	tensión del capacitor tiende a la de la fuente $E=10\ \text{V}$. El
+	término $-6\,e^{-t/2}\ \text{V}$ es el \emph{transitorio}, que se apaga
+	con constante de tiempo $\tau=2\ \text{s}$; su signo negativo dice que el
+	capacitor arranca por debajo del valor final y se carga hacia él, lo que
+	es consistente con $v_C(0)=4\ \text{V}<E=10\ \text{V}$. Cuando
+	$t\to\infty$, $v_C\to 10\ \text{V}$: el valor inicial no interviene en
+	ese límite, solo fija el punto de partida y, con él, el tamaño del
+	transitorio que hay que recorrer para llegar a $E$.
+
+	Vale la pena mirar también el otro corte, el que separa por causa: del
+	inciso a),
+	\[
+		v_C(t)=\underbrace{10\bigl(1-e^{-t/2}\bigr)}_{\text{forzada}}
+		      \,+\,\underbrace{4\,e^{-t/2}}_{\text{libre}}.
+	\]
+	Este reparto no coincide con el de permanente y transitorio: la
+	respuesta forzada trae consigo su propio transitorio, $-10\,e^{-t/2}$,
+	que sumado al $4\,e^{-t/2}$ de la libre reconstruye el transitorio
+	total $-6\,e^{-t/2}$. La respuesta libre, en cambio, es transitorio
+	puro: no aporta nada al valor final $10\ \text{V}$.
+\end{enumerate}
+
+\begin{figure}[h]
+	\centering
+	\includestandalone[width=0.6\textwidth]{../figures/fig_tp5_rc/fig_tp5_rc}
+	\caption{Tensión del capacitor del Ejercicio 14 (ejes en unidades
+	normalizadas por $E$ y por $\tau$). Nuestro caso, con
+	$v_C(0)=4\ \text{V}<E=10\ \text{V}$, corresponde a la curva creciente
+	$V_0<E$: el capacitor se carga desde $4\ \text{V}$ hasta $10\ \text{V}$
+	con constante de tiempo $\tau=RC=2\ \text{s}$. La otra curva, $V_0>E$,
+	ilustra el caso complementario en que el capacitor arranca por encima
+	de $E$ y se descarga hacia el mismo valor final.}
+	\label{fig:res_rc}
+\end{figure}
+
+% ==========================================================================
+\ejercicio{15: el plano $s$ contiene a Fourier}
+
+\teoria{La respuesta en frecuencia es la restricción de la transferencia al eje
+imaginario, $H(j\omega)=H(s)\big|_{\sigma=0}$, válida cuando ese eje pertenece a
+la ROC ---es decir, cuando el sistema es estable---.
+
+Por eso la transformada de Laplace generaliza a la de Fourier: el diagrama
+de polos y ceros en el plano $s$ ---qué modos tiene el sistema, si son
+oscilantes, si es estable--- ya deja ver su dinámica completa, mientras que
+la respuesta en frecuencia es apenas la traza de esa información sobre el
+eje imaginario. Restringir a $s=j\omega$ recupera Fourier; pierde de vista
+el resto del plano: la posición de los polos y la ROC que certifica la
+estabilidad.}
+
+Para $\ddot y+6\dot y+8y=2x$:
+
+\begin{enumerate}
+	\item $\displaystyle H(s)=\frac{2}{s^2+6s+8}=\frac{2}{(s+2)(s+4)}$, con
+	polos en $-2$ y $-4$. La ROC causal es $\operatorname{Re}\{s\}>-2$.
+	Ambos polos están en el semiplano izquierdo: el sistema es estable y el
+	eje imaginario pertenece a la ROC.
+
+	\item Dos polos simples, así que la cobertura sobre
+	$H(s)=\dfrac{A}{s+2}+\dfrac{B}{s+4}$ da $A=2/(s+4)|_{-2}=1$ y
+	$B=2/(s+2)|_{-4}=-1$, de donde
+	\[
+		h(t)=\bigl(e^{-2t}-e^{-4t}\bigr)u(t),
+	\]
+	la diferencia de dos exponenciales que decaen.
+
+	\item Como el eje imaginario está en la ROC, se evalúa
+	\[
+		H(j\omega)=H(s)\big|_{s=j\omega}
+		         =\frac{2}{(j\omega)^2+6j\omega+8}
+		         =\frac{2}{(8-\omega^2)+j6\omega},
+	\]
+	que es exactamente la respuesta en frecuencia obtenida con Fourier.
+	Restringir $s=j\omega$ recupera Fourier; sobre el resto del plano,
+	Laplace aporta la ubicación de los polos y la ROC ---y con ellas la
+	estabilidad---, lo que la vuelve aplicable también a sistemas sin
+	respuesta en frecuencia (inestables).
+
+	\item $x(t)=e^{-3t}u(t)$, $X(s)=\dfrac{1}{s+3}$. La entrada suma su polo en
+	$-3$ a los dos del sistema, de modo que
+	$Y(s)=\dfrac{2}{(s+2)(s+3)(s+4)}$ tiene tres polos simples; por cobertura,
+	\[
+		A=\frac{2}{(s+3)(s+4)}\bigg|_{-2}=\frac{2}{2}=1,\;
+		B=\frac{2}{(s+2)(s+4)}\bigg|_{-3}=\frac{2}{-1}=-2,\;
+		C=\frac{2}{(s+2)(s+3)}\bigg|_{-4}=\frac{2}{2}=1,
+	\]
+	de donde
+	\[
+		y(t)=\bigl(e^{-2t}-2e^{-3t}+e^{-4t}\bigr)u(t).
+	\]
+	El término en $e^{-3t}$ es el que aporta la entrada; los otros dos son los
+	modos propios del sistema.
+\end{enumerate}
+
+% ==========================================================================
+\ejercicio{16: integrador}
+
+\teoria{Este ejercicio recorre, sobre un único sistema, toda la cadena del
+capítulo.
+
+De la EDLCC a la transferencia; de los polos a la respuesta al impulso y la
+estabilidad; de la respuesta al escalón a la lectura transitorio--permanente;
+del eje imaginario a la respuesta en frecuencia; y de la realimentación al
+desplazamiento de los polos.}
+
+Sistema: $\ddot y+4\dot y+3y=\dot x+2x$.
+
+\begin{enumerate}
+	\item Transformamos: $H(s)=\dfrac{s+2}{s^2+4s+3}=\dfrac{s+2}{(s+1)(s+3)}$.
+	Cero en $z=-2$, polos en $p_1=-1$ y $p_2=-3$, ganancia $K=1$. Los tres
+	puntos están sobre el eje real, con el cero entre los dos polos
+	(Figura~\ref{fig:res_pz_ej16}).
+	\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}[scale=0.85, font=\footnotesize]
+			\draw[pzaxis] (-3.8,0)--(0.8,0) node[below right]{$\sigma$};
+			\draw[pzaxis] (0,-1.1)--(0,1.1) node[left]{$j\omega$};
+			\node[polo] at (-1,0) {$\times$};
+			\node[polo] at (-3,0) {$\times$};
+			\node[cero] at (-2,0) {$\circ$};
+			\node[below=3pt] at (-3,0) {$-3$};
+			\node[below=3pt] at (-2,0) {$-2$};
+			\node[below=3pt] at (-1,0) {$-1$};
+		\end{tikzpicture}
+		\caption{Constelación del Ejercicio 16: polos en $-1$ y $-3$, cero
+		         en $-2$.}
+		\label{fig:res_pz_ej16}
+	\end{figure}
+
+	\item La ROC causal es $\operatorname{Re}\{s\}>-1$. Ambos polos tienen
+	parte real negativa: el sistema es causal y estable.
+
+	\item La respuesta al impulso es la antitransformada de $H(s)$. Con dos
+	polos simples basta la cobertura sobre $H(s)=\dfrac{A}{s+1}+\dfrac{B}{s+3}$:
+	$A=\dfrac{s+2}{s+3}\big|_{-1}=\tfrac12$ y
+	$B=\dfrac{s+2}{s+1}\big|_{-3}=\tfrac12$, de donde
+	\[
+		h(t)=\tfrac12\bigl(e^{-t}+e^{-3t}\bigr)u(t).
+	\]
+
+	\item Respuesta al escalón, $X(s)=1/s$:
+	$Y(s)=\dfrac{s+2}{s(s+1)(s+3)}$. Por cobertura,
+	$A=\dfrac{s+2}{(s+1)(s+3)}\big|_{0}=\tfrac23$,
+	$B=\dfrac{s+2}{s(s+3)}\big|_{-1}=-\tfrac12$,
+	$C=\dfrac{s+2}{s(s+1)}\big|_{-3}=-\tfrac16$:
+	\[
+		y(t)=\Bigl(\tfrac23-\tfrac12 e^{-t}-\tfrac16 e^{-3t}\Bigr)u(t).
+	\]
+	El término permanente es $2/3=H(0)$; los dos términos exponenciales son el
+	transitorio.
+
+	\item Como el sistema es estable, el eje imaginario está en la ROC y
+	\[
+		H(j\omega)=\frac{j\omega+2}{(j\omega)^2+4j\omega+3}
+		         =\frac{2+j\omega}{(3-\omega^2)+j4\omega}.
+	\]
+
+	\item Realimentación negativa con $G(s)=H(s)$ y $F(s)=k>0$. Los polos a
+	lazo cerrado son las raíces de $1+kG(s)=0$, es decir
+	\[
+		(s+1)(s+3)+k(s+2)=0
+		\quad\Longrightarrow\quad
+		s^2+(4+k)s+(3+2k)=0.
+	\]
+	Para una cuadrática $s^2+bs+c=0$, el discriminante $\Delta=b^2-4c$ es
+	justamente la cantidad que queda bajo la raíz de la resolvente ---la
+	misma que ya usamos en el Ejercicio~5--- y decide el tipo de raíces sin
+	necesidad de resolver: si $\Delta>0$ hay dos raíces reales distintas, si
+	$\Delta=0$ una raíz real doble, y si $\Delta<0$ un par complejo
+	conjugado. Aquí $b=4+k$ y $c=3+2k$, con lo que
+	\[
+		\Delta=(4+k)^2-4(3+2k)=k^2+4>0
+	\]
+	para todo $k$, así que las dos raíces son siempre reales: por más que se
+	aumente $k$, los polos \emph{no} se vuelven complejos y la respuesta no
+	llega a oscilar. Como además ambos coeficientes son positivos para todo
+	$k>0$, el sistema permanece estable; al crecer $k$ los polos reales se
+	separan, uno corriéndose hacia la izquierda y el otro acercándose al cero
+	en $-2$.
+\end{enumerate}
+
+\begin{figure}[h]
+	\centering
+	\includestandalone[width=0.6\textwidth]{../figures/fig_tp5_lugar_raices/fig_tp5_lugar_raices}
+	\caption{Lugar de los polos a lazo cerrado del Ejercicio 16 al crecer $k$.
+	El discriminante es positivo para todo $k$, así que ambos polos son siempre
+	reales: una rama va de $-1$ hacia el cero en $-2$, la otra de $-3$ hacia
+	$-\infty$.}
+	\label{fig:res_lugar_raices}
+\end{figure}
+
+\end{document}

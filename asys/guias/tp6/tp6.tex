@@ -1,0 +1,457 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{multicol}
+\usepackage{titling} % Para ajustar los espacios del título
+\usepackage{tasks} % Para listas en columnas
+\usepackage{float}
+\usepackage[mode=image]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=7cm,compat=1.15}
+\usepackage{caption}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+% Ajusta la separación entre el encabezado y el contenido
+\setlength{\headsep}{10pt}
+
+% Ajuste del título:
+\setlength{\droptitle}{-0.5in} % Mueve el título ligeramente hacia arriba
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large}
+	\posttitle{\par\end{center}\vspace{-4em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+	\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Trabajo Práctico N$^\text{o}$6: Señales discretas y muestreo.}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Título optimizado con espacios reducidos
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Trabajo Práctico N$^{\text o}$6: Señales de tiempo discreto y teorema del muestreo}%
+}
+\author{}
+\date{}
+
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+
+	% Entorno de dos columnas
+	\begin{multicols}{2}
+
+		\label{sec:enun}
+
+		{\small\noindent En todo el trabajo, $\Delta t$ es el intervalo de
+		muestreo, $\omega_s = 2\pi/\Delta t$ la frecuencia de muestreo y
+		$\lambda = \omega\,\Delta t$ la frecuencia digital, medida en radianes
+		por muestra.}
+
+		\vspace{0.4em}
+
+		% ***********************************************
+		% 		PARTE I -- SEÑALES DE TIEMPO DISCRETO
+		% ***********************************************
+		\textbf{Del mundo continuo al digital}
+		\begin{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 1
+		% ***********************************************
+		\item Una tensión senoidal $x(t) = 1{,}2\cos(2\pi\cdot 100\,t)$ V se
+		muestrea cada $\Delta t = 1{,}25$ ms y se cuantiza después con cuatro
+		bits por muestra en signo-magnitud, con un paso de grilla de $0{,}2$ V.
+		\begin{enumerate}
+			\item Obtener $x[n]$ y simplificar el argumento del coseno hasta
+			dejarlo en la forma $\cos(\lambda n)$.
+			\item Indicar cuántas muestras entran en un ciclo de $x(t)$ y cuál
+			es el período fundamental $N$ de la secuencia.
+			\item Verificar que la grilla de niveles cubre todo el rango de la
+			señal, e indicar cuántos niveles distintos quedan definidos.
+			\item Completar una tabla con la muestra exacta, la magnitud
+			entera, la palabra de cuatro bits y el valor cuantizado, para
+			$n = 0, 1, \dots, 7$.
+			\item Indicar el error máximo de redondeo.
+
+		\end{enumerate}
+
+		% ***********************************************
+		% 		La secuencia: anatomía y operaciones
+		% ***********************************************
+		\textbf{La secuencia: anatomía y operaciones}
+
+		% ***********************************************
+		% 				Ejercicio 2
+		% ***********************************************
+		\item Sea la secuencia
+		\[
+			x[n] = \{\, -1 \quad 2 \quad \underset{\uparrow}{3} \quad 1 \quad -2 \,\}.
+		\]
+		\begin{enumerate}
+			\item Graficar $x[n]$ e indicar su soporte.
+			\item Graficar $x[n-3]$, $x[-n]$ y $x[2-n]$, indicando en cada caso
+			el soporte resultante.
+			\item Indicar cuáles de las cuatro secuencias anteriores son
+			causales.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 3
+		% ***********************************************
+		\item Sea la secuencia
+		\[
+			x[n] = \{\, \underset{\uparrow}{1} \quad -1 \quad 2 \quad 0 \quad 1 \quad 3 \,\}.
+		\]
+		\begin{enumerate}
+			\item Determinar y graficar la decimación $y[n] = x[2n]$.
+			\item Determinar y graficar la interpolación $w[n] = x[n/3]$.
+			\item Indicar si se puede recuperar $x[n]$ a partir de $y[n]$, y si
+			se puede a partir de $w[n]$. Justificar en los dos casos.
+			\item Explicar por qué el escalado temporal $x(at)$ del tiempo continuo no
+			se traslada al discreto como una sola operación.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 4
+		% ***********************************************
+		\item Dada la secuencia
+		\[
+			x[n] = \{\, 6 \quad 4 \quad \underset{\uparrow}{-2} \quad -2 \,\},
+		\]
+		\begin{enumerate}
+			\item Determinar sus componentes par e impar, volcando el cálculo
+			en una tabla índice por índice.
+			\item Graficar las tres secuencias.
+			\item Verificar que $x_i[0] = 0$ y que la suma de las componentes
+			reconstruye $x[n]$.
+		\end{enumerate}
+
+		% ***********************************************
+		% 	La exponencial compleja y la frecuencia digital
+		% ***********************************************
+		\textbf{La exponencial compleja discreta y la frecuencia digital}
+
+		% ***********************************************
+		% 				Ejercicio 5
+		% ***********************************************
+		\item Para cada una de las frecuencias digitales siguientes, hallar la
+		frecuencia equivalente en el intervalo $(-\pi,\pi]$:
+		\begin{center}
+		$\lambda_1 = \dfrac{\pi}{3}$, \quad
+		$\lambda_2 = \dfrac{5\pi}{3}$, \quad
+		$\lambda_3 = \dfrac{7\pi}{3}$, \quad
+		$\lambda_4 = \pi$, \quad
+		$\lambda_5 = \dfrac{11\pi}{6}$, \quad
+		$\lambda_6 = 3\pi$.
+		\end{center}
+		\begin{enumerate}
+			\item Ordenarlas de menor a mayor velocidad de oscilación.
+			\item Indicar qué pares producen exactamente la misma secuencia
+			$e^{j\lambda n}$ y qué pares comparten solo la parte real.
+			\item Justificar, con la cuenta, por qué sumarle $2\pi$ a $\lambda$
+			deja la secuencia intacta.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 6
+		% ***********************************************
+		\item Un vector giratorio de frecuencia $\omega = 2\pi\cdot 50$ rad/s se
+		muestrea cada $\Delta t$ segundos.
+		\begin{enumerate}
+			\item Calcular $\lambda$ para $\Delta t = 1$ ms, $6$ ms, $15$ ms y
+			$20$ ms.
+			\item Para cada caso, determinar la frecuencia digital equivalente
+			en $(-\pi,\pi]$ y describir el giro aparente: qué ángulo avanza el
+			vector entre foto y foto y, cuando ese giro existe, en qué sentido
+			ocurre.
+			\item Determinar para qué valores de $\Delta t$ el giro puede
+			seguirse sin ambigüedad, y analizar qué pasa en el caso límite.
+		\end{enumerate}
+
+		% ***********************************************
+		% 		Periodicidad y señales armónicas
+		% ***********************************************
+		\textbf{Periodicidad y señales armónicas}
+
+		% ***********************************************
+		% 				Ejercicio 7
+		% ***********************************************
+		\item Determinar si las siguientes secuencias son periódicas. Cuando lo
+		sean, hallar el período fundamental $N$ e indicar, para las que son una
+		sola exponencial o sinusoide, cuántas vueltas $k$ da el vector giratorio
+		en ese período.
+		\begin{enumerate}
+			\item $x[n] = \cos(\pi n/5)$
+			\item $x[n] = e^{j3\pi n/4}$
+			\item $x[n] = \cos(15 n)$
+			\item $x[n] = \cos(5\pi n)$
+			\item $x[n] = \cos(\pi n/3) + \sin(\pi n/4)$
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 8
+		% ***********************************************
+		\item La señal $x(t) = 3\cos(20t)$ se muestrea con un intervalo
+		$\Delta t$ elegido de modo que la secuencia $x[n]$ resulte periódica con
+		período fundamental $N = 10$.
+		\begin{enumerate}
+			\item Determinar todos los valores posibles de $\lambda$ y de
+			$\Delta t$ dentro de una vuelta.
+			\item Para cada solución, indicar cuántos ciclos de $x(t)$
+			transcurren mientras la secuencia recorre un período.
+			\item Señalar cuáles de esas soluciones muestrean por encima del
+			doble de la frecuencia de la señal, y relacionar esa condición con
+			la posición de $\lambda$ respecto de $\pi$.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 9
+		% ***********************************************
+		\item Se toma $N = 6$ y el conjunto de armónicas
+		$\phi_k[n] = e^{j(2\pi/6)kn}$.
+		\begin{enumerate}
+			\item Escribir las armónicas distintas y verificar con la cuenta que
+			$\phi_6[n] = \phi_0[n]$.
+			\item Las armónicas $\phi_4$ y $\phi_5$ tienen frecuencia entre
+			$\pi$ y $2\pi$. Hallar para cada una la frecuencia equivalente en
+			$(-\pi,0)$, verificar sobre un período que la secuencia es la misma e
+			indicar qué relación guarda cada una con otra armónica del conjunto.
+			Señalar cuál de las seis oscila más rápido.
+			\item Comprobar que $\lambda = 2\pi/5$ y $\lambda = 4\pi/5$ tienen
+			el mismo período $N = 5$ pero distinta velocidad de oscilación.
+		\end{enumerate}
+
+		% ***********************************************
+		% 		La exponencial general: la secuencia z^n
+		% ***********************************************
+		\textbf{La exponencial general: la secuencia $z^n$}
+
+		% ***********************************************
+		% 				Ejercicio 10
+		% ***********************************************
+		\item Sea $z = r\,e^{j\lambda}$ y la secuencia causal
+		$x[n] = z^n\,u[n]$.
+		\begin{enumerate}
+			\item Para $z = 0{,}9\,e^{j\pi/6}$, escribir
+			$\operatorname{Re}\{x[n]\}$, identificar la envolvente y el período
+			de la oscilación, y graficar las primeras seis muestras.
+			\item Repetir para $z = 1{,}1\,e^{j\pi/6}$ y comparar las dos
+			gráficas.
+			\item Para $z = -0{,}8$, mostrar que $z^n = (0{,}8)^n(-1)^n$ e
+			indicar qué valor de $\lambda$ corresponde a ese punto del plano.
+			\item Clasificar las secuencias de los incisos (a) y (b) como de
+			energía, de potencia o de ninguna de las dos.
+			\item Indicar qué puntos del plano complejo hacen que
+			$\operatorname{Re}\{x[n]\}$ sea una sinusoide discreta de amplitud
+			constante.
+		\end{enumerate}
+
+		% ***********************************************
+		% 	Escalón, impulso y representación por impulsos
+		% ***********************************************
+		\textbf{Escalón, impulso y representación por impulsos}
+
+		% ***********************************************
+		% 				Ejercicio 11
+		% ***********************************************
+		\item Sean las secuencias
+		\begin{align*}
+			x_1[n] &= u[n+2] - u[n-3], \\
+			x_2[n] &= u[n+1] + u[n-1] - u[n-3] - u[n-5], \\
+			x_3[n] &= n\,\big(u[n] - u[n-5]\big), \\
+			x_4[n] &= 2\,\delta[n+1] - \delta[n] + 3\,\delta[n-2].
+		\end{align*}
+		\begin{enumerate}
+			\item Graficar las cuatro secuencias.
+			\item Escribir $x_3[n]$ como suma de impulsos desplazados.
+		\end{enumerate}
+
+		% ***********************************************
+		% 		PARTE II -- TEOREMA DEL MUESTREO
+		% ***********************************************
+		\textbf{El problema del muestreo}
+
+		% ***********************************************
+		% 				Ejercicio 12
+		% ***********************************************
+		\item Una rueda gira a $20$ vueltas por segundo. Sobre el borde lleva
+		pintada una marca, que es lo único que permite reconocer en qué
+		posición angular está la rueda en cada cuadro. Se la filma a $24$
+		cuadros por segundo.
+		\begin{enumerate}
+			\item Calcular el ángulo que avanza la marca entre cuadro y cuadro.
+			\item Reducir ese ángulo al intervalo $(-\pi,\pi]$ y determinar a
+			qué velocidad, y en qué sentido, parece girar la rueda en la
+			pantalla.
+			\item Determinar a qué velocidades de giro la rueda parece quieta.
+			\item Determinar la máxima velocidad de giro que esa filmación
+			representa sin ambigüedad.
+		\end{enumerate}
+
+		% ***********************************************
+		% 		El espectro de una señal muestreada
+		% ***********************************************
+		\textbf{El espectro de una señal muestreada}
+
+		% ***********************************************
+		% 				Ejercicio 13
+		% ***********************************************
+		\item Una señal $x(t)$ tiene espectro $X(j\omega)$ triangular, de altura
+		$1$ en el origen y nulo fuera de $|\omega| < 3000\pi$ rad/s.
+		\begin{enumerate}
+			\item Con $\Delta t = 0{,}2$ ms, calcular $\omega_s$ y graficar
+			$X_s(j\omega)$ mostrando al menos tres copias, con sus posiciones
+			y su factor de escala. Demarcar la banda base y verificar sobre la
+			gráfica que $X_s(j\omega)$ es periódico de período $\omega_s$.
+			\item Repetir con $\Delta t = 0{,}4$ ms e indicar en qué banda de
+			frecuencias se produce el solapamiento.
+			\item Repetir las dos gráficas con el eje medido en frecuencia
+			digital $\lambda = \omega\,\Delta t$, indicando en cada caso cuánto
+			ocupa una copia y dónde queda la banda base. Escribir la condición
+			de Nyquist en términos de $\lambda$.
+
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Nyquist y aliasing
+		% ***********************************************
+		\textbf{Nyquist y aliasing}
+
+		% ***********************************************
+		% 				Ejercicio 14
+		% ***********************************************
+		\item Para cada una de las siguientes señales, determinar la frecuencia
+		máxima $\omega_M$ y la velocidad de Nyquist, y proponer una frecuencia de
+		muestreo con margen sobre esa velocidad, indicando el intervalo $\Delta t$
+		correspondiente.
+		\begin{enumerate}
+			\item $x(t) = 10\cos(5t) - 5\sin(7\pi t) + 3\cos(30t)$
+			\item $y(t) = 18\sin(10t) + 15\sin(5\pi t) + 5\cos(60t)$
+			\item $z(t) = 15\cos(6\pi t) + 7\sin(10\pi t) + 2\cos(15\pi t)$
+
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 15
+		% ***********************************************
+		\item Para la señal $z(t)$ del ejercicio anterior se adopta
+		$\omega_s = 80$ rad/s.
+		\begin{enumerate}
+			\item Verificar si se cumple la condición de Nyquist.
+			\item Indicar qué componentes quedan bien muestreadas.
+			\item Calcular la frecuencia alias de la componente mal muestreada
+			e indicar dónde queda respecto de las componentes bien muestreadas.
+			\item Indicar si esa componente puede recuperarse con un
+			procesamiento posterior. Justificar.
+			\item Determinar la mínima frecuencia de muestreo que evita el
+			problema.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 16
+		% ***********************************************
+		\item El espectro de amplitud de una señal $x(t)$ es el de la
+		Figura~\ref{fig:tp6_espectro_trapecio}, nulo fuera de $|\omega| < 500$
+		rad/s. Se la muestrea con una frecuencia de muestreo $f_s = 150$ Hz.
+
+		\begin{center}
+			\includestandalone[width=0.98\linewidth]{figures/fig_tp6_espectro_trapecio/fig_tp6_espectro_trapecio}
+			\captionof{figure}{Espectro de amplitud del ejercicio 16.}
+			\label{fig:tp6_espectro_trapecio}
+		\end{center}
+
+		\begin{enumerate}
+			\item Calcular $\omega_s$ y la frecuencia de Nyquist, demarcar la
+			banda base y verificar si se cumple la condición de no
+			solapamiento.
+			\item Determinar qué porción del espectro se solapa y sobre qué
+			banda de la banda base se deposita.
+			\item Graficar el espectro muestreado sobre la banda base,
+			señalando la zona contaminada.
+			\item Analizar cómo se ve la componente de $\omega = 460$ rad/s
+			después del muestreo.
+			\item Determinar la mínima $f_s$ que evita el solapamiento.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Del modelo a la práctica
+		% ***********************************************
+		\textbf{Del modelo a la práctica}
+
+		% ***********************************************
+		% 				Ejercicio 17
+		% ***********************************************
+		\item Una señal útil ocupa la banda $|\omega| < \omega_{\max}$ y se le
+		suma un ruido concentrado en $\omega_1 < |\omega| < \omega_2$, según la
+		Figura~\ref{fig:tp6_senal_ruido}. Tomar
+		$\omega_{\max} = 1000$ rad/s, $\omega_1 = 1500$ rad/s y
+		$\omega_2 = 2000$ rad/s.
+
+		\begin{center}
+			\includestandalone[width=0.98\linewidth]{figures/fig_tp6_senal_ruido/fig_tp6_senal_ruido}
+			\captionof{figure}{Espectro de la señal útil (A) y del ruido (B),
+			ejercicio 17.}
+			\label{fig:tp6_senal_ruido}
+		\end{center}
+
+		\begin{enumerate}
+			\item Con $\omega_s = 2500$ rad/s, demarcar la banda base, ubicar
+			las réplicas del ruido y determinar si contaminan la banda útil.
+			\item Proponer dos maneras distintas de muestrear sin afectar la
+			banda útil, y para cada una indicar qué condición debe cumplir
+			$\omega_s$.
+			\item Explicar por qué el filtro antialiasing debe ser analógico y
+			actuar antes del muestreo.
+			\item Explicar por qué en la práctica la frecuencia de corte se
+			ubica algo por debajo de la de Nyquist.
+		\end{enumerate}
+
+		% ***********************************************
+		% 	El eje de frecuencias medido en lambda
+		% ***********************************************
+		\textbf{El eje de frecuencias medido en $\lambda$}
+
+		% ***********************************************
+		% 				Ejercicio 18
+		% ***********************************************
+		\item Una señal de audio abarca de $20$ Hz a $20$ kHz y se muestrea
+		con $f_s = 44{,}1$ kHz. Una señal de vibración mecánica abarca de
+		$0{,}5$ Hz a $500$ Hz.
+		\begin{enumerate}
+			\item Ubicar los extremos de la banda de audio sobre el eje
+			$\lambda$ y demarcar la banda base.
+			\item Determinar la frecuencia de muestreo que hace que la señal
+			de vibración ocupe exactamente el mismo tramo del eje $\lambda$,
+			y el intervalo $\Delta t$ correspondiente.
+			\item Representar sobre el eje $\lambda$ la banda que ocupa cada
+			una de las dos señales muestreadas y comparar las dos
+			representaciones.
+			\item Calcular, en Hz, la frecuencia continua que corresponde a
+			$\lambda = \pi/3$ y a $\lambda = \pi$ en cada uno de los dos
+			casos, y explicar por qué el mismo $\lambda$ representa
+			frecuencias tan distintas.
+		\end{enumerate}
+
+		\end{enumerate}
+
+	\end{multicols}
+
+\end{document}

@@ -1,0 +1,55 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    panel/.style={
+        width=13cm, height=3cm,
+        xmin=-1.5, xmax=2.5,
+        ymin=-0.2, ymax=1.5,
+        axis lines=center,
+        xtick={-1,-0.5,0,0.5,1,1.5,2},
+        xticklabels={$-1$,$-\frac{1}{2}$,$0$,$\frac{1}{2}$,$1$,$\frac{3}{2}$,$2$},
+        ytick={0,1},
+        yticklabels={$0$,$1$},
+        tick style={thin},
+        xlabel={$t$},
+        xlabel style={anchor=north},
+        ylabel style={
+            font=\small, rotate=0, anchor=south east,
+            at={(axis description cs:0,1)}
+        },
+        clip=false,
+    }
+}
+
+% ---- panel (a): x(t), triangulo en [0,2] pico en t=1 ----
+\begin{axis}[panel, name=ax1,
+    ylabel={$x(t)$},
+    title={(a)}, title style={font=\small\bfseries}]
+\addplot[utnblue, very thick] coordinates {(-1.5,0)(0,0)(1,1)(2,0)(2.5,0)};
+\end{axis}
+
+% ---- panel (b): x(-2t), triangulo en [-1,0] pico en t=-1/2 ----
+\begin{axis}[panel, name=ax2,
+    at={(ax1.below south west)}, anchor=above north west, yshift=-6pt,
+    ylabel={$x(-2t)$},
+    title={(b)}, title style={font=\small\bfseries}]
+\addplot[red!80!black, very thick] coordinates {(-1.5,0)(-1,0)(-0.5,1)(0,0)(2.5,0)};
+\node[above, font=\scriptsize, gray] at (axis cs:-0.5,1.1) {pico en $-\tfrac{1}{2}$};
+\end{axis}
+
+% ---- panel (c): x(-2t+3), triangulo en [1/2, 3/2] pico en t=1 ----
+\begin{axis}[panel, name=ax3,
+    at={(ax2.below south west)}, anchor=above north west, yshift=-6pt,
+    ylabel={$x(-2t{+}3)$},
+    title={(c)}, title style={font=\small\bfseries}]
+\addplot[red!80!black, very thick] coordinates {(-1.5,0)(0.5,0)(1,1)(1.5,0)(2.5,0)};
+\node[above, font=\scriptsize, gray] at (axis cs:1,1.1) {pico en $1$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

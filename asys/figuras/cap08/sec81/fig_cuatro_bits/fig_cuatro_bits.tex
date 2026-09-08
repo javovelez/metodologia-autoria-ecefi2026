@@ -1,0 +1,76 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>={Latex[length=3pt,width=3pt]}, font=\small]
+
+        \begin{axis}[
+            width=13cm, height=6.4cm,
+            axis lines=center,
+            axis line style={->, thin, black},
+            axis on top, clip=false,
+            ylabel={$x[n]$ [V]},
+            ylabel style={font=\footnotesize, rotate=0, anchor=south east,
+                          at={(axis description cs:0.03,1)}},
+            xmin=-0.6, xmax=8.3, ymin=-0.9, ymax=0.9,
+            xtick={0,1,2,3,4,5,6,7},
+            ytick={-0.7,-0.5,-0.3,-0.1,0.1,0.3,0.5,0.7},
+            yticklabels={$-0{,}7$,$-0{,}5$,$-0{,}3$,$-0{,}1$,
+                         $0{,}1$,$0{,}3$,$0{,}5$,$0{,}7$},
+            ticklabel style={font=\footnotesize},
+            yticklabel style={fill=white, inner sep=1pt},
+            xticklabel style={fill=white, inner sep=1.5pt},
+        ]
+
+            % --- 1. Grilla de niveles de cuantización ---
+            \draw[gray!30, thin] (axis cs:-0.4, 0.7) -- (axis cs:8.3, 0.7);
+            \draw[gray!30, thin] (axis cs:-0.4, 0.6) -- (axis cs:8.3, 0.6);
+            \draw[gray!30, thin] (axis cs:-0.4, 0.5) -- (axis cs:8.3, 0.5);
+            \draw[gray!30, thin] (axis cs:-0.4, 0.4) -- (axis cs:8.3, 0.4);
+            \draw[gray!30, thin] (axis cs:-0.4, 0.3) -- (axis cs:8.3, 0.3);
+            \draw[gray!30, thin] (axis cs:-0.4, 0.2) -- (axis cs:8.3, 0.2);
+            \draw[gray!30, thin] (axis cs:-0.4, 0.1) -- (axis cs:8.3, 0.1);
+            \draw[gray!30, thin] (axis cs:-0.4, 0.0) -- (axis cs:8.3, 0.0);
+            \draw[gray!30, thin] (axis cs:-0.4,-0.1) -- (axis cs:8.3,-0.1);
+            \draw[gray!30, thin] (axis cs:-0.4,-0.2) -- (axis cs:8.3,-0.2);
+            \draw[gray!30, thin] (axis cs:-0.4,-0.3) -- (axis cs:8.3,-0.3);
+            \draw[gray!30, thin] (axis cs:-0.4,-0.4) -- (axis cs:8.3,-0.4);
+            \draw[gray!30, thin] (axis cs:-0.4,-0.5) -- (axis cs:8.3,-0.5);
+            \draw[gray!30, thin] (axis cs:-0.4,-0.6) -- (axis cs:8.3,-0.6);
+            \draw[gray!30, thin] (axis cs:-0.4,-0.7) -- (axis cs:8.3,-0.7);
+
+            % --- 3. Señal continua y muestras cuantizadas ---
+            \addplot[utnblue, semithick, domain=0:8, samples=200]
+                {0.7*sin(deg(pi*x/4))};
+
+            \addplot[ycomb, red!80!black, semithick, mark=*, mark size=1.6pt,
+                     mark options={fill=red!80!black, draw=red!80!black}]
+                coordinates {
+                    (0, 0.0) (1, 0.5) (2, 0.7) (3, 0.5)
+                    (4, 0.0) (5,-0.5) (6,-0.7) (7,-0.5)
+                };
+
+            % --- 4. Código binario de cada nivel ---
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62, 0.7) {0111};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62, 0.6) {0110};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62, 0.5) {0101};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62, 0.4) {0100};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62, 0.3) {0011};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62, 0.2) {0010};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62, 0.1) {0001};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62, 0.0) {0000};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62,-0.1) {1001};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62,-0.2) {1010};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62,-0.3) {1011};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62,-0.4) {1100};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62,-0.5) {1101};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62,-0.6) {1110};
+            \node[anchor=west, font=\tiny\ttfamily] at (axis cs:8.62,-0.7) {1111};
+
+            % Etiqueta del eje de abscisas
+            \node[anchor=north west, font=\footnotesize] at (axis cs:8.3,-0.015) {$n$};
+
+        \end{axis}
+    \end{tikzpicture}
+\end{document}

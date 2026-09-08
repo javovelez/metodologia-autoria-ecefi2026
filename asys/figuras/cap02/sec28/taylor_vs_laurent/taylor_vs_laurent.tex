@@ -1,0 +1,115 @@
+%\PassOptionsToPackage{gray}{xcolor}
+
+
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+    
+    % Panel A: Taylor (Interior del disco)
+    \begin{axis}[
+        name=plotA,
+        view={55}{25},
+        width=8.5cm, height=7cm,
+        zmin=0, zmax=5,
+        xmin=-2, xmax=2,
+        ymin=-2, ymax=2,
+        axis lines=center,
+        xlabel={Re},
+        ylabel={Im},
+        zlabel={$|f(z)|$},
+        colormap/viridis,
+        shader=interp,
+        title={\textbf{(a) Serie de Taylor ($|z|<1$)}},
+        title style={yshift=0pt},
+        clip=false
+    ]
+        % Superficie Taylor (disco interior) - Polar
+        \addplot3[
+            surf,
+            opacity=0.85,
+            samples=40,
+            samples y=60,
+            domain=0:0.99,
+            domain y=0:360,
+            point meta={pow(z,0.25)},
+            z buffer=sort,
+            data cs=polar
+        ] (
+            y, x, {min(5, 1/sqrt(1 + x*x - 2*x*cos(y) + 0.001))}
+        );
+        
+        % Círculo de convergencia
+        \draw[utnblue, thick, dashed] (axis cs:0,0,0) circle [radius=1];
+        \node[utnblue, anchor=north, font=\tiny] at (axis cs:0,-1.2,0) {ROC: $|z|<1$};
+        
+        % Polo
+        \node[red, font=\normalsize] at (axis cs:1,0,0) {$\times$};
+        \node[red, anchor=west, font=\tiny] at (axis cs:1.1,0,0) {Polo};
+    \end{axis}
+
+    % Panel B: Laurent (Exterior del disco) - Parametrización Transfinita
+    \begin{axis}[
+        name=plotB,
+        at={($(plotA.east)+(1cm,0)$)},
+        anchor=west,
+        view={55}{25},
+        width=8.5cm, height=7cm,
+        zmin=0, zmax=5,
+        xmin=-2, xmax=2,
+        ymin=-2, ymax=2,
+        axis lines=center,
+        xlabel={Re},
+        ylabel={Im},
+        zlabel={$|f(z)|$},
+        colormap/viridis,
+        shader=interp,
+        title={\textbf{(b) Serie de Laurent ($1<|z|<\infty$)}},
+        title style={yshift=0pt},
+        clip=false
+    ]
+        % Superficie parametrizada suavemente desde círculo r=1 a cuadrado [-2,2]
+        % Variables: x (u) = interpolación radial (0 a 1), y (v) = ángulo (0 a 360)
+        \addplot3[
+            surf,
+            opacity=0.85,
+            samples=30, % Muestras radiales
+            samples y=72, % Muestras angulares (necesita bastantes para las esquinas)
+            domain=0:1,
+            domain y=0:360,
+            point meta={pow(z,0.25)},
+            z buffer=sort,
+            variable=u,
+            variable y=v
+        ] (
+            % Cálculo de X
+            { (1 + u * (2/max(abs(cos(v)), abs(sin(v))) - 1)) * cos(v) },
+            % Cálculo de Y
+            { (1 + u * (2/max(abs(cos(v)), abs(sin(v))) - 1)) * sin(v) },
+            % Cálculo de Z usando las coordenadas polares resultantes
+            % r_eff = 1 + u * ...
+            { 
+               min(5, 
+                   1/sqrt(
+                       1 + 
+                       (1 + u * (2/max(abs(cos(v)), abs(sin(v))) - 1))^2 
+                       - 2 * (1 + u * (2/max(abs(cos(v)), abs(sin(v))) - 1)) * cos(v) 
+                       + 0.001
+                   )
+               ) 
+            }
+        );
+        
+        % Círculo de convergencia
+        \draw[utnblue, thick, dashed] (axis cs:0,0,0) circle [radius=1];
+        \node[utnblue, anchor=north, font=\tiny] at (axis cs:0,-1.2,0) {ROC: $|z|>1$};
+
+        % Polo
+        \node[red, font=\normalsize] at (axis cs:1,0,0) {$\times$};
+    \end{axis}
+
+\end{tikzpicture}
+\end{document}

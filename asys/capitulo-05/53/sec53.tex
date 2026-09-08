@@ -1,0 +1,652 @@
+\documentclass[class=book, crop=false]{standalone}
+\input{../../setup.tex}
+
+\begin{document}
+\setcounter{chapter}{5}
+\section{Convergencia y propiedades}
+\label{sec:convergencia_propiedades}
+
+La sección anterior construyó la serie de Fourier exponencial y la
+aplicó al pulso rectangular. En el camino quedaron tres cuestiones
+abiertas que esta sección retoma. La primera es la igualdad
+$x(t) = \sum_k c_k\,e^{jk\omega_0 t}$ de la fórmula de
+síntesis~\eqref{eq:sf_sintesis_box}: la obtuvimos del cálculo formal
+con la base ortogonal y dejamos pendiente bajo qué hipótesis sobre
+$x$ la suma infinita la reproduce punto por punto, y qué pasa en las
+discontinuidades. La segunda
+es el sobrepico que apareció en la reconstrucción truncada del pulso,
+que al aumentar el número de armónicos se vuelve más angosto pero no
+se atenúa. La tercera son las simetrías observadas en los
+coeficientes del pulso ---reales para todo $k$, módulo par, fase
+impar---, que anticipamos como consecuencia de la simetría conjugada
+de las señales reales y de la simetría par del pulso, sin
+verificarlo todavía.
+
+La primera subsección cierra las dos primeras cuestiones, enunciando
+las condiciones de Dirichlet para la convergencia y describiendo el
+fenómeno de Gibbs en las discontinuidades. El resto de la sección
+cataloga las propiedades que conectan operaciones sobre $x(t)$
+---desplazar, rebatir, derivar, conjugar--- con operaciones sobre
+los coeficientes $c_k$; entre ellas, la propiedad de conjugación
+formaliza la simetría que dejó pendiente la lectura del pulso.
+
+% ==============================================================================
+% 5.3.1 Condiciones de Dirichlet y fenómeno de Gibbs
+% ==============================================================================
+\subsection{Condiciones de Dirichlet y fenómeno de Gibbs}
+\label{subsec:dirichlet_gibbs}
+
+La pregunta es bajo qué hipótesis sobre $x(t)$ la fórmula de
+síntesis~\eqref{eq:sf_sintesis_box} reproduce efectivamente la
+señal. La respuesta clásica son las llamadas \textbf{condiciones de
+Dirichlet}: tres requisitos sencillos sobre $x$ que, cuando se
+cumplen, garantizan que la serie converge en cada punto y que el
+valor al que converge es el que uno esperaría.
+
+\begin{resultado}[Teorema de convergencia de Dirichlet]
+Sea $x(t)$ una señal periódica de período $T_0$.
+
+\textbf{Condiciones de Dirichlet.} Supongamos que $x$:
+\begin{enumerate}[label=(\roman*), leftmargin=*]
+    \item es absolutamente integrable sobre un período,
+          $\int_{T_0} |x(t)|\,dt < \infty$;
+    \item tiene un número finito de máximos y mínimos por período;
+    \item tiene un número finito de discontinuidades por período, y
+          en cada una los límites laterales $x(t^-)$ y $x(t^+)$
+          existen y son finitos.
+\end{enumerate}
+
+\medskip
+\textbf{Convergencia.} Entonces la serie de Fourier de $x$ converge en cada $t$ al valor
+\begin{equation}
+    \sum_{k=-\infty}^{\infty} c_k\,e^{jk\omega_0 t}
+    \;=\;
+    \begin{cases}
+        x(t), & \text{si $x$ es continua en $t$}, \\[4pt]
+        \dfrac{x(t^-) + x(t^+)}{2}, & \text{si $x$ tiene un salto en $t$}.
+    \end{cases}
+    \label{eq:dirichlet}
+\end{equation}
+\end{resultado}
+
+Las tres condiciones se verifican sin esfuerzo en todas las señales
+periódicas que aparecen en este libro ---pulsos, ondas cuadradas y
+triangulares, dientes de sierra, sinusoides rectificadas--- así que
+en la práctica funcionan como un permiso casi automático para
+escribir la serie. La parte interesante de~\eqref{eq:dirichlet} es la
+segunda línea: en una discontinuidad, la serie no converge a
+$x(t^-)$ ni a $x(t^+)$, sino al promedio aritmético de ambos límites
+laterales. La serie no puede ``elegir'' un lado del salto; lo que
+hace es centrarse exactamente en el medio. Es una consecuencia de
+que cada término $c_k\,e^{jk\omega_0 t}$ es continuo en $t$, así que
+ninguna suma finita ---ni el límite de la sucesión de sumas
+finitas--- puede reproducir la discontinuidad.
+
+Queda explicar el sobrepico observado en la reconstrucción truncada
+del pulso (figura~\ref{fig:pulso_reconstruccion}). En las cercanías
+de una discontinuidad de salto, la aproximación $\hat{x}_N(t)$
+presenta un sobrepico cuya altura tiende a $\approx 9\%$ del tamaño
+del salto y \textbf{no se atenúa al aumentar $N$}. Lo único que
+cambia con $N$ es que el sobrepico se concentra en una banda más
+estrecha junto al punto de salto. Este comportamiento se llama
+\emph{fenómeno de Gibbs} y es compatible con Dirichlet: la
+convergencia puntual no impide que falle la uniformidad en los
+entornos del salto. El valor preciso del sobrepico ---un $8{,}95\%$
+del salto--- sale de una integral del seno cardinal que no vamos a
+desarrollar; lo que importa retener es que es una constante
+universal, la misma para cualquier señal con saltos y cualquier $N$.
+
+La figura~\ref{fig:gibbs} muestra la aproximación del pulso para
+seis valores crecientes de $N$, con la altura del sobrepico medida
+en cada caso. El número se mantiene cerca del 9\% en los seis
+paneles; lo que cambia con $N$ es solamente el ancho de la banda
+afectada.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.85\linewidth]{figures/fig_gibbs/fig_gibbs}
+        \caption{Fenómeno de Gibbs en el tren de pulsos rectangulares.
+                 Cada panel muestra la aproximación truncada
+                 $\hat{x}_N$ (rojo) sobre la señal original (gris) y
+                 anota la altura del sobrepico medida junto al
+                 flanco descendente. (a) $N=5$, (b) $N=10$,
+                 (c) $N=20$, (d) $N=40$, (e) $N=80$, (f) $N=100$.
+                 La altura permanece cerca del 9\% del tamaño del
+                 salto en los seis casos; lo único que cambia con
+                 $N$ es el ancho de la banda donde el sobrepico
+                 aparece.}
+        \label{fig:gibbs}
+    \end{minipage}
+\end{figure}
+
+% ==============================================================================
+% Bisagra: motivación y notación
+% ==============================================================================
+
+Atendida la convergencia, pasamos al catálogo de propiedades. La
+motivación es doble. Por un lado, las propiedades hacen visible
+cómo cada operación sobre la señal se traduce en una operación
+sobre los coeficientes, dándole estructura a la correspondencia
+entre tiempo y frecuencia. Por otro, son operativas: calcular los
+$c_k$ desde la fórmula de análisis exige resolver la integral
+parametrizada en $k$, y eso no siempre es directo; las propiedades
+que siguen evitan ese trabajo cuando ya conocemos los coeficientes
+de una señal y queremos los de una versión ligeramente modificada
+---una combinación lineal con otra señal, un retardo, un
+rebatimiento, una conjugación, una derivada o una integral---. En
+lugar de reintegrar, basta aplicar la regla correspondiente a los
+$c_k$ ya conocidos. Algunas propiedades además permiten leer
+información directamente sobre el espectro ---retardos como
+pendientes en la fase, simetrías como condiciones de paridad,
+potencia repartida entre armónicos--- sin tener que volver al
+dominio del tiempo.
+
+Para enunciarlas de manera compacta usaremos la notación
+\begin{equation*}
+    x(t) \;\longleftrightarrow\; c_k,
+\end{equation*}
+con el sentido de que la sucesión $\{c_k\}_{k\in\mathbb{Z}}$ son los
+coeficientes de Fourier de la señal periódica $x(t)$. La doble flecha
+subraya que las fórmulas de análisis~\eqref{eq:ck_analisis_box} y de
+síntesis~\eqref{eq:sf_sintesis_box} establecen una correspondencia
+biunívoca: cualquiera de los dos lados determina por completo al
+otro.
+
+% ==============================================================================
+% 5.3.2 Propiedad de Linealidad
+% ==============================================================================
+\subsection{Propiedad de linealidad}
+\label{subsec:prop_linealidad}
+
+La fórmula de análisis~\eqref{eq:ck_analisis_box} es una integral, y
+las integrales son lineales. La consecuencia inmediata es que el mapa
+que envía a cada señal periódica sus coeficientes de Fourier hereda
+esa linealidad.
+
+\begin{resultado}[Linealidad]
+Sean $x(t)$ e $y(t)$ dos señales periódicas del mismo período $T_0$,
+con coeficientes $c_k$ y $d_k$ respectivamente, y sean
+$\alpha,\beta\in\mathbb{C}$. Entonces $\alpha\,x(t) + \beta\,y(t)$
+es periódica con el mismo período y sus coeficientes son
+\begin{equation}
+    \alpha\,x(t) + \beta\,y(t)
+    \;\longleftrightarrow\;
+    \alpha\,c_k + \beta\,d_k.
+    \label{eq:prop_linealidad}
+\end{equation}
+\end{resultado}
+
+La verificación es directa desde la fórmula de análisis: al sacar la
+combinación lineal afuera de la integral, los coeficientes de
+$\alpha x + \beta y$ son
+\begin{equation*}
+    \frac{1}{T_0}\int_{T_0}\bigl[\alpha\,x(t) + \beta\,y(t)\bigr]
+        e^{-jk\omega_0 t}\,dt
+    \;=\; \alpha\cdot\frac{1}{T_0}\int_{T_0} x(t)\,e^{-jk\omega_0 t}\,dt
+    \;+\; \beta\cdot\frac{1}{T_0}\int_{T_0} y(t)\,e^{-jk\omega_0 t}\,dt,
+\end{equation*}
+que son exactamente $\alpha\,c_k + \beta\,d_k$.
+
+La condición de que los dos períodos sean iguales no es opcional. Si
+$x$ tiene período $T_x$ e $y$ tiene período $T_y$ distinto, la
+combinación $\alpha x + \beta y$ es periódica solo cuando el cociente
+$T_x/T_y$ es racional, y su período fundamental es entonces el mínimo
+común múltiplo de $T_x$ y $T_y$. La propiedad sigue valiendo en ese
+caso si se reescribe a $x$ e $y$ sobre el período común; lo que no
+funciona es sumar dos series con períodos distintos sin resolver
+antes la cuestión del período común.
+
+% ==============================================================================
+% 5.3.3 Propiedad de Desplazamiento temporal
+% ==============================================================================
+\subsection{Propiedad de desplazamiento temporal}
+\label{subsec:prop_desplazamiento}
+
+Si corremos la señal $x(t)$ un tiempo $t_0$ hacia adelante, todas
+sus componentes armónicas tienen que correrse lo mismo. La imagen
+es mecánica: la señal es la superposición de sus armónicos, así
+que retardar la señal entera es retardar cada armónico por
+igual. Retardar un armónico no toca su amplitud ---sigue oscilando
+con el mismo módulo, solo que llega un poco más tarde a cada
+pico---, así que lo único que un desplazamiento puede modificar es
+la fase. Esa es la lectura del resultado que sigue.
+
+\begin{resultado}[Desplazamiento temporal]
+Si $x(t)\leftrightarrow c_k$, entonces para cualquier $t_0\in\mathbb{R}$,
+\begin{equation}
+    x(t - t_0)
+    \;\longleftrightarrow\;
+    c_k\,e^{-jk\omega_0 t_0}.
+    \label{eq:prop_desplazamiento}
+\end{equation}
+\end{resultado}
+
+Para verificarlo, calculemos los coeficientes de $x(t-t_0)$ desde la
+fórmula de análisis. Aplicando el cambio de variable $u = t - t_0$ ---por
+lo tanto $t = u + t_0$ y $dt = du$--- la integral sobre un período en $t$
+queda transformada en una integral sobre un período en $u$, gracias a
+que el integrando $x(u)\,e^{-jk\omega_0(u+t_0)}$ es periódico en $u$ con
+período $T_0$ (un intervalo de longitud $T_0$ es equivalente a cualquier
+otro):
+\begin{equation*}
+    \frac{1}{T_0}\int_{T_0} x(t - t_0)\,e^{-jk\omega_0 t}\,dt
+    \;=\; \frac{1}{T_0}\int_{T_0} x(u)\,e^{-jk\omega_0(u + t_0)}\,du.
+\end{equation*}
+El factor $e^{-jk\omega_0 t_0}$ no depende de $u$ y sale de la
+integral, dejando
+\begin{equation*}
+    e^{-jk\omega_0 t_0}\cdot\frac{1}{T_0}\int_{T_0} x(u)\,e^{-jk\omega_0 u}\,du
+    \;=\; e^{-jk\omega_0 t_0}\,c_k,
+\end{equation*}
+que es justamente el lado derecho de~\eqref{eq:prop_desplazamiento}.
+
+El factor $e^{-jk\omega_0 t_0}$ tiene módulo $1$, así que
+\begin{equation*}
+    |c_k\,e^{-jk\omega_0 t_0}| \;=\; |c_k|,
+\end{equation*}
+en línea con la intuición de arriba: el espectro de módulos es
+invariante por desplazamientos temporales, porque la amplitud de
+cada armónico no depende de dónde elegimos el origen de tiempo.
+Toda la información del retardo se acumula en la fase, y el cambio
+es \emph{lineal en $k$} con pendiente $-\omega_0 t_0$: cada
+armónico acumula una fase proporcional a su orden, porque a mayor
+frecuencia el mismo retardo $t_0$ representa una fracción más
+grande del período del armónico. Leer un retardo en el espectro es
+entonces leer una pendiente en la fase.
+
+% ==============================================================================
+% 5.3.4 Propiedad de Rebatimiento
+% ==============================================================================
+\subsection{Propiedad de rebatimiento}
+\label{subsec:prop_rebatimiento}
+
+El rebatimiento $x(t)\mapsto x(-t)$ refleja la señal en el eje del
+tiempo. La pregunta natural es qué le hace a los coeficientes; la
+respuesta es la más simple posible.
+
+\begin{resultado}[Rebatimiento]
+Si $x(t)\leftrightarrow c_k$, entonces
+\begin{equation}
+    x(-t) \;\longleftrightarrow\; c_{-k}.
+    \label{eq:prop_rebatimiento}
+\end{equation}
+\end{resultado}
+
+Los coeficientes de $x(-t)$ son
+\begin{equation*}
+    \frac{1}{T_0}\int_{T_0} x(-t)\,e^{-jk\omega_0 t}\,dt.
+\end{equation*}
+Con el cambio de variable $u = -t$ se invierte el sentido de
+integración, lo que cancela el signo de $du = -dt$, y el exponente
+queda $e^{-jk\omega_0(-u)} = e^{j k\omega_0 u} = e^{-j(-k)\omega_0 u}$.
+La integral resulta
+\begin{equation*}
+    \frac{1}{T_0}\int_{T_0} x(u)\,e^{-j(-k)\omega_0 u}\,du \;=\; c_{-k}.
+\end{equation*}
+
+Geométricamente, rebatir la señal en el tiempo es lo mismo que dar
+vuelta el espectro: la sucesión de coeficientes se lee de derecha a
+izquierda. Por sí sola la propiedad es modesta; combinada con la
+conjugación que sigue da las simetrías que reducen la serie a
+sumas de solo cosenos o de solo senos cuando la señal es real par o
+real impar, lo que será el insumo de la sección siguiente.
+
+% ==============================================================================
+% 5.3.5 Propiedad de Conjugación
+% ==============================================================================
+\subsection{Propiedad de conjugación}
+\label{subsec:prop_conjugacion}
+
+La conjugación $x(t) \mapsto \overline{x(t)}$ refleja la señal en
+el eje real del plano complejo. Para señales generales tiene
+contenido propio. El caso que más usaremos en el libro es el de
+señales reales, donde $\overline{x(t)} = x(t)$ y la propiedad se
+vuelve una restricción estructural sobre los coeficientes ---la
+\emph{simetría conjugada}---: es la regla que organiza todo lo que
+viene en la sección de la serie trigonométrica.
+
+\begin{resultado}[Conjugación]
+Si $x(t)\leftrightarrow c_k$, entonces
+\begin{equation}
+    \overline{x(t)} \;\longleftrightarrow\; \overline{c_{-k}}.
+    \label{eq:prop_conjugacion}
+\end{equation}
+\end{resultado}
+
+Para verificarlo, conjugamos los dos lados de la fórmula de
+análisis~\eqref{eq:ck_analisis_box}. El factor $1/T_0$ es real y
+sale intacto del conjugado, el conjugado de la integral es la
+integral del conjugado, y el conjugado de un producto es el producto
+de los conjugados; aplicando estas tres observaciones,
+\begin{align*}
+    \overline{c_k}
+    &\;=\; \overline{\,\frac{1}{T_0}\int_{T_0} x(t)\,e^{-jk\omega_0 t}\,dt\,} \\
+    &\;=\; \frac{1}{T_0}\,\overline{\,\int_{T_0} x(t)\,e^{-jk\omega_0 t}\,dt\,} \\
+    &\;=\; \frac{1}{T_0}\int_{T_0} \overline{x(t)\,e^{-jk\omega_0 t}}\,dt \\
+    &\;=\; \frac{1}{T_0}\int_{T_0} \overline{x(t)}\,\overline{e^{-jk\omega_0 t}}\,dt.
+\end{align*}
+El conjugado de la exponencial cambia el signo del exponente,
+$\overline{e^{-jk\omega_0 t}} = e^{jk\omega_0 t}$, que reescribimos
+como $e^{-j(-k)\omega_0 t}$ para reconocer en él la exponencial de
+orden $-k$ de la fórmula de análisis. Sustituyendo,
+\begin{equation*}
+    \overline{c_k}
+    \;=\; \frac{1}{T_0}\int_{T_0}\overline{x(t)}\,e^{-j(-k)\omega_0 t}\,dt.
+\end{equation*}
+La integral del lado derecho es lo que la fórmula de
+análisis~\eqref{eq:ck_analisis_box} produciría aplicada a la señal
+$\overline{x(t)}$ con índice $-k$: es entonces el coeficiente de
+orden $-k$ de $\overline{x(t)}$. La igualdad dice, por lo tanto, que
+$\overline{c_k}$ es el coeficiente de orden $-k$ de $\overline{x(t)}$.
+Reemplazando $k$ por $-k$, el coeficiente de orden $k$ de
+$\overline{x(t)}$ es $\overline{c_{-k}}$, que es lo que afirma la
+propiedad.
+
+\paragraph{Simetría conjugada para señales reales.}
+Cuando $x(t)$ es real, $\overline{x(t)} = x(t)$, así que $x(t)$ y
+$\overline{x(t)}$ tienen los mismos coeficientes. La
+propiedad~\eqref{eq:prop_conjugacion} dice que los coeficientes de
+$\overline{x(t)}$ son $\overline{c_{-k}}$; igualándolos a los $c_k$
+de $x(t)$ se obtiene $c_k = \overline{c_{-k}}$, que reemplazando
+$k$ por $-k$ se escribe en la forma habitual
+\begin{equation}
+    c_{-k} \;=\; \overline{c_k}, \qquad k\in\mathbb{Z}.
+    \label{eq:simetria_ck}
+\end{equation}
+Tomando módulo y argumento de los dos lados,
+\begin{equation}
+    |c_{-k}| \;=\; |c_k|, \qquad
+    \angle c_{-k} \;=\; -\angle c_k.
+    \label{eq:simetria_espectros}
+\end{equation}
+El espectro de módulos resulta \textbf{par} respecto del eje de
+frecuencias y el espectro de fases \textbf{impar}. Toda la
+información del lado positivo se replica sobre el negativo: en la
+práctica suele alcanzar con dibujar la mitad $k\geq 0$ del
+espectro. Ambas simetrías se ven directamente en los espectros del
+pulso (figura~\ref{fig:espectro_pulso}) y del diente de sierra
+(figura~\ref{fig:espectro_sierra}) calculados en la sección
+anterior: los módulos son pares respecto de $k=0$ en ambos casos,
+y la imparidad de la fase queda nítida en el diente de sierra, con
+$+\pi/2$ a la derecha del cero y $-\pi/2$ a la izquierda. El pulso
+es un caso degenerado en este punto. Como la señal es real \emph{y
+además par}, sus coeficientes salen reales puros, y entonces la
+fase $\angle c_k$ queda restringida a los valores $0$ o $\pi$ ---el
+ángulo de un número real positivo o negativo, respectivamente---.
+Estos dos ángulos tienen la particularidad de coincidir con su
+opuesto: $-0 = 0$, y $-\pi$ y $\pi$ apuntan al mismo punto
+(difieren en una vuelta completa). Cuando
+la fase solo toma esos dos valores, las condiciones de imparidad
+$\angle c_{-k} = -\angle c_k$ y de paridad $\angle c_{-k} = \angle c_k$
+piden lo mismo: el lado derecho da el mismo número en ambas. Por eso graficar la fase del pulso con $\pi$
+a ambos lados de $k=0$ ---como en la
+figura~\ref{fig:espectro_pulso}--- satisface las dos a la vez.
+
+\begin{resultado}[Simetría conjugada de señales reales]
+Si $x(t)$ es periódica y \textbf{real}, sus coeficientes de Fourier
+satisfacen
+\begin{equation*}
+    c_{-k} \;=\; \overline{c_k}, \qquad k\in\mathbb{Z}.
+\end{equation*}
+En particular, el espectro de módulos es par y el espectro de fases
+es impar respecto de la frecuencia.
+\end{resultado}
+
+La lectura geométrica del por qué es directa. Si $x(t)$ es real, en
+la síntesis $x(t) = \sum_k c_k\,e^{jk\omega_0 t}$ todas las
+componentes con parte imaginaria deben cancelarse en pares. El par
+natural es $k$ y $-k$: $c_k\,e^{jk\omega_0 t}$ es un vector giratorio
+antihorario, $c_{-k}\,e^{-jk\omega_0 t}$ es uno horario, y la única
+manera de que la suma de los dos caiga sobre el eje real es que
+sean conjugados entre sí, es decir, $c_{-k} = \overline{c_k}$.
+La figura~\ref{fig:pares_conjugados} muestra esa cancelación: dos
+vectores de mismo módulo girando en sentidos opuestos, y su suma
+trazando la oscilación real correspondiente. El plano complejo
+aparece rotado $90^\circ$, con el eje real apuntando hacia arriba,
+para alinearlo con el eje vertical del gráfico temporal: así la
+altura de la punta del vector suma coincide, en cada instante,
+con el valor que el panel (b) traza como función del tiempo.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.85\linewidth]{figures/fig_pares_conjugados/fig_pares_conjugados}
+        \caption{Suma de un par de vectores giratorios conjugados
+                 $c\,e^{j\omega_0 t}$ y $\bar{c}\,e^{-j\omega_0 t}$:
+                 imagen geométrica del par $(c_k, c_{-k})$ con
+                 $c_{-k} = \overline{c_k}$ en el caso $k=1$,
+                 idéntica para cualquier otro $k$.
+                 (a) Instantánea en el plano complejo en
+                 $t = T_0/8$, con el plano rotado $90^\circ$ para
+                 que el eje real quede vertical y comparta escala
+                 con el eje vertical del panel (b): los dos
+                 vectores tienen el mismo módulo, giran a la misma
+                 velocidad en sentidos opuestos y su suma (vector
+                 negro) cae sobre el eje real. (b) Suma
+                 $2|c|\cos(\omega_0 t)$ en el dominio del
+                 tiempo. La línea punteada conecta la punta del
+                 vector suma en (a) con el valor de la oscilación
+                 en (b) en ese mismo instante; la cancelación de
+                 las partes imaginarias es la imagen geométrica
+                 de la simetría conjugada $c_{-k} = \overline{c_k}$.}
+        \label{fig:pares_conjugados}
+    \end{minipage}
+\end{figure}
+
+\paragraph{Simetrías par e impar para señales reales.}
+Combinando la simetría conjugada con el rebatimiento se obtienen
+las dos simetrías que aparecen de manera recurrente en los cálculos.
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Si $x$ es real y par} ---$x(-t) = x(t)$---, la
+          propiedad de rebatimiento~\eqref{eq:prop_rebatimiento} da
+          $c_{-k} = c_k$, y la simetría
+          conjugada~\eqref{eq:simetria_ck} da
+          $c_{-k} = \overline{c_k}$. Igualando los lados derechos,
+          $c_k = \overline{c_k}$: cada coeficiente coincide con su
+          conjugado, lo que equivale a que sea \textbf{real para
+          todo $k$}. La fase $\angle c_k$ toma entonces solo los
+          valores $0$ (cuando $c_k > 0$) y $\pi$ (cuando $c_k < 0$),
+          sin valores intermedios.
+    \item \textbf{Si $x$ es real e impar} ---$x(-t) = -x(t)$---, el
+          rebatimiento da $c_{-k} = -c_k$ y la simetría conjugada
+          $c_{-k} = \overline{c_k}$, así que $c_k = -\overline{c_k}$:
+          cada coeficiente es el opuesto de su conjugado, lo que
+          equivale a que sea \textbf{imaginario puro para todo $k$}.
+          En $k=0$ esto da $c_0 = -c_0$, y por lo tanto $c_0 = 0$
+          ---consistente con que el valor medio de una señal impar
+          sobre un período simétrico es nulo---. La fase $\angle c_k$
+          toma solo los valores $+\pi/2$ (cuando la parte imaginaria
+          es positiva) y $-\pi/2$ (cuando es negativa).
+\end{itemize}
+
+\paragraph{Volviendo a los ejemplos.}
+Con la simetría conjugada en mano, podemos cerrar las observaciones
+que dejamos pendientes en los ejemplos del pulso rectangular
+(Subsección~\ref{subsec:ejemplo_pulso}) y del diente de sierra
+(Subsección~\ref{subsec:ejemplo_sierra}). Ambas señales son reales,
+así que sus coeficientes cumplen $c_{-k} = \overline{c_k}$: por eso
+los dos espectros muestran módulo par en $k$ y, en el caso del
+diente de sierra, fase impar nítida en $\pm\pi/2$. La diferencia
+en la naturaleza de los $c_k$ viene de la simetría adicional de
+cada señal. El pulso es par, así que sus coeficientes salen reales
+para todo $k$, como en~\eqref{eq:ck_pulso}. El diente de sierra, al descontarle el valor medio,
+queda impar; por eso sus coeficientes para $k\neq 0$ salen
+imaginarios puros, como en~\eqref{eq:ck_sierra}.
+
+% ==============================================================================
+% 5.3.6 Propiedad de Diferenciación e integración
+% ==============================================================================
+\subsection{Propiedad de diferenciación e integración}
+\label{subsec:prop_derivada_integral}
+
+En esta subsección vemos cómo se traducen a los coeficientes la
+derivada y la integral de una señal periódica. Lo notable es que
+ambas operaciones se reducen a multiplicar (o dividir) cada
+coeficiente por $jk\omega_0$.
+
+\begin{resultado}[Diferenciación e integración]
+Si $x(t)\leftrightarrow c_k$ y $x$ es derivable, su derivada cumple
+\begin{equation}
+    \dot{x}(t) \;\longleftrightarrow\; jk\omega_0\,c_k.
+    \label{eq:prop_derivada}
+\end{equation}
+Si además $c_0 = 0$, cualquier primitiva $y(t)$ de $x(t)$ es
+periódica con el mismo período y sus coeficientes para $k\neq 0$ son
+\begin{equation}
+    y(t) \;\longleftrightarrow\; \frac{c_k}{jk\omega_0}.
+    \label{eq:prop_integral}
+\end{equation}
+\end{resultado}
+
+Para~\eqref{eq:prop_derivada}, basta derivar término a término la
+fórmula de síntesis~\eqref{eq:sf_sintesis_box}:
+\begin{equation*}
+    \dot{x}(t)
+    \;=\; \frac{d}{dt}\sum_{k=-\infty}^{\infty} c_k\,e^{jk\omega_0 t}
+    \;=\; \sum_{k=-\infty}^{\infty} c_k\,(jk\omega_0)\,e^{jk\omega_0 t}
+    \;=\; \sum_{k=-\infty}^{\infty}\bigl(jk\omega_0\,c_k\bigr)\,e^{jk\omega_0 t}.
+\end{equation*}
+Comparando con la fórmula de síntesis aplicada a $\dot{x}$, se lee
+que el coeficiente de orden $k$ de $\dot{x}$ es $jk\omega_0\,c_k$.
+
+Para~\eqref{eq:prop_integral}, hay dos cuidados.
+
+El primero es la condición $c_0 = 0$: la componente continua $c_0$
+de $x(t)$ tiene primitiva $c_0\,t$, que crece linealmente y rompe
+la periodicidad. Pedir $c_0 = 0$ descarta ese término y deja a la
+primitiva $y(t)$ periódica. Bajo esa condición, integrando término
+a término ---la primitiva de $e^{jk\omega_0 t}$ es
+$e^{jk\omega_0 t}/(jk\omega_0)$, y el término $k=0$ se omite por
+hipótesis---,
+\begin{equation*}
+    y(t)
+    \;=\; \sum_{k\neq 0}\frac{c_k}{jk\omega_0}\,e^{jk\omega_0 t}
+        \;+\; C.
+\end{equation*}
+
+El segundo cuidado es la constante $C$. Una primitiva está definida
+salvo una constante aditiva: si $Y(t)$ es primitiva de $x(t)$,
+también lo es $Y(t) + C$ para cualquier $C\in\mathbb{R}$. Esa
+indeterminación se fija con una \textbf{condición inicial}: dar el
+valor de $y$ en un instante, por ejemplo $y(0) = y_0$, determina
+$C$ unívocamente. La constante $C$ resulta ser el valor medio de
+$y(t)$ sobre un período ---es decir, su coeficiente de orden
+cero---, y por eso la fórmula~\eqref{eq:prop_integral} solo cubre
+los $k\neq 0$: ese coeficiente de orden cero de $y$ depende de qué
+primitiva elijamos y no se puede leer de los $c_k$ de $x$.
+
+\paragraph{Lectura.}
+La derivada \emph{enfatiza} los armónicos altos: el factor
+$jk\omega_0$ crece linealmente con $|k|$, así que las componentes
+de alta frecuencia de $x$ pesan más en $\dot x$, que resulta una
+señal más oscilante. La integración hace lo opuesto: divide por
+$jk\omega_0$ y \emph{atenúa} las componentes de alta frecuencia, así que $y$
+queda más suave que $x$. Operativamente, las dos propiedades
+permiten leer los coeficientes de $\dot x$ y de cualquier primitiva
+de $x$ a partir de los $c_k$ ---por multiplicación o división por
+$jk\omega_0$---, sin tener que volver a integrar la fórmula de
+análisis sobre la señal modificada.
+
+% ==============================================================================
+% 5.3.7 Propiedad — Identidad de Parseval
+% ==============================================================================
+\subsection{Propiedad de Parseval}
+\label{subsec:prop_parseval}
+
+Toda la maquinaria geométrica construida en la Sección~\ref{sec:producto_interno} ---el producto
+interno entre señales y la ortogonalidad de la base armónica--- tiene
+una consecuencia directa sobre la potencia de la señal: la potencia
+media de $x(t)$ se reparte de manera limpia sobre los armónicos, sin
+términos cruzados. Esa identidad es lo que se conoce como
+\textbf{identidad de Parseval} para series de Fourier.
+
+\begin{resultado}[Identidad de Parseval]
+Sea $x(t)$ una señal periódica de período $T_0$ con coeficientes
+$c_k$. La potencia media de $x$ es igual a la suma de las potencias
+individuales de sus armónicos:
+\begin{equation}
+    P_x \;=\; \frac{1}{T_0}\int_{T_0} |x(t)|^2\,dt
+    \;=\; \sum_{k=-\infty}^{\infty} |c_k|^2.
+    \label{eq:parseval}
+\end{equation}
+\end{resultado}
+
+La verificación es un cálculo en tres pasos. El primero es escribir
+$|x(t)|^2 = x(t)\,\overline{x(t)}$ y reemplazar el conjugado por su
+serie de síntesis, tomando conjugado en \eqref{eq:sf_sintesis_box} y
+renombrando el índice de suma a $m$:
+\begin{equation*}
+    |x(t)|^2
+    \;=\; x(t)\,\overline{x(t)}
+    \;=\; x(t)\sum_{m=-\infty}^{\infty}\overline{c_m}\,e^{-jm\omega_0 t}.
+\end{equation*}
+El segundo paso es integrar sobre un período y sacar la suma fuera
+de la integral ---intercambio válido para las señales del libro, bajo
+las mismas condiciones de regularidad ya invocadas en el
+Capítulo~\ref{cap04} para intercambiar integrales---:
+\begin{equation*}
+    \frac{1}{T_0}\int_{T_0}|x(t)|^2\,dt
+    \;=\; \sum_{m}\overline{c_m}\cdot
+        \frac{1}{T_0}\int_{T_0} x(t)\,e^{-jm\omega_0 t}\,dt.
+\end{equation*}
+El tercero es reconocer que la integral interna es exactamente el
+coeficiente de orden $m$ de $x$ ---es la fórmula de análisis con $k$
+reemplazado por $m$---, así que vale $c_m$. Reemplazando,
+\begin{equation*}
+    \frac{1}{T_0}\int_{T_0}|x(t)|^2\,dt
+    \;=\; \sum_{m} \overline{c_m}\,c_m
+    \;=\; \sum_{m} |c_m|^2.
+\end{equation*}
+
+La identidad de Parseval cierra la equivalencia entre las dos
+representaciones de la señal: medir su potencia integrando
+$|x(t)|^2$ en el tiempo o sumando $|c_k|^2$ sobre los armónicos da
+exactamente el mismo número.
+
+% ==============================================================================
+% 5.3.8 Tabla resumen
+% ==============================================================================
+\subsection{Tabla resumen}
+\label{subsec:tabla_propiedades}
+
+Las propiedades vistas a lo largo de la sección se resumen en la
+tabla~\ref{tab:propiedades_sf}. La tabla está pensada como
+referencia rápida: cada fila es una regla operativa para evitar
+reintegrar la fórmula de análisis cuando lo que se quiere es
+relacionar los coeficientes de una señal modificada con los de la
+original.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Propiedad} & $\boldsymbol{x(t)}$ & $\boldsymbol{c_k}$ \\
+        \midrule
+        Linealidad        & $\alpha\,x(t) + \beta\,y(t)$
+                          & $\alpha\,c_k + \beta\,d_k$ \\[4pt]
+        Desplazamiento    & $x(t - t_0)$
+                          & $c_k\,e^{-jk\omega_0 t_0}$ \\[4pt]
+        Rebatimiento      & $x(-t)$
+                          & $c_{-k}$ \\[4pt]
+        Conjugación       & $\overline{x(t)}$
+                          & $\overline{c_{-k}}$ \\[4pt]
+        Derivación        & $\dot{x}(t)$
+                          & $jk\omega_0\,c_k$ \\[4pt]
+        Integración \scriptsize{($c_0=0$)}
+                          & primitiva $y(t)$ de $x(t)$
+                          & $\dfrac{c_k}{jk\omega_0}\;\;(k\neq 0)$ \\[8pt]
+        Parseval          & $\dfrac{1}{T_0}\displaystyle\int_{T_0}|x(t)|^2\,dt$
+                          & $\displaystyle\sum_{k}|c_k|^2$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Propiedades de la serie de Fourier exponencial. En cada
+             fila, $x(t)\leftrightarrow c_k$ e $y(t)\leftrightarrow d_k$
+             son señales periódicas del mismo período $T_0$ con sus
+             respectivos coeficientes.}
+    \label{tab:propiedades_sf}
+\end{table}
+
+\end{document}

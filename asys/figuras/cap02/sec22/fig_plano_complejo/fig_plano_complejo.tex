@@ -1,0 +1,25 @@
+\documentclass[border=1mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=1.2, font=\small]
+        % Ejes
+        \draw[->, very thick] (-1,0) -- (4,0) node[right] {Eje Real};
+        \draw[->, very thick] (0,-1) -- (0,3.5) node[above] {Eje Imaginario};
+        
+        % Vector y componentes
+        \coordinate (O) at (0,0);
+        \coordinate (P) at (3,2.5);
+        \draw[dashed] (3,0) node[below] {$x$} -- (P) -- (0,2.5) node[left] {$y$};
+        \draw[->,very thick, utnblue] (O) -- (P) node[midway, above left] {$r$} node[above right] {$z = x + jy$};
+        
+        % Ángulo
+        \draw[->] (0.8,0) arc (0:39.8:0.8);
+        \node at (1.1,0.4) {$\theta$};
+        
+        % Punto
+        \fill[utnblue] (P) circle (1.5pt);
+    \end{tikzpicture}
+\end{document}

@@ -1,0 +1,82 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+% Vectores giratorios c_k e^{j k w_0 t} del tren de pulsos rectangulares
+% con tau = 1, T_0 = 4, w_0 = pi/2.
+% Coeficientes c_k = (1/4) sinc(k pi / 4):
+%   |c_1| = sqrt(2)/(2 pi) ~ 0.2251
+%   |c_2| = 1/(2 pi)        ~ 0.1592
+%   |c_3| = sqrt(2)/(6 pi)  ~ 0.0750
+%   |c_4| = 0
+% Layout: 2 filas x 4 columnas. Fila superior k=1..4 (giro antihorario);
+% fila inferior k=-1..-4 (giro horario).
+% Cada panel: circunferencia de radio |c_k|, vector en posición t=0,
+% flecha curva indicando el sentido de giro, marcador "(letra) k = N" arriba.
+% La punta de flecha y la línea se reducen paulatinamente entre paneles
+% para que el panel degenerado (k = +/- 4) no quede como excepción visual.
+
+\begin{document}
+\begin{tikzpicture}[font=\footnotesize]
+
+% Macro de panel.
+% #1 x del centro (cm), #2 y del centro (cm),
+% #3 radio (en coords internas del panel),
+% #4 letra del marcador, #5 valor de k (entero con signo),
+% #6 sentido (1 antihorario, -1 horario),
+% #7 degenerado (0 normal, 1 caso c_k = 0),
+% #8 grosor de línea del vector (con unidad, p.ej. 1.2pt),
+% #9 largo de la punta Latex (con unidad, p.ej. 2.4mm).
+\newcommand{\panelvec}[9]{%
+    \begin{scope}[shift={(#1, #2)}, scale=5]
+        % Ejes del plano complejo
+        \draw[->, thin, gray!50] (-0.3, 0) -- (0.32, 0);
+        \draw[->, thin, gray!50] (0, -0.3) -- (0, 0.32);
+        \node[font=\tiny, gray!70, anchor=west, inner sep=1pt] at (0.32, 0) {Re};
+        \node[font=\tiny, gray!70, anchor=south, inner sep=1pt] at (0, 0.32) {Im};
+
+        \ifnum#7=0
+            % Caso no degenerado
+            \draw[dashed, gray!60, thin] (0, 0) circle (#3);
+            \draw[utnblue, line width=#8,
+                  -{Latex[length=#9,width=#9]}]
+                  (0, 0) -- (#3, 0);
+            \fill[utnblue] (#3, 0) circle (0.2pt);
+            % Flecha curva del sentido de giro
+            \ifnum#6>0
+                \draw[->, thin, gray!75]
+                    ({#3*1.22*cos(15)}, {#3*1.22*sin(15)})
+                    arc (15:80:{#3*1.22});
+            \else
+                \draw[->, thin, gray!75]
+                    ({#3*1.22*cos(-15)}, {#3*1.22*sin(-15)})
+                    arc (-15:-80:{#3*1.22});
+            \fi
+        \else
+            % Caso degenerado (c_k = 0): solo un punto en el origen
+            \fill[utnblue] (0, 0) circle (0.2pt);
+        \fi
+
+        % Marcador del panel: letra y valor de k
+        \node[anchor=south, font=\footnotesize] at (0, 0.38)
+            {(#4)~~$k = #5$};
+    \end{scope}
+}
+
+% Separación entre paneles
+\def\dx{3.7}
+\def\dy{4.0}
+
+% Fila superior: k = 1, 2, 3, 4 (antihorario)
+\panelvec{0}{0}{0.2251}{a}{1}{1}{0}{1.20pt}{2.4mm}
+\panelvec{\dx}{0}{0.1592}{b}{2}{1}{0}{0.95pt}{1.9mm}
+\panelvec{2*\dx}{0}{0.0750}{c}{3}{1}{0}{0.70pt}{1.4mm}
+\panelvec{3*\dx}{0}{0}{d}{4}{1}{1}{0pt}{0pt}
+
+% Fila inferior: k = -1, -2, -3, -4 (horario)
+\panelvec{0}{-\dy}{0.2251}{e}{-1}{-1}{0}{1.20pt}{2.4mm}
+\panelvec{\dx}{-\dy}{0.1592}{f}{-2}{-1}{0}{0.95pt}{1.9mm}
+\panelvec{2*\dx}{-\dy}{0.0750}{g}{-3}{-1}{0}{0.70pt}{1.4mm}
+\panelvec{3*\dx}{-\dy}{0}{h}{-4}{-1}{1}{0pt}{0pt}
+
+\end{tikzpicture}
+\end{document}

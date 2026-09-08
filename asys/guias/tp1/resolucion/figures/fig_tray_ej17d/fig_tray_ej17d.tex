@@ -1,0 +1,52 @@
+\documentclass[border=4mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.0, font=\small]
+    \useasboundingbox (-0.8,-2.5) rectangle (4.2,2.5);
+
+    % Grid
+    \begin{scope}
+        \clip (-0.8,-2.5) rectangle (4.2,2.5);
+        \draw[help lines, gray!25, step=1] (-1,-3) grid (5,3);
+    \end{scope}
+
+    % Contours
+    \begin{scope}
+        \clip (-0.8,-2.5) rectangle (4.2,2.5);
+        % C2: |z-1|=2 (larger, drawn first)
+        \draw[orange!80!black, thick] (1,0) circle (2);
+        % C1: |z-2|=1/2
+        \draw[utnblue, thick] (2,0) circle (0.5);
+    \end{scope}
+
+    % Axes
+    \draw[->, thick] (-0.6,0) -- (4.0,0) node[right, font=\scriptsize] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-2.3) -- (0,2.3) node[above, font=\scriptsize] {$\operatorname{Im}$};
+    \foreach \x in {1,2,3} {
+        \draw (\x,0.07)--(\x,-0.07) node[below, font=\scriptsize] {$\x$};
+    }
+    \foreach \y in {-2,-1,1,2} {
+        \draw (0.07,\y)--(-0.07,\y) node[left, font=\scriptsize] {$\y$};
+    }
+    \node[below left, font=\scriptsize] at (0,0) {$0$};
+
+    % Simple pole at z=1
+    \node[red!70!black, font=\large] at (1,0) {$\times$};
+    \node[above left, font=\scriptsize, red!70!black] at (1,0.05) {$p_1{=}1$};
+
+    % Double pole at z=2 (two offset × marks)
+    \node[red!70!black, font=\large] at (1.96,0.04) {$\times$};
+    \node[red!70!black, font=\large] at (2.04,-0.04) {$\times$};
+    \node[above right, font=\scriptsize, red!70!black] at (2.0,0.05) {$p_2{=}2$\,(ord.\,2)};
+
+    % Orientation arrows
+    \draw[->, utnblue, thick] (2,0.52) arc[start angle=90, end angle=115, radius=0.5];
+    \draw[->, orange!80!black, thick] (1,2.0) arc[start angle=90, end angle=115, radius=2];
+
+    % Labels
+    \node[utnblue, font=\scriptsize, anchor=west] at (2.0,0.6) {$C_1$};
+    \node[orange!80!black, font=\scriptsize] at (3.09,1.6) {$C_2$};
+
+\end{tikzpicture}
+\end{document}

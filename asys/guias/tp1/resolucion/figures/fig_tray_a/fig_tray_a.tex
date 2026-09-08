@@ -1,0 +1,39 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=2.5, font=\small]
+    \useasboundingbox (-0.4, -0.7) rectangle (1.4, 0.7);
+
+    % --- CAPA 1: Grid ---
+    \begin{scope}
+        \clip (-0.4, -0.7) rectangle (1.4, 0.7);
+        \draw[help lines, gray!30, step=0.5] (-0.4,-0.7) grid (1.4, 0.7);
+    \end{scope}
+
+    % --- CAPA 2: Trayectoria (eje real, decae de 1 a 0) ---
+    \begin{scope}
+        \clip (-0.4, -0.7) rectangle (1.4, 0.7);
+        \draw[utnblue, very thick] (1,0) -- (0.02,0);
+        % Flecha de dirección en el punto medio
+        \draw[->, utnblue, very thick] (0.54,0) -- (0.46,0);
+    \end{scope}
+
+    % --- CAPA 3: Ejes ---
+    \draw[->, thick] (-0.35,0) -- (1.35,0) node[right, font=\scriptsize] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-0.6) -- (0,0.65) node[above, font=\scriptsize] {$\operatorname{Im}$};
+
+    % --- CAPA 4: Etiquetas y marcas ---
+    \draw (0.5, 0.05)--(0.5,-0.05) node[below, font=\scriptsize] {$0.5$};
+    \draw (1.0, 0.05)--(1.0,-0.05) node[below, font=\scriptsize] {$1$};
+    \node[below left, font=\scriptsize] at (0,0) {$0$};
+
+    % Punto inicial
+    \fill[utnblue] (1,0) circle (0.8pt);
+    \node[above, font=\scriptsize] at (1,0) {$t{=}0$};
+
+    % Flecha convergencia al origen
+    \fill[utnblue] (0.02,0) circle (0.8pt);
+    \node[above right, font=\scriptsize, utnblue] at (0,0) {$t{\to}\infty$};
+\end{tikzpicture}
+\end{document}

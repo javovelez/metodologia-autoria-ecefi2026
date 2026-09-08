@@ -1,0 +1,81 @@
+%\PassOptionsToPackage{gray}{xcolor}
+
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+  
+\begin{document}
+\begin{tikzpicture}
+
+% --- PANEL A: CASO 1 (Polos Reales) ---
+\begin{axis}[
+    name=plotA,
+    view={55}{25},
+    title={\textbf{(a) Caso 1: Polos Reales}},
+    clip=true,
+    domain=-6:6,
+    y domain=-5:5,
+    samples=65,
+    zmin=0, zmax=10,
+    colormap/viridis,
+    shader=interp,
+    axis lines=box,
+    xtick={-6,-3,0,3,6},
+    ytick={-4,0,4},
+    ztick={0,5,10},
+    width=10cm,
+    height=8cm,
+]
+    % Superficie de magnitud |H1(z)| = 2|z-3|/|(z-1)(z+3)|
+    % Polos en z=+1 y z=-3, Cero en z=+3
+    % Superficie con coloración no lineal (raíz cuarta) para resaltar el cero
+    \addplot3[surf, opacity=0.85, point meta={pow(z,0.25)}] {
+        min(10, 2 * sqrt((x-3)^2 + y^2) / (sqrt((x-1)^2 + y^2) * sqrt((x+3)^2 + y^2) + 0.001))
+    };
+\end{axis}
+
+% Labels Panel A
+\node[anchor=north east, font=\footnotesize] at (plotA.outer south west) 
+    [xshift=2.0cm, yshift=0.3cm] {Re};
+\node[anchor=north west, font=\footnotesize] at (plotA.outer south east) 
+    [xshift=-2.0cm, yshift=0.3cm] {Im};
+\node[anchor=south, font=\footnotesize] at (plotA.west) 
+    [xshift=-0.5cm, yshift=-0.3cm] {$|H_1(z)|$};
+
+% --- PANEL B: CASO 2 (Polos Complejos) ---
+\begin{axis}[
+    name=plotB,
+    at={($(plotA.south)-(0,1.5cm)$)},
+    anchor=north,
+    view={55}{25},
+    title={\textbf{(b) Caso 2: Polos Complejos}},
+    clip=true,
+    domain=-6:4,
+    y domain=-5:5,
+    samples=60,
+    zmin=0, zmax=10,
+    colormap/viridis,
+    shader=interp,
+    axis lines=box,
+    xtick={-6,-4,-2,0,2,4},
+    ytick={-4,-2,0,2,4},
+    ztick={0,5,10},
+    width=10cm,
+    height=8cm,
+]
+    % Superficie de magnitud |H2(z)| = 10/|(z+1-2j)(z+1+2j)| 
+    % Aumentamos numerador para que sea visible con zmax=10
+    \addplot3[surf, opacity=0.85, point meta={pow(z,0.25)}] {
+        min(10, 10 / (sqrt((x+1)^2 + (y-2)^2) * sqrt((x+1)^2 + (y+2)^2) + 0.001))
+    };
+\end{axis}
+
+% Labels Panel B
+\node[anchor=north east, font=\footnotesize] at (plotB.outer south west) 
+    [xshift=2.0cm, yshift=0.3cm] {Re};
+\node[anchor=north west, font=\footnotesize] at (plotB.outer south east) 
+    [xshift=-2.0cm, yshift=0.3cm] {Im};
+\node[anchor=south, font=\footnotesize] at (plotB.west) 
+    [xshift=-0.5cm, yshift=-0.3cm] {$|H_2(z)|$};
+
+\end{tikzpicture}
+\end{document}

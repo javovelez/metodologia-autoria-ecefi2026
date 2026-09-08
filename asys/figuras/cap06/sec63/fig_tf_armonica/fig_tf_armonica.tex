@@ -1,0 +1,37 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_tf_armonica
+% TFTC de la exponencial armónica e^{j*omega_0*t}.
+% Un único impulso real en omega = omega_0 con peso 2*pi.
+% Sin panel temporal: la exponencial es compleja y sus partes Re/Im
+% son cos y sin, mostradas en la figura siguiente (fig_tf_coseno_seno).
+% Sizing: panel único, w 8cm, h 4cm; incluir a 0.55\linewidth.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\begin{axis}[
+    width=8cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-3.5, xmax=3.5, ymin=-0.4, ymax=1.4,
+    xtick={-1, 0, 1},
+    xticklabels={$-\omega_0$, $0$, $\omega_0$},
+    ytick={0, 1},
+    yticklabels={$0$, $2\pi$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.22)}},
+    ylabel={$X(j\omega)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:1,0) -- (axis cs:1,1);
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

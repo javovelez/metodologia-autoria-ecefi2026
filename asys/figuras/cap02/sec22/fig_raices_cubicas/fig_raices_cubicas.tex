@@ -1,0 +1,37 @@
+\documentclass[border=0mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=1.5, font=\small]
+        % Ejes
+        \draw[->, very thick] (-2.5,0) -- (2.5,0) node[right] {Re};
+        \draw[->, very thick] (0,-2.5) -- (0,2.5) node[above] {Im};
+        
+        % Círculo
+        \draw[dashed, gray] (0,0) circle (2);
+        \node[gray, below right] at (1.4,1.4) {$|z|=2$};
+        
+        % Coordenadas y Triángulo
+        \coordinate (O) at (0,0);
+        \coordinate (W0) at (60:2);
+        \coordinate (W1) at (180:2);
+        \coordinate (W2) at (300:2);
+        
+        \draw[red, thick, dashed] (W0) -- (W1) -- (W2) -- cycle;
+        
+        % Vectores y Puntos
+        \draw[->, very thick, utnblue] (O) -- (W0) node[above right] {$w_0$};
+        \draw[->, very thick, utnblue] (O) -- (W1) node[above left] {$w_1$};
+        \draw[->, very thick, utnblue] (O) -- (W2) node[below right] {$w_2$};
+        
+        \fill[utnblue] (W0) circle (1.5pt); 
+        \fill[utnblue] (W1) circle (1.5pt); 
+        \fill[utnblue] (W2) circle (1.5pt);
+        
+        % Ángulo inicial
+        \draw[->, thin, gray] (0.6,0) arc (0:60:0.6);
+        \node[gray] at (30:0.9) {$\pi/3$};
+    \end{tikzpicture}
+\end{document}

@@ -1,0 +1,65 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur, decorations.pathreplacing}
+
+% Verificación de invarianza temporal mediante dos rutas paralelas.
+% Ruta 1: desplazar la entrada ANTES de pasar por el sistema T.
+% Ruta 2: desplazar la salida DESPUÉS de pasar por el sistema T.
+% Un sistema es IT si y solo si y1(t) = y2(t) para todo t, t0.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    block/.style={
+        draw=utnblue!60,
+        line width=0.5pt,
+        fill=utnblue!8,
+        minimum width=2.1cm,
+        minimum height=1cm,
+        rounded corners=2pt,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    signal/.style={->, thick, utnblue},
+    label_style/.style={font=\footnotesize},
+]
+
+
+% ---- Entrada y bifurcación ----
+\coordinate (in)   at (0,   0);
+\coordinate (fork) at (1.5, 0);
+
+% ---- Ruta 1 (arriba): Ret. t0 → T ----
+\node[block] (D1) at (3.9,  1.5) {Retardo~$t_0$};
+\node[block] (T1) at (8.0,  1.5) {$\mathcal{T}$};
+
+% ---- Ruta 2 (abajo): T → Ret. t0 ----
+\node[block] (T2) at (3.9, -1.5) {$\mathcal{T}$};
+\node[block] (D2) at (8.0, -1.5) {Retardo~$t_0$};
+
+% ---- Señal de entrada y punto de bifurcación ----
+\draw[signal] (in) -- (fork) node[label_style, above, midway] {$x(t)$};
+\fill[utnblue] (fork) circle (2pt);
+
+% ---- Ruta 1 ----
+\draw[signal] (fork) |- (D1.west);
+\draw[signal] (D1.east) -- (T1.west) node[label_style, above, midway] {$x(t-t_0)$};
+\draw[signal] (T1.east) -- (9.8, 1.5) node[label_style, above, midway] {$y_1(t)$};
+
+% ---- Ruta 2 ----
+\draw[signal] (fork) |- (T2.west);
+\draw[signal] (T2.east) -- (D2.west) node[label_style, above, midway] {$y(t)$};
+\draw[signal] (D2.east) -- (9.8, -1.5) node[label_style, above, midway] {$y_2(t)$};
+
+% ---- Etiquetas de ruta ----
+\node[font=\footnotesize, gray, above=0.3cm] at (3.9,  2.0) {Ruta~1};
+\node[font=\footnotesize, gray, below=0.3cm] at (3.9, -2.0) {Ruta~2};
+
+% ---- Cotejo: comparación de salidas ----
+\draw[gray, line width=0.5pt, decorate,
+      decoration={brace, amplitude=5pt, raise=3pt, mirror}]
+    (9.8, -1.5) -- (9.8, 1.5);
+\node[font=\footnotesize, gray, anchor=west] at (10.35, 0)
+    {IT $\Leftrightarrow y_1(t) = y_2(t)$};
+
+\end{tikzpicture}
+\end{document}

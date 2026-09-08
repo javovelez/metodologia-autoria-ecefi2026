@@ -1,0 +1,38 @@
+%\PassOptionsToPackage{gray}{xcolor}
+
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[
+            name=mainplot,
+            view={55}{25},
+            title={\textbf{Superficie de Magnitud $|z^2|$}},
+            clip=true,
+            domain=-2:2,
+            y domain=-2:2,
+            samples=45,
+            zmin=0, zmax=8,
+            colormap/viridis,
+            shader=interp,
+            axis lines=box,
+            width=10cm,
+            height=8cm,
+            xtick={-2,-1,0,1,2},
+            ytick={-2,0,2},
+            ztick={0,4,8},
+        ]
+            % Superficie
+            \addplot3[surf, opacity=0.85] {x^2 + y^2};
+        \end{axis}
+
+        % Labels
+        \node[anchor=north east, font=\footnotesize] at (mainplot.outer south west) 
+            [xshift=2.0cm, yshift=0.3cm] {Re};
+        \node[anchor=north west, font=\footnotesize] at (mainplot.outer south east) 
+            [xshift=-2.0cm, yshift=0.3cm] {Im};
+        \node[anchor=south, font=\footnotesize] at (mainplot.west) 
+            [xshift=-0.5cm, yshift=-0.3cm] {$|z^2|$};
+    \end{tikzpicture}
+\end{document}
+

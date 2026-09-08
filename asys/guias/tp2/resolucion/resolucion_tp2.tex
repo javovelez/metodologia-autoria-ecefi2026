@@ -1,0 +1,1149 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titling} 
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage[mode=image]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, babel}
+
+\definecolor{utnblue}{RGB}{0, 51, 102}
+\definecolor{utnred}{RGB}{204, 0, 0}
+\definecolor{utngreen}{RGB}{0, 153, 76}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+\setlength{\headsep}{10pt}
+\setlength{\droptitle}{-0.5in} 
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large\bfseries}
+\posttitle{\par\end{center}\vspace{-1.5em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Resolución del Trabajo Práctico N$^\text{o}$2}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title{% 
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Resolución del Trabajo Práctico N$^{\text o}$2: Señales de tiempo continuo}%
+}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+	
+	\label{sec:resolucion}
+
+	% ***********************************************
+	% 					Ejercicio 1
+	% ***********************************************
+	\section*{Ejercicio 1: Paridad de Señales}
+	
+	Toda señal de tiempo continuo puede descomponerse analíticamente en una única componente par $x_p(t)$ e impar $x_i(t)$, tal que $x(t) = x_p(t) + x_i(t)$. Las ecuaciones cardinales de separación son:
+	\[ x_p(t) = \frac{x(t) + x(-t)}{2} \qquad \text{y} \qquad x_i(t) = \frac{x(t) - x(-t)}{2} \]
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Señal exponencial decreciente: $x(t) = e^{-t}$}
+		
+		Aplicando directamente las definiciones operatorias:
+		\begin{align*}
+		    x_p(t) &= \frac{e^{-t} + e^{-(-t)}}{2} = \frac{e^{-t} + e^t}{2} = \cosh(t) \\
+		    x_i(t) &= \frac{e^{-t} - e^{-(-t)}}{2} = \frac{e^{-t} - e^t}{2} = -\sinh(t)
+		\end{align*}
+		Vemos cómo el coseno hiperbólico actúa como la base par formadora y la versión negativa del seno hiperbólico introduce la asimetría para modelar el decaimiento.
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer4a/fig_ejer4a}
+			\caption{Descomposición de $e^{-t}$ en $\cosh(t)$ y $-\sinh(t)$.}
+		\end{figure}
+
+		\item \textbf{El escalón de Heaviside: $x(t) = u(t)$}
+		
+		Utilizando la señal escalón en tiempo directo y reflejado temporalmente:
+		\begin{align*}
+		    x_p(t) &= \frac{u(t) + u(-t)}{2} = \frac{1}{2} \qquad (\text{para todo } t \neq 0)\\
+		    x_i(t) &= \frac{u(t) - u(-t)}{2} = \frac{1}{2}\operatorname{sgn}(t)
+		\end{align*}
+		La componente par aporta una base constante positiva de $1/2$ a lo largo de todo el dominio temporal. La componente impar provee la antisimetría restando $1/2$ en $t < 0$ (frustrando la amplitud a cero) y aportando $+1/2$ en $t > 0$ (completando el nivel estandarizado unitario).
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer4b/fig_ejer4b}
+			\caption{Descomposición de la onda escalón $u(t)$.}
+		\end{figure}
+
+		\item \textbf{La función rampa unitaria: $x(t) = t\,u(t)$}
+		
+		En concordancia con el método orgánico de notación, empleamos la identidad explícita de la recta enventanada $t\,u(t)$. 
+		Para componer sus partes, desarrollamos la reflexión algebraicamente y factorizamos:
+		\begin{align*}
+		    x_p(t) &= \frac{t\,u(t) + (-t\,u(-t))}{2} = \frac{t}{2} \bigl[ u(t) - u(-t) \bigr] = \frac{t}{2}\operatorname{sgn}(t) = \frac{|t|}{2} \\
+		    x_i(t) &= \frac{t\,u(t) - (-t\,u(-t))}{2} = \frac{t}{2} \bigl[ u(t) + u(-t) \bigr] = \frac{t}{2} \cdot 1 = \frac{t}{2}
+		\end{align*}
+		Surge un resultado algebraico notable y elegante: la base impar de formación es una recta pasante de pendiente fraccionaria $t/2$, y la base par que interactúa y coarta la señal por valores negativos es exactamente la del valor absoluto escalado $|t|/2$.
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer4c/fig_ejer4c}
+			\caption{Componentes de la rampa: valor absoluto (par) y recta (impar).}
+		\end{figure}
+
+		\item \textbf{Polinomio cúbico: $x(t) = t^3 + 2$}
+		
+		Aplicamos las fórmulas de descomposición. Primero obtenemos la versión reflejada: $x(-t) = (-t)^3 + 2 = -t^3 + 2$. Luego:
+		\begin{align*}
+		    x_p(t) &= \frac{(t^3 + 2) + (-t^3 + 2)}{2} = \frac{4}{2} = 2 \\
+		    x_i(t) &= \frac{(t^3 + 2) - (-t^3 + 2)}{2} = \frac{2t^3}{2} = t^3
+		\end{align*}
+		El resultado es directo: el término $t^3$ es una función impar (potencia entera impar) y la constante $2$ es par. La descomposición simplemente separa cada término según su paridad natural. Se verifica: $x_p(t) + x_i(t) = 2 + t^3 = t^3 + 2 = x(t)$.
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer4d/fig_ejer4d}
+			\caption{Descomposición de $x(t)=t^3+2$: la componente par es la constante $2$ y la impar es $t^3$.}
+		\end{figure}
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 2
+	% ***********************************************
+	\section*{Ejercicio 2: Simetría en la integración}
+	
+	Cuando el intervalo de integración es simétrico respecto al origen $[-T, T]$, la paridad del integrando determina el resultado sin necesidad de calcular la integral explícitamente: si el integrando es \textbf{impar}, la integral vale $0$; si es \textbf{par}, la integral es el doble de la integral sobre $[0, T]$.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $\displaystyle\int_{-2}^{2} t\cos(\pi t)\,dt$
+		
+		Analizamos la paridad del integrando $f(t) = t\cos(\pi t)$:
+		\begin{itemize}
+		    \item $t$ es una función \textbf{impar}.
+		    \item $\cos(\pi t)$ es una función \textbf{par}.
+		    \item El producto de una función par por una impar es \textbf{impar}.
+		\end{itemize}
+		El intervalo $[-2, 2]$ es simétrico respecto al origen. Integral de función impar sobre intervalo simétrico:
+		\[
+		\int_{-2}^{2} t\cos(\pi t)\,dt = \mathbf{0}
+		\]
+		
+		\item $\displaystyle\int_{-5}^{5} t^2\sin\!\left(\frac{\pi}{5}t\right)dt$
+		
+		Analizamos $f(t) = t^2\sin\!\left(\frac{\pi}{5}t\right)$:
+		\begin{itemize}
+		    \item $t^2$ es \textbf{par}.
+		    \item $\sin\!\left(\frac{\pi}{5}t\right)$ es \textbf{impar}.
+		    \item El producto es \textbf{impar}.
+		\end{itemize}
+		Sobre el intervalo simétrico $[-5, 5]$:
+		\[
+		\int_{-5}^{5} t^2\sin\!\left(\frac{\pi}{5}t\right)dt = \mathbf{0}
+		\]
+		
+		\item $\displaystyle\int_{-1}^{1}\left[3 + t^3\cos(2\pi t)\right]dt$
+		
+		Separamos la integral en dos sumandos:
+		\[
+		\int_{-1}^{1} 3\,dt + \int_{-1}^{1} t^3\cos(2\pi t)\,dt
+		\]
+		
+		La primera integral es inmediata (constante sobre intervalo de largo $2$):
+		\[
+		\int_{-1}^{1} 3\,dt = 3\cdot 2 = 6
+		\]
+		
+		Para la segunda, $t^3$ es \textbf{impar} y $\cos(2\pi t)$ es \textbf{par}, por lo que su producto $t^3\cos(2\pi t)$ es \textbf{impar}. Sobre el intervalo simétrico $[-1,1]$:
+		\[
+		\int_{-1}^{1} t^3\cos(2\pi t)\,dt = 0
+		\]
+		
+		Resultado final:
+		\[
+		\int_{-1}^{1}\left[3 + t^3\cos(2\pi t)\right]dt = 6 + 0 = \mathbf{6}
+		\]
+		
+		\item $\displaystyle\int_{-\pi}^{\pi} t\sin(t)\,dt$
+		
+		Analizamos $f(t) = t\sin(t)$:
+		\begin{itemize}
+		    \item $t$ es \textbf{impar}.
+		    \item $\sin(t)$ es \textbf{impar}.
+		    \item El producto de dos funciones impares es una función \textbf{par}.
+		\end{itemize}
+		Para una función par sobre un intervalo simétrico $[-L, L]$, la regla establece que la integral equivale a duplicar la integral sobre la mitad estricta del intervalo $[0, L]$:
+		\[
+		\int_{-\pi}^{\pi} t\sin(t)\,dt = 2\int_{0}^{\pi} t\sin(t)\,dt
+		\]
+		Para resolver analíticamente la integral sobre este semi-dominio, aplicamos integración por partes $\int u\,dv = uv - \int v\,du$. Elegimos:
+		\begin{align*}
+		    u &= t \quad \Rightarrow \quad du = dt \\
+		    dv &= \sin(t)\,dt \quad \Rightarrow \quad v = -\cos(t)
+		\end{align*}
+		Armando el cálculo de la integral definida:
+		\begin{align*}
+		    \int_{0}^{\pi} t\sin(t)\,dt &= \Big[-t\cos(t)\Big]_{0}^{\pi} - \int_{0}^{\pi} (-\cos(t))\,dt \\
+		    &= \Big[-t\cos(t) + \sin(t)\Big]_{0}^{\pi} \\
+		    &= \Big( -\pi\cos(\pi) + \sin(\pi) \Big) - \Big( -0\cdot\cos(0) + \sin(0) \Big) \\
+		    &= \Big( -\pi(-1) + 0 \Big) - \Big( 0 + 0 \Big) = \pi
+		\end{align*}
+		Finalmente, retomando el factor del duplo producto de la simetría par:
+		\[
+		\int_{-\pi}^{\pi} t\sin(t)\,dt = 2\int_{0}^{\pi} t\sin(t)\,dt = 2(\pi) = \mathbf{2\pi}
+		\]
+
+		\item $\displaystyle\int_{-\pi/2}^{\pi/2} \cos(t)\,dt$
+		
+		Analizamos la función base:
+		\begin{itemize}
+		    \item $\cos(t)$ es inherente y rigurosamente una función \textbf{par}.
+		\end{itemize}
+		Aplicando idéntica regla sobre el tramo centrado $[-\pi/2, \pi/2]$:
+		\[
+		\int_{-\pi/2}^{\pi/2} \cos(t)\,dt = 2\int_{0}^{\pi/2} \cos(t)\,dt
+		\]
+		De esta manera se evalúa sencillamente con límite inferior cero arrojando rápidamente el resultado: $2 \big[\sin(t)\big]_0^{\pi/2} = 2(1-0) = \mathbf{2}$.
+
+		\item \textbf{Demostración}: si $x(t)$ es periódica, par, con período $T_0$, entonces:
+		\[
+		P_x = \frac{2}{T_0}\int_{0}^{T_0/2} x^2(t)\,dt
+		\]
+		
+		Partimos de la definición de potencia sobre un período, eligiendo el intervalo simétrico $[-T_0/2,\, T_0/2]$ (válido porque la integral es la misma sobre cualquier intervalo de longitud $T_0$):
+		\[
+		P_x = \frac{1}{T_0}\int_{-T_0/2}^{T_0/2} x^2(t)\,dt
+		\]
+		
+		Si $x(t)$ es par, entonces $x(-t)=x(t)$, y en consecuencia $x^2(-t) = [x(-t)]^2 = [x(t)]^2 = x^2(t)$. Es decir, $x^2(t)$ también es una función par. Aplicando la propiedad de integrales de funciones pares sobre intervalos simétricos:
+		\[
+		\int_{-T_0/2}^{T_0/2} x^2(t)\,dt = 2\int_{0}^{T_0/2} x^2(t)\,dt
+		\]
+		
+		Sustituyendo:
+		\[
+		P_x = \frac{1}{T_0}\cdot 2\int_{0}^{T_0/2} x^2(t)\,dt = \frac{2}{T_0}\int_{0}^{T_0/2} x^2(t)\,dt \qquad \blacksquare
+		\]
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 3
+	% ***********************************************
+	\section*{Ejercicio 3: Periodicidad}
+	
+	Para determinar si una señal compuesta es periódica, calculamos los períodos individuales de cada componente sinusoidal. La suma es periódica si y solo si los cocientes entre todos los pares de períodos son racionales. El período fundamental de la suma es el mínimo común múltiplo de los períodos individuales.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $x(t) = 3\cos(60t) - 4\sin(30t) - 5\cos(10t)$
+		
+		Identificamos las frecuencias angulares y calculamos los períodos:
+		\begin{align*}
+		\omega_1 &= 60 \text{ rad/s} \Rightarrow T_1 = \frac{2\pi}{60} = \frac{\pi}{30} \\
+		\omega_2 &= 30 \text{ rad/s} \Rightarrow T_2 = \frac{2\pi}{30} = \frac{\pi}{15} \\
+		\omega_3 &= 10 \text{ rad/s} \Rightarrow T_3 = \frac{2\pi}{10} = \frac{\pi}{5}
+		\end{align*}
+		
+		Verificamos los cocientes:
+		\[
+		\frac{T_2}{T_1} = \frac{\pi/15}{\pi/30} = 2 \in \mathbb{Q}, \qquad \frac{T_3}{T_1} = \frac{\pi/5}{\pi/30} = 6 \in \mathbb{Q}
+		\]
+		
+		Todos los cocientes son racionales. La señal \textbf{es periódica}. El período fundamental es:
+		\[
+		T_0 = \text{mcm}\!\left(\frac{\pi}{30},\, \frac{\pi}{15},\, \frac{\pi}{5}\right) = \frac{\pi}{5}
+		\]
+		ya que $T_3 = 6T_1 = 3T_2$. La frecuencia fundamental es $\omega_0 = 2\pi/T_0 = 10$ rad/s, que es el \textbf{máximo común divisor} de las tres frecuencias angulares.
+		
+		\item $x(t) = 5\sin\!\left(\frac{\pi}{3}t\right) - 3\cos\!\left(\frac{8\pi}{3}t\right)$
+		
+		\begin{align*}
+		\omega_1 &= \frac{\pi}{3} \Rightarrow T_1 = \frac{2\pi}{\pi/3} = 6 \\
+		\omega_2 &= \frac{8\pi}{3} \Rightarrow T_2 = \frac{2\pi}{8\pi/3} = \frac{3}{4}
+		\end{align*}
+		
+		Cociente: $\frac{T_1}{T_2} = \frac{6}{3/4} = 8 \in \mathbb{Q}$. La señal \textbf{es periódica}.
+		\[
+		T_0 = \text{mcm}(6,\, 3/4) = 6 \qquad (\text{ya que } 6 = 8\cdot\tfrac{3}{4})
+		\]
+		La frecuencia fundamental es $\omega_0 = 2\pi/6 = \pi/3$ rad/s.
+		
+		\item $x(t) = 2\cos(2\pi t) + 6\sin(10t) - 3\cos(4t)$
+		
+		\begin{align*}
+		\omega_1 &= 2\pi \Rightarrow T_1 = \frac{2\pi}{2\pi} = 1 \\
+		\omega_2 &= 10 \Rightarrow T_2 = \frac{2\pi}{10} = \frac{\pi}{5} \\
+		\omega_3 &= 4 \Rightarrow T_3 = \frac{2\pi}{4} = \frac{\pi}{2}
+		\end{align*}
+		
+		Cocientes:
+		\[
+		\frac{T_1}{T_2} = \frac{1}{\pi/5} = \frac{5}{\pi} \notin \mathbb{Q}
+		\]
+		
+		Como $5/\pi$ es irracional (pues $\pi$ es trascendente), la señal \textbf{no es periódica}. Basta que un par de componentes tenga cociente de períodos irracional para que la suma no pueda repetirse.
+		
+		\item $x(t) = e^{j\frac{5\pi}{6}t} + e^{j\frac{7\pi}{6}t}$
+		
+		\begin{align*}
+		\omega_1 &= \frac{5\pi}{6} \Rightarrow T_1 = \frac{2\pi}{5\pi/6} = \frac{12}{5} \\
+		\omega_2 &= \frac{7\pi}{6} \Rightarrow T_2 = \frac{2\pi}{7\pi/6} = \frac{12}{7}
+		\end{align*}
+		
+		Cociente:
+		\[
+		\frac{T_1}{T_2} = \frac{12/5}{12/7} = \frac{7}{5} \in \mathbb{Q}
+		\]
+		La señal \textbf{es periódica}. Expresamos el cociente como fracción irreducible $q/p = 7/5$, donde $\gcd(p,q)$ denota el máximo común divisor (\textit{greatest common divisor}) — aquí $\gcd(7,5)=1$, es decir los enteros ya son coprimos:
+		\[
+		T_0 = 5\cdot T_1 = 5\cdot\frac{12}{5} = 12 \qquad (\text{o equivalentemente } 7\cdot T_2 = 7\cdot\frac{12}{7} = 12)
+		\]
+		Frecuencia fundamental: $\omega_0 = 2\pi/12 = \pi/6$ rad/s.
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 4
+	% ***********************************************
+	\section*{Ejercicio 4: Transformaciones de la variable independiente}
+	
+	Dada la señal a trozos
+	\[
+	x(t)=
+	\begin{cases}
+	t+1, & -1\leq t\leq 1, \\
+	2, & 1<t\leq 2, \\
+	0, & \forall\; t<-1 \wedge t>2.
+	\end{cases}
+	\]
+	
+	Los puntos clave de esta señal son: $x(-1)=0$, $x(1)=2$ y $x(2)=2$. La señal parte de $0$ en $t=-1$, sube con pendiente $1$ hasta alcanzar $2$ en $t=1$, y permanece constante en $2$ hasta $t=2$, donde se extingue.
+	
+	\begin{figure}[H]
+		\centering
+		\includestandalone{figures/fig_ejer5_orig/fig_ejer5_orig}
+		\caption{Señal original $x(t)$.}
+		\label{fig:ejer5_orig}
+	\end{figure}
+	
+	Para cada transformación, el método es siempre el mismo: sustituir $t$ por el argumento transformado en la expresión analítica, resolver las desigualdades para obtener los nuevos intervalos, y recalcular los valores en cada tramo.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Compresión $x(2t)$}
+		
+		Sustituimos $t \to 2t$ en cada condición:
+		\begin{itemize}
+		    \item Tramo 1: $-1\leq 2t\leq 1 \Rightarrow -\frac{1}{2}\leq t\leq \frac{1}{2}$. Valor: $2t+1$.
+		    \item Tramo 2: $1<2t\leq 2 \Rightarrow \frac{1}{2}<t\leq 1$. Valor: $2$.
+		\end{itemize}
+		\[
+		x(2t) =
+		\begin{cases}
+		2t+1, & -\frac{1}{2}\leq t\leq \frac{1}{2}, \\
+		2, & \frac{1}{2}<t\leq 1, \\
+		0, & \text{resto.}
+		\end{cases}
+		\]
+		La señal se comprime: el soporte original $[-1,2]$ se reduce a $[-1/2,\, 1]$.
+		
+		\item \textbf{Expansión $x\!\left(\frac{1}{2}t\right)$}
+		
+		Sustituimos $t \to t/2$:
+		\begin{itemize}
+		    \item Tramo 1: $-1\leq t/2\leq 1 \Rightarrow -2\leq t\leq 2$. Valor: $t/2+1$.
+		    \item Tramo 2: $1<t/2\leq 2 \Rightarrow 2<t\leq 4$. Valor: $2$.
+		\end{itemize}
+		\[
+		x(t/2) =
+		\begin{cases}
+		\frac{t}{2}+1, & -2\leq t\leq 2, \\
+		2, & 2<t\leq 4, \\
+		0, & \text{resto.}
+		\end{cases}
+		\]
+		La señal se expande: el soporte pasa de $[-1,2]$ a $[-2,\, 4]$.
+		
+		\item \textbf{Retardo $x(t-3)$}
+		
+		Sustituimos $t \to t-3$:
+		\begin{itemize}
+		    \item Tramo 1: $-1\leq t-3\leq 1 \Rightarrow 2\leq t\leq 4$. Valor: $(t-3)+1 = t-2$.
+		    \item Tramo 2: $1<t-3\leq 2 \Rightarrow 4<t\leq 5$. Valor: $2$.
+		\end{itemize}
+		\[
+		x(t-3) =
+		\begin{cases}
+		t-2, & 2\leq t\leq 4, \\
+		2, & 4<t\leq 5, \\
+		0, & \text{resto.}
+		\end{cases}
+		\]
+		Es un desplazamiento rígido de $3$ unidades hacia la derecha.
+		
+		\item \textbf{Rebatimiento $x(-t)$}
+		
+		Sustituimos $t \to -t$:
+		\begin{itemize}
+		    \item Tramo 1: $-1\leq -t\leq 1 \Rightarrow -1\leq t\leq 1$. Valor: $-t+1$.
+		    \item Tramo 2: $1<-t\leq 2 \Rightarrow -2\leq t<-1$. Valor: $2$.
+		\end{itemize}
+		\[
+		x(-t) =
+		\begin{cases}
+		2, & -2\leq t<-1, \\
+		-t+1, & -1\leq t\leq 1, \\
+		0, & \text{resto.}
+		\end{cases}
+		\]
+		Reflexión especular respecto a $t=0$: el soporte pasa de $[-1,2]$ a $[-2,\, 1]$.
+		
+		\item \textbf{Rebatimiento y desplazamiento $x(3-t)$}
+		
+		Escribimos $x(3-t)=x(-(t-3))$. Esto es: primero rebatir ($t\to -t$), luego desplazar $3$ unidades a la derecha ($t\to t-3$). Alternativamente, sustituimos $t \to 3-t$ directamente:
+		\begin{itemize}
+		    \item Tramo 1: $-1\leq 3-t\leq 1 \Rightarrow 2\leq t\leq 4$. Valor: $(3-t)+1=4-t$.
+		    \item Tramo 2: $1<3-t\leq 2 \Rightarrow 1\leq t<2$. Valor: $2$.
+		\end{itemize}
+		\[
+		x(3-t) =
+		\begin{cases}
+		2, & 1\leq t<2, \\
+		4-t, & 2\leq t\leq 4, \\
+		0, & \text{resto.}
+		\end{cases}
+		\] 
+	\end{enumerate}
+	
+	La Figura~\ref{fig:ejer5} resume las cinco transformaciones.
+	
+	\begin{figure}[H]
+		\centering
+		\includestandalone{figures/fig_ejer5/fig_ejer5}
+		\caption{Transformaciones de $x(t)$: (a)~compresión $x(2t)$, (b)~expansión $x(t/2)$, (c)~retardo $x(t-3)$, (d)~rebatimiento $x(-t)$ y (e)~$x(3-t)$.}
+		\label{fig:ejer5}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 5
+	% ***********************************************
+	\section*{Ejercicio 5: Transformación combinada $x(3t-6)$}
+	
+	Dada la señal
+	\[
+	x(t)=
+	\begin{cases}
+	t+1, & -1\leq t\leq 0, \\
+	1, & 0<t\leq 2, \\
+	-t+3, & 2<t\leq 3, \\
+	0, & \forall\; t<-1 \wedge t>3.
+	\end{cases}
+	\]
+	
+	Se pide encontrar $y(t) = x(3t-6)$. Escribiendo el argumento como $3(t-2)$, se identifica: compresión por factor $3$ y desplazamiento de $2$ unidades a la derecha.
+	
+	Sustituimos $t \to 3t-6$ en cada condición:
+	\begin{itemize}
+	    \item Tramo 1: $-1\leq 3t-6\leq 0 \Rightarrow 5\leq 3t\leq 6 \Rightarrow \frac{5}{3}\leq t\leq 2$.
+	    
+	    Valor: $(3t-6)+1 = 3t-5$.
+	    \item Tramo 2: $0<3t-6\leq 2 \Rightarrow 6<3t\leq 8 \Rightarrow 2<t\leq \frac{8}{3}$.
+	    
+	    Valor: $1$.
+	    \item Tramo 3: $2<3t-6\leq 3 \Rightarrow 8<3t\leq 9 \Rightarrow \frac{8}{3}<t\leq 3$.
+	    
+	    Valor: $-(3t-6)+3 = -3t+9$.
+	\end{itemize}
+	
+	\[
+	y(t) = x(3t-6) =
+	\begin{cases}
+	3t-5, & \frac{5}{3}\leq t\leq 2, \\[4pt]
+	1, & 2<t\leq \frac{8}{3}, \\[4pt]
+	-3t+9, & \frac{8}{3}<t\leq 3, \\[4pt]
+	0, & \text{resto.}
+	\end{cases}
+	\]
+	
+	El soporte original $[-1,\, 3]$ se transformó a $[5/3,\, 3]$: la anchura pasó de $4$ a $4/3$ (dividida por el factor de compresión $|a|=3$) y el centro se desplazó a $(5/3+3)/2 = 7/3$.
+	
+	\begin{figure}[H]
+		\centering
+		\includestandalone{figures/fig_ejer6/fig_ejer6}
+		\caption{Señal original $x(t)$ (panel superior, gris punteado) y transformada $x(3t-6)$ (panel inferior).}
+		\label{fig:ejer6}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 6
+	% ***********************************************
+	\section*{Ejercicio 6: Señales de energía y potencia}
+	
+	Para clasificar una señal, se evalúa primero su energía $E_x = \int_{-\infty}^{\infty}|x(t)|^2\,dt$. Si es finita, es señal de energía (y $P_x=0$). Si la energía diverge, se evalúa la potencia media $P_x$. Si resulta finita y positiva, es señal de potencia. Si ambas divergen, no pertenece a ninguna categoría.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $x(t)=A\cos t$, para $-\infty<t<\infty$
+		
+		Es una señal periódica con $T_0 = 2\pi$. Su energía diverge ($E_x = \infty$). Su potencia media es finita:
+		\[
+		P_x = \frac{1}{T_0}\int_0^{T_0} A^2\cos^2(t)\,dt = \frac{A^2}{2}
+		\]
+		
+		$\Rightarrow$ \textbf{Señal de potencia} con $P_x = A^2/2$.
+		
+		\item $x(t)=A[u(t-1)-u(t+1)]$
+		
+		Analicemos los escalones: $u(t-1)$ se enciende en $t=1$ y $u(t+1)$ se enciende en $t=-1$. En la diferencia:
+		\begin{itemize}
+		    \item Para $t<-1$: $u(t-1)=0$, $u(t+1)=0$. $x(t)=0$.
+		    \item Para $-1\leq t<1$: $u(t-1)=0$, $u(t+1)=1$. $x(t)=A(0-1)=-A$.
+		    \item Para $t\geq 1$: $u(t-1)=1$, $u(t+1)=1$. $x(t)=A(1-1)=0$.
+		\end{itemize}
+		
+		Es un pulso de amplitud $-A$ con soporte $[-1,\, 1)$.
+		
+		\[
+		E_x = \int_{-1}^{1} A^2\,dt = 2A^2 < \infty
+		\]
+		
+		$\Rightarrow$ \textbf{Señal de energía} con $E_x = 2A^2$.
+		
+		\item $x(t)=tu(t)$
+		
+		Es la rampa unitaria, que crece indefinidamente:
+		\[
+		E_x = \int_0^{\infty} t^2\,dt = \lim_{T\to\infty}\frac{T^3}{3} = \infty
+		\]
+		\[
+		P_x = \lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T} [tu(t)]^2\,dt = \lim_{T\to\infty}\frac{1}{2T}\int_0^{T} t^2\,dt = \lim_{T\to\infty}\frac{T^2}{6} = \infty
+		\]
+		
+		$\Rightarrow$ \textbf{Ni de energía ni de potencia}.
+		
+		\item $x(t)=tu(t)u(1-t)$
+		
+		El producto de escalones recorta la rampa al intervalo $[0,\, 1]$. En ese intervalo $x(t)=t$.
+		\[
+		E_x = \int_0^{1} t^2\,dt = \frac{1}{3} < \infty
+		\]
+		
+		$\Rightarrow$ \textbf{Señal de energía} con $E_x = 1/3$.
+		
+		\item $x(t)=Ae^{\beta t}$, con $\beta>0$
+		
+		La señal crece sin cota para $t\to+\infty$ y decae a $0$ para $t\to-\infty$:
+		\[
+		E_x = \int_{-\infty}^{\infty} A^2 e^{2\beta t}\,dt = A^2\left[\frac{e^{2\beta t}}{2\beta}\right]_{-\infty}^{\infty} = \infty
+		\]
+		\[
+		P_x = \lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T} A^2 e^{2\beta t}\,dt = \lim_{T\to\infty}\frac{A^2}{4\beta T}\left(e^{2\beta T}-e^{-2\beta T}\right) = \infty
+		\]
+		ya que $e^{2\beta T}$ domina sobre el factor lineal $T$ en el denominador.
+		
+		$\Rightarrow$ \textbf{Ni de energía ni de potencia}.
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 7
+	% ***********************************************
+	\section*{Ejercicio 7: Superposición frecuencial}
+	
+	Dada $x(t) = 3\cos(10\pi t) + 4\sin(20\pi t)$.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Período fundamental}
+		
+		\begin{align*}
+		\omega_1 &= 10\pi \Rightarrow T_1 = \frac{2\pi}{10\pi} = \frac{1}{5}\text{ s} \\
+		\omega_2 &= 20\pi \Rightarrow T_2 = \frac{2\pi}{20\pi} = \frac{1}{10}\text{ s}
+		\end{align*}
+		
+		Cociente: $T_1/T_2 = (1/5)/(1/10) = 2 \in \mathbb{Q}$. La señal es periódica. El período fundamental es el mcm:
+		\[
+		T_0 = T_1 = \frac{1}{5}\text{ s} \qquad \left(\text{ya que } T_1 = 2T_2\right)
+		\]
+		La frecuencia fundamental es $f_0 = 5$ Hz ($\omega_0 = 10\pi$ rad/s).
+		
+		\item \textbf{Potencias parciales}
+		
+		Usando $P = A^2/2$ para cada componente sinusoidal:
+		\begin{align*}
+		P_1 &= \frac{3^2}{2} = \frac{9}{2} = 4{,}5 \\
+		P_2 &= \frac{4^2}{2} = \frac{16}{2} = 8
+		\end{align*}
+		
+		\item \textbf{Demostración de la aditividad de potencias}
+		
+		Elevamos la señal genérica al cuadrado:
+		\begin{align*}
+		x^2(t) &= \left[3\cos(10\pi t) + 4\sin(20\pi t)\right]^2 \\
+		       &= 9\cos^2(10\pi t) + 24\cos(10\pi t)\sin(20\pi t) + 16\sin^2(20\pi t)
+		\end{align*}
+		
+		La potencia total es el valor medio de $x^2(t)$ sobre un período $T_0$:
+		\[
+		P_x = \frac{1}{T_0}\int_0^{T_0} x^2(t)\,dt = \underbrace{\frac{1}{T_0}\int_0^{T_0} 9\cos^2(10\pi t)\,dt}_{=P_1 = 9/2} + \underbrace{\frac{1}{T_0}\int_0^{T_0} 24\cos(10\pi t)\sin(20\pi t)\,dt}_{=\,?} + \underbrace{\frac{1}{T_0}\int_0^{T_0} 16\sin^2(20\pi t)\,dt}_{=P_2 = 8}
+		\]
+		
+		Para el término cruzado, usamos la identidad $\sin(2\alpha) = 2\sin\alpha\cos\alpha$, con lo cual $\cos(10\pi t)\sin(20\pi t) = \cos(10\pi t)\sin(2\cdot 10\pi t)$. Expandiendo $\sin(20\pi t) = 2\sin(10\pi t)\cos(10\pi t)$:
+		\[
+		\cos(10\pi t)\sin(20\pi t) = 2\sin(10\pi t)\cos^2(10\pi t)
+		\]
+		
+		Usando $\cos^2\alpha = \frac{1}{2}(1+\cos 2\alpha)$:
+		\[
+		= 2\sin(10\pi t)\cdot\frac{1}{2}[1 + \cos(20\pi t)] = \sin(10\pi t) + \sin(10\pi t)\cos(20\pi t)
+		\]
+		
+		El primer sumando $\sin(10\pi t)$ tiene valor medio cero sobre $T_0$. El segundo, usando la identidad de producto a suma: $\sin\alpha\cos\beta = \frac{1}{2}[\sin(\alpha+\beta)+\sin(\alpha-\beta)]$:
+		\[
+		\sin(10\pi t)\cos(20\pi t) = \frac{1}{2}[\sin(30\pi t) + \sin(-10\pi t)] = \frac{1}{2}[\sin(30\pi t) - \sin(10\pi t)]
+		\]
+		
+		Ambos senos promedian a cero sobre $T_0 = 1/5$ (ya que $30\pi$ y $10\pi$ son múltiplos enteros de la frecuencia fundamental $10\pi$). Por lo tanto, el término cruzado completo se anula:
+		\[
+		\frac{1}{T_0}\int_0^{T_0} \cos(10\pi t)\sin(20\pi t)\,dt = 0
+		\]
+		
+		Resultado final:
+		\[
+		P_x = P_1 + 0 + P_2 = \frac{9}{2} + 8 = \frac{25}{2} = 12{,}5\qquad \blacksquare
+		\]
+		
+		La aditividad de potencias se cumple porque sinusoides de frecuencias distintas (armónicamente relacionadas) son ortogonales sobre el período fundamental: su producto cruzado promedia a cero.
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 8
+	% ***********************************************
+	\section*{Ejercicio 8: Componente continua y alterna}
+	
+	Se tiene una señal cuadrada con $A=10$ V, ciclo de trabajo $D=0{,}5$, período $T_0=2$ ms. La señal oscila entre $0$ V y $10$ V.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Valor medio (componente DC)}
+		
+		Para una señal cuadrada con ciclo de trabajo $D$:
+		\[
+		\bar{x} = A\cdot D = 10\cdot 0{,}5 = \mathbf{5\text{ V}}
+		\]
+		
+		\item \textbf{Componente alterna}
+		
+		La componente alterna se obtiene restando el valor medio:
+		\[
+		x_\mathrm{ac}(t) = x(t) - \bar{x}
+		\]
+		
+		Como la señal original oscila entre $0$ y $10$ V y su valor medio es $5$ V, la componente alterna oscila entre $0 - 5 = -5$ V y $10 - 5 = +5$ V. Esto produce una \textbf{señal cuadrada simétrica} centrada en cero con amplitud $5$ V y el mismo período $T_0 = 2$ ms. Se la reconoce como una señal cuadrada con $D=0{,}5$ recentrada, de amplitud $5$ V.
+		
+		La Figura~\ref{fig:ejer13} muestra la señal original, su valor medio y la componente alterna.
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer13/fig_ejer13}
+			\caption{Descomposición DC/AC de la señal cuadrada. (Arriba)~Señal original $x(t)$ con $\bar{x}=5$ V marcado en línea punteada. (Centro)~Componente alterna $x_\mathrm{ac}(t)$. (Abajo)~DC constante.}
+			\label{fig:ejer13}
+		\end{figure}
+		
+		\item \textbf{Verificación de la relación de potencias}
+		
+		La potencia total de la señal cuadrada es:
+		\[
+		P_x = A^2\cdot D = 10^2\cdot 0{,}5 = 50
+		\]
+		
+		La potencia de la componente DC es el cuadrado del valor medio:
+		\[
+		(\bar{x})^2 = 5^2 = 25
+		\]
+		
+		La potencia de la componente alterna (cuadrada simétrica de amplitud $5$ V con $D=0{,}5$, donde está encendida mitad del tiempo en $+5$ y mitad en $-5$):
+		\[
+		P_\mathrm{ac} = \frac{1}{T_0}\int_0^{T_0} x_\mathrm{ac}^2(t)\,dt = \frac{1}{T_0}\int_0^{T_0} 5^2\,dt = 25
+		\]
+		Aquí $x_\mathrm{ac}^2(t) = 25$ para todo $t$ (ya que siempre vale $\pm 5$).
+		
+		Verificación:
+		\[
+		P_x = (\bar{x})^2 + P_\mathrm{ac} = 25 + 25 = 50\quad \checkmark
+		\]
+		
+		La igualdad se cumple porque la componente cruzada $2\bar{x}\cdot x_\mathrm{ac}(t)$ promedia a cero sobre un período (ya que el valor medio de $x_\mathrm{ac}$ es cero por construcción).
+	\end{enumerate}
+
+	% ***********************************************
+	% 					Ejercicio 9
+	% ***********************************************
+	\section*{Ejercicio 9: Graficación de señales mediante escalones}
+	
+	Para graficar estas señales compuestas, debemos recordar la definición geométrica de las dos funciones de activación más importantes (Sección 3.3.3 del apunte teórico):
+	\begin{itemize}
+		\item \textbf{El escalón unitario $u(t)$:} se enciende tomando valor $1$ cuando su argumento es positivo o nulo, y vale $0$ cuando es negativo. Si tenemos $u(t-t_0)$, la activación salta a $1$ justo en el instante temporal $t=t_0$.
+		\item \textbf{La rampa unitaria $r(t) = t \cdot u(t)$:} comienza a crecer con una pendiente de $1$ a partir de $t=0$, siendo $0$ para todo tiempo anterior. Notar que la expresión $t \cdot u(t)$ es directamente la definición matemática formal que recorta una recta normal ($t$) haciéndola nula para el semieje negativo.
+	\end{itemize}
+
+	Al sumar o restar estas funciones desplazadas en el tiempo, procedemos evaluando el efecto acumulado tramo por tramo temporal. Al llegar a cada punto de activación de un escalón o rampa, nuestra gráfica sufrirá un salto aditivo en su nivel (si sumamos un escalón), un incremento progresivo en su pendiente (si sumamos una rampa $t \cdot u(t)$), o cortará funcionalmente un tramo si se agrupan multiplicándose entre sí.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{$x_1(t)=2u(t)+u(t-1)-3u(t-4)$}
+		
+		Analizamos gráficamente de izquierda a derecha (desde $t \to -\infty$), avanzando a medida que los escalones logran activar su encendido interior:
+		\begin{itemize}
+		    \item Para $t<0$: Todos los argumentos de los escalones son negativos. La señal es totalmente $0$.
+		    \item En $t=0$: El primer término $2u(t)$ se activa. La señal salta abruptamente aportando un nivel constante de $2$.
+		    \item En $t=1$: El segundo término $u(t-1)$ se enciende, aportando una constante de $1$. El nivel total sube y se asienta en $2+1 = 3$.
+		    \item En $t=4$: El tercer término $-3u(t-4)$ se enciende, restando bruscamente una constante de $3$. El nivel recae instantáneamente a $3 - 3 = 0$.
+		\end{itemize}
+		El resultado gráficamente es una función escalera discontinua. La Figura~\ref{fig:ejer1a_sum} desglosa cada componente por separado antes de la suma final.
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1a_sum/fig_ejer1a_sum}
+			\caption{Componentes de $x_1(t)$: cada escalón individual y la señal resultante (en negro).}
+			\label{fig:ejer1a_sum}
+		\end{figure}
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1a/fig_ejer1a}
+			\caption{Gráfica temporal de $x_1(t)$.}
+			\label{fig:ejer1a}
+		\end{figure}
+
+		\item \textbf{$x_2(t)=tu(t)-(t-1)u(t-1)-2u(t-3)$}
+		
+        Aquí observamos términos cruzados proporcionales a $t$. Es útil advertir que $t \cdot u(t)$ conforma una recta analítica enventanada que inicia en $t=0$. Adicionalmente $(t-1) \cdot u(t-1)$ es otra rampa estándar geométrica retrasada a $t=1$. El último término es un escalón convencional retrasado a $t=3$. Reconstruyendo por tramos:
+		\begin{itemize}
+		    \item Para $t<0$: Todo apagado, $x_2(t)=0$.
+		    \item En $t=0$: Se enciende la rampa $tu(t)$. La señal empieza a subir con pendiente $m=1$.
+		    \item En $t=1$: Se enciende la rampa negativa $-(t-1)u(t-1)$ sumando una pendiente parcial $m=-1$. La pendiente total resultante es $1 - 1 = 0$, por lo que a partir de aquí la función queda nivelada horizontalmente constante en el valor alcanzado, $x_2(1)=1$.
+		    \item En $t=3$: Se enciende el escalón negativo $-2u(t-3)$. Desde un nivel constante de $1$, descontamos un salto de $2$, por lo que la señal salta a un nivel de $-1$ manteniéndose constante indefinidamente.
+		\end{itemize}
+		
+		La Figura~\ref{fig:ejer1b_sum} muestra cómo cada función contribuye en su propio panel antes de superponerse.
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1b_sum/fig_ejer1b_sum}
+			\caption{Componentes de $x_2(t)$: la rampa $tu(t)$, la rampa retardada $-(t-1)u(t-1)$, el escalón $-2u(t-3)$, y la señal resultante.}
+			\label{fig:ejer1b_sum}
+		\end{figure}
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1b/fig_ejer1b}
+			\caption{Gráfica temporal de $x_2(t)$.}
+			\label{fig:ejer1b}
+		\end{figure}
+
+		\item \textbf{$x_3(t)=2u(t)-tu(t)+(t-2)u(t-2)$}
+		
+		Esta señal mezcla escalones con rampas:
+		\begin{itemize}
+		    \item Para $t<0$: Todo apagado, $0$.
+		    \item En $t=0$: Se activa simultáneamente un salto vertical $2u(t)$ y una rampa negativa $-tu(t)$ de pendiente $m=-1$. Empezando desde $2$, la gráfica cae en recta inclinada.
+		    \item En $t=2$: Por prolongación de la recta observamos que $\left. x_3(t) \right|_{t=2} = 2 - 2 = 0$. Aquí justo se activa la rampa compensatoria de compensación positiva $m=+1$ otorgada por $(t-2)u(t-2)$. Al sumarla, las pendientes se anulan ($-1+1=0$). La señal permanecerá estancada en cero para el resto de los tiempos.
+		\end{itemize}
+        Por tanto, obtenemos un perfil de cuña triangular. La Figura~\ref{fig:ejer1c_sum} permite ver cómo la rampa negativa y la de compensación se cancelan exactamente en $t=2$.
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1c_sum/fig_ejer1c_sum}
+			\caption{Componentes de $x_3(t)$: el escalón $2u(t)$, la rampa negativa $-tu(t)$, la rampa $+(t-2)u(t-2)$, y la señal resultante.}
+			\label{fig:ejer1c_sum}
+		\end{figure}
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1c/fig_ejer1c}
+			\caption{Gráfica temporal de $x_3(t)$.}
+			\label{fig:ejer1c}
+		\end{figure}
+
+		\item \textbf{$x_4(t)=u(t)u(2-t)$}
+		
+        Aquí interactuamos con una multiplicación pura. Para que el producto general logre un valor igual a $1$, ambos escalones deberán encontrarse en estado simultáneo afirmativo:
+		\begin{itemize}
+		    \item $u(t)$ requiere para su encendido estar en $t \ge 0$.
+		    \item $u(2-t)$ responde al caso de un escalón temporalmente inverso que evalúa afirmativamente si $2-t \ge 0 \Rightarrow t \le 2$.
+		\end{itemize}
+        Las condiciones se solapan simultáneas unívocamente donde ambas se refrendan, es decir, el intervalo $0 \le t \le 2$. Fuera de esa delgada ventana temporal, alguno de los escalones valdrá cero aniquilando el producto perimetral totalmente. Este procedimiento es la síntesis estandarizada requerida para construir un pulso base limitativo (Sección 3.4.1 de la bibliografía de referencia).
+		
+		La Figura~\ref{fig:ejer1d_sum} muestra los dos escalones factores y su producto, evidenciando la "intersección lógica" de sus soportes.
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1d_sum/fig_ejer1d_sum}
+			\caption{Factores de $x_4(t) = u(t)\cdot u(2-t)$: el escalón causal $u(t)$, el escalón inverso $u(2-t)$, y el pulso resultante.}
+			\label{fig:ejer1d_sum}
+		\end{figure}
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1d/fig_ejer1d}
+			\caption{Gráfica del pulso $x_4(t)$.}
+			\label{fig:ejer1d}
+		\end{figure}
+
+		\item \textbf{$x_5(t)=tu(t)u(1-t)$}
+		
+        Sabiendo que el producto de los dos escalones $u(t)u(1-t)$ forma intrínsicamente una ventana encendida exclusivamente dentro de los dominios $0 \le t \le 1$, la subsiguiente multiplicación cruzada de la misma con el parámetro real directo $t$, induce a que estemos "enventanando" puramente el único tramo pertinente del trazado rectilíneo lineal para la gráfica. Al cruzar la frontera del intervalo permitido causal, la gráfica se anulará abruptamente regresando a cero.
+		
+		La Figura~\ref{fig:ejer1e_sum} ilustra los tres factores: la recta $t$, la ventana izquierda $u(t)$ y la ventana derecha $u(1-t)$, cuyo producto recorta la rampa exactamente al intervalo $[0,1]$.
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1e_sum/fig_ejer1e_sum}
+			\caption{Factores de $x_5(t) = t\cdot u(t)\cdot u(1-t)$: la recta $t$, el escalón $u(t)$, la ventana $u(1-t)$, y la señal resultante.}
+			\label{fig:ejer1e_sum}
+		\end{figure}
+
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer1e/fig_ejer1e}
+			\caption{Gráfica temporal de $x_5(t)$.}
+			\label{fig:ejer1e}
+		\end{figure}
+
+	\end{enumerate}
+
+	% ***********************************************
+	% 					Ejercicio 10
+	% ***********************************************
+	\section*{Ejercicio 10: Expresión matemática a partir de figuras}
+	
+	Para realizar el proceso inverso (pasar de un gráfico a su expresión analítica), existen \textbf{dos enfoques equivalentes} que resultan sumamente útiles para distintas herramientas analíticas que veremos más adelante en la asignatura:
+	
+	\begin{enumerate}
+	    \item \textbf{Método de suma por barrido:} Consiste en barrer la figura temporal de izquierda a derecha registrando cada salto vertical como la aparición de un escalón $H \cdot u(t-t_0)$ y cada cambio de pendiente como la adición de una recta enventanada $\Delta m \cdot (t-t_0)u(t-t_0)$.
+	    \item \textbf{Método de enventanado:} Seccionamos el tiempo en intervalos. En cada intervalo identificamos la función base (una constante, una recta $t$, etc.) y la multiplicamos por una ``ventana'' lógica que vale $1$ en ese intervalo y $0$ fuera de él. Una ventana típica entre $t_a$ y $t_b$ se construye restando escalones: $[u(t-t_a) - u(t-t_b)]$ o bien multiplicándolos espacialmente: $u(t-t_a)u(t_b-t)$.
+	\end{enumerate}
+
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Señal rectangular $x_1(t)$}:
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer2a/fig_ejer2a}
+			\caption{Gráfica de referencia de $x_1(t)$.}
+		\end{figure}
+
+		\textbf{Método 1: Suma por barrido}
+		\begin{itemize}
+		    \item Venimos con nivel $0$. En $t=-3$ se percibe un salto ascendente brusco de $5$ unidades. Sumamos: $\textbf{+ 5u(t+3)}$.
+		    \item Entre $t=-3$ y $t=3$ la señal se mantiene constante. Su pendiente no sufre alteraciones.
+		    \item En $t=3$ el nivel cae de golpe desde $5$ a $0$ (un recorte de $-5$). Sumamos este escalón negativo: $\textbf{- 5u(t-3)}$.
+		\end{itemize}
+		Ecuación resultante:
+		\[ x_1(t) = 5u(t+3) - 5u(t-3) \]
+        
+        \textbf{Método 2: Enventanado temporal} \\
+        Vemos claramente que la función es simplemente una constante de valor $5$, pero que existe únicamente dentro de la ventana de tiempo comprendida entre $t \in (-3, 3)$. Multiplicamos la base $5$ por la ventana correspondiente:
+        \[ x_1(t) = 5 \cdot [u(t+3) - u(t-3)] \]
+        Alternativamente, expresado como producto de escalones opuestos:
+        \[ x_1(t) = 5 \cdot u(t+3)u(3-t) \]
+        \textit{Nota:} Ambas formas describen a la perfección el pulso estándar $5 p_6(t)$.
+
+		\item \textbf{Señal mixta $x_2(t)$}:
+		
+		\begin{figure}[H]
+			\centering
+			\includestandalone{figures/fig_ejer2b/fig_ejer2b}
+			\caption{Gráfica de referencia de $x_2(t)$.}
+			\label{fig:ejer2b_orig}
+		\end{figure}
+
+		\textbf{Método 1: Suma por barrido}
+		\begin{itemize}
+		    \item Arrancamos en nulo ($0$). En $t=-5$ ocurre un salto inmediato escalonado hasta $3$. Sumamos: $\textbf{+ 3u(t+5)}$.
+		    \item De $t=-5$ a $t=-2$ el nivel sigue plano ($m_{\text{vieja}}=0$).
+		    \item En $t=-2$ ocurren \textit{dos fenómenos superpuestos}:
+		    \begin{enumerate}
+		        \item La gráfica cae en vertical desde el nivel $3$ hasta $-2$. Esto representa un escalón de retroceso de $5$ unidades. Aporte: $\textbf{- 5u(t+2)}$.
+		        \item Simultáneamente empieza una subida recta. De $(-2,-2)$ a $(5,5)$, calculamos una inclinación de $m_{\text{nueva}} = \frac{5 - (-2)}{5 - (-2)} = +1$. El incremento es $\Delta m = +1$. Aporte: $\textbf{+ 1(t+2)u(t+2)}$.
+		    \end{enumerate}
+		    \item En $t=5$ sucede también otro doble quiebre que sella el comportamiento para estabilizarse en una constante de valor $1$:
+		    \begin{enumerate}
+		        \item Salto perpendicular de descenso desde $5$ hasta anidar en $1$. Implica restar $4$. Aporte: $\textbf{- 4u(t-5)}$.
+		        \item Para lograr el trazo final horizontal ($m_{\text{nueva}}=0$), debemos cancelar la inclinación continua que arrastrábamos ($m_{\text{vieja}}=1$). Introducimos una recta opuesta $\Delta m = -1$. Aporte: $\textbf{- 1(t-5)u(t-5)}$.
+		    \end{enumerate}
+		\end{itemize}
+		Integramos resolviendo la sumatoria elemental:
+		\[ x_2(t) = 3u(t+5) - 5u(t+2) + (t+2)u(t+2) - 4u(t-5) - (t-5)u(t-5) \]
+
+        \textbf{Método 2: Enventanado temporal} \\
+        La idea central del enventanado es identificar en primer lugar las \textbf{ventanas de soporte}, es decir los intervalos donde la señal existe con un comportamiento particular. Cada ventana es una señal lógica que vale $1$ dentro del intervalo y $0$ fuera. Luego multiplicamos cada ventana por la función base que describe la forma de la señal en ese intervalo.
+
+        La Figura~\ref{fig:ejer2b_env} muestra este proceso de manera visual. La fila superior contiene las tres ventanas $w_1$, $w_2$ y $w_3$, coloreadas de manera diferenciada. La fila inferior muestra el resultado de multiplicar cada ventana por su función base $f_i(t)$, es decir el tramo de señal que aporta al total.
+
+        \begin{figure}[H]
+            \centering
+            \includestandalone{figures/fig_ejer2b_env/fig_ejer2b_env}
+            \caption{Descomposición de $x_2(t)$ por el método de enventanado. \textbf{Fila superior:} ventanas temporales $w_i(t)$ que definen el soporte de cada tramo. \textbf{Fila inferior:} función base $f_i(t)$ enventanada, es decir el aporte parcial de cada tramo a la señal total.}
+            \label{fig:ejer2b_env}
+        \end{figure}
+
+        Troceamos la señal completa en tres secciones independientes:
+        \begin{itemize}
+            \item \textbf{Tramo 1 --- {\color{utnblue}ventana $w_1$} ($-5 < t < -2$):} La función base es la constante $f_1(t)=3$. La ventana es:
+            \[ w_1(t) = u(t+5) - u(t+2) \]
+            Este pulso ``recorta'' la constante $3$ del infinito y la deja visible solo en $[-5,-2]$. El aporte parcial es $3\cdot w_1(t)$.
+
+            \item \textbf{Tramo 2 --- {\color{utnred}ventana $w_2$} ($-2 < t < 5$):} La función base es la recta $f_2(t)=t$ (que en $t=-2$ vale $-2$ y en $t=5$ vale $5$, coincidiendo exactamente con la señal). La ventana es:
+            \[ w_2(t) = u(t+2) - u(t-5) \]
+            El aporte parcial es $t\cdot w_2(t)$.
+
+            \item \textbf{Tramo 3 --- {\color{utngreen}ventana $w_3$} ($t > 5$):} La función base es la constante $f_3(t)=1$. La ventana no tiene cierre por la derecha, se activa con un único escalón:
+            \[ w_3(t) = u(t-5) \]
+            El aporte parcial es $1\cdot u(t-5)$.
+        \end{itemize}
+        Sumando los tres tramos enventanados obtenemos la expresión completa:
+        \[ x_2(t) = 3 \underbrace{[u(t+5) - u(t+2)]}_{w_1} + t \underbrace{[u(t+2) - u(t-5)]}_{w_2} + 1 \cdot \underbrace{u(t-5)}_{w_3} \]
+        
+        \textit{Demostración de equivalencia matemática:} \\
+        Si distribuimos y reordenamos el resultado del Método 2:
+        \[ 3u(t+5) - 3u(t+2) + t \cdot u(t+2) - t \cdot u(t-5) + u(t-5) \]
+        Agrupando por factor común temporal:
+        \[ 3u(t+5) + (t-3)u(t+2) + (1-t)u(t-5) \]
+        Como $t-3 = (t+2) - 5$ y $1-t = -(t-5) - 4$, tenemos:
+        \[ 3u(t+5) + \Big[(t+2)u(t+2) - 5u(t+2)\Big] + \Big[-(t-5)u(t-5) - 4u(t-5)\Big] \]
+        Llegando de manera idéntica al resultado forjado por el Método 1 de barrido.
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 11
+	% ***********************************************
+	\section*{Ejercicio 11: Relación íntegro-diferencial}
+	
+	Dada la señal $x(t) = r(t+1) - 2r(t) + r(t-1)$, donde $r(t) = tu(t)$ es la rampa unitaria.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Gráfica de $x(t)$}
+		
+		Cada término es una rampa desplazada: $r(t+1)=(t+1)u(t+1)$ arranca en $t=-1$ con pendiente $1$; $-2r(t) = -2tu(t)$ arranca en $t=0$ con pendiente $-2$; $r(t-1)=(t-1)u(t-1)$ arranca en $t=1$ con pendiente $1$. Evaluando la pendiente acumulada tramo por tramo:
+		\begin{itemize}
+		    \item $t<-1$: todo apagado, $x(t)=0$.
+		    \item $-1\leq t<0$: solo $r(t+1)$ activo. Pendiente total: $+1$, partiendo de $0$. Valor: $x(t) = t+1$.
+		    \item $0\leq t<1$: se enciende $-2r(t)$. Pendiente total: $1+(-2)=-1$. En $t=0$: $x(0)=1$. Valor: $x(t) = -t+1$.
+		    \item $t\geq 1$: se enciende $r(t-1)$. Pendiente total: $-1+1=0$. En $t=1$: $x(1)=0$. La señal permanece en $0$.
+		\end{itemize}
+		
+		El resultado es un pulso triangular unitario centrado en $t=0$, con soporte $[-1,\, 1]$ y pico $x(0)=1$.
+		
+		\item \textbf{Primera derivada $x'(t)$}
+		
+		Derivando $x(t) = r(t+1) - 2r(t) + r(t-1)$ y usando la relación $r'(t) = u(t)$:
+		\[
+		x'(t) = u(t+1) - 2u(t) + u(t-1)
+		\]
+		Evaluando por tramos:
+		\begin{itemize}
+		    \item $t<-1$: $x'(t)=0$.
+		    \item $-1\leq t<0$: solo $u(t+1)=1$. $x'(t)=+1$.
+		    \item $0\leq t<1$: $u(t+1)=1$, $u(t)=1$. $x'(t)=1-2=-1$.
+		    \item $t\geq 1$: todos activos. $x'(t)=1-2+1=0$.
+		\end{itemize}
+		
+		\item \textbf{Segunda derivada $x''(t)$}
+		
+		Derivando nuevamente y usando $u'(t) = \delta(t)$:
+		\[
+		x''(t) = \delta(t+1) - 2\delta(t) + \delta(t-1)
+		\]
+		
+		El resultado es un tren de tres impulsos: uno de área $+1$ en $t=-1$, uno de área $-2$ en $t=0$, y uno de área $+1$ en $t=1$.
+	\end{enumerate}
+	
+	La Figura~\ref{fig:ejer7} muestra los tres paneles: la señal triangular, su derivada en forma de escalones, y la segunda derivada en forma de impulsos.
+	
+	\begin{figure}[H]
+		\centering
+		\includestandalone{figures/fig_ejer7/fig_ejer7}
+		\caption{Relación íntegro-diferencial. (Arriba)~$x(t)$: pulso triangular. (Centro)~$x'(t)$: escalones. (Abajo)~$x''(t)$: impulsos de Dirac.}
+		\label{fig:ejer7}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 12
+	% ***********************************************
+	\section*{Ejercicio 12: Propiedad de producto del impulso}
+	
+	La propiedad de producto establece que $x(t)\delta(t-t_0) = x(t_0)\delta(t-t_0)$: al multiplicar una señal por un impulso, la señal queda ``congelada'' en el valor que toma en la ubicación del impulso.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $t^2\,\delta(t-3) = 3^2 \cdot \delta(t-3) = \mathbf{9\,\delta(t-3)}$
+		
+		\item $\cos\!\left(\frac{\pi}{2}t\right)\delta(t-1) = \cos\!\left(\frac{\pi}{2}\cdot 1\right)\delta(t-1) = \cos\!\left(\frac{\pi}{2}\right)\delta(t-1) = \mathbf{0}$
+		
+		El resultado es idénticamente nulo: el coseno se anula exactamente en la ubicación del impulso, por lo que el impulso queda ponderado por cero.
+		
+		\item $e^{-2t}\,\delta(t) = e^{-2\cdot 0}\,\delta(t) = e^0 \cdot \delta(t) = \mathbf{\delta(t)}$
+		
+		El impulso está en el origen y $e^0=1$, por lo que la exponencial no altera el impulso.
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 13
+	% ***********************************************
+	\section*{Ejercicio 13: Propiedad de muestreo del impulso}
+	
+	La propiedad de muestreo establece que $\int_{-\infty}^{\infty} x(t)\,\delta(t-t_0)\,dt = x(t_0)$, siempre y cuando $t_0$ esté dentro del intervalo de integración. Si el impulso cae fuera de los límites, la integral vale $0$.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $\displaystyle\int_{-\infty}^{\infty} (t^2-1)\,\delta(t-2)\,dt$
+		
+		El impulso está en $t_0=2$. Se evalúa $x(t)=t^2-1$ en $t=2$:
+		\[
+		\int_{-\infty}^{\infty} (t^2-1)\,\delta(t-2)\,dt = 2^2 - 1 = \mathbf{3}
+		\]
+		
+		\item $\displaystyle\int_{0}^{5} e^{-2t}\,\delta(t-3)\,dt$
+		
+		El impulso está en $t_0=3$. Como $3 \in [0,5]$, cae dentro del intervalo:
+		\[
+		\int_{0}^{5} e^{-2t}\,\delta(t-3)\,dt = e^{-2\cdot 3} = \mathbf{e^{-6}}
+		\]
+		
+		\item $\displaystyle\int_{-2}^{2} \sin(10t)\,\delta(t-3)\,dt$
+		
+		El impulso está en $t_0=3$. Pero $3 \notin [-2,2]$: el impulso cae \textbf{fuera} del intervalo de integración.
+		\[
+		\int_{-2}^{2} \sin(10t)\,\delta(t-3)\,dt = \mathbf{0}
+		\]
+		
+		\item $\displaystyle\int_{-\infty}^{\infty} \delta(t+4)\,dt$
+		
+		El integrando es simplemente $\delta(t+4)$ multiplicado por $x(t)=1$. Por definición, el área de todo impulso es unitaria:
+		\[
+		\int_{-\infty}^{\infty} \delta(t+4)\,dt = \mathbf{1}
+		\]
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 14
+	% ***********************************************
+	\section*{Ejercicio 14: Muestreo con tren de impulsos}
+	
+	Dada $x(t) = \cos(\pi t)$ y el tren de impulsos causal $\delta^1(t) = \sum_{k=0}^{\infty}\delta(t-k)$ (con $T_s=1$).
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Expresión analítica de $x_m(t)$}
+		
+		Al multiplicar $x(t)$ por el tren de impulsos y aplicar la propiedad de producto en cada impulso:
+		\begin{align*}
+		x_m(t) &= x(t)\cdot\delta^1(t) = \cos(\pi t)\cdot \sum_{k=0}^{\infty}\delta(t-k) \\
+		       &= \sum_{k=0}^{\infty} \cos(\pi k)\,\delta(t-k)
+		\end{align*}
+		
+		Evaluamos $\cos(\pi k)$ para cada entero no negativo: $\cos(0)=1$, $\cos(\pi)=-1$, $\cos(2\pi)=1$, $\cos(3\pi)=-1$, etc. En general $\cos(\pi k) = (-1)^k$. Por lo tanto:
+		\[
+		x_m(t) = \sum_{k=0}^{\infty} (-1)^k\,\delta(t-k)
+		\]
+		
+		\item \textbf{Gráfica en $t\in[-1,3]$}
+		
+		Dentro de ese intervalo solo contribuyen los impulsos del tren para $k=0,1,2,3$ (ya que el tren es causal, no hay impulsos para $k<0$):
+		\begin{itemize}
+		    \item $k=0$: impulso de peso $(-1)^0 = +1$ en $t=0$
+		    \item $k=1$: impulso de peso $(-1)^1 = -1$ en $t=1$
+		    \item $k=2$: impulso de peso $(-1)^2 = +1$ en $t=2$
+		    \item $k=3$: impulso de peso $(-1)^3 = -1$ en $t=3$
+		\end{itemize}
+		
+		La gráfica alterna impulsos positivos y negativos de amplitud unitaria en cada entero, como se muestra en la Figura~\ref{fig:ejer10}.
+	\end{enumerate}
+	
+	\begin{figure}[H]
+		\centering
+		\includestandalone{figures/fig_ejer10/fig_ejer10}
+		\caption{Señal muestreada $x_m(t)$: impulsos ponderados por $\cos(\pi k) = (-1)^k$. El coseno base $\cos(\pi t)$ se muestra en gris punteado.}
+		\label{fig:ejer10}
+	\end{figure}
+
+	% ***********************************************
+	% 					Ejercicio 15
+	% ***********************************************
+	\section*{Ejercicio 15: Catálogo de Señales y Enventanado}
+	
+	El catálogo del Capítulo 3 del libro describe señales estandarizadas. Multiplicar analíticamente por una función escalón o pulso funciona siempre como \textbf{una ventana de soporte de existencia}: recorta dominios temporales e indica explícitamente el intervalo donde la onda es no nula.
+		
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item \textbf{Señal de pulso desplazado: $x_1(t) = 2 p_{4}(t - 2)$}
+			
+			Analizando según la definición del pulso rectangular $p_\tau(t-t_0)$:
+			\begin{itemize}
+			    \item Ancho temporal total: $\tau=4$.
+			    \item Desplazamiento del centro: $t_0=2$.
+			    \item Amplitud de ganancia: $2$.
+			    \item \textbf{Soporte temporal:} Puesto que su centro es $2$ y su ancho es de $4$ unidades (2 hacia la izquierda y 2 hacia la derecha del centro), la señal existe exclusivamente entre $2 - 2 = 0$ y $2 + 2 = 4$. El soporte explícito es $\mathbf{t \in [0, 4]}$. Al estar estrictamente delimitado matemáticamente tanto por la izquierda como por la derecha, se clasifica simultáneamente como \textbf{señal derecha} y \textbf{señal izquierda}. Adicionalmente, puesto que su valor es nulo para todo $t < 0$ (el origen de soporte se acota en $T_1 = 0 \ge 0$), se ajusta rigurosamente a la definición general de señal \textbf{causal}.
+			\end{itemize}
+	
+			\begin{figure}[H]
+				\centering
+				\includestandalone{figures/fig_ejer3a/fig_ejer3a}
+				\caption{Gráfica del pulso rectangular $x_1(t)$.}
+			\end{figure}
+	
+			\item \textbf{Señal trigonométrica enventanada: $x_2(t) = \cos(\pi t) \cdot p_2(t)$}
+			
+			Ejemplo de multiplicación causal de soporte:
+			\begin{itemize}
+			    \item La forma base es el coseno $\cos(\pi t)$, cuya frecuencia angular es $\omega = \pi$. Su período fundamental es $T = \frac{2\pi}{\omega} = 2$.
+			    \item La función que recorta (ventana) es un pulso perimetral $p_2(t)$, centrado en el origen $t_0=0$ y con un ancho total $\tau=2$.
+			    \item \textbf{Soporte temporal:} La onda cosenoidal base solo se graficará donde el pulso vale $1$. Estando el pulso en el origen y con largo 2, su soporte delimitador abarca explícitamente $\mathbf{t \in [-1, 1]}$. Tal particularidad nos exhibe una señal cuyo desarrollo descansa entre dos límites definidos, marcándola analíticamente de forma simultánea como \textbf{señal derecha} y \textbf{señal izquierda}. Dado que los eventos toman valores no nulos en la zona de tiempos negativos ($T_1 = -1 < 0$), se clasifica automáticamente como \textbf{no causal}.
+			\end{itemize}
+			Como el período del coseno es $2$, esta ventana aísla exactamente \textit{un único ciclo completo} de la función oscilatoria.
+	
+			\begin{figure}[H]
+				\centering
+				\includestandalone{figures/fig_ejer3b/fig_ejer3b}
+				\caption{Gráfica de la onda de coseno base enventanada $x_2(t)$.}
+			\end{figure}
+	
+			\item \textbf{Señal transitoria exponencial: $x_3(t) = e^{-t/2} \cdot u(t)$}
+			
+			\begin{itemize}
+			    \item Tenemos operando como base natural la señal exponencial decreciente $e^{-t/2}$, la cual sin restricciones decaería monótonamente en todo el dominio $(-\infty, \infty)$.
+			    \item No obstante, al multiplicarse por el escalón unitario $u(t)$, la porción temporal de los tiempos negativos queda completamente anulada (multiplicada por cero).
+			    \item \textbf{Soporte temporal:} El factor envolvente se activa en cero. El soporte es el semieje positivo $\mathbf{t \in [0, \infty)}$. Al tener un inicio temporal finito pero extenderse indefinidamente por el margen positivo, por definición se trata de una señal \textbf{derecha}. Asimismo, al transcurrir la fase inicial precisamente en su límite transitorio limítrofe $T_1 = 0 \ge 0$, corresponde denominarla por completitud como señal \textbf{causal}.
+			\end{itemize}
+	
+			\begin{figure}[H]
+				\centering
+				\includestandalone{figures/fig_ejer3c/fig_ejer3c}
+				\caption{Gráfica de exponencial amortiguada causal $x_3(t)$.}
+			\end{figure}
+	
+			\item \textbf{Equivalencia analítica del pulso rectangular:}
+			
+			Se pide corroborar directamente la conformación del pulso rectangular $p_\tau(t)$ en base al producto de dos escalones temporales:
+			\[ p_\tau(t) = u\left(t + \frac{\tau}{2}\right) \cdot u\left(\frac{\tau}{2} - t\right) \]
+			Demostramos analizando el producto lógico de ambos factores por zonas de activación:
+			\begin{itemize}
+			    \item \textbf{El término causal desplazado $u(t + \tau/2)$:} es una función escalón convencional activada prematuramente. Vale $1$ para todo $t \ge -\tau/2$ y se encuentra apagada (vale $0$) hacia el pasado.
+			    \item \textbf{El término reflejado opuesto $u(\tau/2 - t)$:} por la variable de signo negativo, es una variante invertida. Su dictamen establece que se encuentra encendido (vale $1$) para todo el recorrido causal pasado hasta el límite $t \le \tau/2$, luego de lo cual se apaga a nulo.
+			    \item \textbf{El Enventanado Multiplicativo:} Al ejecutar el producto aritmético de sus señales base, la respuesta será $1 \cdot 1 = 1$ únicamente en la franja temporal central donde de manera síncrona \textit{ambos} subsistan encendidos de forma mutua. Esta intersección de verdades corresponde de modo exacto al margen $-\tau/2 \le t \le \tau/2$. En cualquier porción foránea (a la izquierda lejana o derecha lejana), al poseer la certeza de que infaliblemente por lo menos un escalón se apaga a cero, anula inexcusablemente el término productivo.
+			\end{itemize}
+			El efecto multiplicador de la operatoria nos engendra la compuerta analítica deseada que comprueba y conforma fidedignamente al pulso paramétrico $p_\tau(t)$.
+	
+			\begin{figure}[H]
+				\centering
+				\includestandalone{figures/fig_ejer3d/fig_ejer3d}
+				\caption{Conformación sintética del pulso a partir del producto de escalones opuestos.}
+			\end{figure}
+	\end{enumerate}
+
+\end{document}

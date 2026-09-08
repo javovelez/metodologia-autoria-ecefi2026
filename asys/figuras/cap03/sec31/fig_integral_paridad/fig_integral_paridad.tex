@@ -1,0 +1,85 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usepgfplotslibrary{fillbetween}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    panel/.style={
+        width=6.5cm, height=5cm,
+        axis lines=center,
+        axis line style={->},
+        xlabel={$t$}, xlabel style={right},
+        ylabel style={above},
+        xmin=-1.5, xmax=1.8,
+        ymin=-1.4, ymax=1.5,
+        xtick={-1, 1},
+        xticklabels={$-T$, $T$},
+        ytick=\empty,
+        ticklabel style={font=\footnotesize},
+        clip=false,
+        axis on top=true,
+    }
+}
+
+% ---------------------------------------------------------------
+% Panel (a): señal impar  x_i(t) = sin(πt),  T = 1
+%   sin(πt) < 0  para  t ∈ (-1, 0)  →  área roja
+%   sin(πt) > 0  para  t ∈ (0, 1)   →  área azul
+% ---------------------------------------------------------------
+\begin{axis}[panel, name=panelA, ylabel={$x_i(t)$}]
+
+    % Área negativa
+    \addplot[name path=sneg, domain=-1:0, samples=60, draw=none] {sin(deg(pi*x))};
+    \addplot[name path=z1,   domain=-1:0, draw=none] {0};
+    \addplot[fill=red!30, fill opacity=0.75, draw=none] fill between[of=sneg and z1];
+
+    % Área positiva
+    \addplot[name path=spos, domain=0:1, samples=60, draw=none] {sin(deg(pi*x))};
+    \addplot[name path=z2,   domain=0:1, draw=none] {0};
+    \addplot[fill=utnblue!30, fill opacity=0.75, draw=none] fill between[of=spos and z2];
+
+    % Curva completa
+    \addplot[utnblue, thick, domain=-1:1, samples=100] {sin(deg(pi*x))};
+
+    % Etiquetas de área
+    \node[utnblue!80!black, font=\footnotesize] at (axis cs: 0.5,  0.5) {$+A$};
+    \node[red!80!black,     font=\footnotesize] at (axis cs:-0.5, -0.5) {$-A$};
+
+\end{axis}
+
+% ---------------------------------------------------------------
+% Panel (b): señal par  x_p(t) = cos(πt/2),  T = 1
+%   cos(πt/2) ≥ 0 en todo [-1, 1]; ambas mitades iguales
+% ---------------------------------------------------------------
+\begin{axis}[panel, name=panelB,
+    at={($(panelA.east)+(1.5cm,0)$)}, anchor=west,
+    ylabel={$x_p(t)$},
+    ymin=-0.3, ymax=1.5,
+]
+    % Mitad izquierda
+    \addplot[name path=cl, domain=-1:0, samples=60, draw=none] {cos(deg(pi*x/2))};
+    \addplot[name path=zl, domain=-1:0, draw=none] {0};
+    \addplot[fill=utnblue!30, fill opacity=0.75, draw=none] fill between[of=cl and zl];
+
+    % Mitad derecha
+    \addplot[name path=cr, domain=0:1, samples=60, draw=none] {cos(deg(pi*x/2))};
+    \addplot[name path=zr, domain=0:1, draw=none] {0};
+    \addplot[fill=utnblue!30, fill opacity=0.75, draw=none] fill between[of=cr and zr];
+
+    % Curva completa
+    \addplot[utnblue, thick, domain=-1:1, samples=100] {cos(deg(pi*x/2))};
+
+    % Etiquetas de área
+    \node[utnblue!80!black, font=\footnotesize] at (axis cs:-0.5, 0.38) {$A$};
+    \node[utnblue!80!black, font=\footnotesize] at (axis cs: 0.5, 0.38) {$A$};
+
+\end{axis}
+
+% Etiquetas (a) y (b)
+\node[anchor=north, yshift=-2mm] at (panelA.south) {\textbf{(a)}};
+\node[anchor=north, yshift=-2mm] at (panelB.south) {\textbf{(b)}};
+
+\end{tikzpicture}
+\end{document}

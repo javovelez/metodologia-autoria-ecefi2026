@@ -1,0 +1,1741 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{titling} 
+\usepackage{tasks} 
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage[mode=image]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, babel}
+
+\definecolor{utnblue}{RGB}{0, 51, 102}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+% Ajusta la separación entre el encabezado y el contenido
+\setlength{\headsep}{10pt}
+
+% Ajuste del título: 
+\setlength{\droptitle}{-0.5in} 
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large\bfseries}
+\posttitle{\par\end{center}\vspace{-1.5em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Resolución del Trabajo Práctico N$^\text{o}$1: Variable Compleja.}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Resolución del Trabajo Práctico N$^{\text o}$1: Variable Compleja}%
+}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+	
+	\label{sec:resolucion}
+
+	% ***********************************************
+	% 					Ejercicio 1
+	% ***********************************************
+	\section*{Ejercicio 1: Aritmética de complejos}
+	
+	Dados los números complejos:
+	\begin{align*}
+		z_1 &= 3-6j \\
+		z_2 &= 2+5j \\
+		z_3 &= -3+4j
+	\end{align*}
+	
+	Para resolver estos ejercicios, vamos a mostrar el paso a paso usando la forma rectangular (binómica) o la forma polar (exponencial), según cuál sea más fácil en cada caso. Como regla general, la suma y la resta se resuelven en forma rectangular. En cambio, para multiplicar, dividir y hacer potencias, la forma polar suele ser mucho más rápida y directa.
+
+    Primero, convertimos los tres números a su forma polar $z = r e^{j\theta}$. Usamos $r = \sqrt{x^2+y^2}$ para el módulo y $\theta = \arctan(y/x)$ para el ángulo. Es importante revisar en qué cuadrante está el número gráficamente para calcular bien el ángulo final:
+    \begin{itemize}
+        \item $z_1 = 3-6j \quad\rightarrow\quad r_1 = \sqrt{3^2+(-6)^2} = \sqrt{45} \approx 6.71$. Como $x$ es positivo e $y$ es negativo, el número está en el cuarto cuadrante. Su ángulo es $\theta_1 = \arctan(-6/3) \approx -1.11$ rad ($-63.43^\circ$). Nos queda: $z_1 \approx 6.71\, e^{-j1.11}$.
+        \item $z_2 = 2+5j \quad\rightarrow\quad r_2 = \sqrt{2^2+5^2} = \sqrt{29} \approx 5.39$. Este número tiene todo positivo, por lo que está en el primer cuadrante. El ángulo es $\theta_2 = \arctan(5/2) \approx 1.19$ rad ($68.20^\circ$). Nos queda: $z_2 \approx 5.39\, e^{j1.19}$.
+        \item $z_3 = -3+4j \quad\rightarrow\quad r_3 = \sqrt{(-3)^2+4^2} = 5$. Al tener $x$ negativa e $y$ positiva, el vector cae en el segundo cuadrante. A lo que nos da la calculadora le sumamos $\pi$: $\theta_3 = \arctan(4/-3) + \pi \approx -0.93 + 3.14 = 2.21$ rad ($126.87^\circ$). Nos queda: $z_3 = 5\, e^{j2.21}$.
+    \end{itemize}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Producto $z_1z_2$:}
+		
+		\textit{Usando forma rectangular:} Aplicamos la propiedad distributiva clásica:
+		\begin{align*}
+			z_1z_2 &= (3-6j)(2+5j) = 3(2) + 3(5j) - 6j(2) - 6j(5j) \\
+			&= 6 + 15j - 12j - 30j^2 = 6 + 3j - 30(-1) \\
+			&= \mathbf{36 + 3j}
+		\end{align*}
+		
+		\textit{Usando forma polar}: Multiplicar es muy simple, solo multiplicamos los módulos y sumamos los ángulos:
+		\begin{align*}
+			z_1z_2 &\approx (6.71 \cdot 5.39)\, e^{j(-1.11 + 1.19)} \approx \mathbf{36.12\, e^{j0.08}}
+		\end{align*}
+        (Si convertimos este resultado de vuelta operando $36.12 \cos(0.08)$ y $36.12 \sin(0.08)$, veremos que nos da nuevamente $36 + 3j$).
+		
+		Hacer la multiplicación en forma polar previene errores de arrastre y confusión de signos que suceden al manipular repetidamente a la unidad $j$.
+		
+		\item \textbf{Producto con el conjugado $z_1\bar{z_2}$:}
+		El conjugado simplemente cambia el signo de la parte imaginaria. En forma polar, esto significa cambiarle el signo al ángulo: $\bar{z_2} = 2-5j$, que en polar es $\bar{z_2} \approx 5.39\, e^{-j1.19}$.
+		
+        \textit{Usando forma rectangular:}
+		\begin{align*}
+			z_1\bar{z_2} &= (3-6j)(2-5j) = 6 - 15j - 12j + 30j^2 \\
+			&= 6 - 27j - 30 = \mathbf{-24 - 27j}
+		\end{align*}
+        
+        \textit{Usando forma polar:}
+        \begin{align*}
+			z_1\bar{z_2} &\approx (6.71 \cdot 5.39)\, e^{j(-1.11 - 1.19)} \approx \mathbf{36.12\, e^{-j2.30}}
+		\end{align*}
+		
+		\item \textbf{Inverso multiplicativo $z_1^{-1}$:}
+		
+		\textit{Usando forma rectangular:} Para quitar a $j$ del denominador multiplicamos numerador y denominador por el conjugado del divisor:
+		\begin{align*}
+			z_1^{-1} &= \dfrac{1}{3-6j} \cdot \dfrac{3+6j}{3+6j} = \dfrac{3+6j}{3^2+(-6)^2} = \dfrac{3+6j}{45} = \mathbf{\dfrac{1}{15} + j\dfrac{2}{15}}
+		\end{align*}
+		
+		\textit{Usando forma polar:} Para invertir en polar solo invertimos la magnitud del módulo y le cambiamos el signo al ángulo:
+		\begin{align*}
+			z_1^{-1} &= \dfrac{1}{6.71\, e^{-j1.11}} = \left(\dfrac{1}{6.71}\right)\, e^{j1.11} \approx \mathbf{0.15\, e^{j1.11}}
+		\end{align*}
+		
+		\item \textbf{Cociente $z_2 / z_3$:} 
+		
+        \textit{Usando forma rectangular:} Hacemos el mismo reemplazo del punto anterior, multiplicando por el conjugado del denominador:
+		\begin{align*}
+			\dfrac{z_2}{z_3} &= \dfrac{2+5j}{-3+4j} \cdot \dfrac{-3-4j}{-3-4j} = \dfrac{-6 - 8j - 15j - 20j^2}{(-3)^2+4^2} \\
+			&= \dfrac{-6 - 23j + 20}{25} = \mathbf{\dfrac{14}{25} - j\dfrac{23}{25}}
+		\end{align*}
+		
+        \textit{Usando forma polar:} Dividir es muy directo. Dividimos los números de los módulos y restamos mutuamente los ángulos:
+        \begin{align*}
+            \dfrac{z_2}{z_3} &\approx \left( \dfrac{5.39}{5} \right)\, e^{j(1.19 - 2.21)} \approx \mathbf{1.08\, e^{-j1.02}}
+        \end{align*}
+        
+		\item \textbf{Cuadrado de la suma $[z_1+z_3]^2$:}
+		
+        Acá conviene mezclar ambas formas. Empezamos con la suma usando rectangulares, que es como mejor se suman componentes:
+		\begin{align*}
+			z_1+z_3 &= (3-6j) + (-3+4j) = -2j
+		\end{align*}
+		Como $-2j$ está apoyado completamente en la parte negativa del eje imaginario, sabemos a simple vista que su ángulo vertical es $-\pi/2$ ($-90^\circ$) y que su módulo mide $2$. En polar es $2\, e^{-j\pi/2}$. Ahora aplicamos la potencia en formato polar: elevamos el módulo al cuadrado y multiplicamos el ángulo por 2:
+		\begin{align*}
+			[z_1+z_3]^2 &= (2\, e^{-j\pi/2})^2 = 4\, e^{-j\pi} = 4(-1) = \mathbf{-4}
+		\end{align*}
+		
+		\item \textbf{Cuadrado de la diferencia $[z_2 - z_3]^2$:}
+        
+        \textit{Usando forma rectangular:} Primero resolvemos la resta uniendo componentes en forma rectangular:
+		\begin{align*}
+			z_2 - z_3 &= (2 - (-3)) + (5-4)j = 5 + j
+		\end{align*}
+		Y luego expandimos su cuadrado usando la fórmula del binomio del cuadrado $(a+b)^2$:
+		\begin{align*}
+			[z_2 - z_3]^2 &= (5+j)^2 = 5^2 + 2(5)j + j^2 = 25 + 10j - 1 = \mathbf{24 + 10j}
+		\end{align*}
+
+        \textit{Usando forma polar:} Transformamos el resultado de la resta ($5+j$) a su forma polar. El módulo vale $r = \sqrt{5^2+1^2} = \sqrt{26} \approx 5.10$ y como se encuentra en el primer cuadrante, su ángulo es $\theta = \arctan(1/5) \approx 0.20$ rad ($11.31^\circ$). En polar nos queda $5.10\, e^{j0.20}$.
+        Para elevar al cuadrado, directamente potenciamos el módulo ($5.10^2 \approx 26$) y multiplicamos el ángulo numérico por 2:
+        \begin{align*}
+			[z_2 - z_3]^2 &\approx \mathbf{26\, e^{j0.40}}
+		\end{align*}
+	\end{enumerate}
+	
+	% ***********************************************
+	% 					Ejercicio 2
+	% ***********************************************
+	\section*{Ejercicio 2: Forma polar y representación gráfica}
+	
+	Vamos a pasar estos números a forma polar ($z = r e^{j\theta}$). Usaremos radianes para medir los ángulos, indicando siempre su equivalente en grados. Cuando sea posible usar valores exactos, usaremos fracciones de $\pi$ que se leen mejor matemáticamente.
+    
+    Hay que tener cuidado al pedirle el ángulo a la calculadora con $\arctan(y/x)$. Si la parte real ($x$) es negativa, la calculadora nos dará el ángulo del cuadrante opuesto, por lo que tendremos que corregirlo sumando o restando $\pi$ radianes ($180^\circ$) de forma manual.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{$z_a = 1$}: Es un número real positivo ($x=1$, $y=0$). Está sobre el eje horizontal derecho, así que su ángulo es cero. \quad $\mathbf{z_a = 1 e^{j0}}$.
+		\item \textbf{$z_b = -2/5 = -0.4$}: Es un número real negativo ($x=-0.4$, $y=0$). Está sobre el eje horizontal izquierdo, lo que equivale a media vuelta del plano o un ángulo de fase $\pi$ ($180^\circ$). \quad $\mathbf{z_b = 0.4 e^{j\pi}}$.
+		\item \textbf{$z_c = j$}: Es un número imaginario positivo puro ($x=0$, $y=1$). Está en el eje vertical superior, es decir, a un cuarto de vuelta, $\pi/2$ ($90^\circ$). \quad $\mathbf{z_c = 1 e^{j\pi/2}}$.
+		\item \textbf{$z_d = -\sqrt{3}j$}: Es un imaginario negativo. Cae sobre la parte baja del eje vertical. Le podemos asignar de ángulo de giro $3\pi/2$ ($270^\circ$) o $-\pi/2$ ($-90^\circ$). \quad $\mathbf{z_d = \sqrt{3} e^{-j\pi/2}}$.
+		\item \textbf{$z_e = 4+4j$}: Tiene partes reales e imaginarias iguales y positivas. Forma un triángulo rectángulo isósceles en el primer cuadrante. Su módulo es $r = \sqrt{4^2+4^2} = 4\sqrt{2}$ y el ángulo cae en la mitad del cuadrante de $90^\circ$: $\theta = \pi/4$ ($45^\circ$). \quad $\mathbf{z_e = 4\sqrt{2} e^{j\pi/4}}$.
+		\item \textbf{$z_f = -1-j$}: También tiene partes componentes iguales pero ambas son negativas. Cae en el tercer cuadrante y su módulo es $r = \sqrt{(-1)^2+(-1)^2} = \sqrt{2}$. La calculadora dirá que $\arctan(-1/-1) = \pi/4$ ($45^\circ$), lo cual es incorrecto por cuadrante. Al sumar media vuelta ($\pi$ o $180^\circ$) obtendremos el ángulo geográfico correcto: $\pi/4 + \pi = 5\pi/4$ (o bien $-3\pi/4$, equivalente a $-135^\circ$). \quad $\mathbf{z_f = \sqrt{2} e^{j5\pi/4}}$.
+	\end{enumerate}
+	
+	Para evitar estos errores de calculadora con la posición de los ángulos, siempre ayuda hacer un dibujo sencillo de la disposición aproximada de los números. La Figura \ref{fig:ejer2} nos sirve como control visual.
+	
+	\begin{figure}[H]
+		\centering
+		\includestandalone{figures/fig_ejer2/fig_ejer2}
+		\caption{Representación en el plano complejo para el Ejercicio~2.}
+		\label{fig:ejer2}
+	\end{figure}
+	
+	% ***********************************************
+	% 					Ejercicio 3
+	% ***********************************************
+	\section*{Ejercicio 3: Conversión a forma cartesiana}
+	
+	Usaremos la fórmula de Euler ($e^{j\theta} = \cos \theta + j \sin \theta$) para transformar estos números descritos con exponentes de vuelta a sus elementos rectangulares ($x+jy$). Separamos el exponente real del exponente imaginario con las reglas matemáticas de suma de potencias: $e^{x+jy} = e^x \cdot e^{jy} = e^x(\cos y + j \sin y)$. Ahora aplicaremos simplemente esa expresión término a término:
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{$e^5$}: Todo su exponente es numéricamente real ($x=5, y=0$). Lo resolvemos directo con la calculadora. \quad $\mathbf{z \approx 148.41 + j0}$.
+		\item \textbf{$e^{5j}$}: El exponente es puramente imaginario ($x=0$, $y=5$). El módulo es $e^0 = 1$ y el ángulo es $5$\,rad ($286.48^\circ$). Aplicando Euler directamente: $\cos(5) \approx 0.284$ y $\sin(5) \approx -0.959$. \quad $\mathbf{z \approx 0.28 - j0.96}$.
+		\item \textbf{$e^{1+4j}$}: Exponente mixto con $x=1$ e $y=4$. El módulo es $e^1 \approx 2.72$ y el ángulo es $4$\,rad ($229.18^\circ$), que cae en el tercer cuadrante. Por eso $\cos 4 \approx -0.654$ y $\sin 4 \approx -0.757$ son ambos negativos:
+		\begin{align*}
+			z &\approx 2.72\,(-0.654 - j\,0.757) \approx \mathbf{-1.78 - j2.06}
+		\end{align*}
+		\item \textbf{$e^{-3-2j}$}: Exponente mixto con $x=-3$ e $y=-2$. El módulo es $e^{-3} \approx 0.050$ (muy pequeño por el exponente negativo) y el ángulo es $-2$\,rad ($-114.59^\circ$): $\cos(-2) \approx -0.416$ y $\sin(-2) \approx -0.909$:
+		\begin{align*}
+			z &\approx 0.050\,(-0.416 - j\,0.909) \approx \mathbf{-0.02 - j0.05}
+		\end{align*}
+	\end{enumerate}
+
+% ***********************************************
+% 					Ejercicio 4
+% ***********************************************
+\section*{Ejercicio 4: Demostraciones con el conjugado}
+
+Para demostrar estas igualdades partimos siempre de la definición rectangular. Dado $z = x+jy$, su conjugado es $\bar{z} = x-jy$. Para los incisos con dos complejos usamos $z_1 = x_1+jy_1$ y $z_2 = x_2+jy_2$, con $\bar{z_1} = x_1-jy_1$ y $\bar{z_2} = x_2-jy_2$. La estrategia en cada caso es desarrollar ambos miembros de la igualdad por separado y verificar que coinciden.
+
+\begin{enumerate}[label=\textbf{\alph*)}]
+	\item \textbf{$z + \bar{z} = 2x$}
+
+	Sumamos $z$ y su conjugado directamente:
+	\begin{align*}
+		z + \bar{z} &= (x+jy) + (x-jy) = 2x
+	\end{align*}
+	Las partes imaginarias se anulan mutuamente, queda la parte real duplicada.
+
+	\item \textbf{$z - \bar{z} = 2yj$}
+
+	Restamos el conjugado:
+	\begin{align*}
+		z - \bar{z} &= (x+jy) - (x-jy) = 2jy
+	\end{align*}
+	Aquí se cancelan las partes reales y sobreviven solo las imaginarias.
+
+	\item \textbf{$\overline{z_1 + z_2} = \bar{z_1}+\bar{z_2}$}
+
+	Miembro izquierdo: sumamos primero, luego conjugamos:
+	\begin{align*}
+		\overline{z_1 + z_2} &= \overline{(x_1+x_2) + j(y_1+y_2)} = (x_1+x_2) - j(y_1+y_2)
+	\end{align*}
+	Miembro derecho: conjugamos primero, luego sumamos:
+	\begin{align*}
+		\bar{z_1}+\bar{z_2} &= (x_1-jy_1)+(x_2-jy_2) = (x_1+x_2) - j(y_1+y_2)
+	\end{align*}
+	Ambos caminos producen el mismo resultado: el orden entre conjugar y sumar es intercambiable.
+
+	\item \textbf{$\overline{z_1 - z_2} = \bar{z_1}-\bar{z_2}$}
+
+	Idéntico al inciso anterior pero con resta:
+	\begin{align*}
+		\overline{z_1 - z_2} &= \overline{(x_1-x_2) + j(y_1-y_2)} = (x_1-x_2) - j(y_1-y_2)
+	\end{align*}
+	\begin{align*}
+		\bar{z_1}-\bar{z_2} &= (x_1-jy_1)-(x_2-jy_2) = (x_1-x_2) - j(y_1-y_2)
+	\end{align*}
+
+	\item \textbf{$\overline{z_1 z_2} = \bar{z_1}\bar{z_2}$}
+
+	\textit{Usando forma rectangular:} Calculamos el producto $z_1 z_2$ y luego conjugamos:
+	\begin{align*}
+		z_1 z_2 &= (x_1+jy_1)(x_2+jy_2) \\
+		&= x_1x_2 + jx_1y_2 + jx_2y_1 + j^2y_1y_2 \\
+		&= (x_1x_2 - y_1y_2) + j(x_1y_2 + x_2y_1)
+	\end{align*}
+	Tomando el conjugado del resultado:
+	\begin{align*}
+		\overline{z_1 z_2} &= (x_1x_2 - y_1y_2) - j(x_1y_2 + x_2y_1)
+	\end{align*}
+	Por el otro camino, multiplicando los conjugados directamente:
+	\begin{align*}
+		\bar{z_1}\,\bar{z_2} &= (x_1-jy_1)(x_2-jy_2) \\
+		&= x_1x_2 - jx_1y_2 - jx_2y_1 + j^2y_1y_2 \\
+		&= (x_1x_2 - y_1y_2) - j(x_1y_2 + x_2y_1)
+	\end{align*}
+	El resultado es idéntico.
+
+	\textit{Usando forma polar:} En polar, conjugar equivale a invertir el signo del ángulo: si $z = r\,e^{j\theta}$, entonces $\bar{z} = r\,e^{-j\theta}$. Con $z_1 = r_1 e^{j\theta_1}$ y $z_2 = r_2 e^{j\theta_2}$:
+	\begin{align*}
+		\overline{z_1 z_2} &= \overline{r_1 r_2\, e^{j(\theta_1+\theta_2)}} = r_1 r_2\, e^{-j(\theta_1+\theta_2)} \\[4pt]
+		\bar{z_1}\,\bar{z_2} &= r_1 e^{-j\theta_1} \cdot r_2 e^{-j\theta_2} = r_1 r_2\, e^{-j(\theta_1+\theta_2)}
+	\end{align*}
+	La demostración en polar se reduce a dos líneas, lo que refleja por qué esta representación es más natural para trabajar con productos.
+
+	\item \textbf{$\overline{\left(\dfrac{z_1}{z_2}\right)} = \dfrac{\bar{z_1}}{\bar{z_2}}$}
+
+	\textit{Usando forma rectangular:} Multiplicamos por el conjugado de $z_2$ para racionalizar el denominador (con $z_2 \neq 0$):
+	\begin{align*}
+		\dfrac{z_1}{z_2} &= \dfrac{(x_1+jy_1)(x_2-jy_2)}{(x_2+jy_2)(x_2-jy_2)} = \dfrac{(x_1x_2+y_1y_2) + j(x_2y_1-x_1y_2)}{x_2^2+y_2^2}
+	\end{align*}
+	Conjugando el resultado:
+	\begin{align*}
+		\overline{\left(\dfrac{z_1}{z_2}\right)} &= \dfrac{(x_1x_2+y_1y_2) - j(x_2y_1-x_1y_2)}{x_2^2+y_2^2}
+	\end{align*}
+	Por el otro camino, calculando $\bar{z_1}/\bar{z_2}$ directamente:
+	\begin{align*}
+		\dfrac{\bar{z_1}}{\bar{z_2}} &= \dfrac{(x_1-jy_1)(x_2+jy_2)}{(x_2-jy_2)(x_2+jy_2)} = \dfrac{(x_1x_2+y_1y_2) + j(x_1y_2-x_2y_1)}{x_2^2+y_2^2}
+	\end{align*}
+	Dado que $j(x_1y_2-x_2y_1) = -j(x_2y_1-x_1y_2)$, ambas expresiones coinciden.
+
+	\textit{Usando forma polar:}
+	\begin{align*}
+		\overline{\left(\dfrac{z_1}{z_2}\right)} &= \overline{\dfrac{r_1}{r_2}\, e^{j(\theta_1-\theta_2)}} = \dfrac{r_1}{r_2}\, e^{-j(\theta_1-\theta_2)} \\[4pt]
+		\dfrac{\bar{z_1}}{\bar{z_2}} &= \dfrac{r_1\, e^{-j\theta_1}}{r_2\, e^{-j\theta_2}} = \dfrac{r_1}{r_2}\, e^{-j(\theta_1-\theta_2)}
+	\end{align*}
+	Mismo mecanismo que en el inciso anterior: en polar, las propiedades de productos y cocientes se reducen a sumar o restar exponentes.
+
+\end{enumerate}
+
+% ***********************************************
+% 					Ejercicio 5
+% ***********************************************
+\section*{Ejercicio 5: Raíz enésima de un número complejo}
+
+La ecuación $w^n = z$ tiene exactamente $n$ soluciones en el plano complejo. Para encontrarlas, escribimos $z$ en forma polar ($z = r\,e^{j\theta}$) y aplicamos la fórmula general:
+\begin{align*}
+	w_k = r^{1/n}\, e^{\,j\frac{\theta + 2\pi k}{n}}, \qquad k = 0,\, 1,\, \ldots,\, n-1
+\end{align*}
+Dos propiedades importantes: todas las raíces tienen el mismo módulo $r^{1/n}$, y están separadas uniformemente por un ángulo $2\pi/n$ entre sí, distribuidas sobre un círculo de radio $r^{1/n}$. Esto se puede verificar visualmente en la Figura~\ref{fig:ejer5}.
+
+\begin{enumerate}[label=\textbf{\alph*)}]
+
+	\item \textbf{$\sqrt{1}$} ($n=2$, $z = 1 = 1\cdot e^{\,j0}$, $r=1$, $\theta=0$):
+	\begin{align*}
+		w_k &= e^{\,j\pi k}
+	\end{align*}
+	\begin{align*}
+		w_0 &= e^{j0} = \mathbf{1} \\
+		w_1 &= e^{j\pi} = \mathbf{-1}
+	\end{align*}
+	Ambas raíces caen sobre el eje real, separadas por $\pi$ ($180^\circ$). Coincide con lo que sabemos en los reales: $\sqrt{1} = \pm 1$.
+
+	\item \textbf{$\sqrt[3]{1}$} ($n=3$, $z = 1 = e^{\,j0}$, $r=1$, $\theta=0$):
+	\begin{align*}
+		w_k &= e^{\,j\frac{2\pi k}{3}}
+	\end{align*}
+	\begin{align*}
+		w_0 &= e^{j0} = \mathbf{1} \\
+		w_1 &= e^{j2\pi/3} \;(120^\circ) = -\tfrac{1}{2} + j\tfrac{\sqrt{3}}{2} \\
+		w_2 &= e^{j4\pi/3} \;(240^\circ) = -\tfrac{1}{2} - j\tfrac{\sqrt{3}}{2}
+	\end{align*}
+	Las tres raíces forman un triángulo equilátero inscripto en el círculo unitario. Son las llamadas \textit{raíces cúbicas de la unidad}.
+
+	\item \textbf{$\sqrt[4]{1}$} ($n=4$, $z = 1 = e^{\,j0}$, $r=1$, $\theta=0$):
+	\begin{align*}
+		w_k &= e^{\,j\frac{\pi k}{2}}
+	\end{align*}
+	\begin{align*}
+		w_0 &= 1, \quad w_1 = e^{j\pi/2} = j, \quad w_2 = e^{j\pi} = -1, \quad w_3 = e^{j3\pi/2} = -j
+	\end{align*}
+	Las cuatro raíces forman un cuadrado sobre el círculo unitario, coincidiendo con los cuatro puntos de los semiejes coordenados.
+
+	\item \textbf{$\sqrt{-16}$} ($n=2$, $z = -16 = 16\, e^{\,j\pi}$, $r=16$, $\theta=\pi$):
+	\begin{align*}
+		w_k &= 16^{1/2}\, e^{\,j\frac{\pi + 2\pi k}{2}} = 4\, e^{\,j\frac{(2k+1)\pi}{2}}
+	\end{align*}
+	\begin{align*}
+		w_0 &= 4\, e^{j\pi/2} \;(90^\circ) = \mathbf{4j} \\
+		w_1 &= 4\, e^{j3\pi/2} \;(270^\circ) = \mathbf{-4j}
+	\end{align*}
+	Ambas raíces son imaginarias puras. En reales no existen raíces cuadradas de negativos; en el plano complejo aparecen naturalmente sobre el eje imaginario.
+
+	\item \textbf{$\sqrt[3]{j}$} ($n=3$, $z = j = e^{\,j\pi/2}$, $r=1$, $\theta=\pi/2$):
+	\begin{align*}
+		w_k &= e^{\,j\frac{\pi/2\,+\,2\pi k}{3}}
+	\end{align*}
+	\begin{align*}
+		w_0 &= e^{j\pi/6} \;(30^\circ)  = \tfrac{\sqrt{3}}{2} + j\tfrac{1}{2} \\
+		w_1 &= e^{j5\pi/6} \;(150^\circ) = -\tfrac{\sqrt{3}}{2} + j\tfrac{1}{2} \\
+		w_2 &= e^{j3\pi/2} \;(270^\circ) = -j
+	\end{align*}
+	Las tres raíces sobre el círculo unitario, separadas $2\pi/3$ ($120^\circ$), comenzando en $\pi/6$ ($30^\circ$) que es el primer ángulo $\theta/n = (\pi/2)/3$.
+
+	\item \textbf{$\sqrt[3]{1+j}$} ($n=3$, $z = 1+j = \sqrt{2}\,e^{\,j\pi/4}$, $r=\sqrt{2}$, $\theta=\pi/4$):
+
+	El módulo de las raíces es $r^{1/3} = (\sqrt{2})^{1/3} = 2^{1/6} \approx 1.12$.
+	\begin{align*}
+		w_k &= 2^{1/6}\, e^{\,j\frac{\pi/4\,+\,2\pi k}{3}}
+	\end{align*}
+	\begin{align*}
+		w_0 &= 2^{1/6}\, e^{j\pi/12}    \;(15^\circ)  \approx 1.08 + j\,0.29 \\
+		w_1 &= 2^{1/6}\, e^{j3\pi/4}    \;(135^\circ) = 2^{-1/3}(-1+j) \approx -0.79 + j\,0.79 \\
+		w_2 &= 2^{1/6}\, e^{j17\pi/12}  \;(255^\circ) \approx -0.29 - j\,1.08
+	\end{align*}
+	Para $w_1$ se puede obtener una forma exacta compacta: $e^{j3\pi/4} = (-1+j)/\sqrt{2}$, lo que da $2^{1/6}/\sqrt{2} = 2^{1/6-1/2} = 2^{-1/3}$.
+
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[b]{0.30\textwidth}
+		\centering 
+		\includestandalone{figures/fig_ejer5a/fig_ejer5a}\\[2pt]
+		{\small a) $\sqrt{1}$}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.30\textwidth}
+		\centering
+		\includestandalone{figures/fig_ejer5b/fig_ejer5b}\\[2pt]
+		{\small b) $\sqrt[3]{1}$}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.30\textwidth}
+		\centering
+		\includestandalone{figures/fig_ejer5c/fig_ejer5c}\\[2pt]
+		{\small c) $\sqrt[4]{1}$}
+	\end{minipage}
+
+	\vspace{0.8em}
+
+	\begin{minipage}[b]{0.30\textwidth}
+		\centering
+		\includestandalone{figures/fig_ejer5d/fig_ejer5d}\\[2pt]
+		{\small d) $\sqrt{-16}$}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.30\textwidth}
+		\centering
+		\includestandalone{figures/fig_ejer5e/fig_ejer5e}\\[2pt]
+		{\small e) $\sqrt[3]{j}$}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.30\textwidth}
+		\centering
+		\includestandalone{figures/fig_ejer5f/fig_ejer5f}\\[2pt]
+		{\small f) $\sqrt[3]{1+j}$}
+	\end{minipage}
+
+	\caption{Raíces en el plano complejo para el Ejercicio~5.}
+	\label{fig:ejer5}
+\end{figure}
+
+% ***********************************************
+% 					Ejercicio 6
+% ***********************************************
+\section*{Ejercicio 6: Trayectoria de $f(t) = e^{st}$}
+
+La clave está en descomponer la frecuencia compleja $s$ en sus partes real e imaginaria:
+$$s = \sigma + j\omega$$
+de modo que la función exponencial se factoriza en dos efectos independientes:
+\begin{equation*}
+	f(t) = e^{st} = e^{(\sigma+j\omega)t}
+	= \underbrace{e^{\sigma t}}_{\text{envolvente}} \cdot \underbrace{e^{j\omega t}}_{\text{rotación}}
+\end{equation*}
+
+El factor $e^{\sigma t}$ controla el \textbf{módulo} del vector: crece si $\sigma>0$, permanece constante si $\sigma=0$, y decae hacia cero si $\sigma<0$. El factor $e^{j\omega t}$ hace girar el vector a velocidad angular $\omega$ rad/s en sentido antihorario. En $t=0$ la señal siempre parte de $f(0)=e^0=1$, el punto real positivo sobre el eje Re. Las trayectorias 3D se muestran en la Figura~\ref{fig:ejer6_tray}.
+
+\begin{enumerate}[label=\textbf{\alph*)}]
+	\item \textbf{$s = -1$ \;($\sigma=-1$, $\omega=0$):}
+
+	Sin parte imaginaria ($\omega=0$), el vector no gira. La señal permanece sobre el eje real positivo y su módulo $e^{-t}$ decrece de $1$ hacia $0$:
+	\[f(t) = e^{-t}, \quad t\geq 0\]
+	\textbf{Trayectoria:} segmento sobre el eje $\operatorname{Re}$ positivo, desde $(1,0)$ hacia el origen.
+
+	\item \textbf{$s = j$ \;($\sigma=0$, $\omega=1$):}
+
+	Parte real nula: el módulo permanece constante, $|f(t)|=1$. Solo hay rotación pura a $\omega=1$ rad/s en sentido antihorario:
+	\[f(t) = e^{jt} = \cos t + j\sin t\]
+	\textbf{Trayectoria:} circunferencia unitaria, recorrida indefinidamente en sentido antihorario.
+
+	\item \textbf{$s = -1+j$ \;($\sigma=-1$, $\omega=1$):}
+
+	El vector gira ($\omega=1$) mientras su módulo decrece ($\sigma=-1$). Los efectos se combinan simultáneamente:
+	\[f(t) = e^{-t}\cdot e^{jt} = e^{-t}\bigl(\cos t + j\sin t\bigr)\]
+	\textbf{Trayectoria:} espiral logarítmica \textbf{convergente}. Parte de $(1,0)$ en $t=0$ y se enrolla hacia el origen con cada vuelta.
+
+	\item \textbf{$s = 0.5+j$ \;($\sigma=0.5$, $\omega=1$):}
+
+	El vector gira ($\omega=1$) mientras su módulo crece ($\sigma=0.5$):
+	\[f(t) = e^{0.5t}\cdot e^{jt} = e^{0.5t}\bigl(\cos t + j\sin t\bigr)\]
+	\textbf{Trayectoria:} espiral logarítmica \textbf{divergente}. Parte de $(1,0)$ en $t=0$ y se aleja del origen con cada vuelta.
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{\linewidth}
+		\centering
+		\includestandalone{figures/fig_tray_3d/fig_tray_3d}
+		\caption{Bosquejo 3D de $f(t)=e^{st}$ para el Ejercicio~6. El eje $t$ es el tiempo; las proyecciones sobre el plano Re-Im son las trayectorias en el plano complejo.}
+		\label{fig:ejer6_tray}
+	\end{minipage}
+\end{figure}
+
+% ***********************************************
+% 					Ejercicio 7
+% ***********************************************
+\section*{Ejercicio 7: Efecto de multiplicar $e^{st}$ por una constante compleja $c_k$}
+
+Expresamos la constante en su forma polar $c_k = |c_k|\,e^{j\phi_k}$, donde $|c_k|$ es su módulo y $\phi_k = \operatorname{Arg}\{c_k\}$ su fase. Al multiplicar por la señal:
+\begin{equation*}
+	g(t) = c_k\cdot e^{st}
+	= |c_k|\,e^{j\phi_k}\cdot e^{(\sigma+j\omega)t}
+	= \underbrace{|c_k|\,e^{\sigma t}}_{\text{nueva envolvente}}
+	\cdot\; e^{j(\omega t + \phi_k)}
+\end{equation*}
+Comparando con $f(t) = e^{\sigma t}\cdot e^{j\omega t}$, la constante $c_k$ produce dos efectos:
+\begin{itemize}
+	\item \textbf{Escalado de amplitud:} el módulo $|c_k|$ escala la envolvente de la espiral. Si $|c_k|>1$ la trayectoria se agranda; si $|c_k|<1$ se encoge.
+	\item \textbf{Rotación de la fase inicial:} la fase $\phi_k$ desplaza el punto de arranque. En lugar de partir del eje real positivo (fase cero), la espiral arranca inclinada un ángulo $\phi_k$.
+\end{itemize}
+La velocidad de giro $\omega$ y la tasa de crecimiento $\sigma$ \textbf{no se alteran}: son propiedades de $s$, no de $c_k$. La constante solo ajusta las condiciones iniciales de la trayectoria.
+
+Para $s=j$ ($\sigma=0$, $\omega=1$), la señal base $e^{jt}$ traza la circunferencia unitaria. La Figura~\ref{fig:ejer7_ck} muestra el efecto de cada $c_k$:
+
+\begin{enumerate}[label=\textbf{\alph*)}]
+	\item \textbf{$c_k = 2$ \;($|c_k|=2$, $\phi_k=0$):}\quad
+	$g(t)=2e^{jt}$. Círculo de radio $2$, arranca en $g(0)=2=(2,0)$. La amplitud se \textbf{duplica}; sin rotación de fase.
+
+	\item \textbf{$c_k = j$ \;($|c_k|=1$, $\phi_k=\pi/2$):}\quad
+	$g(t)=e^{j(t+\pi/2)}$. Círculo \textbf{unitario}, pero arranca en $g(0)=j=(0,1)$. Sin cambio de amplitud; \textbf{rotación de $90^\circ$}.
+
+	\item \textbf{$c_k = 1+j$ \;($|c_k|=\sqrt{2}$, $\phi_k=\pi/4$):}\quad
+	$g(t)=\sqrt{2}\,e^{j(t+\pi/4)}$. Círculo de radio $\sqrt{2}$, arranca en $g(0)=1+j=(1,1)$. Amplitud $\times\sqrt{2}$; \textbf{rotación de $45^\circ$}.
+
+	\item \textbf{$c_k = 0.5$ \;($|c_k|=0.5$, $\phi_k=0$):}\quad
+	$g(t)=0.5\,e^{jt}$. Círculo de radio $0.5$, arranca en $g(0)=0.5=(0.5,0)$. La amplitud se \textbf{reduce a la mitad}; sin rotación de fase.
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{\linewidth}
+		\centering
+		\includestandalone[width=0.6\linewidth]{figures/fig_ck_tray/fig_ck_tray}
+		\caption{Trayectorias de $c_k\,e^{jt}$ en el plano complejo (Ejercicio~7). Los puntos indican $g(0)=c_k$.}
+		\label{fig:ejer7_ck}
+	\end{minipage}
+\end{figure}
+
+\section*{Ejercicio 8: Regiones en el plano complejo}
+
+Para identificar la región que describe cada condición, conviene reconocer las formas básicas:
+\begin{itemize}
+	\item $|z - z_0| = r$: circunferencia de radio $r$ centrada en $z_0$.
+	\item $|z - z_0| \leq r$ (o $< r$): disco cerrado (o abierto) de radio $r$ centrado en $z_0$.
+	\item $\mathrm{Re}\{z\} \gtrless c$: semiplano delimitado por la recta vertical $x = c$.
+	\item $\mathrm{Im}\{z\} \gtrless c$: semiplano delimitado por la recta horizontal $y = c$.
+	\item $\alpha \lessgtr \mathrm{Arg}\{z\} \lessgtr \beta$: sector angular entre los ángulos $\alpha$ y $\beta$.
+\end{itemize}
+Convención gráfica: borde sólido si está incluido ($\leq$, $\geq$); borde punteado si está excluido ($<$, $>$). Las regiones se muestran en la Figura~\ref{fig:ejer8}.
+
+\begin{enumerate}[label=\textbf{\alph*)}]
+	\item \textbf{$|z| \leq 3$}: Disco cerrado de radio 3 centrado en el origen. Incluye el interior y el borde.
+
+	\item \textbf{$\mathrm{Re}\{z\} \geq -2$}: Semiplano cerrado a la derecha de la recta $x = -2$. La recta pertenece a la región.
+
+	\item \textbf{$\mathrm{Im}\{z\} < 4$}: Semiplano abierto por debajo de la recta $y = 4$. La recta no pertenece (borde punteado).
+
+	\item \textbf{$0 < \mathrm{Arg}\{z\} < \frac{2\pi}{3}$}: Sector angular abierto entre $0$ rad ($0^\circ$) y $\frac{2\pi}{3}$ rad ($120^\circ$). Ninguna de las dos semirrectas borde está incluida. El origen tampoco, ya que $\mathrm{Arg}\{0\}$ no está definido.
+
+	\item \textbf{$|z+1| \leq 3\;$, $\;-\frac{\pi}{4} \leq \mathrm{Arg}\{z\} \leq \frac{\pi}{4}$}: Intersección de dos condiciones. La primera describe un disco cerrado de radio 3 centrado en $z_0 = -1$ (punto $(-1,0)$); la segunda, el sector angular entre $-\frac{\pi}{4}$ ($-45^\circ$) y $\frac{\pi}{4}$ ($45^\circ$). La región resultante es la parte del disco que queda dentro del sector. El borde completo está incluido: el arco de circunferencia dentro de la franja angular y los dos segmentos rectos desde el origen hasta la circunferencia.
+
+	\item \textbf{$|z| \leq 1\;$, $\;0 \leq \mathrm{Arg}\{z\} \leq \frac{\pi}{3}$}: Sector circular cerrado del disco unitario entre $0^\circ$ y $\frac{\pi}{3}$ rad ($60^\circ$). Su contorno lo forman el radio a $0^\circ$, el radio a $60^\circ$ y el arco de circunferencia unitario. Todo el borde está incluido.
+
+	\item \textbf{$1 \leq |z-3| \leq 2$}: Corona circular (anillo) cerrada centrada en $z_0 = 3$ (punto $(3,0)$), delimitada entre las circunferencias de radios 1 y 2. Ambas circunferencias pertenecen a la región.
+
+	\item \textbf{$|z+3+3j| > 3$}: Exterior abierto del disco de radio 3 centrado en $z_0 = -3-3j$ (punto $(-3,-3)$). La circunferencia no pertenece a la región (borde punteado).
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{\linewidth}
+		\centering
+		% Fila 1: a  b  c  d
+		\begin{minipage}[t]{0.23\linewidth}
+			\centering
+			\includestandalone[width=\linewidth]{figures/fig_ejer6a/fig_ejer6a}\\[1pt]
+			{\scriptsize a) $|z|\leq 3$}
+		\end{minipage}\hfill
+		\begin{minipage}[t]{0.23\linewidth}
+			\centering
+			\includestandalone[width=\linewidth]{figures/fig_ejer6b/fig_ejer6b}\\[1pt]
+			{\scriptsize b) $\operatorname{Re}\{z\}\geq{-2}$}
+		\end{minipage}\hfill
+		\begin{minipage}[t]{0.23\linewidth}
+			\centering
+			\includestandalone[width=\linewidth]{figures/fig_ejer6c/fig_ejer6c}\\[1pt]
+			{\scriptsize c) $\operatorname{Im}\{z\}<4$}
+		\end{minipage}\hfill
+		\begin{minipage}[t]{0.23\linewidth}
+			\centering
+			\includestandalone[width=\linewidth]{figures/fig_ejer6d/fig_ejer6d}\\[1pt]
+			{\scriptsize d) $0<\operatorname{Arg}\{z\}<\tfrac{2\pi}{3}$}
+		\end{minipage}
+
+		\vspace{0.5em}
+
+		% Fila 2: e  f  g  h
+		\begin{minipage}[t]{0.23\linewidth}
+			\centering
+			\includestandalone[width=\linewidth]{figures/fig_ejer6e/fig_ejer6e}\\[1pt]
+			{\scriptsize e) $|z{+}1|\leq3$, $|\operatorname{Arg}|\leq\tfrac{\pi}{4}$}
+		\end{minipage}\hfill
+		\begin{minipage}[t]{0.23\linewidth}
+			\centering
+			\includestandalone[width=\linewidth]{figures/fig_ejer6f/fig_ejer6f}\\[1pt]
+			{\scriptsize f) $|z|\leq1$, $0\leq\operatorname{Arg}\leq\tfrac{\pi}{3}$}
+		\end{minipage}\hfill
+		\begin{minipage}[t]{0.23\linewidth}
+			\centering
+			\includestandalone[width=\linewidth]{figures/fig_ejer6g/fig_ejer6g}\\[1pt]
+			{\scriptsize g) $1\leq|z-3|\leq2$}
+		\end{minipage}\hfill
+		\begin{minipage}[t]{0.23\linewidth}
+			\centering
+			\includestandalone[width=\linewidth]{figures/fig_ejer6h/fig_ejer6h}\\[1pt]
+			{\scriptsize h) $|z{+}3{+}3j|>3$}
+		\end{minipage}
+
+		\caption{Regiones en el plano complejo para el Ejercicio~8.}
+		\label{fig:ejer8}
+	\end{minipage}
+\end{figure}
+
+% ***********************************************
+%				Ejercicio 9
+% ***********************************************
+\section*{Ejercicio 9: Función compleja}
+
+\noindent\textit{Método general (sec.~2.4):} sustituir $z = x+jy$ y separar parte real e imaginaria. La magnitud y el argumento se obtienen por $|f| = \sqrt{u^2+v^2}$ y $\operatorname{Arg}\{f\} = \arctan(v/u)$, o bien aprovechando las propiedades polares del producto.
+
+\bigskip
+
+\noindent\textbf{a) $f(z) = 5z^2+7z-12$}
+
+Sustituyendo $z = x+jy$:
+\begin{align*}
+	z^2 &= (x+jy)^2 = (x^2-y^2) + j\,2xy \\
+	f(z) &= 5(x^2-y^2) + j\,10xy + 7x + j\,7y - 12 \\
+	     &= \underbrace{(5x^2-5y^2+7x-12)}_{u(x,y)} + j\underbrace{y(10x+7)}_{v(x,y)}
+\end{align*}
+
+Para $|f(z)|$ y $\operatorname{Arg}\{f(z)\}$ conviene factorizar el polinomio. Las raíces de $5z^2+7z-12=0$ son $z_1=1$ y $z_2=-\tfrac{12}{5}$, de modo que:
+\[
+	5z^2+7z-12 = 5\,(z-1)\!\left(z+\tfrac{12}{5}\right)
+\]
+
+Aplicando las propiedades del módulo y del argumento de un producto:
+\begin{align*}
+	|f(z)| &= 5\,|z-1|\cdot\!\left|z+\tfrac{12}{5}\right|
+	        = 5\,\sqrt{(x-1)^2+y^2}\cdot\sqrt{\!\left(x+\tfrac{12}{5}\right)^{\!2}+y^2} \\[4pt]
+	\operatorname{Arg}\{f(z)\} &= \arctan\!\frac{y}{x-1} + \arctan\!\frac{y}{x+\tfrac{12}{5}}
+\end{align*}
+
+\bigskip
+
+\noindent\textbf{b) $f(z) = z^2$}
+\begin{align*}
+	f(z) = (x+jy)^2 = \underbrace{(x^2-y^2)}_{u} + j\underbrace{(2xy)}_{v}
+\end{align*}
+
+Usando las propiedades polares $|z^n| = |z|^n$ y $\operatorname{Arg}\{z^n\}=n\,\operatorname{Arg}\{z\}$:
+\begin{align*}
+	|f(z)| &= |z|^2 = x^2+y^2 \\
+	\operatorname{Arg}\{f(z)\} &= 2\,\operatorname{Arg}\{z\} = 2\arctan\!\frac{y}{x}
+\end{align*}
+
+\bigskip
+
+\noindent\textbf{c) $f(z) = e^z$}
+
+Usando la identidad de Euler $e^{x+jy} = e^x e^{jy}$:
+\begin{align*}
+	f(z) = e^x e^{jy} = \underbrace{e^x\cos y}_{u} + j\underbrace{e^x\sin y}_{v}
+\end{align*}
+
+La forma polar es inmediata:
+\begin{align*}
+	|f(z)| &= e^x = e^{\operatorname{Re}\{z\}} \\
+	\operatorname{Arg}\{f(z)\} &= y = \operatorname{Im}\{z\}
+\end{align*}
+
+\noindent La magnitud de $e^z$ depende únicamente de la parte real de $z$; su fase es exactamente la parte imaginaria.
+
+\bigskip
+
+\noindent\textbf{d) $f(z) = \dfrac{1}{z}$}
+
+Multiplicando numerador y denominador por el conjugado $\bar{z} = x-jy$:
+\begin{align*}
+	\frac{1}{z} = \frac{\bar{z}}{|z|^2} = \frac{x-jy}{x^2+y^2}
+	= \underbrace{\frac{x}{x^2+y^2}}_{u} + j\underbrace{\!\left(\!\frac{-y}{x^2+y^2}\!\right)}_{\!v}
+\end{align*}
+
+Usando las propiedades $|1/z|=1/|z|$ y $\operatorname{Arg}\{1/z\}=-\operatorname{Arg}\{z\}$:
+\begin{align*}
+	|f(z)| &= \frac{1}{|z|} = \frac{1}{\sqrt{x^2+y^2}} \\
+	\operatorname{Arg}\{f(z)\} &= -\operatorname{Arg}\{z\} = -\arctan\!\frac{y}{x}
+\end{align*}
+
+% ***********************************************
+%				Ejercicio 10
+% ***********************************************
+\section*{Ejercicio 10: Condiciones de Cauchy-Riemann}
+
+\noindent\textit{Método (sec.~2.5):} expresar $f(z)=u(x,y)+jv(x,y)$, calcular las cuatro derivadas parciales y verificar las condiciones de Cauchy-Riemann (CR):
+\[
+	\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}
+	\qquad\text{y}\qquad
+	\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}.
+\]
+Si las CR se cumplen \emph{y} las parciales son continuas en un punto, la función es analítica allí.
+
+\bigskip
+
+\noindent\textbf{a) $f(z) = \bar{z} = x - jy$}
+
+$u = x$, $v = -y$.
+\[
+	\frac{\partial u}{\partial x} = 1, \quad
+	\frac{\partial v}{\partial y} = -1 \quad\Rightarrow\quad 1 \neq -1.
+\]
+La primera CR \textbf{no se cumple} en ningún punto del plano. \quad $\Rightarrow$ \textbf{No es analítica.}
+
+\bigskip
+
+\noindent\textbf{b) $f(z) = z^2 = (x^2-y^2) + j(2xy)$}
+
+$u = x^2-y^2$, $v = 2xy$.
+\[
+	\frac{\partial u}{\partial x} = 2x = \frac{\partial v}{\partial y} \;\checkmark
+	\qquad
+	\frac{\partial u}{\partial y} = -2y = -\frac{\partial v}{\partial x} \;\checkmark
+\]
+Las parciales son continuas en todo $\mathbb{C}$. \quad $\Rightarrow$ \textbf{Analítica en todo $\mathbb{C}$} (función entera).
+
+\bigskip
+
+\noindent\textbf{c) $f(z) = e^z = e^x\cos y + j\,e^x\sin y$}
+
+$u = e^x\cos y$, $v = e^x\sin y$.
+\[
+	\frac{\partial u}{\partial x} = e^x\cos y = \frac{\partial v}{\partial y} \;\checkmark
+	\qquad
+	\frac{\partial u}{\partial y} = -e^x\sin y = -\frac{\partial v}{\partial x} \;\checkmark
+\]
+Las parciales son continuas en todo $\mathbb{C}$. \quad $\Rightarrow$ \textbf{Analítica en todo $\mathbb{C}$} (función entera).
+
+\bigskip
+
+\noindent\textbf{d) $f(z) = \operatorname{Re}\{z\} = x$}
+
+$u = x$, $v = 0$.
+\[
+	\frac{\partial u}{\partial x} = 1, \quad
+	\frac{\partial v}{\partial y} = 0 \quad\Rightarrow\quad 1 \neq 0.
+\]
+La primera CR \textbf{no se cumple} en ningún punto. \quad $\Rightarrow$ \textbf{No es analítica.}
+
+% ***********************************************
+%				Ejercicio 11
+% ***********************************************
+\section*{Ejercicio 11: Módulo y fase de funciones racionales}
+
+\noindent\textit{Método (sec.~2.6):} factorizar $H(z)=K\prod(z-z_i)/\prod(z-p_j)$ y aplicar
+\[
+	|H(z)| = |K|\,\frac{\prod|z-z_i|}{\prod|z-p_j|}, \qquad
+	\angle H(z) = \angle K + \sum\angle(z-z_i) - \sum\angle(z-p_j).
+\]
+
+\bigskip
+
+\noindent\textbf{a) $H(z) = \dfrac{z-1}{z+1}$}
+
+Cero: $z_1=1$; polo: $p_1=-1$; $K=1$.
+\begin{align*}
+	|H(z)| &= \frac{|z-1|}{|z+1|} = \frac{\sqrt{(x-1)^2+y^2}}{\sqrt{(x+1)^2+y^2}} \\[4pt]
+	\angle H(z) &= \arctan\!\frac{y}{x-1} - \arctan\!\frac{y}{x+1}
+\end{align*}
+
+\bigskip
+
+\noindent\textbf{b) $H(z) = \dfrac{1}{z^2+1} = \dfrac{1}{(z-j)(z+j)}$}
+
+Sin ceros finitos; polos: $p_{1,2}=\pm j$; $K=1$.
+\begin{align*}
+	|H(z)| &= \frac{1}{|z-j|\cdot|z+j|} = \frac{1}{\sqrt{x^2+(y-1)^2}\cdot\sqrt{x^2+(y+1)^2}} \\[4pt]
+	\angle H(z) &= -\arctan\!\frac{y-1}{x} - \arctan\!\frac{y+1}{x}
+\end{align*}
+
+\bigskip
+
+\noindent\textbf{c) $H(z) = \dfrac{z}{z^2+2z+2} = \dfrac{z}{(z+1-j)(z+1+j)}$}
+
+Cero: $z_1=0$; polos: $p_{1,2}=-1\pm j$; $K=1$.
+\begin{align*}
+	|H(z)| &= \frac{|z|}{|z+1-j|\cdot|z+1+j|}
+	         = \frac{\sqrt{x^2+y^2}}{\sqrt{(x+1)^2+(y-1)^2}\cdot\sqrt{(x+1)^2+(y+1)^2}} \\[4pt]
+	\angle H(z) &= \arctan\!\frac{y}{x}
+	               - \arctan\!\frac{y-1}{x+1}
+	               - \arctan\!\frac{y+1}{x+1}
+\end{align*}
+
+\bigskip
+
+\noindent\textbf{d) $H(z) = \dfrac{z+1}{z^2-4} = \dfrac{z+1}{(z-2)(z+2)}$}
+
+Cero: $z_1=-1$; polos: $p_1=2$, $p_2=-2$; $K=1$.
+\begin{align*}
+	|H(z)| &= \frac{|z+1|}{|z-2|\cdot|z+2|}
+	         = \frac{\sqrt{(x+1)^2+y^2}}{\sqrt{(x-2)^2+y^2}\cdot\sqrt{(x+2)^2+y^2}} \\[4pt]
+	\angle H(z) &= \arctan\!\frac{y}{x+1}
+	               - \arctan\!\frac{y}{x-2}
+	               - \arctan\!\frac{y}{x+2}
+\end{align*}
+ 
+% ***********************************************
+%				Ejercicio 12
+% ***********************************************
+\section*{Ejercicio 12: Fórmula Integral de Cauchy}
+
+\noindent Función a integrar: $f(z)=\dfrac{z^2-2z}{z^2+4}=\dfrac{z(z-2)}{(z-2j)(z+2j)}$.
+
+\noindent\textbf{Ceros:} $z_1=0$, $z_2=2$.\quad \textbf{Polos:} $p_1=2j$, $p_2=-2j$.
+
+La Figura~\ref{fig:pz_ej12} muestra las cuatro trayectorias de integración junto con la ubicación de los polos y ceros.
+
+\begin{figure}[H]
+	\centering
+	\includestandalone[width=0.72\linewidth]{figures/fig_pz_ej12/fig_pz_ej12}
+	\caption{Diagrama de polos ($\times$) y ceros ($\circ$) de $f(z)$ con las cuatro curvas del Ejercicio~12. Las curvas (a) y (d) encierran $p_1=2j$; la curva (c) encierra $p_2=-2j$; la curva (b) no encierra ningún polo.}
+	\label{fig:pz_ej12}
+\end{figure}
+
+\noindent\textbf{Factorización y polos:}
+\[
+	z^2+4 = (z-2j)(z+2j) \quad\Rightarrow\quad p_1 = 2j,\quad p_2 = -2j.
+\]
+
+\noindent\textit{Método (sec.~2.7):}
+\begin{itemize}[nosep]
+	\item Si ningún polo está dentro de $C$: $\oint_C f(z)\,dz = 0$ (Cauchy-Goursat).
+	\item Si solo $p_k$ está dentro: $\displaystyle\oint_C \frac{g(z)}{z-p_k}\,dz = j2\pi\,g(p_k)$,\quad donde $g$ analítica dentro de $C$.
+\end{itemize}
+
+\bigskip
+
+\noindent\textbf{Criterio de pertenencia.}
+Para cada inciso hay que determinar si cada polo queda \emph{dentro} o \emph{fuera} de la curva de integración.
+Toda curva del tipo $|z-c|=r$ es un círculo de \emph{centro} $c$ y \emph{radio} $r$ en el plano complejo.
+El criterio es puramente geométrico: un punto $p$ queda dentro si y solo si su distancia al centro es menor que el radio,
+\[
+	p \text{ queda dentro de }|z-c|=r
+	\;\iff\;
+	|p - c| < r.
+\]
+La distancia $|p-c|$ se calcula como el módulo de la diferencia. Si $p=a+jb$ y $c=\alpha+j\beta$:
+\[
+	|p - c| = |(a-\alpha)+j(b-\beta)| = \sqrt{(a-\alpha)^2+(b-\beta)^2}.
+\]
+
+\noindent\textbf{Ejemplo detallado — inciso~a), curva $|z-j|=2$:}
+El centro es $c=j=(0,1)$ y el radio es $r=2$.
+Se evalúa la distancia de cada polo al centro:
+\begin{align*}
+	p_1 = 2j: \quad |p_1 - c| &= |2j - j| = |j| = \sqrt{0^2+1^2} = 1 < 2 \quad\Rightarrow\quad \textbf{dentro.} \\[4pt]
+	p_2 = {-2j}: \quad |p_2 - c| &= |-2j - j| = |-3j| = \sqrt{0^2+(-3)^2} = 3 > 2 \quad\Rightarrow\quad \textbf{fuera.}
+\end{align*}
+En los incisos siguientes se aplica el mismo procedimiento y se indica solo el resultado.
+
+\bigskip
+
+\noindent\textbf{a) $|z-j|=2$}\quad (centro $j$, radio $2$)
+
+$|2j - j|=1<2$ \checkmark\ ($p_1$ dentro);\quad $|-2j-j|=3>2$ ($p_2$ fuera).
+
+\[
+	\oint_C \frac{z^2-2z}{z^2+4}\,dz
+	= \oint_C \frac{\dfrac{z^2-2z}{z+2j}}{z-2j}\,dz
+	= j2\pi\cdot g(2j), \quad g(z)=\frac{z^2-2z}{z+2j}
+\]
+\[
+	g(2j) = \frac{(2j)^2-2(2j)}{2j+2j} = \frac{-4-4j}{4j}
+	= \frac{(-4-4j)(-j)}{4} = \frac{4j-4}{4} = -1+j
+\]
+\[
+	\boxed{\oint_C f(z)\,dz = j2\pi(-1+j) = -2\pi(1+j)}
+\]
+
+\bigskip
+
+\noindent\textbf{b) $\left|z+\tfrac{1}{2}\right|=1$}\quad (centro $-\tfrac{1}{2}$, radio $1$)
+
+$\left|2j+\tfrac{1}{2}\right|=\tfrac{\sqrt{17}}{2}\approx2.06>1$;\quad $\left|-2j+\tfrac{1}{2}\right|=\tfrac{\sqrt{17}}{2}\approx2.06>1$. \textit{Ningún polo dentro.}
+
+\[
+	\boxed{\oint_C f(z)\,dz = 0}
+\]
+
+\bigskip
+
+\noindent\textbf{c) $|z+1+j|=2$}\quad (centro $-1-j$, radio $2$)
+
+$|2j-(-1-j)|=|1+3j|=\sqrt{10}\approx3.16>2$ ($p_1$ fuera);\quad $|-2j-(-1-j)|=|1-j|=\sqrt{2}\approx1.41<2$ \checkmark\ ($p_2$ dentro).
+
+\[
+	\oint_C \frac{z^2-2z}{z^2+4}\,dz
+	= \oint_C \frac{\dfrac{z^2-2z}{z-2j}}{z+2j}\,dz = j2\pi\cdot h(-2j),
+	\quad h(z)=\frac{z^2-2z}{z-2j}
+\]
+\[
+	h(-2j) = \frac{(-2j)^2-2(-2j)}{-2j-2j} = \frac{-4+4j}{-4j}
+	= \frac{(-4+4j)(j)}{4} = \frac{-4j-4}{4} = -1-j
+\]
+\[
+	\boxed{\oint_C f(z)\,dz = j2\pi(-1-j) = 2\pi(1-j)}
+\]
+
+\bigskip
+
+\noindent\textbf{d) $|z+2-j|=3$}\quad (centro $-2+j$, radio $3$)
+
+$|2j-(-2+j)|=|2+j|=\sqrt{5}\approx2.24<3$ \checkmark\ ($p_1$ dentro);\quad $|-2j-(-2+j)|=|2-3j|=\sqrt{13}\approx3.61>3$ ($p_2$ fuera).
+
+Solo $p_1=2j$ está dentro $\Rightarrow$ cálculo idéntico al inciso~a):
+\[
+	\boxed{\oint_C f(z)\,dz = -2\pi(1+j)}
+\]
+
+% ***********************************************
+%				Ejercicio 13
+% ***********************************************
+\section*{Ejercicio 13: Integrales cerradas}
+
+\noindent Trayectorias comunes: $C_1:|z+1|=1$ (centro $-1$, radio $1$) y $C_2:|z-j|=1$ (centro $j$, radio $1$). La Figura~\ref{fig:pz_ej13} muestra la situación para cada integral.
+
+\begin{figure}[H]
+	\centering
+	\includestandalone[width=0.88\linewidth]{figures/fig_pz_ej13/fig_pz_ej13}
+	\caption{Diagramas de polos ($\times$) y trayectorias $C_1,C_2$ para los dos incisos del Ejercicio~13. \textbf{(a)} $e^{3z}/(z^2+\tfrac{1}{4})$: $C_2$ encierra $p_1=j/2$; $C_1$ no encierra ningún polo. \textbf{(b)} $1/(z^4-1)$: $C_1$ encierra $p=-1$; $C_2$ encierra $p=j$.}
+	\label{fig:pz_ej13}
+\end{figure}
+
+\bigskip
+
+\noindent\textbf{a) $\displaystyle\oint_C \dfrac{e^{3z}}{z^2+\tfrac{1}{4}}\,dz$}
+
+Factorización: $z^2+\tfrac{1}{4}=(z-\tfrac{j}{2})(z+\tfrac{j}{2})$; polos $p_1=\tfrac{j}{2}$, $p_2=-\tfrac{j}{2}$.
+
+\smallskip
+\noindent\textit{Sobre $C_1$:}
+$\left|\tfrac{j}{2}-(-1)\right|=\left|1+\tfrac{j}{2}\right|=\tfrac{\sqrt{5}}{2}\approx1.12>1$;\quad
+$\left|-\tfrac{j}{2}+1\right|=\tfrac{\sqrt{5}}{2}\approx1.12>1$. Ningún polo dentro.
+\[
+	\oint_{C_1} \frac{e^{3z}}{z^2+\frac{1}{4}}\,dz = 0
+\]
+
+\smallskip
+\noindent\textit{Sobre $C_2$:}
+$\left|\tfrac{j}{2}-j\right|=\tfrac{1}{2}<1$ \checkmark\ ($p_1$ dentro);\quad
+$\left|-\tfrac{j}{2}-j\right|=\tfrac{3}{2}>1$ ($p_2$ fuera).
+
+Fórmula de Cauchy con $g(z)=\dfrac{e^{3z}}{z+\frac{j}{2}}$ analítica dentro de $C_2$:
+\[
+	g\!\left(\tfrac{j}{2}\right) = \frac{e^{3j/2}}{\tfrac{j}{2}+\tfrac{j}{2}} = \frac{e^{3j/2}}{j}
+\]
+\[
+	\boxed{\oint_{C_2} \frac{e^{3z}}{z^2+\frac{1}{4}}\,dz = j2\pi \cdot \frac{e^{3j/2}}{j} = 2\pi e^{3j/2}}
+\]
+
+\bigskip
+
+\noindent\textbf{b) $\displaystyle\oint_C \dfrac{1}{z^4-1}\,dz$}
+
+Factorización: $z^4-1=(z-1)(z+1)(z-j)(z+j)$; polos $\pm1,\,\pm j$.
+
+\smallskip
+\noindent\textit{Sobre $C_1: |z+1|=1$, centro $-1$:}
+
+$|1+1|=2>1$;\; $|{-1+1}|=0<1$\checkmark;\; $|j+1|=\sqrt{2}>1$;\; $|{-j+1}|=\sqrt{2}>1$.
+Solo $p_2=-1$ está dentro. Defino $g(z)=\dfrac{1}{(z-1)(z-j)(z+j)}$:
+\[
+	g(-1) = \frac{1}{(-1-1)(-1-j)(-1+j)} = \frac{1}{(-2)\bigl[(-1)^2+1\bigr]}
+	= \frac{1}{(-2)(2)} = -\frac{1}{4}
+\]
+\[
+	\boxed{\oint_{C_1} \frac{dz}{z^4-1} = j2\pi\cdot\!\left(-\tfrac{1}{4}\right) = -\frac{j\pi}{2}}
+\]
+
+\smallskip
+\noindent\textit{Sobre $C_2: |z-j|=1$, centro $j$:}
+
+$|1-j|=\sqrt{2}>1$;\; $|{-1-j}|=\sqrt{2}>1$;\; $|j-j|=0<1$\checkmark;\; $|{-j-j}|=2>1$.
+Solo $p_3=j$ está dentro. Defino $h(z)=\dfrac{1}{(z-1)(z+1)(z+j)}$:
+\[
+	h(j) = \frac{1}{(j-1)(j+1)(j+j)} = \frac{1}{(j^2-1)(2j)} = \frac{1}{(-2)(2j)} = \frac{1}{-4j} = \frac{j}{4}
+\]
+\[
+	\boxed{\oint_{C_2} \frac{dz}{z^4-1} = j2\pi\cdot\frac{j}{4} = -\frac{\pi}{2}}
+\]
+
+% ***********************************************
+%				Ejercicio 14
+% ***********************************************
+\section*{Ejercicio 14: Singularidades y residuos}
+
+\noindent\textit{Fórmulas (sec.~2.9):}
+\begin{itemize}[nosep]
+	\item Polo simple: $\operatorname{Res}(f,p) = \lim_{z\to p}(z-p)f(z)$, o bien $= g(p)/h'(p)$ si $f=g/h$ con $h(p)=0$.
+	\item Polo orden $m$: $\operatorname{Res}(f,p) = \dfrac{1}{(m-1)!}\lim_{z\to p}\dfrac{d^{m-1}}{dz^{m-1}}\!\left[(z-p)^m f(z)\right]$.
+	\item Singularidad removible: $\operatorname{Res}=0$.
+\end{itemize}
+
+\bigskip
+
+\noindent\textbf{a) $f(z) = \dfrac{e^{2z}}{(z-1)^2}$}
+
+Polo de orden $m=2$ en $z_0=1$. Se tiene $(z-1)^2 f(z)=e^{2z}$.
+\[
+	\operatorname{Res}(f,1) = \frac{1}{1!}\lim_{z\to1}\frac{d}{dz}\,e^{2z}
+	= 2e^{2z}\big|_{z=1} = \boxed{2e^2}
+\]
+
+\bigskip
+
+\noindent\textbf{b) $f(z) = \dfrac{z}{(z+1)(z+2)}$}
+
+Polos simples en $z=-1$ y $z=-2$.
+\begin{align*}
+	\operatorname{Res}(f,-1) &= \lim_{z\to-1}(z+1)f(z) = \left.\frac{z}{z+2}\right|_{z=-1} = \boxed{-1} \\[4pt]
+	\operatorname{Res}(f,-2) &= \lim_{z\to-2}(z+2)f(z) = \left.\frac{z}{z+1}\right|_{z=-2} = \frac{-2}{-1} = \boxed{2}
+\end{align*}
+
+\bigskip
+
+\noindent\textbf{c) $f(z) = \dfrac{z+1}{z^2+2z} = \dfrac{z+1}{z(z+2)}$}
+
+Polos simples en $z=0$ y $z=-2$.
+\begin{align*}
+	\operatorname{Res}(f,0) &= \left.\frac{z+1}{z+2}\right|_{z=0} = \boxed{\dfrac{1}{2}} \\[4pt]
+	\operatorname{Res}(f,-2) &= \left.\frac{z+1}{z}\right|_{z=-2} = \frac{-1}{-2} = \boxed{\dfrac{1}{2}}
+\end{align*}
+
+\bigskip
+
+\noindent\textbf{d) $f(z) = \dfrac{z-\sin z}{z^3}$}
+
+Se estudia el tipo de singularidad evaluando $\lim_{z\to 0}f(z)$ (forma $0/0$, se aplica L'Hôpital):
+\[
+	\lim_{z\to 0}\frac{z-\sin z}{z^3}
+	\overset{\text{L'H}}{=} \lim_{z\to 0}\frac{1-\cos z}{3z^2}
+	\overset{\text{L'H}}{=} \lim_{z\to 0}\frac{\sin z}{6z}
+	\overset{\text{L'H}}{=} \lim_{z\to 0}\frac{\cos z}{6} = \frac{1}{6}.
+\]
+El límite existe y es finito: $z=0$ es una \textbf{singularidad removible}.
+\[
+	\boxed{\operatorname{Res}(f,0) = 0}
+\]
+
+
+% ***********************************************
+%				Ejercicio 15
+% ***********************************************
+\section*{Ejercicio 15: Fracciones parciales y diagramas de polos y ceros}
+
+\noindent\textit{Método (sec.~2.9):} para cada polo simple $p$: $K = \lim_{z\to p}(z-p)f(z)$; para polo de orden $m$: usar la fórmula con derivada de orden $(m-j)$.
+
+\medskip
+
+\noindent\textbf{a) $\dfrac{1}{z(z-1)}$}\quad Polos simples: $p_1=0$, $p_2=1$.
+\[
+	A = \left.\frac{1}{z-1}\right|_0 = -1,\quad
+	B = \left.\frac{1}{z}\right|_1 = 1.
+	\qquad
+	\boxed{\frac{1}{z(z-1)} = \frac{-1}{z} + \frac{1}{z-1}}
+\]
+
+\begin{figure}[H]
+\centering
+\includestandalone[width=0.3\linewidth]{figures/fig_pz_15a/fig_pz_15a}
+\end{figure}
+
+
+\medskip
+
+\noindent\textbf{b) $\dfrac{z+2}{(z+1)(z-3)}$}\quad Polos simples: $p_1=-1$, $p_2=3$.\quad Cero: $z_1=-2$.
+\[
+	A = \left.\frac{z+2}{z-3}\right|_{-1} = -\tfrac{1}{4},\quad
+	B = \left.\frac{z+2}{z+1}\right|_{3} = \tfrac{5}{4}.
+	\qquad
+	\boxed{\frac{z+2}{(z+1)(z-3)} = \frac{-1/4}{z+1} + \frac{5/4}{z-3}}
+\]
+
+\begin{figure}[H]
+\centering
+\includestandalone[width=0.3\linewidth]{figures/fig_pz_15b/fig_pz_15b}
+\end{figure}
+
+
+\medskip
+
+\noindent\textbf{c) $\dfrac{2z+9}{(z+3)(z+4)}$}\quad Polos simples: $p_1=-3$, $p_2=-4$.\quad Cero: $z_1=-\tfrac{9}{2}$.
+\[
+	A = \left.\frac{2z+9}{z+4}\right|_{-3} = 3,\quad
+	B = \left.\frac{2z+9}{z+3}\right|_{-4} = -1.
+	\qquad
+	\boxed{\frac{2z+9}{(z+3)(z+4)} = \frac{3}{z+3} - \frac{1}{z+4}}
+\]
+
+\begin{figure}[H]
+\centering
+\includestandalone[width=0.3\linewidth]{figures/fig_pz_15c/fig_pz_15c}
+\end{figure}
+
+
+\medskip
+
+\noindent\textbf{d) $\dfrac{z}{(z-2)(z+2)}$}\quad Polos simples: $p_1=2$, $p_2=-2$.\quad Cero: $z_1=0$.
+\[
+	A = \left.\frac{z}{z+2}\right|_2 = \tfrac{1}{2},\quad
+	B = \left.\frac{z}{z-2}\right|_{-2} = \tfrac{1}{2}.
+	\qquad
+	\boxed{\frac{z}{z^2-4} = \frac{1/2}{z-2} + \frac{1/2}{z+2}}
+\]
+
+\begin{figure}[H]
+\centering
+\includestandalone[width=0.3\linewidth]{figures/fig_pz_15d/fig_pz_15d}
+\end{figure}
+
+
+\medskip
+
+\noindent\textbf{e) $\dfrac{5z}{(z+1)^2(z+4)}$}\quad Polo doble $p_1=-1$, polo simple $p_2=-4$.\quad Cero: $z_1=0$.
+\[
+	C = \left.\frac{5z}{(z+1)^2}\right|_{-4} = \frac{-20}{9}, \quad
+	B_2 = \left.\frac{5z}{z+4}\right|_{-1} = -\tfrac{5}{3}, \quad
+	B_1 = \left.\frac{d}{dz}\!\left[\frac{5z}{z+4}\right]\right|_{-1}
+	= \left.\frac{20}{(z+4)^2}\right|_{-1} = \tfrac{20}{9}.
+\]
+\[
+	\boxed{\frac{5z}{(z+1)^2(z+4)} = \frac{-5/3}{(z+1)^2} + \frac{20/9}{z+1} - \frac{20/9}{z+4}}
+\]
+
+\begin{figure}[H]
+\centering
+\includestandalone[width=0.3\linewidth]{figures/fig_pz_15e/fig_pz_15e}
+\end{figure}
+
+
+\medskip
+
+\noindent\textbf{f) $\dfrac{z^2+1}{(z-1)(z-2)^2}$}\quad Polo simple $p_1=1$, polo doble $p_2=2$.\quad Ceros: $z_{1,2}=\pm j$.
+\[
+	A = \left.\frac{z^2+1}{(z-2)^2}\right|_1 = 2, \quad
+	B_2 = \left.\frac{z^2+1}{z-1}\right|_2 = 5, \quad
+	B_1 = \left.\frac{z^2-2z-1}{(z-1)^2}\right|_2 = -1.
+\]
+\[
+	\boxed{\frac{z^2+1}{(z-1)(z-2)^2} = \frac{2}{z-1} + \frac{5}{(z-2)^2} - \frac{1}{z-2}}
+\]
+
+\begin{figure}[H]
+\centering
+\includestandalone[width=0.3\linewidth]{figures/fig_pz_15f/fig_pz_15f}
+\end{figure}
+
+
+\medskip
+
+\noindent\textbf{g) $\dfrac{3(z+1)}{z^2+2z+5}$}\quad Polos complejos conjugados: $p_{1,2}=-1\pm 2j$.\quad Cero: $z_1=-1$.
+\[
+	A = \frac{3(-1+2j+1)}{4j} = \tfrac{3}{2}, \qquad B = \overline{A} = \tfrac{3}{2}.
+	\qquad
+	\boxed{\frac{3(z+1)}{z^2+2z+5} = \frac{3/2}{z+1-2j} + \frac{3/2}{z+1+2j}}
+\]
+
+\begin{figure}[H]
+\centering
+\includestandalone[width=0.3\linewidth]{figures/fig_pz_15g/fig_pz_15g}
+\end{figure}
+
+
+\medskip
+
+\noindent\textbf{h) $\dfrac{1}{(z^2+1)(z+2)}$}\quad Polos simples: $p_1=j$, $p_2=-j$, $p_3=-2$.
+\[
+	A = \frac{1}{(2j)(j+2)} = \frac{-1-2j}{10}, \quad
+	B = \overline{A} = \frac{-1+2j}{10}, \quad
+	C = \frac{1}{5}.
+\]
+\[
+	\boxed{\frac{1}{(z^2+1)(z+2)} = \frac{(-1-2j)/10}{z-j} + \frac{(-1+2j)/10}{z+j} + \frac{1/5}{z+2}}
+\]
+
+\bigskip
+
+
+% ***********************************************
+%				Ejercicio 16
+% ***********************************************
+\section*{Ejercicio 16: Módulo y fase sobre el eje imaginario y el círculo unitario}
+
+\subsection*{Lectura vectorial}
+
+Una función racional admite la factorización
+\[
+	F(z) = K\,\frac{\prod_i (z-z_i)}{\prod_j (z-p_j)}.
+\]
+Cada factor $z-a$, con $a$ un polo o un cero de $F$, se lee como el vector que va \emph{desde} el punto $a$ \emph{hasta} el punto $z$ donde se evalúa la función: su módulo $|z-a|$ es la distancia entre ambos puntos y su argumento $\angle(z-a)$ es la inclinación de ese vector respecto del eje real positivo. De aquí,
+\[
+	|F(z)| = |K|\,\frac{\prod_i |z-z_i|}{\prod_j |z-p_j|},\qquad
+	\angle F(z) = \angle K + \sum_i \angle(z-z_i) \;-\; \sum_j \angle(z-p_j).
+\]
+El módulo es un producto de distancias y la fase es una suma algebraica de ángulos (positivos los ceros, negativos los polos). Evaluar $F$ sobre una curva consiste entonces en mover el punto $z$ a lo largo de ella y llevar cuenta de cómo cambian esas distancias y esos ángulos. Si la curva pasa por un polo, la distancia correspondiente se anula y $|F|$ diverge; si pasa por un cero, $|F|$ se hace cero.
+
+\subsection*{Simetría por coeficientes reales}
+
+Todas las funciones del Ej.~15 tienen coeficientes reales, de modo que $F(\bar z) = \overline{F(z)}$. Como el eje $j\omega$ y el círculo unitario son invariantes bajo conjugación ($\overline{jy}=-jy$,\, $\overline{e^{j\theta}}=e^{-j\theta}$),
+\[
+	|F(-jy)| = |F(jy)|,\;\; \angle F(-jy) = -\angle F(jy);\qquad
+	|F(e^{-j\theta})| = |F(e^{j\theta})|,\;\; \angle F(e^{-j\theta}) = -\angle F(e^{j\theta}).
+\]
+El módulo es par y la fase es impar sobre cada curva. Basta por lo tanto dar las expresiones para $y>0$ (resp.\ $\theta\in(0,\pi)$); el resto se obtiene por reflexión.
+
+\subsection*{Convención sobre $\arctan$}
+
+A lo largo del ejercicio escribimos todo ángulo como $\arctan(\text{Im}/\text{Re})$ del número complejo correspondiente. \textbf{La notación $\arctan(b/a)$ debe entenderse con la corrección de cuadrante que imponen los signos de $a$ y $b$}: es el ángulo del vector $(a,b)$ en $(-\pi,\pi]$. Con esta convención un mismo $\arctan(b/a)$ cubre todos los casos ($a\gtrless 0$, $b\gtrless 0$, incluso $a=0$, donde vale $\pm\pi/2$ según el signo de $b$), y no hace falta bifurcar en cada factor.
+
+\subsection*{Tabla de aportes sobre el eje imaginario}
+
+Sustituyendo $z=jy$ (con $y>0$) en un factor $z-a$, donde $a=\alpha+j\beta$ es un polo o cero cualquiera:
+\[
+	\renewcommand{\arraystretch}{1.5}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sustitución }z=jy & |z-a| & \angle(z-a) \\\hline
+	z            & jy                      & y                              & \pi/2 \\
+	z-a          & -\alpha + j(y-\beta)    & \sqrt{\alpha^2+(y-\beta)^2}   & \arctan\!\dfrac{y-\beta}{-\alpha}
+	\end{array}
+\]
+Casos particulares: para un polo/cero \emph{real} ($\beta=0$) la fila se reduce a un vector $-\alpha+jy$, con módulo $\sqrt{\alpha^2+y^2}$ y ángulo $\arctan(y/(-\alpha))$. Un par conjugado $(z-p)(z-\bar p)$ con $p=\alpha+j\beta$ se procesa aplicando la fila genérica a cada uno de sus dos factores.
+
+\subsection*{Tabla de aportes sobre el círculo unitario}
+
+Sustituyendo $z=e^{j\theta}$ (con $\theta\in(0,\pi)$):
+\[
+	\renewcommand{\arraystretch}{1.5}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sustitución }z=e^{j\theta} & |z-a| & \angle(z-a) \\\hline
+	z            & e^{j\theta}                                 & 1                                                       & \theta \\
+	z-a          & (\cos\theta-\alpha)+j(\sin\theta-\beta)     & \sqrt{1+\alpha^2+\beta^2-2\alpha\cos\theta-2\beta\sin\theta} & \arctan\!\dfrac{\sin\theta-\beta}{\cos\theta-\alpha}
+	\end{array}
+\]
+Para un polo/cero real ($\beta=0$): módulo $\sqrt{1+\alpha^2-2\alpha\cos\theta}$ y ángulo $\arctan(\sin\theta/(\cos\theta-\alpha))$. Un par conjugado se procesa aplicando la fila a cada factor por separado.
+
+\bigskip\hrule\bigskip
+
+\noindent\textbf{a) $F(z)=\dfrac{1}{z(z-1)}$}\;\textemdash\; Polos: $0$ (sobre eje $j\omega$ y sobre círculo) y $1$ (sobre círculo en $\theta=0$). Sin ceros finitos.
+
+\medskip
+\noindent\textit{Eje imaginario} ($y>0$). Aplicando la tabla a cada factor del denominador:
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z   & jy     & y            & \pi/2 \\
+	z-1 & -1+jy  & \sqrt{1+y^2} & \arctan\tfrac{y}{-1}
+	\end{array}
+\]
+Ambos factores están en el denominador: sus módulos dividen, sus ángulos restan.
+\[
+	|F(jy)| = \frac{1}{|jy|\,|jy-1|} = \frac{1}{y\,\sqrt{1+y^2}},\qquad
+	\angle F(jy) = -\angle(jy) - \angle(jy-1) = -\frac{\pi}{2} - \arctan\!\frac{y}{-1}.
+\]
+
+\medskip
+\noindent\textit{Círculo unitario} ($\theta\in(0,\pi)$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z   & e^{j\theta}                & 1                    & \theta \\
+	z-1 & (\cos\theta-1)+j\sin\theta & \sqrt{2-2\cos\theta} & \arctan\tfrac{\sin\theta}{\cos\theta-1}
+	\end{array}
+\]
+\[
+	|F(e^{j\theta})| = \frac{1}{\sqrt{2-2\cos\theta}},\qquad
+	\angle F(e^{j\theta}) = -\theta - \arctan\!\frac{\sin\theta}{\cos\theta-1}.
+\]
+
+\noindent\textit{Lectura:} $|F|$ diverge en $y\to 0$ (polo en el origen) y en $\theta=0$ (polo en $z=1$). Sobre el eje $j\omega$ no hay otras singularidades; sobre el círculo tampoco.
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.95\linewidth]{figures/fig_ej16_a/fig_ej16_a}
+	\caption{a)\enspace Amplitud y fase de $1/[z(z-1)]$ sobre el eje imaginario y el círculo unitario.}
+	\label{fig:resp16a}
+\end{figure}
+
+\bigskip
+
+\noindent\textbf{b) $F(z)=\dfrac{z+2}{(z+1)(z-3)}$}\;\textemdash\; Cero $z_1=-2$; polos $p_1=-1$ (sobre círculo en $\theta=\pi$), $p_2=3$ (fuera).
+
+\medskip
+\noindent\textit{Eje imaginario} ($y>0$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z+2\ \text{(cero)}  & 2+jy  & \sqrt{4+y^2} & \arctan\tfrac{y}{2} \\
+	z+1\ \text{(polo)}  & 1+jy  & \sqrt{1+y^2} & \arctan\tfrac{y}{1} \\
+	z-3\ \text{(polo)}  & -3+jy & \sqrt{9+y^2} & \arctan\tfrac{y}{-3}
+	\end{array}
+\]
+\[
+	|F(jy)| = \frac{|jy+2|}{|jy+1|\,|jy-3|} = \frac{\sqrt{4+y^2}}{\sqrt{1+y^2}\,\sqrt{9+y^2}},
+\]
+\[
+	\angle F(jy) = \angle(jy+2) - \angle(jy+1) - \angle(jy-3) = \arctan\!\frac{y}{2} - \arctan\!\frac{y}{1} - \arctan\!\frac{y}{-3}.
+\]
+
+\medskip
+\noindent\textit{Círculo unitario} ($\theta\in(0,\pi)$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z+2 & (\cos\theta+2)+j\sin\theta & \sqrt{5+4\cos\theta}  & \arctan\tfrac{\sin\theta}{\cos\theta+2} \\
+	z+1 & (\cos\theta+1)+j\sin\theta & \sqrt{2+2\cos\theta}  & \arctan\tfrac{\sin\theta}{\cos\theta+1} \\
+	z-3 & (\cos\theta-3)+j\sin\theta & \sqrt{10-6\cos\theta} & \arctan\tfrac{\sin\theta}{\cos\theta-3}
+	\end{array}
+\]
+\[
+	|F(e^{j\theta})| = \sqrt{\frac{5+4\cos\theta}{(2+2\cos\theta)(10-6\cos\theta)}},
+\]
+\[
+	\angle F(e^{j\theta}) = \arctan\!\frac{\sin\theta}{\cos\theta+2} - \arctan\!\frac{\sin\theta}{\cos\theta+1} - \arctan\!\frac{\sin\theta}{\cos\theta-3}.
+\]
+
+\noindent\textit{Lectura:} el único polo sobre cualquiera de las dos curvas es $p_1=-1$, que toca el círculo en $\theta=\pi$ y hace diverger $|F|$. El cero $-2$ no toca ninguna curva, así que $|F|$ no se anula.
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.95\linewidth]{figures/fig_ej16_b/fig_ej16_b}
+	\caption{b)\enspace Amplitud y fase de $(z+2)/[(z+1)(z-3)]$. Singularidad en $\theta=\pi$ por el polo $p_1=-1$.}
+	\label{fig:resp16b}
+\end{figure}
+
+\bigskip
+
+\noindent\textbf{c) $F(z)=\dfrac{2z+9}{(z+3)(z+4)}$}\;\textemdash\; Escribimos $F=2\,(z+9/2)/[(z+3)(z+4)]$: constante $K=2$, cero $z_1=-9/2$, polos $p_1=-3$, $p_2=-4$. Ninguna singularidad sobre las dos curvas.
+
+\medskip
+\noindent\textit{Eje imaginario} ($y>0$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z+9/2\ \text{(cero)} & 9/2+jy & \sqrt{81/4+y^2} & \arctan\tfrac{y}{9/2} \\
+	z+3\ \text{(polo)}   & 3+jy   & \sqrt{9+y^2}    & \arctan\tfrac{y}{3} \\
+	z+4\ \text{(polo)}   & 4+jy   & \sqrt{16+y^2}   & \arctan\tfrac{y}{4}
+	\end{array}
+\]
+Con $\sqrt{81/4+y^2}=\tfrac{1}{2}\sqrt{81+4y^2}$ y $\arctan(y/(9/2))=\arctan(2y/9)$,
+\[
+	|F(jy)| = \frac{2\,|jy+9/2|}{|jy+3|\,|jy+4|} = \frac{\sqrt{81+4y^2}}{\sqrt{9+y^2}\,\sqrt{16+y^2}},
+\]
+\[
+	\angle F(jy) = \arctan\!\frac{2y}{9} - \arctan\!\frac{y}{3} - \arctan\!\frac{y}{4}.
+\]
+
+\medskip
+\noindent\textit{Círculo unitario} ($\theta\in(0,\pi)$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z+9/2 & (\cos\theta+9/2)+j\sin\theta & \tfrac{1}{2}\sqrt{85+36\cos\theta} & \arctan\tfrac{2\sin\theta}{2\cos\theta+9} \\
+	z+3   & (\cos\theta+3)+j\sin\theta   & \sqrt{10+6\cos\theta}              & \arctan\tfrac{\sin\theta}{\cos\theta+3} \\
+	z+4   & (\cos\theta+4)+j\sin\theta   & \sqrt{17+8\cos\theta}              & \arctan\tfrac{\sin\theta}{\cos\theta+4}
+	\end{array}
+\]
+\[
+	|F(e^{j\theta})| = \sqrt{\frac{85+36\cos\theta}{(10+6\cos\theta)(17+8\cos\theta)}},
+\]
+\[
+	\angle F(e^{j\theta}) = \arctan\!\frac{2\sin\theta}{9+2\cos\theta} - \arctan\!\frac{\sin\theta}{\cos\theta+3} - \arctan\!\frac{\sin\theta}{\cos\theta+4}.
+\]
+
+\noindent\textit{Lectura:} en $y=0$ y en $\theta=0$ los tres $\arctan$ se anulan y $F$ resulta real y positiva: $F(0)=9/12=3/4$, con fase $0$.
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.95\linewidth]{figures/fig_ej16_c/fig_ej16_c}
+	\caption{c)\enspace Amplitud y fase de $(2z+9)/[(z+3)(z+4)]$. Sin singularidades.}
+	\label{fig:resp16c}
+\end{figure}
+
+\bigskip
+
+\noindent\textbf{d) $F(z)=\dfrac{z}{z^2-4}$}\;\textemdash\; $F=z/[(z-2)(z+2)]$: cero $z_1=0$ (sobre eje $j\omega$; fuera del círculo); polos $p_{1,2}=\pm 2$ (fuera de ambas curvas).
+
+\medskip
+\noindent\textit{Eje imaginario} ($y>0$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z\ \text{(cero)}    & jy    & y            & \pi/2 \\
+	z-2\ \text{(polo)}  & -2+jy & \sqrt{4+y^2} & \arctan\tfrac{y}{-2} \\
+	z+2\ \text{(polo)}  & 2+jy  & \sqrt{4+y^2} & \arctan\tfrac{y}{2}
+	\end{array}
+\]
+\[
+	|F(jy)| = \frac{|jy|}{|jy-2|\,|jy+2|} = \frac{y}{4+y^2},\qquad
+	\angle F(jy) = \frac{\pi}{2} - \arctan\!\frac{y}{-2} - \arctan\!\frac{y}{2}.
+\]
+Los dos polos reales simétricos producen aportes de fase suplementarios ($\arctan(y/(-2))+\arctan(y/2)=\pi$); el resultado es $\angle F(jy)=-\pi/2$ constante para todo $y>0$.
+
+\medskip
+\noindent\textit{Círculo unitario} ($\theta\in(0,\pi)$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z   & e^{j\theta}                & 1                    & \theta \\
+	z-2 & (\cos\theta-2)+j\sin\theta & \sqrt{5-4\cos\theta} & \arctan\tfrac{\sin\theta}{\cos\theta-2} \\
+	z+2 & (\cos\theta+2)+j\sin\theta & \sqrt{5+4\cos\theta} & \arctan\tfrac{\sin\theta}{\cos\theta+2}
+	\end{array}
+\]
+\[
+	|F(e^{j\theta})| = \frac{1}{\sqrt{(5-4\cos\theta)(5+4\cos\theta)}} = \frac{1}{\sqrt{25-16\cos^2\theta}},
+\]
+\[
+	\angle F(e^{j\theta}) = \theta - \arctan\!\frac{\sin\theta}{\cos\theta-2} - \arctan\!\frac{\sin\theta}{\cos\theta+2}.
+\]
+
+\noindent\textit{Lectura:} el cero en $0$ anula $|F|$ sólo en $y=0$. Sobre el círculo no hay ni ceros ni polos: $|F|$ oscila entre $1/5$ (en $\theta=\pm\pi/2$) y $1/3$ (en $\theta=0,\pi$).
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.95\linewidth]{figures/fig_ej16_d/fig_ej16_d}
+	\caption{d)\enspace Amplitud y fase de $z/(z^2-4)$. Sin singularidades sobre el círculo; fase constante $-\pi/2$ en el semieje $y>0$.}
+	\label{fig:resp16d}
+\end{figure}
+
+\bigskip
+
+\noindent\textbf{e) $F(z)=\dfrac{5z}{(z+1)^2(z+4)}$}\;\textemdash\; Constante $K=5$, cero $z_1=0$; polo doble $p_1=-1$ (sobre círculo en $\theta=\pi$); polo simple $p_2=-4$.
+
+\medskip
+\noindent\textit{Eje imaginario} ($y>0$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z\ \text{(cero)}           & jy    & y             & \pi/2 \\
+	z+1\ \text{(polo doble)}   & 1+jy  & \sqrt{1+y^2}  & \arctan\tfrac{y}{1} \\
+	z+4\ \text{(polo)}         & 4+jy  & \sqrt{16+y^2} & \arctan\tfrac{y}{4}
+	\end{array}
+\]
+El factor $z+1$ aparece al cuadrado en el denominador: su módulo contribuye al cuadrado y su ángulo con un factor $-2$.
+\[
+	|F(jy)| = \frac{5\,|jy|}{|jy+1|^2\,|jy+4|} = \frac{5y}{(1+y^2)\sqrt{16+y^2}},\qquad
+	\angle F(jy) = \frac{\pi}{2} - 2\arctan\!\frac{y}{1} - \arctan\!\frac{y}{4}.
+\]
+
+\medskip
+\noindent\textit{Círculo unitario} ($\theta\in(0,\pi)$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z             & e^{j\theta}                & 1                     & \theta \\
+	z+1\ \text{(doble)} & (\cos\theta+1)+j\sin\theta & \sqrt{2+2\cos\theta}  & \arctan\tfrac{\sin\theta}{\cos\theta+1} \\
+	z+4           & (\cos\theta+4)+j\sin\theta & \sqrt{17+8\cos\theta} & \arctan\tfrac{\sin\theta}{\cos\theta+4}
+	\end{array}
+\]
+\[
+	|F(e^{j\theta})| = \frac{5}{(2+2\cos\theta)\sqrt{17+8\cos\theta}},
+\]
+\[
+	\angle F(e^{j\theta}) = \theta - 2\arctan\!\frac{\sin\theta}{\cos\theta+1} - \arctan\!\frac{\sin\theta}{\cos\theta+4}.
+\]
+
+\noindent\textit{Lectura:} el polo doble en $-1$ hace diverger $|F|$ en $\theta=\pi$. Sobre el eje $j\omega$ el cero anula $|F|$ en $y=0$.
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.95\linewidth]{figures/fig_ej16_e/fig_ej16_e}
+	\caption{e)\enspace Amplitud y fase de $5z/[(z+1)^2(z+4)]$. Singularidad doble en $\theta=\pi$.}
+	\label{fig:resp16e}
+\end{figure}
+
+\bigskip
+
+\noindent\textbf{f) $F(z)=\dfrac{z^2+1}{(z-1)(z-2)^2}$}\;\textemdash\; Factorizamos $z^2+1=(z-j)(z+j)$: ceros $\pm j$ (sobre eje $j\omega$ en $y=\pm 1$ y sobre círculo en $\theta=\pm\pi/2$); polo simple $p_1=1$ (círculo en $\theta=0$); polo doble $p_2=2$.
+
+\medskip
+\noindent\textit{Eje imaginario} ($y>0$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z-j\ \text{(cero)}          & j(y-1) & |y-1|        & \arctan\tfrac{y-1}{0} \\
+	z+j\ \text{(cero)}          & j(y+1) & y+1          & \arctan\tfrac{y+1}{0} \\
+	z-1\ \text{(polo)}          & -1+jy  & \sqrt{1+y^2} & \arctan\tfrac{y}{-1} \\
+	z-2\ \text{(polo doble)}    & -2+jy  & \sqrt{4+y^2} & \arctan\tfrac{y}{-2}
+	\end{array}
+\]
+Combinando los módulos, $|jy-j|\,|jy+j| = |y-1|\,(y+1) = |1-y^2|$:
+\[
+	|F(jy)| = \frac{|jy-j|\,|jy+j|}{|jy-1|\,|jy-2|^2} = \frac{|1-y^2|}{\sqrt{1+y^2}\,(4+y^2)},
+\]
+\[
+	\angle F(jy) = \arctan\!\frac{y-1}{0} + \arctan\!\frac{y+1}{0} - \arctan\!\frac{y}{-1} - 2\arctan\!\frac{y}{-2}.
+\]
+
+\medskip
+\noindent\textit{Círculo unitario} ($\theta\in(0,\pi)$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z-j          & \cos\theta+j(\sin\theta-1) & \sqrt{2-2\sin\theta} & \arctan\tfrac{\sin\theta-1}{\cos\theta} \\
+	z+j          & \cos\theta+j(\sin\theta+1) & \sqrt{2+2\sin\theta} & \arctan\tfrac{\sin\theta+1}{\cos\theta} \\
+	z-1          & (\cos\theta-1)+j\sin\theta & \sqrt{2-2\cos\theta} & \arctan\tfrac{\sin\theta}{\cos\theta-1} \\
+	z-2\ \text{(doble)} & (\cos\theta-2)+j\sin\theta & \sqrt{5-4\cos\theta} & \arctan\tfrac{\sin\theta}{\cos\theta-2}
+	\end{array}
+\]
+Con $|e^{j\theta}-j|\,|e^{j\theta}+j|=\sqrt{(2-2\sin\theta)(2+2\sin\theta)}=\sqrt{4-4\sin^2\theta}=2|\cos\theta|$:
+\[
+	|F(e^{j\theta})| = \frac{2|\cos\theta|}{\sqrt{2-2\cos\theta}\,(5-4\cos\theta)},
+\]
+\[
+	\angle F(e^{j\theta}) = \arctan\!\frac{\sin\theta-1}{\cos\theta} + \arctan\!\frac{\sin\theta+1}{\cos\theta} - \arctan\!\frac{\sin\theta}{\cos\theta-1} - 2\arctan\!\frac{\sin\theta}{\cos\theta-2}.
+\]
+
+\noindent\textit{Lectura:} los ceros $\pm j$ anulan $|F|$ en $y=\pm 1$ (eje $j\omega$) y en $\theta=\pm\pi/2$ (círculo); ésta es la razón del $|\cos\theta|$ en el numerador del círculo (proveniente de $z^2+1$ evaluado). El polo $p_1=1$ hace diverger $|F|$ en $\theta=0$.
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.95\linewidth]{figures/fig_ej16_f/fig_ej16_f}
+	\caption{f)\enspace Amplitud y fase de $(z^2+1)/[(z-1)(z-2)^2]$. Ceros sobre las dos curvas; polo sobre el círculo en $\theta=0$.}
+	\label{fig:resp16f}
+\end{figure}
+
+\bigskip
+
+\noindent\textbf{g) $F(z)=\dfrac{3(z+1)}{z^2+2z+5}$}\;\textemdash\; Constante $K=3$, cero $z_1=-1$ (sobre círculo en $\theta=\pi$); polos complejos $p_{1,2}=-1\pm 2j$, con $|p|=\sqrt{5}>1$. Ninguno toca las dos curvas. Factorizamos el denominador como $(z-p)(z-\bar p)$ con $p=-1+2j$, $\bar p=-1-2j$.
+
+\medskip
+\noindent\textit{Eje imaginario} ($y>0$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z+1\ \text{(cero)}         & 1+jy     & \sqrt{1+y^2}      & \arctan\tfrac{y}{1} \\
+	z-p,\ p=-1+2j\ \text{(polo)} & 1+j(y-2) & \sqrt{1+(y-2)^2}  & \arctan\tfrac{y-2}{1} \\
+	z-\bar p\ \text{(polo)}    & 1+j(y+2) & \sqrt{1+(y+2)^2}  & \arctan\tfrac{y+2}{1}
+	\end{array}
+\]
+\[
+	|F(jy)| = \frac{3\,|jy+1|}{|jy-p|\,|jy-\bar p|} = \frac{3\sqrt{1+y^2}}{\sqrt{1+(y-2)^2}\,\sqrt{1+(y+2)^2}},
+\]
+\[
+	\angle F(jy) = \arctan\!\frac{y}{1} - \arctan\!\frac{y-2}{1} - \arctan\!\frac{y+2}{1}.
+\]
+
+\medskip
+\noindent\textit{Círculo unitario} ($\theta\in(0,\pi)$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z+1    & (\cos\theta+1)+j\sin\theta       & \sqrt{2+2\cos\theta}        & \arctan\tfrac{\sin\theta}{\cos\theta+1} \\
+	z-p    & (\cos\theta+1)+j(\sin\theta-2)   & \sqrt{6+2\cos\theta-4\sin\theta} & \arctan\tfrac{\sin\theta-2}{\cos\theta+1} \\
+	z-\bar p & (\cos\theta+1)+j(\sin\theta+2) & \sqrt{6+2\cos\theta+4\sin\theta} & \arctan\tfrac{\sin\theta+2}{\cos\theta+1}
+	\end{array}
+\]
+\[
+	|F(e^{j\theta})| = \frac{3\sqrt{2+2\cos\theta}}{\sqrt{6+2\cos\theta-4\sin\theta}\,\sqrt{6+2\cos\theta+4\sin\theta}},
+\]
+\[
+	\angle F(e^{j\theta}) = \arctan\!\frac{\sin\theta}{\cos\theta+1} - \arctan\!\frac{\sin\theta-2}{\cos\theta+1} - \arctan\!\frac{\sin\theta+2}{\cos\theta+1}.
+\]
+
+\noindent\textit{Lectura:} el cero $z_1=-1$ anula $|F|$ en $\theta=\pi$. Ningún polo toca las curvas: el par conjugado externo sólo modula la respuesta sin introducir singularidades.
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.95\linewidth]{figures/fig_ej16_g/fig_ej16_g}
+	\caption{g)\enspace Amplitud y fase de $3(z+1)/(z^2+2z+5)$. Sin polos sobre las dos curvas.}
+	\label{fig:resp16g}
+\end{figure}
+
+\bigskip
+
+\noindent\textbf{h) $F(z)=\dfrac{1}{(z^2+1)(z+2)}$}\;\textemdash\; Factorizamos $z^2+1=(z-j)(z+j)$: sin ceros; polos $p_{1,2}=\pm j$ (sobre eje $j\omega$ en $y=\pm 1$ y sobre círculo en $\theta=\pm\pi/2$); polo $p_3=-2$.
+
+\medskip
+\noindent\textit{Eje imaginario} ($y>0$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z-j\ \text{(polo)} & j(y-1) & |y-1|        & \arctan\tfrac{y-1}{0} \\
+	z+j\ \text{(polo)} & j(y+1) & y+1          & \arctan\tfrac{y+1}{0} \\
+	z+2\ \text{(polo)} & 2+jy   & \sqrt{4+y^2} & \arctan\tfrac{y}{2}
+	\end{array}
+\]
+Como antes, $|jy-j|\,|jy+j|=|y-1|(y+1)=|1-y^2|$:
+\[
+	|F(jy)| = \frac{1}{|jy-j|\,|jy+j|\,|jy+2|} = \frac{1}{|1-y^2|\,\sqrt{4+y^2}},
+\]
+\[
+	\angle F(jy) = -\arctan\!\frac{y-1}{0} - \arctan\!\frac{y+1}{0} - \arctan\!\frac{y}{2}.
+\]
+
+\medskip
+\noindent\textit{Círculo unitario} ($\theta\in(0,\pi)$):
+\[
+	\renewcommand{\arraystretch}{1.3}
+	\begin{array}{l|c|c|c}
+	\text{Factor} & \text{Sust.} & |\cdot| & \angle \\\hline
+	z-j & \cos\theta+j(\sin\theta-1) & \sqrt{2-2\sin\theta} & \arctan\tfrac{\sin\theta-1}{\cos\theta} \\
+	z+j & \cos\theta+j(\sin\theta+1) & \sqrt{2+2\sin\theta} & \arctan\tfrac{\sin\theta+1}{\cos\theta} \\
+	z+2 & (\cos\theta+2)+j\sin\theta & \sqrt{5+4\cos\theta} & \arctan\tfrac{\sin\theta}{\cos\theta+2}
+	\end{array}
+\]
+Con $|e^{j\theta}-j|\,|e^{j\theta}+j|=\sqrt{4-4\sin^2\theta}=2|\cos\theta|$:
+\[
+	|F(e^{j\theta})| = \frac{1}{2|\cos\theta|\,\sqrt{5+4\cos\theta}},
+\]
+\[
+	\angle F(e^{j\theta}) = -\arctan\!\frac{\sin\theta-1}{\cos\theta} - \arctan\!\frac{\sin\theta+1}{\cos\theta} - \arctan\!\frac{\sin\theta}{\cos\theta+2}.
+\]
+
+\noindent\textit{Lectura:} los polos $\pm j$ son las únicas singularidades y aparecen duplicadas: en $y=\pm 1$ (eje $j\omega$) y en $\theta=\pm\pi/2$ (círculo). El polo $-2$ nunca toca las curvas.
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.95\linewidth]{figures/fig_ej16_h/fig_ej16_h}
+	\caption{h)\enspace Amplitud y fase de $1/[(z^2+1)(z+2)]$. Polos $\pm j$ sobre ambas curvas.}
+	\label{fig:resp16h}
+\end{figure}
+
+% ***********************************************
+%				Ejercicio 17
+% ***********************************************
+\section*{Ejercicio 17: Integrales por el teorema de residuos}
+
+\noindent\textit{Fórmula (sec.~2.9):} si $f$ tiene polos $p_1,\ldots,p_n$ \emph{dentro} de $C$ (recorrida en sentido antihorario):
+\[
+	\oint_C f(z)\,dz = j2\pi\sum_k \operatorname{Res}(f,p_k).
+\]
+
+\bigskip
+
+% ---- 17a ----
+\noindent\textbf{a) $\displaystyle\oint_{|z|=1}\frac{z^3}{2z+1}\,dz$}
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.38\linewidth]{figures/fig_tray_ej17a/fig_tray_ej17a}
+	\caption{Ej.~17a: contorno $C:|z|=1$ con el polo $p=-\tfrac{1}{2}$ (dentro).}
+	\label{fig:tray17a}
+\end{figure}
+ 
+La función se reescribe como $f(z)=\dfrac{z^3}{2(z+\frac{1}{2})}$. Polo simple en $p=-\tfrac{1}{2}$; como $\left|-\tfrac{1}{2}\right|=\tfrac{1}{2}<1$, está dentro de $C$.
+\[
+	\operatorname{Res}\!\left(f,-\tfrac{1}{2}\right)
+	= \lim_{z\to-1/2}(z+\tfrac{1}{2})\,f(z)
+	= \frac{(-1/2)^3}{2} = -\frac{1}{16}
+\]
+\[
+	\boxed{\oint_C f\,dz = j2\pi\cdot\!\left(-\frac{1}{16}\right) = -\frac{j\pi}{8}}
+\]
+
+\bigskip
+
+% ---- 17b ----
+\noindent\textbf{b) $\displaystyle\oint_{|z|=2}\frac{e^{-z}}{(z-1)^2}\,dz$}
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.42\linewidth]{figures/fig_tray_ej17b/fig_tray_ej17b}
+	\caption{Ej.~17b: contorno $C:|z|=2$ con el polo doble $p=1$ (dentro).}
+	\label{fig:tray17b}
+\end{figure}
+
+Polo de orden $m=2$ en $p=1$; como $|1|=1<2$, está dentro de $C$.
+\[
+	\operatorname{Res}(f,1)
+	= \frac{d}{dz}\!\left[e^{-z}\right]_{z=1}
+	= -e^{-z}\big|_{z=1} = -e^{-1}
+\]
+\[
+	\boxed{\oint_C f\,dz = j2\pi\cdot(-e^{-1}) = -\frac{j2\pi}{e}}
+\]
+
+\bigskip
+
+% ---- 17c ----
+\noindent\textbf{c) $\displaystyle\oint_C\frac{dz}{z(z+1)}$}
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.46\linewidth]{figures/fig_tray_ej17c/fig_tray_ej17c}
+	\caption{Ej.~17c: tres contornos con los polos $p_1=0$ y $p_2=-1$. $C_1$ encierra solo $p_1$; $C_2$ encierra ambos; $C_3$ encierra solo $p_2$.}
+	\label{fig:tray17c}
+\end{figure}
+
+Polos simples en $p_1=0$ y $p_2=-1$. Fracciones parciales: $\frac{1}{z(z+1)}=\frac{1}{z}-\frac{1}{z+1}$, por lo que $\operatorname{Res}(f,0)=1$ y $\operatorname{Res}(f,-1)=-1$.
+
+\smallskip
+\noindent\textit{$C_1$: $|z|=\tfrac{1}{2}$} — $|p_1|=0<\tfrac{1}{2}$ \checkmark;\; $|p_2|=1>\tfrac{1}{2}$ (fuera). Solo $p_1$ dentro.
+\[
+	\boxed{\oint_{C_1}\frac{dz}{z(z+1)} = j2\pi\cdot 1 = j2\pi}
+\]
+
+\noindent\textit{$C_2$: $|z|=2$} — $|p_1|=0<2$\checkmark;\; $|p_2|=1<2$\checkmark. Ambos polos dentro.
+\[
+	\boxed{\oint_{C_2}\frac{dz}{z(z+1)} = j2\pi\bigl(1+(-1)\bigr) = 0}
+\]
+
+\noindent\textit{$C_3$: $|z+1|=\tfrac{3}{4}$} — $|p_1+1|=1>\tfrac{3}{4}$ (fuera);\; $|p_2+1|=0<\tfrac{3}{4}$\checkmark. Solo $p_2$ dentro.
+\[
+	\boxed{\oint_{C_3}\frac{dz}{z(z+1)} = j2\pi\cdot(-1) = -j2\pi}
+\]
+ 
+\bigskip
+
+% ---- 17d ----
+\noindent\textbf{d) $\displaystyle\oint_C\frac{z\,dz}{(z-1)(z-2)^2}$}
+
+\begin{figure}[H]\centering
+	\includestandalone[width=0.50\linewidth]{figures/fig_tray_ej17d/fig_tray_ej17d}
+	\caption{Ej.~17d: dos contornos con el polo simple $p_1=1$ y el polo doble $p_2=2$. $C_1$ encierra solo $p_2$; $C_2$ encierra ambos.}
+	\label{fig:tray17d}
+\end{figure}
+
+Polo simple en $p_1=1$ y polo doble en $p_2=2$.
+\[
+	\operatorname{Res}(f,1) = \left.\frac{z}{(z-2)^2}\right|_{z=1} = \frac{1}{1} = 1
+\]
+\[
+	\operatorname{Res}(f,2) = \left.\frac{d}{dz}\!\left[\frac{z}{z-1}\right]\right|_{z=2}
+	= \left.\frac{-1}{(z-1)^2}\right|_{z=2} = -1
+\]
+
+\noindent\textit{$C_1$: $|z-2|=\tfrac{1}{2}$} — $|1-2|=1>\tfrac{1}{2}$ (fuera);\; $|2-2|=0<\tfrac{1}{2}$\checkmark. Solo $p_2$ dentro.
+\[
+	\boxed{\oint_{C_1}\frac{z\,dz}{(z-1)(z-2)^2} = j2\pi\cdot(-1) = -j2\pi}
+\]
+
+\noindent\textit{$C_2$: $|z-1|=2$} — $|1-1|=0<2$\checkmark;\; $|2-1|=1<2$\checkmark. Ambos polos dentro.
+\[
+	\boxed{\oint_{C_2}\frac{z\,dz}{(z-1)(z-2)^2} = j2\pi\bigl(1+(-1)\bigr) = 0}
+\]
+
+\end{document}

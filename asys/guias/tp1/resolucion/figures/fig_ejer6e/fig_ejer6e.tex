@@ -1,0 +1,49 @@
+% |z+1| <= 3  AND  -pi/4 <= Arg{z} <= pi/4
+% Intersección: disco centrado en (-1,0) ∩ sector ±45°
+% Punto de intersección de rayo a ±45° con círculo: x = (-1+sqrt(17))/2 ≈ 1.562
+\documentclass[border=5mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=0.52, font=\small]
+
+    % 1. Grilla
+    \draw[help lines, gray!30, step=1] (-4.5,-3.0) grid (2.8,3.0);
+
+    % 2. Región: clip al sector ±45°, rellenar el disco
+    \begin{scope}
+        \clip (0,0) -- ({6*cos(-45)},{6*sin(-45)}) arc(-45:45:6) -- cycle;
+        \fill[cyan!15] (-1,0) circle (3);
+    \end{scope}
+
+    % 3. Ejes
+    \draw[->, thick] (-4.7,0) -- (3.1,0) node[right] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-3.2) -- (0,3.3) node[above] {$\operatorname{Im}$};
+    \node[below right, font=\scriptsize] at (0,0) {$0$};
+
+    % 4. Bordes incluidos
+    % Arco del disco dentro del sector
+    \begin{scope}
+        \clip (0,0) -- ({6*cos(-45)},{6*sin(-45)}) arc(-45:45:6) -- cycle;
+        \draw[utnblue, thick] (-1,0) circle (3);
+    \end{scope}
+    % Disco completo en gris tenue (contexto)
+    \draw[gray!40, thin, dashed] (-1,0) circle (3);
+    % Segmentos radiales desde el origen a la circunferencia
+    \draw[utnblue, thick] (0,0) -- (1.562, 1.562);
+    \draw[utnblue, thick] (0,0) -- (1.562,-1.562);
+
+    % 5. Marcas
+    \foreach \x in {-4,-3,-2,-1,1,2}
+        \draw (\x,0.09)--(\x,-0.09) node[below, font=\scriptsize]{$\x$};
+    \foreach \y in {-3,-2,-1,1,2,3}
+        \draw (0.09,\y)--(-0.09,\y) node[left, font=\scriptsize]{$\y$};
+    % Centro del disco
+    \fill[gray] (-1,0) circle (1.5pt);
+    \node[gray, above, font=\scriptsize] at (-1,0.1) {$z_0{=}{-1}$};
+    % Ángulos
+    \node[utnblue, font=\tiny] at (2.2, 0.55) {$45^\circ$};
+    \node[utnblue, font=\tiny] at (2.2,-0.55) {$-45^\circ$};
+
+\end{tikzpicture}
+\end{document}

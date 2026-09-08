@@ -1,0 +1,62 @@
+\documentclass[border=3mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[
+    group style={group size=2 by 2, horizontal sep=2.0cm, vertical sep=1.8cm},
+    width=5.5cm, height=4.0cm,
+    tick label style={font=\tiny},
+    label style={font=\scriptsize},
+    title style={font=\scriptsize\bfseries},
+    grid=major, grid style={gray!20},
+]
+
+% --- Panel 1: |F(jy)| ---
+\nextgroupplot[
+    title={$|F(jy)|$\quad Eje Im},
+    xlabel={$y$}, ylabel={$|F|$},
+    xmin=-6, xmax=6, ymin=0, ymax=1.2,
+]
+\addplot[utnblue, thick, domain=-6:6, samples=300]
+    {sqrt(81+4*x^2)/(sqrt(9+x^2)*sqrt(16+x^2))};
+
+% --- Panel 2: ang F(jy) ---
+\nextgroupplot[
+    title={$\angle F(jy)$\quad Eje Im},
+    xlabel={$y$}, ylabel={rad},
+    xmin=-6, xmax=6, ymin=-3.5, ymax=3.5,
+    ytick={-3.14159,-1.5708,0,1.5708,3.14159},
+    yticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+]
+\addplot[orange!80!black, thick, domain=-6:6, samples=300, unbounded coords=jump]
+    {(mod(atan2(2*x,9)-atan2(x,3)-atan2(x,4)+180,360)-180)*pi/180};
+
+% --- Panel 3: |F(e^jt)| ---
+\nextgroupplot[
+    title={$|F(e^{j\theta})|$\quad Circ.\ unit.},
+    xlabel={$\theta$ (rad)}, ylabel={$|F|$},
+    xmin=-3.14159, xmax=3.14159, ymin=0, ymax=1.5,
+    xtick={-3.14159,-1.5708,0,1.5708,3.14159},
+    xticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+]
+\addplot[utnblue, thick, domain=-3.14159:3.14159, samples=400]
+    {sqrt(85+36*cos(deg(x)))/sqrt((10+6*cos(deg(x)))*(17+8*cos(deg(x))))};
+
+% --- Panel 4: ang F(e^jt) ---
+\nextgroupplot[
+    title={$\angle F(e^{j\theta})$\quad Circ.\ unit.},
+    xlabel={$\theta$ (rad)}, ylabel={rad},
+    xmin=-3.14159, xmax=3.14159, ymin=-3.5, ymax=3.5,
+    ytick={-3.14159,-1.5708,0,1.5708,3.14159},
+    yticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+    xtick={-3.14159,-1.5708,0,1.5708,3.14159},
+    xticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+]
+\addplot[orange!80!black, thick, domain=-3.14159:3.14159, samples=400, unbounded coords=jump]
+    {(mod(atan2(2*sin(deg(x)),2*cos(deg(x))+9)-atan2(sin(deg(x)),cos(deg(x))+3)-atan2(sin(deg(x)),cos(deg(x))+4)+180,360)-180)*pi/180};
+
+\end{groupplot}
+\end{tikzpicture}
+\end{document}
+ 

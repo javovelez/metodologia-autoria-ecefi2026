@@ -1,0 +1,92 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+\usetikzlibrary{decorations.pathmorphing, patterns}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small,
+        block/.style={draw, thick, fill=utnblue!8, minimum width=3cm, minimum height=1.1cm, rounded corners=2pt},
+        signal/.style={->, thick, utnblue},
+        spring/.style={decorate, decoration={zigzag, segment length=6, amplitude=4, pre length=3, post length=3}},
+        damper_body/.style={thick, fill=gray!15},
+    ]
+        % =============================================
+        % PANEL IZQUIERDO: FENÓMENO FÍSICO
+        % =============================================
+        \node[font=\bfseries, anchor=south] at (2.5, 6.5) {Fenómeno Físico};
+
+        % Techo / soporte
+        \fill[pattern=north east lines, pattern color=gray] (0, 6) rectangle (5, 6.3);
+        \draw[very thick] (0, 6) -- (5, 6);
+
+        % Resorte (lado izquierdo del soporte)
+        \draw[spring, thick] (1.5, 6) -- (1.5, 3.5) node[midway, left=4mm, font=\footnotesize] {$k$};
+
+        % Amortiguador (lado derecho)
+        % Cilindro
+        \draw[thick] (3.5, 6) -- (3.5, 5);
+        \draw[damper_body] (3.1, 5) rectangle (3.9, 4.8);
+        \draw[thick] (3.5, 4.8) -- (3.5, 3.5);
+        % Guías
+        \draw[thick] (3.0, 5.0) -- (3.0, 4.5);
+        \draw[thick] (4.0, 5.0) -- (4.0, 4.5);
+        \node[right=4mm, font=\footnotesize] at (4.0, 4.9) {$b$};
+
+        % Masa
+        \draw[thick, fill=utnblue!15] (0.5, 2.5) rectangle (4.5, 3.5);
+        \node at (2.5, 3) {\textbf{$m$}};
+
+        % Fuerza aplicada
+        \draw[->, ultra thick, red!70!black] (2.5, 2.5) -- (2.5, 1.2) 
+            node[right, font=\footnotesize] {$f(t)$};
+
+        % Desplazamiento
+        \draw[<->, thick, codegreen!70!black] (5.2, 3) -- (5.2, 1.5) 
+            node[midway, right, font=\footnotesize] {$y(t)$};
+
+        % =============================================
+        % FLECHA CENTRAL: MODELIZACIÓN
+        % =============================================
+        \draw[->, ultra thick, gray!70] (6, 3.5) -- (8, 3.5) 
+            node[midway, above, font=\footnotesize\bfseries] {Modelización};
+
+        % =============================================
+        % PANEL DERECHO: MODELO MATEMÁTICO
+        % =============================================
+        \node[font=\bfseries, anchor=south] at (12, 6.5) {Modelo Matemático};
+
+        % Ecuación diferencial
+        \node[draw, thick, rounded corners, fill=orange!8, inner sep=8pt] (eq) at (12, 5.5) {
+            $m\ddot{y} + b\dot{y} + ky = f(t)$
+        };
+
+        % Diagrama de bloques
+        \node[block] (sys) at (12, 3.5) {\textbf{Sistema M-R-A}};
+        \coordinate (in_sys) at (9, 3.5);
+        \coordinate (out_sys) at (15, 3.5);
+        \draw[signal] (in_sys) -- (sys.west) node[midway, above, font=\footnotesize] {$f(t)$};
+        \draw[signal] (sys.east) -- (out_sys) node[midway, above, font=\footnotesize] {$y(t)$};
+
+        % Gráfica de respuesta
+        \begin{scope}[shift={(12, 0)}]
+            \begin{axis}[
+                width=6cm, height=3cm,
+                axis lines=center,
+                axis line style={->, thick},
+                xlabel={$t$}, ylabel={$y(t)$},
+                xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\footnotesize},
+                ylabel style={anchor=south east, at={(axis description cs:0,1)}, font=\footnotesize},
+                xmin=0, xmax=8, ymin=-0.8, ymax=1.2,
+                ticks=none,
+            ]
+                % Oscilación amortiguada
+                \addplot[domain=0:8, samples=200, ultra thick, codegreen!70!black, smooth] 
+                    {exp(-0.4*x)*sin(deg(2.5*x))};
+                % Envolvente
+                \addplot[domain=0:8, samples=100, thin, gray, dashed] {exp(-0.4*x)};
+                \addplot[domain=0:8, samples=100, thin, gray, dashed] {-exp(-0.4*x)};
+            \end{axis}
+        \end{scope}
+
+    \end{tikzpicture}
+\end{document}

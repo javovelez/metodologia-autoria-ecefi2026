@@ -1,0 +1,61 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    mypanel/.style={
+        width=5.8cm, height=4.0cm,
+        axis lines=center,
+        axis line style={->, thin},
+        axis on top=true,
+        xlabel={$t$}, xlabel style={right, font=\scriptsize},
+        ylabel style={above, font=\scriptsize},
+        xmin=-0.5, xmax=7.2,
+        xtick=\empty, ytick=\empty,
+        clip=false,
+    },
+    sig/.style={utnblue, thick},
+}
+
+% -------------------------------------------------------
+% PANEL A: Señal completa x(t)
+% -------------------------------------------------------
+\begin{axis}[mypanel, name=pA, title={\textbf{(a)}}, title style={yshift=-1.5ex}, ylabel={$x(t)$}, ymin=-0.4, ymax=3.2]
+
+    % Línea y tick de valor medio (DC)
+    \draw (axis cs: 0.1, 1.5) -- (axis cs: -0.1, 1.5);
+    \node[left, font=\scriptsize] at (axis cs: -0.1, 1.5) {$\bar{x}$};
+    \draw[gray, dashed, thick] (axis cs: 0, 1.5) -- (axis cs: 6.5, 1.5);
+    \node[right, font=\scriptsize] at (axis cs: 6.5, 1.5) {$\bar{x}$ (DC)};
+
+    % Señal x(t)
+    \addplot[sig, domain=0:6.5, samples=150]
+        {1.5 + 1.0*cos(deg(x)) + 0.35*sin(deg(2*x))};
+
+    \node[below left, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+
+
+
+\end{axis}
+
+% -------------------------------------------------------
+% PANEL B: Componente alterna x_ac(t)
+% -------------------------------------------------------
+\begin{axis}[mypanel, name=pB, title={\textbf{(b)}}, title style={yshift=-1.5ex}, ylabel={$x_{\mathrm{ac}}(t)$}, ymin=-1.6, ymax=1.6,
+    at={($(pA.east)+(1.6cm,0)$)}, anchor=west]
+
+    % Componente alterna
+    \addplot[sig, domain=0:6.5, samples=150]
+        {1.0*cos(deg(x)) + 0.35*sin(deg(2*x))};
+
+    \node[below left, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+
+
+
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

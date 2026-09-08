@@ -1,0 +1,82 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_filtro_vs_ecualizador
+% Dos paneles lado a lado, ambos en aproximaciones realizables.
+% (a) Filtro pasabajos: aproximacion de Butterworth orden 4, wc = 2.
+%     |H(jw)| = 1 / sqrt(1 + (w/wc)^(2N)).
+% (b) Ecualizador: curva suave, realces y atenuaciones sin saltos, todas no nulas.
+%     Construida como baseline 1 + suma de Gaussianas (realce bajo, dip mid, realce alto).
+% Sizing: 2 paneles lado a lado, w 7cm, h 4cm.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ===== Panel (a): Filtro pasabajos =====
+\begin{axis}[
+    name=panel_a,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5, xmax=5, ymin=-0.2, ymax=1.7,
+    xtick={-2, 0, 2},
+    xticklabels={$-\omega_c$, $0$, $\omega_c$},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.12)}},
+    ylabel={$|H(j\omega)|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Butterworth orden N=4, wc=2: |H| = 1/sqrt(1 + (w/2)^8)
+    \addplot[utnblue, very thick, domain=-5:5, samples=200, smooth] {
+        1/sqrt(1 + (x/2)^8)
+    };
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.25, 1.06) {$1$};
+\end{axis}
+
+% ===== Panel (b): Ecualizador =====
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.east)+(1.6cm,0)$)}, anchor=west,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-5, xmax=5, ymin=-0.2, ymax=1.7,
+    xtick={0},
+    xticklabels={$0$},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.12)}},
+    ylabel={$|H(j\omega)|$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Linea horizontal de referencia en |H|=1
+    \addplot[gray!50, thin, dashed, domain=-5:5, samples=2] {1};
+    % Curva suave par en omega:
+    % baseline 1 + realce centrado en 0 - dips en +/-2.2 + realces en +/-3.7
+    \addplot[utnblue, very thick, domain=-5:5, samples=200, smooth] {
+        1
+        + 0.4*exp(-x^2/0.8)
+        - 0.35*exp(-(x-2.2)^2/0.7)
+        - 0.35*exp(-(x+2.2)^2/0.7)
+        + 0.2*exp(-(x-3.7)^2/0.5)
+        + 0.2*exp(-(x+3.7)^2/0.5)
+    };
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.2, 1.0) {$1$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,71 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small,
+        block/.style={draw=utnblue!60, line width=0.5pt, fill=utnblue!8,
+                      minimum width=2.6cm, minimum height=1.1cm, rounded corners=2pt,
+                      blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                                   shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}},
+        signal/.style={->, thick, utnblue},
+        digisignal/.style={->, thick, red!70!black},
+        label_style/.style={font=\footnotesize}
+    ]
+
+        % --- Señal analógica de entrada ---
+        \coordinate (in) at (0,0);
+
+        % Bloque ADC
+        \node[block, fill=orange!12, minimum width=1.6cm] (adc) at (2.4,0) {\textbf{ADC}};
+
+        % Bloque Procesamiento
+        \node[block, fill=red!8] (proc) at (7,0) {\parbox{2.2cm}{\centering\textbf{Procesamiento}\\\textbf{Digital}}};
+
+        % Bloque DAC
+        \node[block, fill=orange!12, minimum width=1.6cm] (dac) at (11.6,0) {\textbf{DAC}};
+
+        % Salida
+        \coordinate (out) at (14,0);
+
+        % --- Conexiones ---
+        \draw[signal] (in) -- (adc.west) node[label_style, above, midway] {$x(t)$};
+        \draw[digisignal] (adc.east) -- (proc.west) node[label_style, above, midway] {$x[n]$};
+        \draw[digisignal] (proc.east) -- (dac.west) node[label_style, above, midway] {$y[n]$};
+        \draw[signal] (dac.east) -- (out) node[label_style, above, midway] {$y(t)$};
+
+        % Mini ondas decorativas
+        % Onda analógica de entrada con ruido Fuerte
+        \begin{scope}[shift={(0.8,0.95)}]
+            \draw[utnblue, thick] plot[domain=-1:1, samples=200] (\x, {-0.25*sin(deg(\x*pi)) + 0.06*rand});
+            \node[label_style, utnblue] at (0, 0.65) {Analógica};
+        \end{scope}
+
+        % Stems digitales de x[n] (Muestreo de onda ruidosa pero un poco desplazada arriba)
+        \begin{scope}[shift={(4.5,0.95)}]
+            \foreach \x/\h in {-1.0/0.05, -0.8/0.11, -0.6/0.30, -0.4/0.18, -0.2/0.22, 0.0/-0.08, 0.2/-0.10, 0.4/-0.28, 0.6/-0.18, 0.8/-0.22, 1.0/0.05} {
+                \draw[red!70!black, thick] (\x, 0) -- (\x, \h);
+                \fill[red!70!black] (\x, \h) circle (1pt);
+            }
+            \node[label_style, red!70!black] at (0, 0.65) {Digital ($x[n]$)};
+            \draw[thin, black!40] (-1.1,0) -- (1.1,0);
+        \end{scope}
+
+        % Stems digitales de y[n] (Senoidal limpia, ya procesada, sin ruido)
+        \begin{scope}[shift={(9.5,0.95)}]
+            \foreach \x/\h in {-1.0/0.0, -0.8/0.15, -0.6/0.24, -0.4/0.24, -0.2/0.15, 0.0/0.0, 0.2/-0.15, 0.4/-0.24, 0.6/-0.24, 0.8/-0.15, 1.0/0.0} {
+                \draw[red!70!black, thick] (\x, 0) -- (\x, \h);
+                \fill[red!70!black] (\x, \h) circle (1pt);
+            }
+            \node[label_style, red!70!black] at (0, 0.65) {Digital ($y[n]$)};
+            \draw[thin, black!40] (-1.1,0) -- (1.1,0);
+        \end{scope}
+
+        % Onda continua de salida (Sin ruido, senoidal pura reconvertida)
+        \begin{scope}[shift={(13.2,0.95)}]
+            \draw[utnblue, thick] (-1.0, 0) sin (-0.5, 0.25) cos (0, 0) sin (0.5, -0.25) cos (1.0, 0);
+            \node[label_style, utnblue] at (0, 0.65) {Analógica};
+        \end{scope}
+
+    \end{tikzpicture}
+\end{document}

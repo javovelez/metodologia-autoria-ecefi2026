@@ -1,0 +1,40 @@
+\documentclass[border=0mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=1, font=\small]
+        % PANEL A: Operandos
+        \begin{scope}[shift={(0,0)}]
+            \draw[->, very thick] (-0.5,0) -- (3.5,0) node[right] {Re};
+            \draw[->, very thick] (0,-0.5) -- (0,3.5) node[above] {Im};
+            
+            \coordinate (O) at (0,0);
+            \coordinate (Z1) at (60:3);
+            \coordinate (Z2) at (20:1.5);
+            
+            \draw[->, very thick, utnblue] (O) -- (Z1) node[above right] {$z_1$};
+            \draw[->, very thick, utnblue] (O) -- (Z2) node[right] {$z_2$};
+            
+            \node at (1.5, -1) {\textbf{(a) Operandos}};
+        \end{scope}
+        
+        % PANEL B: Resultado
+        \begin{scope}[shift={(5,0)}]
+            \draw[->, very thick] (-0.5,0) -- (3.5,0) node[right] {Re};
+            \draw[->, very thick] (0,-0.5) -- (0,3.5) node[above] {Im};
+            
+            \coordinate (O) at (0,0);
+            \coordinate (Zres) at (40:2); % 3/1.5 = 2, 60-20 = 40
+            
+            \draw[->, very thick, red] (O) -- (Zres) node[above right] {$z_{res} = z_1/z_2$};
+            
+            % Ángulo resultante
+            \draw[->, orange] (0.8,0) arc (0:40:0.8);
+            \node[orange] at (20:1.4) {$\theta_1 - \theta_2$};
+            
+            \node at (1.5, -1) {\textbf{(b) Resultado}};
+        \end{scope}
+    \end{tikzpicture}
+\end{document}

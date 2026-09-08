@@ -1,0 +1,58 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    block/.style={
+        draw=utnblue!60,
+        line width=0.5pt,
+        fill=utnblue!8,
+        minimum width=2.1cm,
+        minimum height=1cm,
+        rounded corners=2pt,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    equiv/.style={
+        draw=utnblue!60,
+        line width=0.5pt,
+        fill=utnblue!15,
+        minimum width=2.8cm,
+        minimum height=1cm,
+        rounded corners=2pt,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    signal/.style={->, thick, utnblue},
+    label_style/.style={font=\footnotesize, above},
+]
+
+% ---- Lado izquierdo: cascada h1 -> h2 ----
+\coordinate (in1) at (0, 0);
+\node[block] (H1) at (2.0, 0) {$h_1(t)$};
+\node[block] (H2) at (5.05, 0) {$h_2(t)$};
+\coordinate (out1) at (7.05, 0);
+
+\draw[signal] (in1) -- (H1.west) node[label_style, midway] {$x(t)$};
+\draw[signal] (H1.east) -- (H2.west) node[label_style, midway] {$w(t)$};
+\draw[signal] (H2.east) -- (out1) node[label_style, midway] {$y(t)$};
+
+% ---- Signo de equivalencia ----
+\node[font=\large] at (8.25, 0) {$\equiv$};
+
+% ---- Lado derecho: sistema equivalente ----
+\coordinate (in2) at (9.45, 0);
+\node[equiv] (Heq) at (11.95, 0) {$h_1(t) * h_2(t)$};
+\coordinate (out2) at (14.45, 0);
+
+\draw[signal] (in2) -- (Heq.west) node[label_style, midway] {$x(t)$};
+\draw[signal] (Heq.east) -- (out2) node[label_style, midway] {$y(t)$};
+
+% ---- Etiquetas superiores ----
+\node[font=\footnotesize, gray, above=0.35cm] at (3.525, 0.5) {Cascada};
+\node[font=\footnotesize, gray, above=0.35cm] at (11.95, 0.5) {Equivalente};
+
+\end{tikzpicture}
+\end{document}

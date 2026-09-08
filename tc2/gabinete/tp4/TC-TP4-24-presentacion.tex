@@ -1,0 +1,740 @@
+% ------------------------------------------------------------------
+% Trabajo Práctico Nº 4 — Filtros: Teoría Imagen
+% PRESENTACIÓN BEAMER de la resolución (paso a paso, slides despejados).
+% Fuente: TC-TP4-24-resolucion.tex (mismos valores y convenciones).
+% Reutiliza las figuras de figures/ (fragmentos tikz/circuitikz de n2t).
+% Compilar desde esta carpeta: pdflatex TC-TP4-24-presentacion.tex
+% Cátedra Teoría de Circuitos 2 — UTN-FRM — C. J. Larriqueta.
+% ------------------------------------------------------------------
+\documentclass[10pt, aspectratio=169]{beamer}
+
+% --- Idioma y codificación ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-noshorthands]{babel}
+
+% --- Matemática ---
+\usepackage{amsmath, amssymb, mathtools}
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\ch}{ch}
+
+% --- Figuras (fragmentos circuitikz generados con n2t) ---
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, babel, shapes.geometric}
+\usepackage[siunitx, RPvoltages]{circuitikz}
+\usepackage{adjustbox}
+
+% --- Colores / tema ---
+\definecolor{utnblue}{RGB}{0, 51, 102}
+\usetheme{default}
+\setbeamercolor{structure}{fg=utnblue}
+\setbeamercolor{frametitle}{fg=white, bg=utnblue}
+\setbeamercolor{framesubtitle}{fg=utnblue!30}
+\setbeamercolor{title}{fg=utnblue}
+\setbeamercolor{subtitle}{fg=utnblue!70}
+\setbeamercolor{block title}{bg=utnblue!12, fg=utnblue}
+\setbeamercolor{block body}{bg=utnblue!4, fg=black}
+\setbeamercolor{alerted text}{fg=utnblue}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\small}
+
+% Figura centrada, acotada en ancho y alto (no agranda las chicas)
+\newcommand{\figura}[2][0.92\textwidth]{%
+  \begin{center}
+    \adjustbox{max width=#1, max totalheight=0.55\textheight}{\input{#2}}%
+  \end{center}}
+
+\title{Resolución del Trabajo Práctico N\textsuperscript{o} 4}
+\subtitle{Filtros: Teoría Imagen}
+\author{Mg.\ Ing.\ Javier Velez}
+\institute{Teoría de Circuitos 2 --- UTN, Facultad Regional Mendoza}
+\date{}
+
+\begin{document}
+
+% ===================== PORTADA =====================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ===================== MARCO =====================
+\section{Marco teórico}
+
+\begin{frame}{Marco teórico}{La sección básica (cuadripolo $L$-$C$ en T)}
+  \begin{itemize}\setlength{\itemsep}{2ex}
+    \item \textbf{Rama serie} $z_1$ (reactancia $X_1$), repartida en dos brazos de $z_1/2$.
+    \item \textbf{Rama derivación} $z_2$ (reactancia $X_2$).
+    \item \textbf{Condición de corte:}\quad $X_1 = -4X_2$
+    \item \textbf{Impedancias características:}
+    \[
+        z_{0T} = \sqrt{z_1 z_2 + \frac{z_1^2}{4}}\qquad
+        z_{0\pi} = \frac{z_1 z_2}{z_{0T}}
+    \]
+    \item Secciones de $k$ constante:\quad $z_1 z_2 = k^2$ (independiente de $\omega$).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Marco teórico}{Normalización y modelos del Capítulo 4}
+  \begin{itemize}\setlength{\itemsep}{2ex}
+    \item Dos normas \emph{adimensionales}:
+    \[
+        a = \frac{R_L}{1\,\Omega}\qquad
+        N = \frac{\omega_c}{1\,\frac{\text{rad}}{\text{s}}}\ \text{(PB/PA)}
+        \quad\text{ó}\quad
+        N = \frac{\omega_2-\omega_1}{1\,\frac{\text{rad}}{\text{s}}}\ \text{(PBanda/SBanda)}
+    \]
+    \item Desnormalización (los elementos normalizados conservan H y F):
+    \[
+        \boxed{\;L = \bar L\,\frac{a}{N}\qquad C = \frac{\bar C}{a\,N}\qquad R = \bar R\,a\;}
+    \]
+    \item El Cap.~4 termina con un \textbf{paquete de modelos normalizados} (prototipo y
+          $m$-derivado de los 4 tipos de filtro): de ellos partimos en los Ejercicios 9 y 10,
+          \emph{sin} rehacer la transformación de frecuencia.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Marco teórico}{Convención de la rama serie (libro vs.\ guía)}
+  \begin{itemize}\setlength{\itemsep}{2ex}
+    \item El \textbf{libro} reporta el valor \emph{colocado} en cada brazo:
+          $L_1/2$ (prototipo), $m\,L_1/2$ ($m$-derivada y hemisección).
+    \item La \textbf{guía} tabula la rama serie \emph{sin dividir} ($L_1$ ó $m\,L_1$)
+          y aclara: los valores finales se obtienen dividiendo por dos.
+    \item En la \textbf{sección completa} (T) la rama serie $z_1$ se reparte en dos brazos
+          de $z_1/2$. Esos brazos \emph{no} están en serie entre sí: entre ellos se
+          conecta la rama derivación.
+    \item En la \textbf{media sección} (hemisección) hay un \emph{único} brazo $z_1/2$.
+  \end{itemize}
+\end{frame}
+
+% ===================== EJERCICIO 1 =====================
+\section{Ejercicio 1}
+
+\begin{frame}{Ejercicio 1 --- Esquema del filtro completo}{Enunciado y estructura}
+  \begin{block}{Enunciado}
+    Esquematizar el diseño de un filtro completo según la Teoría Imagen.
+  \end{block}
+  \vspace{1ex}
+  \begin{itemize}\setlength{\itemsep}{1.5ex}
+    \item \textbf{Prototipo} (al menos uno): atenuación lejos del corte.
+    \item \textbf{Sección $m$-derivada} ($m$ pequeño): transición estrecha cerca de $\omega_c$.
+    \item \textbf{Dos hemisecciones de adaptación} ($m=0{,}6$): no pueden faltar.
+  \end{itemize}
+  \figura{figures/fig_ej01_bloques}
+\end{frame}
+
+\begin{frame}{Ejercicio 1 --- Esquema del filtro completo}{Por qué funciona la cascada}
+  \begin{itemize}\setlength{\itemsep}{2ex}
+    \item Cada hemisección es \emph{asimétrica}: por su cara T ($z_{0T}$) empalma con la
+          cadena interna; por su cara $\pi$ ($z_{0\pi}$) se conecta a $R_L$.
+    \item $m=0{,}6$ hace $z_{0\pi}$ casi constante $=\sqrt{L_1/C_2}$ en el 85\,\% de la banda.
+    \item Con adaptación imagen no hay reflexiones y las \alert{funciones de propagación se suman}:
+    \[
+        G(s)=\frac{V_2}{V_1}\frac{V_3}{V_2}\dotsm\frac{V_{n+1}}{V_n}
+        =\sqrt{\frac{z_{In+1}}{z_{I1}}}\;e^{-(\theta_1+\theta_2+\dotsb+\theta_n)}
+    \]
+    \item Se combinan la buena transición de la $m$-derivada y la buena atenuación
+          lejana del prototipo.
+  \end{itemize}
+\end{frame}
+
+% ===================== EJERCICIO 2 =====================
+\section{Ejercicio 2}
+
+\begin{frame}{Ejercicio 2 --- Prototipo pasabajos T}{Planteo}
+  \begin{block}{Enunciado}
+    Calcular el prototipo pasabajos en configuración T con
+    $\omega_c = 20.000\ \frac{\text{rad}}{\text{s}}$ y $R_L = 500\ \Omega$.
+  \end{block}
+  \vspace{1ex}
+  Reactancias de la sección:
+  \[
+      X_1 = \omega L_1\ \text{(rama serie)}\qquad
+      X_2 = -\frac{1}{\omega C_2}\ \text{(rama derivación)}
+  \]
+  Dos incógnitas ($L_1$, $C_2$) $\Rightarrow$ dos condiciones: \emph{corte} y \emph{adaptación}.
+\end{frame}
+
+\begin{frame}{Ejercicio 2 --- Prototipo pasabajos T}{Paso 1: condición de corte}
+  La frecuencia de corte es aquella para la cual $X_1 = -4X_2$:
+  \[
+      \omega_c L_1 = \frac{4}{\omega_c C_2}
+      \;\Longrightarrow\;
+      \boxed{\,L_1 C_2 = \frac{4}{\omega_c^2}\,}
+      \qquad\left(\text{equivale a }\omega_c = \frac{2}{\sqrt{L_1 C_2}}\right)
+  \]
+  \vspace{1ex}
+  Nos da el \alert{producto} $L_1 C_2$.
+\end{frame}
+
+\begin{frame}{Ejercicio 2 --- Prototipo pasabajos T}{Paso 2: adaptación a $R_L$}
+  La impedancia característica de la sección T:
+  \[
+      z_{0T} = \sqrt{z_1 z_2 + \frac{z_1^2}{4}}
+             = \sqrt{\frac{L_1}{C_2}}\,\sqrt{1-\left(\frac{\omega}{\omega_c}\right)^2}
+  \]
+  En el extremo de banda ($\omega\to 0$) vale $\sqrt{L_1/C_2}$, que debe adaptarse a la carga:
+  \[
+      \sqrt{\frac{L_1}{C_2}} = R = R_L
+      \;\Longrightarrow\;
+      \boxed{\,\frac{L_1}{C_2} = R^2\,}
+  \]
+  \vspace{1ex}
+  Nos da el \alert{cociente} $L_1/C_2$.
+\end{frame}
+
+\begin{frame}{Ejercicio 2 --- Prototipo pasabajos T}{Paso 3: despeje y valores}
+  Multiplicando y dividiendo producto y cociente:
+  \[
+      L_1^2 = \frac{4R^2}{\omega_c^2}\;\Rightarrow\; L_1 = \frac{2R}{\omega_c}
+      \qquad
+      C_2^2 = \frac{4}{\omega_c^2 R^2}\;\Rightarrow\; C_2 = \frac{2}{R\,\omega_c}
+  \]
+  Con $R = 500\ \Omega$ y $\omega_c = 20.000\ \frac{\text{rad}}{\text{s}}$:
+  \[
+      L_1 = \frac{2\cdot 500}{20.000} = \boxed{50\ \text{mH}}
+      \qquad
+      C_2 = \frac{2}{500\cdot 20.000} = \boxed{200\ \text{nF}}
+  \]
+  La rama serie se reparte en dos brazos de $L_1/2 = 25$ mH:
+  \figura[0.6\textwidth]{figures/fig_ej02_proto_pb}
+\end{frame}
+
+% ===================== EJERCICIO 3 =====================
+\section{Ejercicio 3}
+
+\begin{frame}{Ejercicio 3 --- Partiendo del circuito normalizado}{Planteo}
+  \begin{block}{Enunciado}
+    Calcular el ejercicio anterior partiendo del circuito normalizado.
+  \end{block}
+  \vspace{1ex}
+  Prototipo pasabajos \emph{normalizado} ($\omega_c = 1$, $R_L = 1$):
+  $\;\bar L_1 = 2$ H, $\;\bar C_2 = 2$ F (brazos de $\bar L_1/2 = 1$ H).
+  \figura[0.6\textwidth]{figures/fig_ej03_proto_norm}
+\end{frame}
+
+\begin{frame}{Ejercicio 3 --- Partiendo del circuito normalizado}{Desnormalización}
+  Normas (números adimensionales):
+  \[
+      a = \frac{R_L}{1\,\Omega} = 500
+      \qquad
+      N = \frac{\omega_c}{1\,\frac{\text{rad}}{\text{s}}} = 20.000
+  \]
+  Desnormalizamos con $L = \bar L\,\dfrac{a}{N}$ y $C = \dfrac{\bar C}{a\,N}$:
+  \[
+      L_1 = \frac{2\cdot 500}{20.000} = \boxed{50\ \text{mH}}
+      \qquad
+      C_2 = \frac{2}{500\cdot 20.000} = \boxed{200\ \text{nF}}
+  \]
+  \vspace{1ex}
+  \alert{Idéntico al Ejercicio 2}, como debía ser.
+\end{frame}
+
+% ===================== EJERCICIO 4 =====================
+\section{Ejercicio 4}
+
+\begin{frame}{Ejercicio 4 --- Sección $m$-derivada}{Paso 1: coeficiente de derivación}
+  \begin{block}{Enunciado}
+    Con el prototipo del Ejercicio 2, diseñar la sección $m$-derivada para
+    $\omega_\infty = 22.500\ \frac{\text{rad}}{\text{s}}$.
+  \end{block}
+  \vspace{1ex}
+  La frecuencia de atenuación infinita fija $m$:
+  \[
+      m = \sqrt{1-\left(\frac{\omega_c}{\omega_\infty}\right)^2}
+        = \sqrt{1-\left(\frac{20.000}{22.500}\right)^2}
+        = \sqrt{0{,}210} = \boxed{0{,}458}
+      \qquad (1-m^2 = 0{,}790)
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 4 --- Sección $m$-derivada}{Paso 2: elementos}
+  Con $L_1 = 50$ mH y $C_2 = 200$ nF:
+  \[
+  \begin{aligned}
+      \text{Rama serie (cada brazo):}\quad & m\,\frac{L_1}{2} = 0{,}458\cdot 25 = \boxed{11{,}5\ \text{mH}}\\[1ex]
+      \text{Derivación (inductor):}\quad & L_1\frac{1-m^2}{4m} = 50\cdot\frac{0{,}790}{1{,}832} = \boxed{21{,}6\ \text{mH}}\\[1ex]
+      \text{Derivación (capacitor):}\quad & m\,C_2 = 0{,}458\cdot 200 = \boxed{91{,}6\ \text{nF}}
+  \end{aligned}
+  \]
+  \vspace{0.5ex}
+  La rama serie completa es $m L_1 = 23$ mH, repartida en los dos brazos.
+\end{frame}
+
+\begin{frame}{Ejercicio 4 --- Sección $m$-derivada}{Circuito y cero de transmisión}
+  \figura[0.7\textwidth]{figures/fig_ej04_mderiv_pb}
+  \vspace{1ex}
+  En $\omega_\infty$ la rama derivación (resonante serie) entra en resonancia:
+  cortocircuito a masa $\Rightarrow$ la salida se anula $\Rightarrow$
+  \alert{cero de transmisión}.
+\end{frame}
+
+% ===================== EJERCICIO 5 =====================
+\section{Ejercicio 5}
+
+\begin{frame}{Ejercicio 5 --- Hemisección de adaptación}{Paso 1: bisección}
+  \begin{block}{Enunciado}
+    Calcular la hemisección de adaptación correspondiente al ejercicio anterior.
+  \end{block}
+  \vspace{1ex}
+  Media sección $L$ con $m=0{,}6$ (el valor que hace $z_{0\pi}'$ casi constante).
+  Se obtiene \emph{cortando la sección completa por la mitad}:
+  \begin{itemize}\setlength{\itemsep}{1.5ex}
+    \item rama serie: queda un \alert{único brazo} de $z_1'/2 = m\,z_1/2$
+          (no un par repartido como en la sección completa);
+    \item rama derivación: \alert{duplica} su impedancia ($2z_2'$):
+          inductor $\times 2$, capacitor $\div 2$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Ejercicio 5 --- Hemisección de adaptación}{Paso 2: valores}
+  Con $L_1 = 50$ mH, $C_2 = 200$ nF, $m = 0{,}6$ ($1-m^2 = 0{,}64$):
+  \[
+  \begin{aligned}
+      \text{Rama serie (único brazo):}\quad & m\,\frac{L_1}{2} = 0{,}6\cdot 25 = \boxed{15\ \text{mH}}\\[0.4ex]
+      \text{Derivación (inductor):}\quad & L_1\frac{1-m^2}{2m} = 50\cdot\frac{0{,}64}{1{,}2} = \boxed{26{,}7\ \text{mH}}\\[0.4ex]
+      \text{Derivación (capacitor):}\quad & C_2\,\frac{m}{2} = 200\cdot 0{,}3 = \boxed{60\ \text{nF}}
+  \end{aligned}
+  \]
+  \figura[0.48\textwidth]{figures/fig_ej05_hemi_pb}
+\end{frame}
+
+% ===================== EJERCICIO 6 =====================
+\section{Ejercicio 6}
+
+\begin{frame}{Ejercicio 6a --- Pasaaltos por inversión}{Transformación de los elementos}
+  \begin{block}{Enunciado}
+    A partir del pasabajos obtener: a) un pasaaltos, especificando la transformación
+    de elementos, la frecuencia de corte, el ancho de banda y la impedancia
+    característica; b) un pasabanda.
+  \end{block}
+  \vspace{1ex}
+  Inversión $s = 1/s'$ aplicada a las impedancias:
+  \[
+      s'L \;\longrightarrow\; \frac{L}{s} = \frac{1}{s\,(1/L)}\ \text{(capacitor } 1/L\text{)}
+      \qquad
+      \frac{1}{s'C} \;\longrightarrow\; \frac{s}{C} = s\,(1/C)\ \text{(inductor } 1/C\text{)}
+  \]
+  Cada inductor $\to$ capacitor y cada capacitor $\to$ inductor, con valor recíproco:
+  \[
+      \frac{L_1}{2} \longrightarrow C = \frac{2}{L_1}\ \text{(cada brazo)}
+      \qquad
+      C_2 \longrightarrow L_2 = \frac{1}{C_2}\ \text{(derivación)}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 6a --- Pasaaltos por inversión}{Circuito y reactancias}
+  \figura[0.6\textwidth]{figures/fig_ej06a_proto_pa}
+  Llamando $C_1 = 1/L_1$ a la capacidad serie \emph{total} (cada brazo es $2/L_1$, esto
+  es $z_1/2$) y $L_2 = 1/C_2$:
+  \[
+      X_1 = -\frac{1}{\omega C_1}\ \text{(rama serie)}
+      \qquad
+      X_2 = \omega L_2\ \text{(rama derivación)}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 6a --- Pasaaltos por inversión}{Deducción de los parámetros pedidos}
+  \textbf{Frecuencia de corte} (de $X_1 = -4X_2$):
+  \[
+      \frac{1}{\omega_c C_1} = 4\,\omega_c L_2
+      \;\Longrightarrow\;
+      \boxed{\;\omega_c = \frac{1}{2\sqrt{L_2 C_1}}\;}
+  \]
+  \textbf{Impedancia característica} (de $z_{0T}$, con $\omega\to\infty$ los capacitores
+  son cortocircuitos):
+  \[
+      z_{0T} = \sqrt{\frac{L_2}{C_1} - \frac{1}{4\,\omega^2 C_1^2}}
+      \;\Longrightarrow\;
+      \boxed{\;z_{0T}(\infty) = \sqrt{\frac{L_2}{C_1}} = R\;}
+  \]
+  \textbf{Ancho de banda}: pasa desde $\omega_c$ hasta infinito:
+  $\;\boxed{\;\text{AB}: (\omega_c\,;\,\infty)\;}$ (teóricamente infinito).
+\end{frame}
+
+\begin{frame}{Ejercicio 6b --- Pasabanda por transformación cuadrática}{Transformación de los elementos}
+  Transformación $s' = s + \dfrac{\omega_0^2}{s}$, con $\omega_0 = \sqrt{\omega_1\omega_2}$
+  (centro geométrico) y ancho de banda normalizado $=1$:
+  \[
+      s'L \;\longrightarrow\; sL + \frac{1}{s\,\dfrac{1}{\omega_0^2 L}}
+      \quad(\text{resonante \emph{serie}})
+      \qquad
+      s'C \;\longrightarrow\; sC + \frac{1}{s\,\dfrac{1}{\omega_0^2 C}}
+      \quad(\text{resonante \emph{paralelo}})
+  \]
+  Inductor serie $\to$ resonante serie; capacitor derivación $\to$ resonante paralelo;
+  ambos sintonizados en $\omega_0$.
+\end{frame}
+
+\begin{frame}{Ejercicio 6b --- Pasabanda por transformación cuadrática}{Prototipo pasabanda T resultante}
+  \figura[0.78\textwidth]{figures/fig_ej06b_proto_pbanda}
+\end{frame}
+
+\begin{frame}{Ejercicio 6b --- Pasabanda por transformación cuadrática}{Frecuencias de corte y ancho de banda}
+  Para régimen sinusoidal permanente: $\bar\omega' = \bar\omega - \dfrac{\bar\omega_0^2}{\bar\omega}$.
+  Los cortes del prototipo $\bar\omega' = \pm 1$ se mapean resolviendo
+  $\bar\omega^2 \mp \bar\omega - \bar\omega_0^2 = 0$:
+  \[
+      \boxed{\;\bar\omega_2 = 0{,}5 + \sqrt{0{,}25+\bar\omega_0^2}\;}
+      \qquad
+      \boxed{\;\bar\omega_1 = -0{,}5 + \sqrt{0{,}25+\bar\omega_0^2}\;}
+  \]
+  Verifican $\bar\omega_1\bar\omega_2 = \bar\omega_0^2$ (centro geométrico) y
+  $\bar\omega_2 - \bar\omega_1 = 1$. El ancho de banda real coincide con la norma:
+  \[
+      \boxed{\;\text{AB} = \omega_2 - \omega_1 = N\;}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 6b --- Pasabanda}{Impedancia característica: ¿de dónde sale?}
+  $z_{0T}=\sqrt{z_1 z_2+\frac{z_1^2}{4}}$ depende de $\omega$ \emph{sólo a través de las
+  reactancias}. Veamos cómo transforma cada una.
+
+  \textbf{Rama serie} (prototipo: inductor, $z_1=j\bar\omega'\bar L$). Transformada
+  $=\bar L$ en serie con $\bar C=1/(\bar\omega_0^2\bar L)$:
+  \[
+      z_1(\bar\omega) = j\bar\omega\bar L + \frac{\bar\omega_0^2\bar L}{j\bar\omega}
+      = j\bar L\left(\bar\omega-\frac{\bar\omega_0^2}{\bar\omega}\right) = j\bar L\,\bar\omega'
+  \]
+  \textbf{Rama derivación} (prototipo: capacitor, $y_2=j\bar\omega'\bar C_2$).
+  Transformada $=\bar C_2$ en paralelo con $\bar L=1/(\bar\omega_0^2\bar C_2)$:
+  \[
+      y_2(\bar\omega) = j\bar\omega\bar C_2 + \frac{\bar\omega_0^2\bar C_2}{j\bar\omega}
+      = j\bar C_2\,\bar\omega'
+  \]
+  \alert{Cada reactancia en $\bar\omega$ = la del prototipo en $\bar\omega'=\bar\omega-\bar\omega_0^2/\bar\omega$.}
+\end{frame}
+
+\begin{frame}{Ejercicio 6b --- Pasabanda}{Impedancia característica: conclusión}
+  La $z_{0T}$ del \emph{prototipo pasabajos} es la del libro (sec.\ Filtro Pasa Bajos,
+  usada en el Ej.~2):
+  \[
+      z_{0T}^{\,\text{proto}}(\omega') = \sqrt{\tfrac{L_1}{C_2}}\,\sqrt{1-(\omega'/\omega_c)^2}
+      \;\xrightarrow[\;\omega_c\to1\;]{\text{normaliz.}}\; R\sqrt{1-\bar\omega'^{\,2}}
+  \]
+  Como $z_1,z_2$ del pasabanda en $\bar\omega$ valen lo mismo que las del prototipo en
+  $\bar\omega'$, esa $z_{0T}$ hereda la sustitución $\bar\omega'\to\bar\omega-\bar\omega_0^2/\bar\omega$:
+  \[
+      \boxed{\;z_{0T}(\omega) = R\,\sqrt{1-\left(\bar\omega - \frac{\bar\omega_0^2}{\bar\omega}\right)^{\!2}}\;}
+      \qquad R = \sqrt{\frac{L_1}{C_2}} = R_L
+  \]
+  \begin{itemize}\setlength{\itemsep}{1ex}
+    \item Eso \emph{es} una ``transformación de frecuencia'': releer la curva del
+          prototipo con $\bar\omega\mapsto\bar\omega'$.
+    \item Real en la banda; vale $R=R_L$ en $\omega_0$ ($\bar\omega'=0$); se anula en
+          los cortes ($\bar\omega'=\pm1$). El producto $z_1 z_2=k^2=L_1/C_2$ se conserva.
+  \end{itemize}
+\end{frame}
+
+% ===================== EJERCICIO 7 =====================
+\section{Ejercicio 7}
+
+\begin{frame}{Ejercicio 7 --- Prototipo pasaaltos dado}{Planteo y parte a)}
+  \begin{block}{Enunciado}
+    El circuito es el prototipo de un pasaaltos imagen con $C = 10^{-7}$ F. Calcular:
+    a) $L$ sabiendo que $z_{0T}(\infty) = 100\ \Omega$; b) la frecuencia de corte $\omega_c$.
+  \end{block}
+  \figura[0.55\textwidth]{figures/fig_ej07_enunciado}
+  Un capacitor $C$ en cada brazo ($z_1/2 = \frac{1}{j\omega C}$) $\Rightarrow$
+  $z_1 = \dfrac{2}{j\omega C}$; derivación $z_2 = j\omega L$.
+\end{frame}
+
+\begin{frame}{Ejercicio 7 --- Prototipo pasaaltos dado}{a) Valor de $L$}
+  Impedancia característica de la sección T:
+  \[
+      z_{0T} = \sqrt{z_1 z_2 + \frac{z_1^2}{4}}
+             = \sqrt{\frac{2L}{C} - \frac{1}{\omega^2 C^2}}
+  \]
+  Cuando $\omega\to\infty$ el segundo término se anula:
+  \[
+      z_{0T}(\infty) = \sqrt{\frac{2L}{C}} = 100\ \Omega
+      \;\Rightarrow\; \frac{2L}{C} = 10^4
+      \;\Rightarrow\; L = \frac{10^4\,C}{2} = \boxed{500\ \mu\text{H}}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 7 --- Prototipo pasaaltos dado}{b) Frecuencia de corte desde $X_1 = -4X_2$}
+  Reactancias: $X_1 = -\dfrac{2}{\omega C}$ (rama serie), $X_2 = \omega L$ (derivación).
+  \[
+      -\frac{2}{\omega_c C} = -4\,\omega_c L
+      \;\Rightarrow\; \omega_c^2 = \frac{1}{2LC}
+      \;\Rightarrow\; \omega_c = \frac{1}{\sqrt{2LC}}
+      = \frac{1}{\sqrt{2\cdot 5\times 10^{-4}\cdot 10^{-7}}}
+      = \boxed{100.000\ \tfrac{\text{rad}}{\text{s}}}
+  \]
+  \figura[0.5\textwidth]{figures/fig_ej07_sol}
+\end{frame}
+
+% ===================== EJERCICIO 8 =====================
+\section{Ejercicio 8}
+
+\begin{frame}{Ejercicio 8 --- Hemisección del $m$-derivado pasaaltos}{Planteo}
+  \begin{block}{Enunciado}
+    Dado el $m$-derivado normalizado de un pasaaltos ($C_1'$, $L'$, $C_2'$), calcular la
+    hemisección. Datos: $C_1' = \frac{2}{mL_1}$, $C_2' = \frac{4m}{L_1(1-m^2)}$,
+    $L' = \frac{1}{mC_2}$; pasabajos normalizado $L_1 = 2$, $C_2 = 2$.
+  \end{block}
+  \figura[0.55\textwidth]{figures/fig_ej08_enunciado}
+\end{frame}
+
+\begin{frame}{Ejercicio 8 --- Hemisección del $m$-derivado pasaaltos}{Paso 1: valores de la sección completa}
+  Con $L_1 = 2$, $C_2 = 2$ y $m = 0{,}6$ (valor de adaptación):
+  \[
+  \begin{aligned}
+      C_1' &= \frac{2}{mL_1} = \frac{2}{1{,}2} = 1{,}67\ \text{F}\\[0.8ex]
+      L' &= \frac{1}{mC_2} = \frac{1}{1{,}2} = 0{,}83\ \text{H}\\[0.8ex]
+      C_2' &= \frac{4m}{L_1(1-m^2)} = \frac{2{,}4}{1{,}28} = 1{,}875\ \text{F}
+  \end{aligned}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 8 --- Hemisección del $m$-derivado pasaaltos}{Paso 2: bisección}
+  Cortando la sección T por su rama derivación: el brazo serie queda igual ($z_1/2$) y
+  la derivación \emph{duplica su impedancia} ($2z_2$): inductor $\times 2$, capacitor $\div 2$.
+  \[
+      \boxed{\,C_s = C_1' = 1{,}67\ \text{F}\,}
+      \qquad
+      \boxed{\,L_d = 2L' = 1{,}67\ \text{H}\,}
+      \qquad
+      \boxed{\,C_d = \frac{C_2'}{2} = 0{,}94\ \text{F}\,}
+  \]
+  \figura[0.45\textwidth]{figures/fig_ej08_hemi_pa}
+\end{frame}
+
+% ===================== EJERCICIO 9 =====================
+\section{Ejercicio 9}
+
+\begin{frame}{Ejercicio 9 --- Filtro completo pasabanda}{Normas y constantes}
+  \begin{block}{Enunciado}
+    Calcular un filtro completo pasabanda con $R_L = 600\ \Omega$,
+    $\omega_1 = 45.000$, $\omega_2 = 90.000$,
+    $\omega_{\infty 1} = 38.000\ \frac{\text{rad}}{\text{s}}$.
+  \end{block}
+  \vspace{1ex}
+  Para pasabanda la norma de frecuencia es el ancho de banda:
+  \[
+      N = \frac{\omega_2-\omega_1}{1\,\frac{\text{rad}}{\text{s}}} = 45.000
+      \qquad
+      a = \frac{R_L}{1\,\Omega} = 600
+  \]
+  \[
+      \omega_0 = \sqrt{\omega_1\omega_2} = 63.640\ \tfrac{\text{rad}}{\text{s}}
+      \qquad
+      \bar\omega_0^{\,2} = \frac{\omega_1\omega_2}{N^2} = 2{,}0
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 9 --- Filtro completo pasabanda}{Prototipo (modelo normalizado del Cap.~4)}
+  Del modelo pasabanda T (sin rehacer la transformación), con $\bar\omega_0^2 = 2$:
+  \[
+  \begin{array}{lll}
+      \text{Rama serie (cada brazo):} & \bar L = 1,\ \ \bar C = \frac{1}{\bar\omega_0^2} = 0{,}5 & (\text{resonante serie})\\[1ex]
+      \text{Derivación:} & \bar L = \frac{1}{2\bar\omega_0^2} = 0{,}25,\ \ \bar C = 2 & (\text{resonante paralelo})
+  \end{array}
+  \]
+  Desnormalizamos con $L = \bar L\,\frac{a}{N} = \bar L\cdot 13{,}33$ mH y
+  $C = \frac{\bar C}{a\,N} = \bar C\cdot 37{,}04$ nF:
+  \[
+  \begin{array}{lll}
+      L_1 = 13\ \text{mH} & C_1 = 18{,}5\ \text{nF} & (\text{rama serie})\\[0.5ex]
+      L_2 = 3{,}3\ \text{mH} & C_2 = 74\ \text{nF} & (\text{derivación})
+  \end{array}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 9 --- Filtro completo pasabanda}{Prototipo: circuito}
+  \figura{figures/fig_ej09_proto}
+\end{frame}
+
+\begin{frame}{Ejercicio 9 --- Filtro completo pasabanda}{Coeficiente $m$}
+  Normalizamos la frecuencia de cero: $\bar\omega_\infty = \frac{38.000}{45.000} = 0{,}844$
+  ($\bar\omega_\infty^2 = 0{,}713$). En el pasabajos el cero cae en
+  $\bar\omega'_\infty = \frac{1}{\sqrt{1-m^2}}$, y ese valor es la imagen de
+  $\bar\omega_\infty$ por la transformación cuadrática (\emph{en módulo}: la
+  característica es par en $\bar\omega'$, y acá la imagen da negativa):
+  \[
+      \frac{1}{\sqrt{1-m^2}} = \left|\bar\omega_\infty - \frac{\bar\omega_0^2}{\bar\omega_\infty}\right|
+      \;\Longrightarrow\;
+      1-m^2 = \frac{\bar\omega_\infty^2}{\left(\bar\omega_\infty^2-\bar\omega_0^2\right)^2}
+      \quad\text{(fórmula del Cap.~4)}
+  \]
+  \[
+      m = \sqrt{1-\frac{0{,}713}{(0{,}713-2)^2}} = \sqrt{0{,}569} = \boxed{0{,}755}
+      \qquad (1-m^2 = 0{,}431)
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 9 --- Filtro completo pasabanda}{Sección $m$-derivada (modelo del Cap.~4)}
+  Del modelo $m$-derivado pasabanda T, con $m = 0{,}755$ y $\bar\omega_0^2 = 2$:
+  \[
+  \begin{array}{lll}
+      \bar L = m = 0{,}755 & \bar C = \frac{1}{\bar\omega_0^2 m} = 0{,}662 & (\text{rama serie})\\[1ex]
+      \bar L = \frac{1}{2\bar\omega_0^2 m} = 0{,}331 & \bar C = 2m = 1{,}51 & (\text{bloque paralelo})\\[1ex]
+      \bar C = \frac{2m}{\bar\omega_0^2(1-m^2)} = 1{,}752 & \bar L = \frac{1-m^2}{2m} = 0{,}285 & (\text{bloque serie})
+  \end{array}
+  \]
+  Desnormalizando con $L = \bar L\,\frac{a}{N} = \bar L\cdot 13{,}33$ mH y
+  $C = \frac{\bar C}{a\,N} = \bar C\cdot 37{,}04$ nF:
+  \[
+  \begin{array}{lll}
+      L_1 = 10\ \text{mH} & C_1 = 24{,}5\ \text{nF} & (\text{rama serie})\\[0.5ex]
+      L_2 = 4{,}4\ \text{mH} & C_2 = 56\ \text{nF} & (\text{bloque paralelo})\\[0.5ex]
+      L_3 = 3{,}8\ \text{mH} & C_3 = 65\ \text{nF} & (\text{bloque serie})
+  \end{array}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 9 --- Filtro completo pasabanda}{Sección $m$-derivada: circuito}
+  \figura[0.8\textwidth]{figures/fig_ej09_mderiv}
+\end{frame}
+
+\begin{frame}{Ejercicio 9 --- Filtro completo pasabanda}{Hemisección de adaptación ($m = 0{,}6$)}
+  \emph{Bisecamos} el modelo $m$-derivado pasabanda con $m = 0{,}6$: rama serie en un
+  único brazo; derivación con impedancia duplicada (inductor $\times 2$, capacitor $\div 2$):
+  \[
+  \begin{array}{lll}
+      \bar L = 0{,}6 & \bar C = 0{,}833 & (\text{rama serie, un brazo})\\[0.5ex]
+      \bar L = 0{,}833 & \bar C = 0{,}6 & (\text{deriv.\ paralelo, } 2z)\\[0.5ex]
+      \bar L = 1{,}067 & \bar C = 0{,}469 & (\text{deriv.\ serie, } 2z)
+  \end{array}
+  \]
+  Desnormalizando con $L = \bar L\,\frac{a}{N} = \bar L\cdot 13{,}33$ mH y
+  $C = \frac{\bar C}{a\,N} = \bar C\cdot 37{,}04$ nF:
+  \[
+  \begin{array}{lll}
+      L_1 = 8\ \text{mH} & C_1 = 31\ \text{nF} & (\text{rama serie})\\[0.5ex]
+      L_2 = 11{,}1\ \text{mH} & C_2 = 22{,}2\ \text{nF} & (\text{paralelo})\\[0.5ex]
+      L_3 = 14{,}2\ \text{mH} & C_3 = 17{,}4\ \text{nF} & (\text{serie})
+  \end{array}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 9 --- Filtro completo pasabanda}{Hemisección: circuito y verificación}
+  \figura[0.55\textwidth]{figures/fig_ej09_hemi}
+  \vspace{0.5ex}
+  \emph{Verificación:} cada par $L$-$C$ resuena en $\omega_0$; p.\,ej.\
+  $1/\sqrt{L_2 C_2} \approx 63.700 \approx \omega_0$.
+\end{frame}
+
+% ===================== EJERCICIO 10 =====================
+\section{Ejercicio 10}
+
+\begin{frame}{Ejercicio 10 --- Filtro completo suprimebanda}{Datos y normas}
+  \begin{block}{Enunciado}
+    Calcular un filtro completo suprimebanda con $R_L = 75\ \Omega$,
+    $f_1 = 1.000$ Hz, $f_2 = 3.500$ Hz, $f_{\infty 2} = 3.100$ Hz.
+  \end{block}
+  \vspace{1ex}
+  En pulsación: $\omega_1 = 6.283$, $\omega_2 = 21.991$,
+  $\omega_{\infty 2} = 19.478\ \frac{\text{rad}}{\text{s}}$.
+  \[
+      N = \frac{\omega_2-\omega_1}{1\,\frac{\text{rad}}{\text{s}}} = 15.708
+      \qquad
+      a = \frac{R_L}{1\,\Omega} = 75
+  \]
+  \[
+      \omega_0 = \sqrt{\omega_1\omega_2} = 11.756\ \tfrac{\text{rad}}{\text{s}}
+      \qquad
+      \bar\omega_0^{\,2} = \frac{\omega_1\omega_2}{N^2} = 0{,}560
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 10 --- Filtro completo suprimebanda}{Prototipo (modelo normalizado del Cap.~4)}
+  Del modelo suprimebanda T (viene del \emph{pasaaltos}: serie paralelo, derivación
+  serie), con $\bar\omega_0^2 = 0{,}560$:
+  \[
+  \begin{array}{lll}
+      \text{Rama serie (cada brazo):} & \bar C = 1,\ \ \bar L = \frac{1}{\bar\omega_0^2} = 1{,}786 & (\text{resonante paralelo})\\[1ex]
+      \text{Derivación:} & \bar L = 0{,}5,\ \ \bar C = \frac{2}{\bar\omega_0^2} = 3{,}571 & (\text{resonante serie})
+  \end{array}
+  \]
+  Desnormalizamos con $L = \bar L\,\frac{a}{N} = \bar L\cdot 4{,}775$ mH y
+  $C = \frac{\bar C}{a\,N} = \bar C\cdot 848{,}8$ nF:
+  \[
+  \begin{array}{lll}
+      L_1 = 8{,}5\ \text{mH} & C_1 = 849\ \text{nF} & (\text{serie: } L_1\,\|\,C_1)\\[0.5ex]
+      L_2 = 2{,}4\ \text{mH} & C_2 = 3.030\ \text{nF} & (\text{derivación serie})
+  \end{array}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 10 --- Filtro completo suprimebanda}{Prototipo: circuito}
+  \figura[0.75\textwidth]{figures/fig_ej10_proto}
+\end{frame}
+
+\begin{frame}{Ejercicio 10 --- Filtro completo suprimebanda}{Coeficiente $m$}
+  Normalizamos: $\bar\omega_\infty = \frac{19.478}{15.708} = 1{,}240$. Como el suprimebanda
+  viene del \emph{pasaaltos}, la relación de partida es
+  $\bar\omega'_\infty = \sqrt{1-m^2}$:
+  \[
+      \sqrt{1-m^2} = \bar\omega_\infty - \frac{\bar\omega_0^2}{\bar\omega_\infty}
+      = 1{,}240 - \frac{0{,}560}{1{,}240} = 0{,}788
+  \]
+  \[
+      m = \sqrt{1-(0{,}788)^2} = \sqrt{0{,}379} = \boxed{0{,}615}
+      \qquad (1-m^2 = 0{,}621)
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 10 --- Filtro completo suprimebanda}{Sección $m$-derivada (modelo del Cap.~4)}
+  Del modelo $m$-derivado suprimebanda T, con $m = 0{,}615$ y $\bar\omega_0^2 = 0{,}560$:
+  \[
+  \begin{array}{lll}
+      \bar C = \frac{1}{m} = 1{,}626 & \bar L = \frac{m}{\bar\omega_0^2} = 1{,}098 & (\text{rama serie})\\[1ex]
+      \bar L = \frac{1}{2m} = 0{,}813 & \bar C = \frac{2m}{\bar\omega_0^2} = 2{,}196 & (\text{bloque serie})\\[1ex]
+      \bar C = \frac{2m}{1-m^2} = 1{,}981 & \bar L = \frac{1-m^2}{2m\bar\omega_0^2} = 0{,}901 & (\text{bloque paralelo})
+  \end{array}
+  \]
+  Desnormalizando con $L = \bar L\,\frac{a}{N} = \bar L\cdot 4{,}775$ mH y
+  $C = \frac{\bar C}{a\,N} = \bar C\cdot 848{,}8$ nF:
+  \[
+  \begin{array}{lll}
+      L_1 = 5{,}3\ \text{mH} & C_1 = 1.380\ \text{nF} & (\text{rama serie})\\[0.5ex]
+      L_2 = 3{,}9\ \text{mH} & C_2 = 1.860\ \text{nF} & (\text{bloque serie})\\[0.5ex]
+      L_3 = 4{,}3\ \text{mH} & C_3 = 1.680\ \text{nF} & (\text{bloque paralelo})
+  \end{array}
+  \]
+\end{frame}
+
+\begin{frame}{Ejercicio 10 --- Filtro completo suprimebanda}{Sección $m$-derivada: circuito}
+  \figura[0.7\textwidth]{figures/fig_ej10_mderiv}
+\end{frame}
+
+\begin{frame}{Ejercicio 10 --- Filtro completo suprimebanda}{Hemisección de adaptación ($m = 0{,}6$)}
+  \emph{Bisecamos} el modelo $m$-derivado suprimebanda con $m = 0{,}6$ (rama serie en un
+  brazo; derivación con impedancia duplicada):
+  \[
+  \begin{array}{lll}
+      \bar C = 1{,}667 & \bar L = 1{,}071 & (\text{rama serie, un brazo})\\[0.5ex]
+      \bar C = 0{,}938 & \bar L = 1{,}905 & (\text{deriv.\ paralelo, } 2z)\\[0.5ex]
+      \bar L = 1{,}667 & \bar C = 1{,}071 & (\text{deriv.\ serie, } 2z)
+  \end{array}
+  \]
+  Desnormalizando con $L = \bar L\,\frac{a}{N} = \bar L\cdot 4{,}775$ mH y
+  $C = \frac{\bar C}{a\,N} = \bar C\cdot 848{,}8$ nF:
+  \[
+  \begin{array}{lll}
+      L_1 = 5{,}1\ \text{mH} & C_1 = 1.415\ \text{nF} & (\text{rama serie})\\[0.5ex]
+      L_2 = 9{,}1\ \text{mH} & C_2 = 796\ \text{nF} & (\text{deriv.\ paralelo})\\[0.5ex]
+      L_3 = 8{,}0\ \text{mH} & C_3 = 910\ \text{nF} & (\text{deriv.\ serie})
+  \end{array}
+  \]
+  \emph{Verificación:} cada par $L$-$C$ resuena en $\omega_0 \approx 11.756\ \frac{\text{rad}}{\text{s}}$.
+\end{frame}
+
+% ===================== CIERRE =====================
+\section{Cierre}
+
+\begin{frame}{Filtro completo}{Conexión en cascada con adaptación imagen}
+  En ambos casos (Ej.\ 9 y 10) el filtro completo se conecta:
+  \begin{center}
+      \textsf{[Hemisec.\ $m{=}0{,}6$] -- [Prototipo] -- [$m$-derivada] -- [Hemisec.\ $m{=}0{,}6$]}
+  \end{center}
+  entre $R_G$ y $R_L$, según el esquema del Ejercicio 1:
+  \figura{figures/fig_ej01_bloques}
+\end{frame}
+
+\end{document}

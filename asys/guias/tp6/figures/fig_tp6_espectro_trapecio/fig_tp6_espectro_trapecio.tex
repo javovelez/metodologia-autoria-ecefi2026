@@ -1,0 +1,35 @@
+\documentclass[border=4mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=3pt,width=3pt]}, font=\small]
+\begin{axis}[
+    axis lines=middle,
+    axis line style={->, thin, black},
+    axis on top,
+    width=8cm, height=4.6cm,
+    xmin=-620, xmax=620,
+    ymin=-0.10, ymax=1.32,
+    xlabel={$\omega$ [rad/s]},
+    ylabel={$|X(j\omega)|$},
+    xlabel style={font=\small, anchor=north west},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    xtick={-500,-300,300,500},
+    xticklabels={$-500$,$-300$,$300$,$500$},
+    ytick={1}, yticklabels={$1$},
+    ticklabel style={font=\footnotesize},
+    yticklabel style={fill=white, inner sep=1pt},
+    clip=false,
+]
+    % --- 2. Fills / regiones ---
+    \addplot[fill=utnblue!20, draw=none]
+        coordinates {(-500,0) (-300,1) (300,1) (500,0)} \closedcycle;
+
+    % --- 3. Curva principal ---
+    \addplot[utnblue, semithick]
+        coordinates {(-620,0) (-500,0) (-300,1) (300,1) (500,0) (620,0)};
+\end{axis}
+\end{tikzpicture}
+\end{document}

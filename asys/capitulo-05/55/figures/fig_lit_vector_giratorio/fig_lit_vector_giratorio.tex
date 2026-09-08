@@ -1,0 +1,75 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+% Acción de un LIT sobre una exponencial armónica e^{j w t}.
+% La entrada es un vector giratorio de módulo 1; la salida es el
+% mismo vector escalado por |H(j w)| y rotado por arg H(j w),
+% manteniendo la frecuencia de giro intacta.
+% En el dibujo se muestra una instantánea con un valor representativo
+% (omega t = 50°, |H| = 0.65, arg H = -30°).
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small, scale=2.6]
+
+% Parámetros visuales del instante mostrado
+\def\angin{50}
+\def\modout{0.65}
+\def\phaseout{-30}
+\pgfmathsetmacro{\angout}{\angin + \phaseout}
+
+% --- 1. Ejes del plano complejo ---
+\draw[->, thick, black] (-1.25, 0) -- (1.55, 0) node[right, font=\small] {Re};
+\draw[->, thick, black] (0, -1.25) -- (0, 1.35) node[above, font=\small] {Im};
+
+% --- 2. Circunferencias de los dos vectores ---
+\draw[dashed, gray!50, thin] (0, 0) circle (1);
+\draw[dashed, red!40, thin] (0, 0) circle (\modout);
+
+% Flecha indicando sentido y velocidad angular omega de la rotacion
+% (comun a ambos vectores: el LIT no altera la frecuencia de giro).
+\draw[->, thick, black!70]
+    ({1.16*cos(60)}, {1.16*sin(60)}) arc (60:75:1.16);
+\node[font=\small, black!70, anchor=south west, inner sep=1pt]
+    at ({1.16*cos(75)+0.02}, {1.16*sin(75)+0.02}) {$\omega$};
+
+% --- 3. Vectores ---
+% Entrada: vector giratorio módulo 1 ángulo \angin
+\draw[->, very thick, utnblue] (0, 0) -- ({cos(\angin)}, {sin(\angin)});
+\fill[utnblue] ({cos(\angin)}, {sin(\angin)}) circle (0.5pt);
+
+% Salida: vector giratorio módulo \modout ángulo \angout
+\draw[->, very thick, red!80!black]
+    (0, 0) -- ({\modout*cos(\angout)}, {\modout*sin(\angout)});
+\fill[red!80!black]
+    ({\modout*cos(\angout)}, {\modout*sin(\angout)}) circle (0.5pt);
+
+% Arco indicando el desfase arg H entre los dos vectores
+\draw[->, thin, gray!75]
+    ({0.42*cos(\angin)}, {0.42*sin(\angin)})
+    arc (\angin:\angout:0.42);
+\node[font=\tiny, gray, anchor=west, inner sep=1pt]
+    at ({0.48*cos((\angin+\angout)/2)}, {0.48*sin((\angin+\angout)/2)})
+    {$\arg H$};
+
+% --- 4. Etiquetas ---
+\node[anchor=south west, font=\footnotesize, utnblue]
+    at ({cos(\angin)+0.03}, {sin(\angin)+0.04})
+    {$e^{j\omega t}$};
+\node[anchor=west, font=\footnotesize, red!80!black]
+    at ({\modout*cos(\angout)+0.03}, {\modout*sin(\angout)-0.02})
+    {$H(j\omega)\,e^{j\omega t}$};
+
+% Indicador del módulo |H| sobre el eje real
+\draw[|<->|, thin, gray!75]
+    (0, -0.18) -- ({\modout}, -0.18);
+\node[font=\tiny, gray, anchor=north, inner sep=1pt]
+    at ({\modout/2}, -0.18) {$|H(j\omega)|$};
+
+% Indicador del módulo 1 (entrada)
+\draw[|<->|, thin, gray!50]
+    (0, -0.32) -- (1, -0.32);
+\node[font=\tiny, gray!70, anchor=north, inner sep=1pt]
+    at (0.5, -0.32) {$1$};
+
+\end{tikzpicture}
+\end{document}

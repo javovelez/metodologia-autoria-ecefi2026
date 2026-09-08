@@ -1,0 +1,76 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    mypanel/.style={
+        width=4.8cm, height=3.6cm,
+        axis lines=center,
+        axis line style={->, thin},
+        axis on top=true,
+        xmin=-1.6, xmax=4.8,
+        xtick={-1, 1, 2, 3},
+        xticklabels={$-1$, $t_0$, $2$, $3$},
+        tick style={thin},
+        tick label style={font=\scriptsize},
+        xlabel={$t$}, xlabel style={right, font=\scriptsize},
+        ylabel style={above, font=\scriptsize},
+        clip=false,
+        title style={yshift=-1.5ex},
+    },
+    sig/.style={utnblue, thick},
+}
+
+% ---- Panel (a): señal original x(t) = cos(pi*t) ----
+\begin{axis}[mypanel, name=pA,
+    ymin=-1.4, ymax=1.8,
+    ytick={-1, 1},
+    ylabel={$x(t)$},
+    title={\textbf{(a)}}]
+% línea de referencia vertical en t0 = 1
+\addplot[gray!55, dashed, thin] coordinates {(1,-1.3)(1,1.3)};
+\addplot[sig, domain=-1.5:4.5, samples=300] {cos(deg(pi*x))};
+\node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+\end{axis}
+
+% ---- Panel (b): escalón desplazado u(t - t0), t0 = 1 ----
+\begin{axis}[mypanel, name=pB,
+    at={($(pA.east)+(1.2cm,0)$)}, anchor=west,
+    ymin=-0.4, ymax=1.8,
+    ytick={1},
+    ylabel={$u(t-t_0)$},
+    title={\textbf{(b)}}]
+\addplot[gray!55, dashed, thin] coordinates {(1,-0.3)(1,1.3)};
+\addplot[sig] coordinates {(-1.5,0)(1,0)};
+\addplot[sig, dashed] coordinates {(1,0)(1,1)};   % salto
+\addplot[sig] coordinates {(1,1)(4.5,1)};
+\addplot[sig, mark=*, fill=white, draw=utnblue, mark size=1.5pt, only marks] coordinates {(1,0)};
+\addplot[sig, mark=*, mark size=1.5pt, only marks] coordinates {(1,1)};
+\node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+\end{axis}
+
+% ---- Panel (c): señal activada y(t) = cos(pi*t) * u(t-1) ----
+\begin{axis}[mypanel, name=pC,
+    at={($(pB.east)+(1.2cm,0)$)}, anchor=west,
+    ymin=-1.4, ymax=1.8,
+    ytick={-1, 1},
+    ylabel={$y(t)$},
+    title={\textbf{(c)}}]
+\addplot[gray!55, dashed, thin] coordinates {(1,-1.3)(1,1.3)};
+% cero para t < t0
+\addplot[sig] coordinates {(-1.5,0)(1,0)};
+% sinusoide para t >= t0; cos(pi*1) = -1
+\addplot[sig, domain=1:4.5, samples=200] {cos(deg(pi*x))};
+% marcadores de discontinuidad en t = 1
+\addplot[sig, mark=*, fill=white, draw=utnblue, mark size=1.5pt, only marks] coordinates {(1,0)};
+\addplot[sig, mark=*, mark size=1.5pt, only marks] coordinates {(1,-1)};
+% anotación del valor de arranque
+
+\node[below right, font=\scriptsize, inner sep=1pt] at (axis cs:0,0) {$0$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

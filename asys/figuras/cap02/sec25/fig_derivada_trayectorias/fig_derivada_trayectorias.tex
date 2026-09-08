@@ -1,0 +1,45 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows} % Necesario para drop shadow
+
+\begin{document}
+    \begin{tikzpicture}[>= {Stealth[round, length=3mm, width=2mm]}, scale=1.5, font=\small]
+        % Configuración de estilos
+        \tikzset{
+            path_style/.style={line width=1.2pt, line cap=round},
+            axis_style/.style={->, >=Latex, black, very thick}
+        }
+
+        % Ejes (más sutiles para resaltar las curvas)
+        \draw[axis_style] (-0.5,0) -- (4,0) node[right, black] {Re($z$)};
+        \draw[axis_style] (0,-0.5) -- (0,4) node[above, black] {Im($z$)};
+
+        % Punto z0
+        \coordinate (z0) at (2.2, 2.2);
+        
+        % Trayectoria 1: Aproximación Horizontal (con curvatura suave)
+        % Empieza en y=z0_y pero x lejano
+        \draw[path_style, utnblue, ->] (0.5, 2.2) to[out=0, in=180] (2.1, 2.2);
+        \node[utnblue, anchor=south] at (1.5, 2.3) {$\Delta z \approx \Delta x$};
+
+        % Trayectoria 2: Aproximación Vertical (con curvatura suave)
+        % Empieza en x=z0_x pero y lejano
+        \draw[path_style, red!70!black, ->] (2.2, 0.5) to[out=90, in=270] (2.2, 2.1);
+        \node[red!70!black, anchor=west] at (2.3, 1.2) {$\Delta z \approx j\Delta y$};
+
+        % Trayectoria 3: Espiral estilo "caracol"
+        \draw[path_style, codegreen, ->, variable=\t, samples=150, domain=0:13] 
+            plot ({2.2 + (2.3*exp(-0.28*\t))*cos(\t*60 + 30)}, 
+                  {2.2 + (2.3*exp(-0.28*\t))*sin(\t*60 + 30)});
+        \node[codegreen, anchor=south] at (3.0, 3.5) {$\Delta z_3$};
+
+        % Trayectoria 4: Diagonal/Arbitraria (Gris)
+        \draw[path_style, gray, dashed, ->] (0.8, 0.8) to[out=45, in=-135] (2.1, 2.1);
+
+        % Punto z0 (dibujado al final para estar encima)
+        \filldraw[fill=white, draw=black, thick] (z0) circle (2.5pt);
+        \fill[black] (z0) circle (1.2pt);
+        \node[anchor=south west, yshift=3pt] at (z0) {$z_0$};
+        
+    \end{tikzpicture}
+\end{document}

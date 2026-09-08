@@ -1,0 +1,45 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=2.2, font=\small]
+    \useasboundingbox (-1.2, -1.2) rectangle (1.2, 1.2);
+
+    % --- CAPA 1: Grid ---
+    \begin{scope}
+        \clip (-1.2, -1.2) rectangle (1.2, 1.2);
+        \draw[help lines, gray!30, step=0.5] (-1.2,-1.2) grid (1.2, 1.2);
+    \end{scope}
+
+    % --- CAPA 2: Espiral convergente: e^{-t}*(cos t, sin t) ---
+    \begin{scope}
+        \clip (-1.2, -1.2) rectangle (1.2, 1.2);
+        \draw[utnblue, thick] plot[domain=0:9.42, variable=\t, samples=300, smooth]
+            ({exp(-\t)*cos(\t r)}, {exp(-\t)*sin(\t r)});
+    \end{scope}
+
+    % --- CAPA 3: Ejes ---
+    \draw[->, thick] (-1.15,0) -- (1.15,0) node[right, font=\scriptsize] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-1.15) -- (0,1.15) node[above, font=\scriptsize] {$\operatorname{Im}$};
+
+    % --- CAPA 4: Etiquetas y marcas ---
+    \foreach \x in {-1, 1} {
+        \draw (\x, 0.04)--(\x,-0.04) node[below, font=\scriptsize] {$\x$};
+    }
+    \foreach \y in {-1, 1} {
+        \draw (0.04, \y)--(-0.04,\y) node[left, font=\scriptsize] {$\y$};
+    }
+    \node[below left, font=\scriptsize] at (0,0) {$0$};
+
+    % Punto inicial t=0
+    \fill[utnblue] (1,0) circle (0.8pt);
+    \node[above right, font=\scriptsize] at (1,0) {$t{=}0$};
+
+    % Flecha de dirección inicial: s=(-1+j)/sqrt(2)
+    \draw[->, utnblue, thick] (1,0) -- ({1+0.18*(-1/sqrt(2))}, {0.18*(1/sqrt(2))});
+
+    % Punto límite en el origen
+    \fill[utnblue] (0,0) circle (0.8pt);
+    \node[above right, font=\scriptsize, utnblue] at (0,0) {$t{\to}\infty$};
+\end{tikzpicture}
+\end{document}

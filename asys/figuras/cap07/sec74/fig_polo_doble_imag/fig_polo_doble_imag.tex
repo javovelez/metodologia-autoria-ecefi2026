@@ -1,0 +1,43 @@
+% ============================================================
+% fig_polo_doble_imag.tex
+% Par de polos dobles sobre el eje imaginario (p = +- j w0, mult. 2).
+% Aporte a h(t): t cos(w0 t + phi) u(t): oscilacion de amplitud que
+% crece linealmente (resonancia). Envolvente lineal +-k t (a trazos).
+% Marcador (2) sobre cada polo, segun la referencia.
+% Layout: [plano s]  L^{-1}  [h(t)].
+% ============================================================
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% --- Plano s ---
+\draw[->, thin] (-1.7, 0) -- (1.7, 0) node[below right, font=\footnotesize] {$\sigma$};
+\draw[->, thin] (0, -1.9) -- (0, 2.0) node[above, font=\footnotesize] {$j\omega$};
+\fill[black] (0, 0) circle (0.8pt);
+\node[red, font=\large] at (0, 1.3) {$\times$};
+\node[red, above right, font=\scriptsize, inner sep=1pt] at (0.08, 1.36) {$(2)$};
+\node[red, font=\large] at (0, -1.3) {$\times$};
+\node[red, above right, font=\scriptsize, inner sep=1pt] at (0.08, -1.24) {$(2)$};
+\node[left, font=\footnotesize] at (-0.05, 1.3) {$j\omega_0$};
+\node[left, font=\footnotesize] at (-0.05, -1.3) {$-j\omega_0$};
+
+% --- Conector ---
+\draw[->, gray, thin] (2.2, 0) -- (3.4, 0)
+    node[midway, above, font=\footnotesize, gray] {$\mathcal{L}^{-1}$};
+
+% --- h(t) ---
+\begin{scope}[shift={(3.9, 0)}]
+    \draw[->, thin] (-0.3, 0) -- (4.0, 0) node[right, font=\footnotesize] {$t$};
+    \draw[->, thin] (0, -1.7) -- (0, 1.9) node[above, font=\footnotesize] {$h(t)$};
+    % Envolvente lineal creciente +-0.45 t -> ~1.71 en t = 3.8.
+    \draw[gray, thin, dashed] (0, 0) -- (3.8, 1.71);
+    \draw[gray, thin, dashed] (0, 0) -- (3.8, -1.71);
+    % Oscilacion de amplitud creciente t cos(w0 t).
+    \draw[red!80!black, thick, smooth, samples=300, domain=0:3.8]
+        plot (\x, {0.45*\x*cos(deg(4*\x))});
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

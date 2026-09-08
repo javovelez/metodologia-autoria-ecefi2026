@@ -1,0 +1,39 @@
+% ============================================================
+% fig_cancelacion_polo_cero.tex
+% Diagrama de polos y ceros de H(s) = (s+1)/((s+1)(s+2)) (§7.4.3):
+% polos en -1 y -2 (cruces), cero en -1 (círculo). El cero cae
+% exactamente sobre el polo en s = -1 y lo cancela; el sistema
+% efectivo tiene un único polo en s = -2.
+% Estilo consistente con fig_roc_tres_formas / fig_polo_real_multiple.
+% ============================================================
+%\PassOptionsToPackage{gray}{xcolor}
+
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=0.85, font=\small]
+
+% --- Ejes ---
+\draw[->, thick] (-3.2, 0) -- (1.4, 0) node[right, font=\footnotesize] {$\sigma$};
+\draw[->, thick] (0, -1.6) -- (0, 1.8) node[above, font=\footnotesize] {$j\omega$};
+\fill[black] (0,0) circle (0.8pt);
+
+% --- Polo simple en s = -2 ---
+\node[red, font=\normalsize] at (-2, 0) {$\times$};
+\draw (-2, 0.08) -- (-2, -0.08);
+\node[below, font=\scriptsize] at (-2, -0.12) {$-2$};
+
+% --- Polo y cero superpuestos en s = -1 ---
+\node[red, font=\normalsize] at (-1, 0) {$\times$};
+\draw[utnblue!80!black, thick] (-1, 0) circle (0.17);
+\draw (-1, 0.08) -- (-1, -0.08);
+\node[below, font=\scriptsize] at (-1, -0.26) {$-1$};
+
+% --- Anotación de la cancelación ---
+\draw[->, gray, thin] (-1, 1.1) -- (-1, 0.22);
+\node[gray, font=\scriptsize, anchor=south west, align=left]
+    at (-2, 1.05) {polo y cero\\coinciden};
+
+\end{tikzpicture}
+\end{document}

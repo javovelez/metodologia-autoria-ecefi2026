@@ -1,0 +1,235 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usepgfplotslibrary{fillbetween}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Superposición de dos respuestas al impulso.
+% Parámetros: h(t) = e^{-t} u(t), t1 = 0, alpha1 = 0.5, t2 = 1, alpha2 = 1.
+%
+% Layout 3x2:
+%   (a)  x1 = alpha1 δ(t-t1)         (a') y1 = alpha1 h(t-t1)
+%   (b)  x2 = alpha2 δ(t-t2)         (b') y2 = alpha2 h(t-t2)
+%   (c)  x = x1 + x2                 (c') y = y1 + y2  (aportes apilados)
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\colorlet{col1}{utnblue}
+\colorlet{col2}{red!80!black}
+\colorlet{col1light}{utnblue!25}
+\colorlet{col2light}{red!80!black!30}
+\colorlet{tlabel}{gray!50!black}
+
+\pgfplotsset{
+    every axis/.append style={clip=false},
+}
+
+% =============== Fila 1: x1 — y1 ===============
+
+\begin{axis}[
+    name=a1,
+    width=7cm, height=3.2cm,
+    axis lines=center,
+    xmin=-0.4, xmax=5.3,
+    ymin=-0.25, ymax=1.25,
+    xtick={1}, xticklabels={$t_2$},
+    ytick=\empty,
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    ylabel={$x_1$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={\footnotesize (a) $x_1(t) = \alpha_1\,\delta(t-t_1)$},
+    title style={font=\footnotesize\bfseries},
+    every tick label/.style={font=\scriptsize},
+]
+    \draw[->, col1, very thick, line width=1.2pt]
+        (axis cs:0,0) -- (axis cs:0,0.5);
+    \node[col1, font=\scriptsize, anchor=west] at (axis cs:0.12, 0.42) {$\alpha_1$};
+    \node[font=\scriptsize, anchor=base, tlabel, xshift=5pt, yshift=-10pt] at (axis cs:0,0) {$t_1$};
+    \draw[dashed, gray!55, thin] (axis cs:1, 0) -- (axis cs:1, 1.15);
+\end{axis}
+
+\begin{axis}[
+    name=b1,
+    at={(a1.east)}, anchor=west, xshift=1.1cm,
+    width=7cm, height=3.2cm,
+    axis lines=center,
+    xmin=-0.4, xmax=5.3,
+    ymin=-0.25, ymax=1.25,
+    xtick={1}, xticklabels={$t_2$},
+    ytick=\empty,
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    ylabel={$y_1$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={\footnotesize (a$'$) $y_1(t) = \alpha_1\,h(t-t_1)$},
+    title style={font=\footnotesize\bfseries},
+    every tick label/.style={font=\scriptsize},
+]
+    \addplot[col1light, draw=none, domain=0:5.2, samples=120] {0.5*exp(-x)} \closedcycle;
+    \addplot[col1, very thick, domain=-0.4:0, samples=2] {0};
+    \addplot[col1, very thick, domain=0:5.2, samples=120] {0.5*exp(-x)};
+    \draw[col1, very thick] (axis cs:0,0) -- (axis cs:0,0.5);
+    \fill[col1]  (axis cs:0,0.5) circle (1.8pt);
+    \fill[white] (axis cs:0,0) circle (1.8pt);
+    \draw[col1]  (axis cs:0,0) circle (1.8pt);
+    % Línea horizontal marcando la amplitud inicial alpha_1
+    \draw[col1, thin] (axis cs:-0.4, 0.5) -- (axis cs:5.3, 0.5);
+    \node[col1, font=\scriptsize, anchor=south east] at (axis cs:5.25, 0.5) {$\alpha_1$};
+    \node[font=\scriptsize, anchor=base, tlabel, xshift=5pt, yshift=-10pt] at (axis cs:0,0) {$t_1$};
+    \draw[dashed, gray!55, thin] (axis cs:1, 0) -- (axis cs:1, 1.15);
+\end{axis}
+
+% =============== Fila 2: x2 — y2 ===============
+
+\begin{axis}[
+    name=a2,
+    at={(a1.south)}, anchor=north, yshift=-1.2cm,
+    width=7cm, height=3.2cm,
+    axis lines=center,
+    xmin=-0.4, xmax=5.3,
+    ymin=-0.25, ymax=1.25,
+    xtick={1}, xticklabels={$t_2$},
+    ytick=\empty,
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    ylabel={$x_2$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={\footnotesize (b) $x_2(t) = \alpha_2\,\delta(t-t_2)$},
+    title style={font=\footnotesize\bfseries},
+    every tick label/.style={font=\scriptsize},
+]
+    \draw[->, col2, very thick, line width=1.2pt]
+        (axis cs:1,0) -- (axis cs:1,1);
+    \node[col2, font=\scriptsize, anchor=west] at (axis cs:1.62, 0.88) {$\alpha_2$};
+    \node[font=\scriptsize, anchor=base, tlabel, xshift=5pt, yshift=-10pt] at (axis cs:0,0) {$t_1$};
+    \draw[dashed, gray!55, thin] (axis cs:0, 0) -- (axis cs:0, 1.15);
+\end{axis}
+
+\begin{axis}[
+    name=b2,
+    at={(b1.south)}, anchor=north, yshift=-1.2cm,
+    width=7cm, height=3.2cm,
+    axis lines=center,
+    xmin=-0.4, xmax=5.3,
+    ymin=-0.25, ymax=1.25,
+    xtick={1}, xticklabels={$t_2$},
+    ytick=\empty,
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    ylabel={$y_2$}, 
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={\footnotesize (b$'$) $y_2(t) = \alpha_2\,h(t-t_2)$},
+    title style={font=\footnotesize\bfseries},
+    every tick label/.style={font=\scriptsize},
+]
+    \addplot[col2light, draw=none, domain=1:5.2, samples=120] {exp(-(x-1))} \closedcycle;
+    \addplot[col2, very thick, domain=-0.4:1, samples=2] {0};
+    \addplot[col2, very thick, domain=1:5.2, samples=120] {exp(-(x-1))};
+    \draw[col2, very thick] (axis cs:1,0) -- (axis cs:1,1);
+    \fill[col2]  (axis cs:1,1) circle (1.8pt);
+    \fill[white] (axis cs:1,0) circle (1.8pt);
+    \draw[col2]  (axis cs:1,0) circle (1.8pt);
+    % Línea horizontal marcando la amplitud inicial alpha_2
+    \draw[col2, thin] (axis cs:-0.4, 1) -- (axis cs:5.3, 1);
+    \node[col2, font=\scriptsize, anchor=south east] at (axis cs:5.25, 1) {$\alpha_2$};
+    \node[font=\scriptsize, anchor=base, tlabel, xshift=5pt, yshift=-10pt] at (axis cs:0,0) {$t_1$};
+    \draw[dashed, gray!55, thin] (axis cs:0, 0) -- (axis cs:0, 1.15);
+\end{axis}
+
+% =============== Fila 3: suma entrada — suma salida con aportes apilados ===============
+
+\begin{axis}[
+    name=a3,
+    at={(a2.south)}, anchor=north, yshift=-1.2cm,
+    width=7cm, height=3.2cm,
+    axis lines=center,
+    xmin=-0.4, xmax=5.3,
+    ymin=-0.25, ymax=1.25,
+    xtick={1}, xticklabels={$t_2$},
+    ytick=\empty,
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    ylabel={$x$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={\footnotesize (c) $x(t) = x_1(t) + x_2(t)$},
+    title style={font=\footnotesize\bfseries},
+    every tick label/.style={font=\scriptsize},
+]
+    \draw[->, col1, very thick, line width=1.2pt]
+        (axis cs:0,0) -- (axis cs:0,0.5);
+    \node[col1, font=\scriptsize, anchor=west] at (axis cs:0.12, 0.42) {$\alpha_1$};
+    \draw[->, col2, very thick, line width=1.2pt]
+        (axis cs:1,0) -- (axis cs:1,1);
+    \node[col2, font=\scriptsize, anchor=west] at (axis cs:1.62, 0.88) {$\alpha_2$};
+    \node[font=\scriptsize, anchor=base, tlabel, xshift=5pt, yshift=-10pt] at (axis cs:0,0) {$t_1$};
+\end{axis}
+
+\begin{axis}[
+    name=b3,
+    at={(b2.south)}, anchor=north, yshift=-1.2cm,
+    width=7cm, height=3.2cm,
+    axis lines=center,
+    xmin=-0.4, xmax=5.3,
+    ymin=-0.25, ymax=1.25,
+    xtick={1}, xticklabels={$t_2$},
+    ytick=\empty,
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+    ylabel={$y$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={\footnotesize (c$'$) $y(t) = y_1(t) + y_2(t)$},
+    title style={font=\footnotesize\bfseries},
+    every tick label/.style={font=\scriptsize},
+]
+    % ---------- Paso 1: calcular y sombrear el área bajo y_total = y1 + y2 ----------
+    % Para t < t2, y_total = y1 (rojo y azul coinciden en esa zona).
+    \addplot[fill=col2light, draw=none, domain=0:1, samples=80] {0.5*exp(-x)} \closedcycle;
+    % Para t >= t2, y_total = y1 + y2.
+    \addplot[fill=col2light, draw=none, domain=1:5.2, samples=120]
+        {0.5*exp(-x) + exp(-(x-1))} \closedcycle;
+
+    % ---------- Paso 2: sombrear encima el área bajo y1 ----------
+    % Ocluye al rojo donde y1 > 0; deja visible sólo la banda y_total \ y1.
+    \addplot[fill=col1light, draw=none, domain=0:5.2, samples=120] {0.5*exp(-x)} \closedcycle;
+
+    % ---------- Envelope y_total = y1 + y2 (negro, grueso) ----------
+    \addplot[black, very thick, domain=-0.4:0, samples=2] {0};
+    \addplot[black, very thick, domain=0:1, samples=80] {0.5*exp(-x)};
+    \addplot[black, very thick, domain=1:5.2, samples=160]
+        {0.5*exp(-x) + exp(-(x-1))};
+
+    % Discontinuidad en t=t1=0
+    \draw[black, very thick] (axis cs:0,0) -- (axis cs:0,0.5);
+    \fill[black]  (axis cs:0,0.5) circle (1.8pt);
+    \fill[white]  (axis cs:0,0) circle (1.8pt);
+    \draw[black]  (axis cs:0,0) circle (1.8pt);
+
+    % Discontinuidad en t=t2=1 (salto = alpha_2 = 1)
+    \pgfmathsetmacro{\yleft}{0.5*exp(-1)}
+    \pgfmathsetmacro{\yright}{0.5*exp(-1) + 1}
+    \draw[black, very thick] (axis cs:1,\yleft) -- (axis cs:1,\yright);
+    \fill[black]  (axis cs:1,\yright) circle (1.8pt);
+    \fill[white]  (axis cs:1,\yleft) circle (1.8pt);
+    \draw[black]  (axis cs:1,\yleft) circle (1.8pt);
+
+    % Líneas horizontales de referencia (amplitudes iniciales), dashed en este panel
+    \draw[col1, thin, dashed] (axis cs:-0.4, 0.5) -- (axis cs:5.3, 0.5);
+    \node[col1, font=\scriptsize, anchor=south east] at (axis cs:5.25, 0.5) {$\alpha_1$};
+    \draw[col2, thin, dashed] (axis cs:-0.4, 1) -- (axis cs:5.3, 1);
+    \node[col2, font=\scriptsize, anchor=south east] at (axis cs:5.25, 1) {$\alpha_2$};
+
+    % Etiqueta del envelope
+    \node[font=\scriptsize, anchor=south west] at (axis cs:2.6, 0.70) {$y = y_1 + y_2$};
+
+    \node[font=\scriptsize, anchor=base, tlabel, xshift=5pt, yshift=-10pt] at (axis cs:0,0) {$t_1$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,354 @@
+\documentclass[class=book, crop=false]{standalone}
+\input{../../setup.tex}
+
+\begin{document}
+\setcounter{chapter}{5}
+\section{Las señales como vectores: producto interno y ortogonalidad}
+\label{sec:producto_interno}
+
+Antes de adentrarnos en el formalismo, conviene detenernos en una idea que organiza buena parte de lo que sigue: \textbf{las señales son vectores}. El espacio donde viven es un espacio vectorial en el sentido más estricto del álgebra lineal, y todas las nociones geométricas que ya nos resultan familiares —norma, ángulo, similitud, ortogonalidad, proyección— se trasladan a él con cambios mínimos. Vale la pena hacer este puente despacio: el resultado es un mapa común en el que muchas herramientas que parecen separadas se reconocen como instancias del mismo aparato.
+
+En álgebra lineal pensamos un vector como una lista ordenada de números: $\vect{x} = (x_1, x_2, \ldots, x_n)$. Cada índice $i$ etiqueta una coordenada, y el vector queda completamente determinado al especificar el valor que toma en cada uno de esos $n$ índices. Una señal $x(t)$ no es esencialmente distinta. También está determinada por el valor que toma en cada uno de sus índices, solo que ahora el índice no recorre un conjunto finito $\{1, 2, \ldots, n\}$, sino un conjunto continuo: el de los instantes de tiempo $t$. Donde antes había $n$ coordenadas, ahora hay una coordenada por cada instante.
+
+Esta lectura sugiere que una señal es un vector de \emph{infinitas} dimensiones. Y, en efecto, lo es. El espacio donde viven las señales (con ciertas condiciones técnicas que aquí no nos preocupan) es un espacio vectorial.
+
+Conviene tener a la vista qué condiciones se cumplen detrás de esa frase. Tanto la suma de dos señales como el producto por un escalar dan otra señal. Existen la señal nula y la opuesta de cada señal. Y las propiedades algebraicas habituales —asociatividad, conmutatividad, distributividad— se cumplen como uno espera. Lo que cambia respecto del caso finito no es la naturaleza del espacio, sino su tamaño.
+
+Una vez aceptado que las señales son vectores, las nociones geométricas que aprendimos en $\mathbb{R}^n$ se trasladan con naturalidad. La pieza central es una operación —el \textbf{producto interno}— que toma dos vectores y devuelve un escalar. A partir de ella se construyen la longitud (o norma) de un vector y el ángulo entre dos vectores —incluida la ortogonalidad como caso particular—. El coseno de ese ángulo ofrece además una medida de similitud entre vectores, y combinando coseno y norma se obtiene la proyección de un vector sobre otro. En $\mathbb{R}^n$ adopta la forma del producto escalar familiar, una suma sobre las coordenadas; en el espacio de señales, esa suma sobre coordenadas discretas se transforma en una integral sobre el índice continuo, pero la idea estructural es la misma: una operación que combina dos vectores en un escalar y respeta linealidad, simetría y positividad. \emph{Producto interno} es el término que abarca ambos casos —el discreto y el continuo— bajo esa misma idea.
+
+El paralelismo no se agota en los objetos; alcanza también a las operaciones que se hacen sobre ellos. En álgebra lineal, una matriz $A$ transforma un vector $\vect{x}$ en otro vector $\vect{y} = A\vect{x}$, codificando una regla lineal. En el mundo de las señales, los \emph{sistemas} cumplen exactamente ese papel: un sistema lineal recibe una señal de entrada $x(t)$ y produce una señal de salida $y(t)$, respetando la estructura vectorial. Una EDLCC juega el mismo rol que jugaba la matriz: es una forma compacta de especificar un operador lineal sobre el espacio de señales ---la regla que transforma vectores de entrada en vectores de salida---.
+
+Adoptar esta perspectiva tiene una consecuencia práctica importante: muchos resultados que aparecerán a lo largo del texto, y que pueden parecer trucos analíticos ingeniosos, son en realidad versiones continuas de teoremas que ya conocemos. La descomposición de una señal periódica en serie de Fourier es un cambio de base. La transformada de Fourier es otro cambio de base, particularmente afortunado porque diagonaliza una clase muy amplia de sistemas. La convolución es una forma de producto matriz-vector. Los polos y ceros de una función de transferencia son primos cercanos de los autovalores de una matriz. Nada de esto se desarrollará aquí en su forma más general; la intención es solamente sembrar la intuición de que cuando manipulemos integrales, derivadas y transformadas, no estaremos abandonando el terreno familiar del álgebra lineal, sino caminando sobre él en un espacio más amplio.
+
+Empezamos por la pieza más básica de ese mapa. El Capítulo~\ref{cap04} mostró que los sistemas LIT están descriptos por su respuesta al impulso $h(t)$: esa señal lo determina por completo, y la salida ante cualquier entrada se obtiene por convolución. La descripción es exacta, pero al cambiar de entrada hay que rehacer la convolución desde cero. El presente capítulo desarrolla un camino alternativo, que organiza la información de otra manera; la primera pieza de ese camino —la herramienta geométrica que habilita el resto— es la que esta sección introduce. En concreto: se repasa el producto interno en $\mathbb{R}^n$ —para fijar notación—, se traduce al espacio de señales, y se verifica que el sistema exponencial armónico —las exponenciales complejas cuya frecuencia es múltiplo entero de una fundamental— es ortogonal sobre cualquier período. Sobre esa base se construirá, en las secciones siguientes, la serie de Fourier.
+
+% ==============================================================================
+% 5.1.1 Repaso: Producto Interno en R^n
+% ==============================================================================
+\subsection{Repaso: producto interno en \texorpdfstring{$\mathbb{R}^n$}{R\textasciicircum n}}
+\label{subsec:repaso_producto_interno}
+
+El producto interno canónico en $\mathbb{R}^n$ asocia a cada par de vectores
+$\vect{u} = (u_1,\ldots,u_n)$, $\vect{v} = (v_1,\ldots,v_n)$ el número
+real
+\begin{equation}
+    \langle \vect{u},\vect{v}\rangle \;=\; \sum_{k=1}^{n} u_k\,v_k.
+    \label{eq:pi_Rn}
+\end{equation}
+A partir de él se construyen los conceptos geométricos del espacio: la
+\textbf{norma} $\|\vect{v}\| = \sqrt{\langle\vect{v},\vect{v}\rangle}$
+mide la longitud del vector, y la \textbf{ortogonalidad} entre dos
+vectores queda definida por la condición $\langle\vect{u},\vect{v}\rangle = 0$,
+que coincide con el ángulo recto para vectores de $\mathbb{R}^2$ y $\mathbb{R}^3$. 
+Otra forma equivalente de escribir el producto interno, que hace más visible su contenido geométrico, es
+\begin{equation}
+    \langle \vect{u},\vect{v}\rangle \;=\; \|\vect{u}\|\,\|\vect{v}\|\cos\theta,
+    \label{eq:pi_Rn_angulo}
+\end{equation}
+donde $\theta$ es el ángulo entre los dos vectores. En esta forma se ve que el producto interno mezcla tres ingredientes —las longitudes de $\vect{u}$ y $\vect{v}$, y el coseno del ángulo entre ellos— y permite recuperar cualquiera de esos ingredientes a partir de los otros.
+
+El que nos interesa recuperar es el coseno, porque está asociado a la \textbf{proyección} de $\vect{v}$ sobre $\vect{u}$: el vector que se obtiene al bajar una perpendicular desde $\vect{v}$ hasta la recta sostenida por $\vect{u}$. La longitud de esa proyección es $\|\vect{v}\|\cos\theta$, y al despejar ese factor de \eqref{eq:pi_Rn_angulo} queda
+\begin{equation}
+    \|\vect{v}\|\cos\theta \;=\; \frac{\langle \vect{u},\vect{v}\rangle}{\|\vect{u}\|}.
+    \label{eq:cos_theta}
+\end{equation}
+Tenemos así la longitud del vector proyección, pero todavía no su dirección. Para reconstruir el vector completo hay que multiplicar esa longitud por un vector de magnitud unitaria que apunte en la dirección de $\vect{u}$, es decir, por $\vect{u}/\|\vect{u}\|$. Juntando ambas piezas se llega a la fórmula de la proyección:
+\begin{equation}
+    \vect{v}_{\parallel \vect{u}}
+    \;=\; \frac{\langle \vect{u},\vect{v}\rangle}{\|\vect{u}\|}\,\frac{\vect{u}}{\|\vect{u}\|}
+    \;=\; \frac{\langle \vect{u},\vect{v}\rangle}{\|\vect{u}\|^2}\,\vect{u}.
+    \label{eq:proyeccion_vu}
+\end{equation}
+La igualdad de la derecha es la forma compacta que conviene tener a mano: para proyectar $\vect{v}$ sobre $\vect{u}$ alcanza con calcular un producto interno y reescalar $\vect{u}$ por el factor $\langle\vect{u},\vect{v}\rangle/\|\vect{u}\|^2$.
+
+
+La utilidad operativa del producto interno aparece al \textit{descomponer}
+un vector sobre una base. Si $\{\vect{e}_1,\ldots,\vect{e}_n\}$ es una
+base ortogonal —es decir, $\langle\vect{e}_k,\vect{e}_m\rangle = 0$
+para $k \neq m$—, todo vector $\vect{v}$ se escribe de manera única como
+\begin{equation}
+    \vect{v} \;=\; \sum_{k=1}^{n} c_k\,\vect{e}_k,
+    \qquad
+    c_k \;=\; \frac{\langle \vect{v},\vect{e}_k\rangle}{\|\vect{e}_k\|^2}.
+    \label{eq:coefs_ortogonal_Rn}
+\end{equation}
+Cada coeficiente $c_k$ pesa a $\vect{e}_k$ en la descomposición; el vector
+\textbf{proyección} de $\vect{v}$ sobre $\vect{e}_k$ es $c_k\,\vect{e}_k$.
+Lo decisivo de la ortogonalidad es que el cálculo de $c_k$
+involucra únicamente a $\vect{v}$ y a $\vect{e}_k$: los demás vectores
+de la base no entran en la fórmula. Si se agrega un nuevo eje
+$\vect{e}_{n+1}$ ortogonal a todos los anteriores, los coeficientes ya
+calculados quedan intactos. Esa independencia entre proyecciones es la
+propiedad que hace manejable la descomposición, y la que se buscará
+replicar al extender la idea al espacio de señales. La
+figura~\ref{fig:proyeccion_R2} ilustra el caso $n = 2$.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.45\linewidth]{figures/fig_proyeccion_R2/fig_proyeccion_R2}
+        \caption{Proyección de un vector $\vect{v}$ sobre una base
+                 ortogonal $\{\vect{e}_1,\vect{e}_2\}$ en $\mathbb{R}^2$
+                 (ortogonal, no unitaria). Cada proyección $\vect{v}_k$ se
+                 calcula de forma independiente: en la fórmula solo aparecen
+                 $\vect{v}$ y el correspondiente $\vect{e}_k$.}
+        \label{fig:proyeccion_R2}
+    \end{minipage}
+\end{figure}
+
+\paragraph{Versión compleja.}
+Cuando los vectores tienen entradas complejas, la fórmula ingenua
+$\sum_k u_k v_k$ pierde una propiedad esencial: $\langle\vect{v},\vect{v}\rangle$
+deja de ser real no negativo y la interpretación como cuadrado de la
+longitud se desarma. La corrección consiste en conjugar el segundo
+argumento:
+\begin{equation}
+    \langle \vect{u},\vect{v}\rangle \;=\; \sum_{k=1}^{n} u_k\,\overline{v_k}.
+    \label{eq:pi_Cn}
+\end{equation}
+Ahora $\langle\vect{v},\vect{v}\rangle = \sum_k |v_k|^2 \geq 0$ y la
+norma vuelve a medir una longitud. La convención de conjugar en el segundo
+argumento acompaña al uso de $\bar{z}$ adoptado en el Capítulo~\ref{cap02}
+y se conservará cuando el producto interno se extienda a señales complejas.
+
+\begin{resultado}[Espacio con producto interno]
+Un \textbf{producto interno} sobre un espacio vectorial asocia a cada par
+$(\vect{u},\vect{v})$ un escalar $\langle\vect{u},\vect{v}\rangle$
+que cumple:
+\begin{enumerate}[label=(\roman*), leftmargin=*]
+    \item \textit{Linealidad en el primer argumento:}
+          $\langle\alpha\vect{u} + \beta\vect{w},\vect{v}\rangle
+           = \alpha\langle\vect{u},\vect{v}\rangle + \beta\langle\vect{w},\vect{v}\rangle$.
+    \item \textit{Simetría conjugada:}
+          $\langle\vect{v},\vect{u}\rangle = \overline{\langle\vect{u},\vect{v}\rangle}$.
+    \item \textit{Positividad:}
+          $\langle\vect{v},\vect{v}\rangle \geq 0$, con igualdad solo si $\vect{v} = \vect{0}$.
+\end{enumerate}
+\end{resultado}
+
+La estructura geométrica del espacio —distancia, ángulo, ortogonalidad,
+proyección— se reconstruye íntegramente a partir de estas tres
+propiedades.
+
+% ==============================================================================
+% 5.1.2 Producto Interno entre Señales
+% ==============================================================================
+\subsection{Producto interno entre señales}
+\label{subsec:producto_interno_senales}
+
+El paso siguiente es trasladar la fórmula del producto interno al espacio
+de señales. La traducción es la que ya se anticipó: a una señal $x(t)$
+sobre un intervalo $[t_1,t_2]$ se la lee como un objeto de infinitas
+componentes —el valor $x(t)$ en cada $t$— indexadas por un parámetro
+continuo. La suma $\sum_k u_k\,\overline{v_k}$ de $\mathbb{C}^n$, que
+recorría todas las componentes, se reemplaza por una integral en $t$.
+
+\begin{resultado}[Producto interno entre señales]
+Sobre un intervalo $[t_1,t_2]$, el \textbf{producto interno} entre dos
+señales $x(t)$ e $y(t)$ es
+\begin{equation}
+    \langle x, y\rangle \;=\; \int_{t_1}^{t_2} x(t)\,\overline{y(t)}\,dt.
+    \label{eq:pi_senales}
+\end{equation}
+La \textbf{norma cuadrática} de $x$ sobre el intervalo es
+\begin{equation}
+    \|x\|^2 \;=\; \langle x, x\rangle \;=\; \int_{t_1}^{t_2} |x(t)|^2\,dt,
+    \label{eq:norma_senal}
+\end{equation}
+es decir, la energía de $x$ sobre el intervalo. Dos señales son
+\textbf{ortogonales en $[t_1,t_2]$} si $\langle x,y\rangle = 0$.
+\end{resultado}
+
+Hay un aspecto de esta definición que no tiene análogo en $\mathbb{R}^n$:
+el producto interno entre señales \textbf{depende del intervalo de
+integración}. Un mismo par de señales puede ser ortogonal sobre $[0, T_0]$
+y dejar de serlo sobre $[0, T_0/2]$, porque cambia el rango sobre el que
+se acumulan las contribuciones positivas y negativas del producto
+$x(t)\,\overline{y(t)}$. La especificación del intervalo es, en
+consecuencia, parte constitutiva de la propia definición del producto.
+
+La norma cuadrática se conecta además con un concepto ya conocido:
+la integral $\int_{t_1}^{t_2} |x(t)|^2\,dt$ es la energía de la señal
+restringida al intervalo, definida en la
+Subsección~\ref{subsec:energia_potencia}. Si el intervalo es un período
+de una señal periódica, el cociente $\|x\|^2 / T_0$ recupera la
+potencia media. \emph{Norma} y \emph{energía} miran el mismo objeto
+desde dos ángulos: el geométrico y el físico.
+
+\begin{nota}[Convergencia de la integral]
+La definición del producto interno requiere que la integral
+$\int_{t_1}^{t_2} x(t)\,\overline{y(t)}\,dt$ esté bien definida. Para
+las señales que aparecen en este libro —sinusoides, pulsos, ondas
+cuadradas, triangulares— sobre intervalos acotados, esa integral
+siempre converge: no hay que verificar nada caso por caso.
+\end{nota}
+
+% ==============================================================================
+% 5.1.3 Ortogonalidad entre Exponenciales Armónicas
+% ==============================================================================
+\subsection{Ortogonalidad entre exponenciales armónicas}
+\label{subsec:ortogonalidad_sinusoides}
+
+Hasta aquí tenemos el producto interno entre señales y la noción de
+ortogonalidad asociada. Falta una pregunta concreta: ¿qué señales nos
+van a servir de \emph{ejes} sobre los cuales descomponer otras señales?
+La respuesta que da este capítulo —y de la que saldrá la serie de
+Fourier— es el conjunto de las exponenciales complejas cuyas
+frecuencias son múltiplos enteros de una frecuencia básica. Vamos a
+ver primero qué son y, después, a verificar que en efecto son
+ortogonales entre sí.
+
+Empecemos fijando un período $T_0 > 0$ y llamando
+$\omega_0 = 2\pi/T_0$ a la frecuencia angular asociada. La exponencial
+\emph{fundamental} es $e^{j\omega_0 t}$: en el plano complejo, un
+punto que da exactamente una vuelta antihoraria a lo largo del
+intervalo $[0, T_0]$. A partir de ella, las \textbf{exponenciales
+armónicas} se definen como las exponenciales complejas cuya frecuencia
+es un múltiplo entero de $\omega_0$,
+\begin{equation*}
+    e^{jk\omega_0 t}, \qquad k \in \mathbb{Z}.
+\end{equation*}
+El entero $k$ se lee de dos maneras complementarias. Su \emph{signo}
+indica el sentido de giro: $k > 0$ corresponde a rotación antihoraria
+y $k < 0$, a rotación horaria (como en el Capítulo~\ref{cap02}). El
+\emph{módulo} de $k$ cuenta cuántas vueltas completas da la exponencial sobre
+el período $T_0$: el armónico de orden $k$ completa $|k|$ vueltas. La
+figura~\ref{fig:exponenciales_armonicas} muestra los seis primeros
+armónicos como hélices en 3D, donde estas dos lecturas se ven a la vez.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{\linewidth}
+        \centering
+        \includestandalone[width=0.95\linewidth]{figures/fig_exponenciales_armonicas/fig_exponenciales_armonicas}
+        \caption{Las seis primeras exponenciales armónicas $e^{jk\omega_0 t}$
+                 trazadas como hélices sobre un período $T_0$, con
+                 $\omega_0 = 2\pi$ y $T_0 = 1$. Fila superior: $k > 0$
+                 (rotación antihoraria). Fila inferior: $k < 0$ (rotación
+                 horaria, hélice espejada). El armónico de orden $k$
+                 completa $|k|$ vueltas sobre $T_0$.}
+        \label{fig:exponenciales_armonicas}
+    \end{minipage}
+\end{figure}
+
+\begin{resultado}[Ortogonalidad exponencial]
+Sobre cualquier intervalo de longitud $T_0$, para enteros $n, m \in \mathbb{Z}$:
+\begin{equation}
+    \int_{T_0} e^{jn\omega_0 t}\,\overline{e^{jm\omega_0 t}}\,dt
+    \;=\; \int_{T_0} e^{j(n-m)\omega_0 t}\,dt
+    \;=\;
+    \begin{cases}
+        T_0, & n = m, \\
+        0,   & n \neq m.
+    \end{cases}
+    \label{eq:ort_exp}
+\end{equation}
+\end{resultado}
+
+\textbf{Demostración.}
+Llamemos $k = n - m$ al entero diferencia entre los índices, de modo
+que la integral del medio en \eqref{eq:ort_exp} se reescribe como
+$\int_0^{T_0} e^{jk\omega_0 t}\,dt$. Hay que distinguir dos casos según
+el valor de $k$.
+
+Si $k = 0$, el integrando es $e^{j\,0\,\omega_0 t} = 1$ sobre todo el
+intervalo, así que la integral es simplemente $T_0$.
+
+Si $k \neq 0$, calculamos la primitiva de $e^{jk\omega_0 t}$ y
+evaluamos en los extremos:
+\begin{equation*}
+    \int_0^{T_0} e^{jk\omega_0 t}\,dt
+    \;=\; \left[\frac{e^{jk\omega_0 t}}{jk\omega_0}\right]_0^{T_0}
+    \;=\; \frac{1}{jk\omega_0}\bigl[e^{jk\omega_0 T_0} - 1\bigr].
+\end{equation*}
+Reemplazando $\omega_0 T_0 = 2\pi$ en el exponente, queda
+$e^{jk\omega_0 T_0} = e^{j2\pi k}$, que vale $1$ para todo entero $k$
+(una rotación por un múltiplo entero de $2\pi$ devuelve al punto de
+partida). El corchete se anula y la integral es $0$.
+
+Una manera más visual de entender el caso $k \neq 0$: la exponencial
+$e^{jk\omega_0 t}$ es un punto que gira alrededor del origen del plano
+complejo a medida que $t$ avanza, y completa $|k|$ vueltas enteras
+sobre el intervalo $[0, T_0]$. Integrar esa exponencial equivale a ir
+sumando los puntos visitados a lo largo del recorrido. Cuando las
+vueltas son enteras, esos puntos se distribuyen simétricamente
+alrededor del origen y al sumarlos se cancelan unos con otros. La
+única excepción es $k = 0$: ahí la exponencial no gira —vale
+constantemente $1$— y la integral devuelve la longitud del intervalo.
+
+\medskip
+\textbf{Ejemplo.}
+Tomemos $T_0 = 1$, de modo que $\omega_0 = 2\pi$, y calculemos el
+producto interno entre $x_1(t) = e^{j2\pi t}$ y $x_2(t) = e^{j4\pi t}$
+sobre $[0, 1]$ aplicando la definición de
+\eqref{eq:pi_senales}:
+\begin{equation*}
+    \langle x_1, x_2\rangle
+    \;=\; \int_0^1 e^{j2\pi t}\,\overline{e^{j4\pi t}}\,dt.
+\end{equation*}
+El conjugado de $e^{j4\pi t}$ es $e^{-j4\pi t}$, y los dos exponentes
+se combinan en uno solo:
+\begin{equation*}
+    e^{j2\pi t}\cdot e^{-j4\pi t}
+    \;=\; e^{j(2\pi - 4\pi) t}
+    \;=\; e^{-j2\pi t}.
+\end{equation*}
+Calculamos la primitiva e integramos:
+\begin{equation*}
+    \int_0^1 e^{-j2\pi t}\,dt
+    \;=\; \left[\frac{e^{-j2\pi t}}{-j2\pi}\right]_0^1
+    \;=\; \frac{1}{-j2\pi}\bigl(e^{-j2\pi} - e^{0}\bigr)
+    \;=\; \frac{1}{-j2\pi}(1 - 1)
+    \;=\; 0,
+\end{equation*}
+donde usamos $e^{-j2\pi} = 1$ (una vuelta completa por el plano
+complejo devuelve al punto de partida). En conclusión,
+$\langle x_1, x_2\rangle = 0$: las dos exponenciales armónicas son
+ortogonales sobre $[0, 1]$, en línea con el caso $n \neq m$ de
+\eqref{eq:ort_exp}.
+
+\medskip
+Volvamos a la pregunta con la que abrimos la subsección: ¿qué señales
+nos sirven de ejes para descomponer otras señales? La ortogonalidad
+recién verificada deja a las exponenciales armónicas en condiciones
+de cumplir ese rol: como ocurre con los $\{\vect{e}_k\}$ de una
+base ortogonal de $\mathbb{R}^n$, son mutuamente ortogonales y, en
+consecuencia, linealmente independientes. A partir de aquí
+hablaremos, entonces, de la \emph{base armónica} del espacio de
+señales periódicas de período $T_0$, refiriéndonos con ese nombre al
+conjunto $\{e^{jk\omega_0 t}\}_{k\in\mathbb{Z}}$.
+
+\begin{nota}[Por qué la base armónica y no otra]
+En el espacio de señales hay otras familias ortogonales que podrían
+usarse como base, cada una con su dominio de uso habitual: los
+polinomios de Legendre y de Chebyshev aparecen en problemas de
+aproximación, las funciones de Walsh en telecomunicaciones, las
+wavelets en análisis tiempo-frecuencia. Este libro, sin embargo,
+trabaja exclusivamente con la base armónica, y la razón tiene que ver
+con los sistemas LIT.
+
+Cuando una exponencial compleja $e^{j\omega t}$ entra a un sistema
+LIT, lo que sale es otra exponencial de la misma frecuencia,
+multiplicada por un factor complejo que ajusta su amplitud y su fase.
+Es decir: la forma exponencial se conserva al atravesar el sistema.
+Las sinusoides reales heredan esta misma propiedad de manera
+automática, porque cada una se escribe como combinación de
+exponenciales complejas. Esa propiedad, formalizada más adelante en
+la Sección~\ref{sec:sf_lti}, es lo que convierte a las exponenciales
+armónicas en la base natural para estudiar los sistemas LIT.
+\end{nota}
+
+Con esto la sección queda completa. Lo que se construyó a lo largo de
+ella es un pequeño aparato geométrico para trabajar con señales: un
+producto interno —la integral de $x(t)\,\overline{y(t)}$ sobre el
+intervalo— con el que se mide energía y se define ortogonalidad, y la
+verificación de que las exponenciales armónicas $e^{jk\omega_0 t}$ son
+ortogonales entre sí sobre cualquier período. La sección siguiente usa
+ese aparato para escribir una señal periódica como superposición de
+exponenciales armónicas, calculando los coeficientes uno por uno
+gracias a la ortogonalidad recién verificada. Esa expresión es la
+\emph{serie de Fourier} de la señal.
+
+
+\end{document}

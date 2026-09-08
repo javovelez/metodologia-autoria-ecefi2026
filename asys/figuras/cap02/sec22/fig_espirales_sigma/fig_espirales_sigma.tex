@@ -1,0 +1,66 @@
+\documentclass[border=3mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        
+        % Configuración común
+        \pgfplotsset{
+            width=5.5cm, height=5.5cm, 
+            scale only axis, 
+            view={55}{30},
+            axis lines=center,
+            xlabel={$t$},
+            ylabel={Re},
+            zlabel={Im},
+            xlabel style={anchor=north east, inner sep=1pt},
+            ylabel style={anchor=north west, inner sep=1pt},
+            zlabel style={anchor=south, inner sep=1pt},
+            xmin=-0.5, xmax=3.5,
+            ymin=-6, ymax=6,
+            zmin=-6, zmax=6,
+            ticks=none,
+            axis line style={->},
+            clip=false
+        }
+
+        % =============================================
+        % PANEL A: σ > 0
+        % =============================================
+        \begin{axis}[
+            at={(0cm,0cm)},
+            name=plot1
+        ]
+            \addplot3[domain=0:3, samples=400, samples y=0, thick, red] 
+                ({x}, {0.2*exp(0.9*x)*cos(1080*x)}, {0.2*exp(0.9*x)*sin(1080*x)});
+        \end{axis}
+        \node[anchor=north, yshift=6mm] at (plot1.south) {\textbf{(a) $\sigma > 0$}};
+        
+        % =============================================
+        % PANEL B: σ = 0
+        % =============================================
+        \begin{axis}[
+            at={(4.5cm,0cm)}, 
+            name=plot2
+        ]
+            \addplot3[domain=0:3, samples=400, samples y=0, thick, utnblue] 
+                ({x}, {3*cos(1080*x)}, {3*sin(1080*x)});
+        \end{axis}
+        \node[anchor=north, yshift=6mm] at (plot2.south) {\textbf{(b) $\sigma = 0$}};
+        
+        % =============================================
+        % PANEL C: σ < 0
+        % =============================================
+        \begin{axis}[
+            at={(9.0cm,0cm)}, 
+            name=plot3
+        ]
+            \addplot3[domain=0:3, samples=400, samples y=0, thick, green!50!black] 
+                ({x}, {5.5*exp(-1.0*x)*cos(1080*x)}, {5.5*exp(-1.0*x)*sin(1080*x)});
+        \end{axis}
+        \node[anchor=north, yshift=6mm] at (plot3.south) {\textbf{(c) $\sigma < 0$}};
+
+    \end{tikzpicture}
+\end{document}

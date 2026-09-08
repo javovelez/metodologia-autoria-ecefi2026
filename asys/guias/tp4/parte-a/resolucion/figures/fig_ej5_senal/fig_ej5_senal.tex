@@ -1,0 +1,31 @@
+\documentclass[tikz, border=2pt]{standalone}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+
+\definecolor{utnblue}{RGB}{0, 51, 102}
+
+\begin{document}
+\begin{tikzpicture}[>=latex, xscale=1.0, yscale=1.6]
+    % Eje
+    \draw[->] (-5.5, 0) -- (5.7, 0) node[below] {$t$};
+    \draw[->] (0, -0.2) -- (0, 1.4) node[left] {$\delta^{T_0}(t)$};
+
+    % Impulsos en kT_0 (T_0=2)
+    \foreach \k in {-2,-1,0,1,2} {
+        \draw[utnblue, thick, ->] (2*\k, 0) -- (2*\k, 1);
+    }
+
+    % Marcas y etiquetas
+    \node[below] at (0, -0.03) {$0$};
+    \draw (2, 0.04) -- (2, -0.04) node[below] {\small$T_0$};
+    \draw (-2, 0.04) -- (-2, -0.04) node[below] {\small$-T_0$};
+    \draw (4, 0.04) -- (4, -0.04) node[below] {\small$2T_0$};
+    \draw (-4, 0.04) -- (-4, -0.04) node[below] {\small$-2T_0$};
+    \node[left] at (0, 1) {$1$};
+
+    % Puntos suspensivos
+    \node at (-5.0, 0.5) {$\cdots$};
+    \node at (5.3, 0.5) {$\cdots$};
+\end{tikzpicture}
+\end{document}

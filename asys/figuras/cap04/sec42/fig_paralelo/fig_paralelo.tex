@@ -1,0 +1,75 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{shadows.blur}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small,
+    block/.style={
+        draw=utnblue!60,
+        line width=0.5pt,
+        fill=utnblue!8,
+        minimum width=2.1cm,
+        minimum height=1cm,
+        rounded corners=2pt,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    equiv/.style={
+        draw=utnblue!60,
+        line width=0.5pt,
+        fill=utnblue!15,
+        minimum width=2.8cm,
+        minimum height=1cm,
+        rounded corners=2pt,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.4pt, shadow yshift=-0.6pt, shadow opacity=25}
+    },
+    sum/.style={
+        draw=utnblue!60,
+        line width=0.5pt,
+        circle,
+        minimum size=0.6cm,
+        inner sep=0pt,
+        fill=white,
+        blur shadow={shadow blur steps=4, shadow blur extra rounding=0pt,
+                     shadow xshift=0.3pt, shadow yshift=-0.4pt, shadow opacity=20}
+    },
+    signal/.style={->, thick, utnblue},
+    label_style/.style={font=\footnotesize},
+]
+
+% ---- Lado izquierdo: paralelo h1 || h2 ----
+\coordinate (in1)   at (0, 0);
+\coordinate (fork1) at (1.2, 0);
+\node[block] (H1) at (3.6,  1.1) {$h_1(t)$};
+\node[block] (H2) at (3.6, -1.1) {$h_2(t)$};
+\node[sum]   (S1) at (6.2, 0) {$+$};
+\coordinate (out1) at (7.6, 0);
+
+\draw[signal] (in1) -- (fork1) node[label_style, above, midway] {$x(t)$};
+\draw[signal] (fork1) |- (H1.west);
+\draw[signal] (fork1) |- (H2.west);
+\fill[utnblue] (fork1) circle (2pt);
+
+\draw[signal] (H1.east) -| (S1.north) node[label_style, above left, pos=0.4] {$y_1(t)$};
+\draw[signal] (H2.east) -| (S1.south) node[label_style, below left, pos=0.4] {$y_2(t)$};
+\draw[signal] (S1.east) -- (out1) node[label_style, above, midway] {$y(t)$};
+
+% ---- Signo de equivalencia ----
+\node[font=\large] at (8.7, 0) {$\equiv$};
+
+% ---- Lado derecho: sistema equivalente ----
+\coordinate (in2) at (9.8, 0);
+\node[equiv] (Heq) at (12.3, 0) {$h_1(t) + h_2(t)$};
+\coordinate (out2) at (14.8, 0);
+
+\draw[signal] (in2) -- (Heq.west) node[label_style, above, midway] {$x(t)$};
+\draw[signal] (Heq.east) -- (out2) node[label_style, above, midway] {$y(t)$};
+
+% ---- Etiquetas ----
+\node[font=\footnotesize, gray] at (3.6, 2.35) {Paralelo};
+\node[font=\footnotesize, gray] at (12.3, 2.35) {Equivalente};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,43 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{groupplot}[
+            group style={group size=1 by 3, vertical sep=1.0cm},
+            width=9.5cm, height=3.8cm,
+            axis lines=middle,
+            axis line style={->, thin, black},
+            xmin=-0.6, xmax=16.8, ymin=-0.3, ymax=1.85,
+            xtick={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, ytick=\empty,
+            xlabel={$n$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\scriptsize},
+            ylabel style={rotate=0, anchor=south east, at={(axis description cs:0,1)}, font=\footnotesize},
+            every tick label/.style={font=\scriptsize},
+            title style={font=\footnotesize, yshift=-1pt},
+            clip=false,
+        ]
+            % (a) original
+            \nextgroupplot[title={(a)}, ylabel={$x[n]$}]
+                \addplot[ycomb, mark=*, mark size=2pt, thick, utnblue]
+                    coordinates {(0,0.3) (1,0.8) (2,1.2) (3,1.45) (4,1.5)
+                                 (5,1.45) (6,1.2) (7,0.8) (8,0.3)};
+                \addplot[only marks, mark=*, mark size=2pt, utnblue]
+                    coordinates {(9,0) (10,0) (11,0) (12,0) (13,0) (14,0) (15,0) (16,0)};
+            % (b) decimación y[n]=x[2n]: secuencia comprimida sobre su propio índice
+            \nextgroupplot[title={(b)}, ylabel={$x[2n]$}]
+                \addplot[ycomb, mark=*, mark size=2pt, thick, utnblue]
+                    coordinates {(0,0.3) (1,1.2) (2,1.5) (3,1.2) (4,0.3)};
+                \addplot[only marks, mark=*, mark size=2pt, utnblue]
+                    coordinates {(5,0) (6,0) (7,0) (8,0) (9,0) (10,0) (11,0) (12,0) (13,0) (14,0) (15,0) (16,0)};
+            % (c) interpolación x[n/2]: toda la secuencia en azul; los ceros insertados
+            %     en índices impares son valores legítimos de la secuencia
+            \nextgroupplot[title={(c)}, ylabel={$x[n/2]$}]
+                \addplot[ycomb, mark=*, mark size=2pt, thick, utnblue]
+                    coordinates {(0,0.3) (1,0) (2,0.8) (3,0) (4,1.2) (5,0) (6,1.45) (7,0)
+                                 (8,1.5) (9,0) (10,1.45) (11,0) (12,1.2) (13,0) (14,0.8)
+                                 (15,0) (16,0.3)};
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}

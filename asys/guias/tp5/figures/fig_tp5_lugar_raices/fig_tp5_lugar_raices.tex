@@ -1,0 +1,47 @@
+\documentclass[tikz, border=2pt]{standalone}
+
+\usepackage{amsmath,amssymb}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta}
+\usepackage{xcolor}
+
+\definecolor{utnblue}{RGB}{0, 51, 102}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+\begin{axis}[
+    axis lines=middle,
+    axis line style={-{Latex[length=4pt]}},
+    width=9cm, height=4.2cm,
+    xmin=-5.5, xmax=0.7,
+    ymin=-0.75, ymax=0.85,
+    xlabel={$\sigma$}, ylabel={$j\omega$},
+    xlabel style={anchor=north west},
+    ylabel style={anchor=south west},
+    xtick={-3,-2,-1}, xticklabels={$-3$,$-2$,$-1$},
+    ytick=\empty,
+    tick style={black},
+    xticklabel style={font=\footnotesize, yshift=-1pt},
+    clip=false,
+]
+    % --- ramas del lugar (sobre el eje real) con sentido de k creciente ---
+    % rama desde el polo -1 hacia el cero en -2
+    \draw[-{Latex[length=5pt]}, line width=1.4pt, red!80!black]
+        (axis cs:-1,0) -- (axis cs:-1.92,0);
+    % rama desde el polo -3 hacia -infinito
+    \draw[-{Latex[length=5pt]}, line width=1.4pt, red!80!black]
+        (axis cs:-3,0) -- (axis cs:-5.25,0);
+
+    % --- polos (x) y cero (o), encima de las ramas ---
+    \addplot[only marks, mark=x, mark size=4pt, line width=1pt, utnblue]
+        coordinates {(-1,0) (-3,0)};
+    \addplot[only marks, mark=o, mark size=4pt, line width=1pt, utnblue]
+        coordinates {(-2,0)};
+
+    % --- k=0 en los polos de arranque ---
+    \node[anchor=south, font=\scriptsize] at (axis cs:-1,0.1) {$k=0$};
+    \node[anchor=south, font=\scriptsize] at (axis cs:-3,0.1) {$k=0$};
+\end{axis}
+\end{tikzpicture}
+\end{document}

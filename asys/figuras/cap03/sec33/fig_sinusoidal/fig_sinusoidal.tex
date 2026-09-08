@@ -1,0 +1,43 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% x(t) = 1.5*cos(pi*t/2), T0=4, A=1.5, phi=0
+% x(t) = 1.5*cos(pi*t/2 + pi/3), shifted by -2/3 to the left for comparison
+\begin{axis}[
+    width=13cm, height=5.5cm,
+    xmin=-4.5, xmax=8.5,
+    ymin=-2.2, ymax=2.8,
+    axis lines=center,
+    xtick={-4,-2,0,2,4,6,8},
+    xticklabels={$-T_0$,$-T_0/2$,$0$,$T_0/2$,$T_0$,$3T_0/2$,$2T_0$},
+    ytick={-1.5,0,1.5},
+    yticklabels={$-A$,$0$,$A$},
+    xlabel={$t$}, xlabel style={anchor=north},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    ylabel={$x(t)$},
+    clip=false,
+]
+% Señal sin fase
+\addplot[utnblue, very thick, smooth, domain=-4.5:8.5, samples=400]
+    {1.5*cos(deg(pi*x/2))};
+\node[utnblue, font=\scriptsize, anchor=south west] at (axis cs:0.3,1.5)
+    {$A\cos(\omega_0 t)$, \ $\varphi=0$};
+
+% Amplitud: flecha vertical
+\draw[<->, gray, thick] (axis cs:5,-1.5) -- node[right, font=\scriptsize]{$2A$} (axis cs:5,1.5);
+
+% Período: flecha horizontal debajo
+\draw[<->, gray, thick] (axis cs:0,-1.9) -- node[below, font=\scriptsize]{$T_0$} (axis cs:4,-1.9);
+
+% Línea punteada en la amplitud
+\draw[gray, dashed, thin] (axis cs:-4.5,1.5) -- (axis cs:8.5,1.5);
+\draw[gray, dashed, thin] (axis cs:-4.5,-1.5) -- (axis cs:8.5,-1.5);
+
+\end{axis}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,41 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{groupplot}[
+            group style={group size=3 by 1, horizontal sep=1.5cm},
+            width=5.2cm, height=4.4cm,
+            axis lines=middle,
+            axis line style={->, thin, black},
+            xmin=-3.6, xmax=3.6,
+            xtick={-3,-2,-1,0,1,2,3}, ytick=\empty,
+            xlabel={$n$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\scriptsize},
+            ylabel style={rotate=0, anchor=south east, at={(axis description cs:0,1)}, font=\footnotesize},
+            every tick label/.style={font=\scriptsize, fill=white, inner sep=1pt},
+            title style={font=\footnotesize, yshift=-1pt},
+            clip=false,
+        ]
+            % (a) original causal
+            \nextgroupplot[title={(a)}, ylabel={$x[n]$}, ymin=-0.3, ymax=2.4]
+                \addplot[ycomb, mark=*, mark size=2pt, thick, utnblue]
+                    coordinates {(0,2) (1,1.5) (2,1)};
+                \addplot[only marks, mark=*, mark size=2pt, utnblue]
+                    coordinates {(-3,0) (-2,0) (-1,0) (3,0)};
+            % (b) parte par
+            \nextgroupplot[title={(b)}, ylabel={$x_p[n]$}, ymin=-0.3, ymax=2.4]
+                \addplot[ycomb, mark=*, mark size=2pt, thick, black]
+                    coordinates {(-2,0.5) (-1,0.75) (0,2) (1,0.75) (2,0.5)};
+                \addplot[only marks, mark=*, mark size=2pt, black]
+                    coordinates {(-3,0) (3,0)};
+            % (c) parte impar (antisimétrica, eje centrado)
+            \nextgroupplot[title={(c)}, ylabel={$x_i[n]$}, ymin=-1.35, ymax=1.35]
+                \addplot[ycomb, mark=*, mark size=2pt, thick, black]
+                    coordinates {(-2,-0.5) (-1,-0.75) (0,0) (1,0.75) (2,0.5)};
+                \addplot[only marks, mark=*, mark size=2pt, black]
+                    coordinates {(-3,0) (3,0)};
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}

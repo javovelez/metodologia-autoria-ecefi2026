@@ -1,0 +1,120 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_dualidad_pulso_sinc
+% Layout 2x2: par directo arriba, par dual abajo.
+% Fila superior:
+%   (a) p_tau(t), pulso centrado de ancho tau = 2.
+%   (b) tau sinc(omega tau/2), su transformada.
+% Fila inferior (par dual obtenido por la propiedad):
+%   (c) tau sinc(t tau/2) tomada como senal temporal.
+%   (d) 2 pi p_tau(omega), su transformada (pulso en frecuencia escalado por 2 pi).
+% Sizing: 4 paneles 2x2.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ===== Fila superior: par directo p_tau(t) <-> tau sinc =====
+
+% Panel (a)
+\begin{axis}[
+    name=panel_a,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-4, xmax=4, ymin=-0.25, ymax=1.3,
+    xtick={-1, 0, 1},
+    xticklabels={$-\tau/2$, $0$, $\tau/2$},
+    ytick={0, 1},
+    yticklabels={$0$, \raisebox{5pt}{$1$}},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick] coordinates
+        {(-4,0) (-1,0) (-1,1) (1,1) (1,0) (4,0)};
+\end{axis}
+
+% Panel (b)
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.east)+(1.4cm,0)$)}, anchor=west,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-11, xmax=11, ymin=-0.85, ymax=2.4,
+    xtick={-6.2832, 0, 6.2832},
+    xticklabels={$-2\pi$, $0$, $2\pi$},
+    ytick={0, 2},
+    yticklabels={$0$, $\tau$},
+    every tick label/.style={font=\footnotesize},
+    xticklabel style={yshift=-7pt},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.30)}},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick, domain=-11:11, samples=500, smooth]
+        {2 * sin(deg(x + 0.0001))/(x + 0.0001)};
+\end{axis}
+
+% ===== Fila inferior: par dual tau sinc(t tau/2) <-> 2 pi p_tau(omega) =====
+
+% Panel (c)
+\begin{axis}[
+    name=panel_c,
+    at={($(panel_a.south)+(0,-1.6cm)$)}, anchor=north,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-11, xmax=11, ymin=-0.85, ymax=2.4,
+    xtick={-6.2832, 0, 6.2832},
+    xticklabels={$-2\pi$, $0$, $2\pi$},
+    ytick={0, 2},
+    yticklabels={$0$, $\tau$},
+    every tick label/.style={font=\footnotesize},
+    xticklabel style={yshift=-7pt},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.30)}},
+    title={(c)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick, domain=-11:11, samples=500, smooth]
+        {2 * sin(deg(x + 0.0001))/(x + 0.0001)};
+\end{axis}
+
+% Panel (d): 2 pi p_tau(omega) — pulso en frecuencia escalado por 2 pi
+\begin{axis}[
+    name=panel_d,
+    at={($(panel_c.east)+(1.4cm,0)$)}, anchor=west,
+    width=7cm, height=4cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-4, xmax=4, ymin=-1.2, ymax=7.5,
+    xtick={-1, 0, 1},
+    xticklabels={$-\tau/2$, $0$, $\tau/2$},
+    ytick={0, 6.2832},
+    yticklabels={$0$, \raisebox{5pt}{$2\pi$}},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    title={(d)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    \addplot[utnblue, very thick] coordinates
+        {(-4,0) (-1,0) (-1,6.2832) (1,6.2832) (1,0) (4,0)};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

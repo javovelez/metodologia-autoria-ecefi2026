@@ -1,0 +1,44 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+% Diente de sierra periódico con T_0 = 4 y nivel de continua = 1.
+% x(t) = t/2 sobre el período [0, 4), extendido periódicamente.
+% Saltos de 2 a 0 en cada múltiplo entero de T_0 (en particular en t=0).
+% Sizing: panel único, w 12 cm, h 4.5 cm.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\begin{axis}[
+    width=12cm,
+    height=4.5cm,
+    xmin=-2.4, xmax=6.4,
+    ymin=-0.4, ymax=2.4,
+    axis lines=center,
+    axis line style={->, thick},
+    xtick={-2, 2, 4, 6},
+    xticklabels={$-2$, $2$, $T_0$, $6$},
+    ytick={1, 2},
+    yticklabels={$1$, $2$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.14)}},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+
+    % Diente de sierra: rampas con saltos verticales en t = 0 y t = 4.
+    \addplot[utnblue, very thick]
+        coordinates {
+            (-2.4, 0.8)
+            (0, 2)
+            (0, 0)
+            (4, 2)
+            (4, 0)
+            (6.4, 1.2)
+        };
+
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

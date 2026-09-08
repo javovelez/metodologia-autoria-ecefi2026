@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 90 900 260" style="background-color: white;">
+  <!-- Definitions for markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#003366" />
+    </marker>
+    <marker id="axis-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="black" />
+    </marker>
+    <marker id="rot-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#003366" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+
+  <!-- Max/Min Lines (Background) -->
+  <!-- Max at y = 200 - 80 = 120 -->
+  <line x1="20" y1="120" x2="880" y2="120" stroke="#999" stroke-width="1" stroke-dasharray="5,5" />
+  <!-- Min at y = 200 + 80 = 280 -->
+  <line x1="20" y1="280" x2="880" y2="280" stroke="#999" stroke-width="1" stroke-dasharray="5,5" />
+
+  <!-- ========================================== -->
+  <!-- LEFT: CAROUSEL (TOP VIEW / 2D) -->
+  <!-- ========================================== -->
+  <g transform="translate(100, 200)">
+    <text x="0" y="130" text-anchor="middle" font-family="'Computer Modern Serif', serif" font-size="14" font-weight="bold" fill="black">(a) Vista Superior (2D)</text>
+    
+    <!-- Axes -->
+    <line x1="-100" y1="0" x2="100" y2="0" stroke="#ccc" stroke-width="1" />
+    <line x1="0" y1="100" x2="0" y2="-100" stroke="#ccc" stroke-width="1" />
+
+    <!-- Circle (Radius 80) -->
+    <circle cx="0" cy="0" r="80" fill="none" stroke="#003366" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+    
+    <!-- Phasor (Vector) at 45 degrees -->
+    <!-- x = 56.57, y = -56.57 -->
+    <line x1="0" y1="0" x2="56.57" y2="-56.57" stroke="#003366" stroke-width="3" marker-end="url(#arrow)" />
+    
+    <!-- Rotation Arrow (Curved & Shorter) -->
+    <!-- Arc from approx -15 deg to -75 deg. Radius 100. -->
+    <!-- Start (-15): x=96.6, y=-25.9 -->
+    <!-- End (-75): x=25.9, y=-96.6 -->
+    <path d="M 96.6 -25.9 A 100 100 0 0 0 25.9 -96.6" fill="none" stroke="#003366" stroke-width="1.5" marker-end="url(#rot-arrow)" opacity="0.6" />
+    <text x="70" y="-70" font-family="'Computer Modern Serif', serif" font-size="12" fill="#003366" font-style="italic">ω</text>
+
+    <!-- Horse Point -->
+    <circle cx="56.57" cy="-56.57" r="6" fill="#FF5733" />
+  </g>
+
+  <!-- ========================================== -->
+  <!-- MIDDLE: PROFILE VIEW (1D) -->
+  <!-- ========================================== -->
+  <g transform="translate(410, 200)">
+    <text x="0" y="130" text-anchor="middle" font-family="'Computer Modern Serif', serif" font-size="14" font-weight="bold" fill="black">(b) Proyección 1D</text>
+
+    <!-- The Vertical Line (The "Screen") -->
+    <!-- Height = Diameter = 160 (from -80 to 80) -->
+    <line x1="0" y1="-80" x2="0" y2="80" stroke="#333" stroke-width="3" />
+    
+    <!-- Limits -->
+    <line x1="-10" y1="-80" x2="10" y2="-80" stroke="#999" stroke-width="1" />
+    <line x1="-10" y1="80" x2="10" y2="80" stroke="#999" stroke-width="1" />
+
+    <!-- Projected Point -->
+    <!-- Same height as phasor: y = -56.57 -->
+    <circle cx="0" cy="-56.57" r="6" fill="#FF5733" />
+  </g>
+
+  <!-- ========================================== -->
+  <!-- RIGHT: TIME GRAPH (WAVE) -->
+  <!-- ========================================== -->
+  <g transform="translate(640, 200)">
+    <text x="120" y="130" text-anchor="middle" font-family="'Computer Modern Serif', serif" font-size="14" font-weight="bold" fill="black">(c) Posición vs. Tiempo</text>
+
+    <!-- Axes -->
+    <!-- Y Axis (Position) with arrows at both ends -->
+    <line x1="0" y1="100" x2="0" y2="-100" stroke="black" stroke-width="1" />
+    <!-- Top Arrow -->
+    <path d="M0,-100 L-3,-91 L3,-91 Z" fill="black" />
+    <!-- Bottom Arrow -->
+    <path d="M0,100 L-3,91 L3,91 Z" fill="black" />
+
+    <!-- X Axis (Time) -->
+    <line x1="0" y1="0" x2="260" y2="0" stroke="black" stroke-width="1" marker-end="url(#axis-arrow)" />
+    
+    <text x="250" y="20" font-family="'Computer Modern Serif', serif" font-size="12">t</text>
+    <text x="10" y="-90" font-family="'Computer Modern Serif', serif" font-size="12">y(t)</text>
+
+    <!-- Sine Wave (One Cycle) -->
+    <!-- Amplitude 80. Period 240. -->
+    <!-- Using cubic bezier approximation for sine wave -->
+    <!-- First half (0 to 120, peak -80): Control points at y approx -106 -->
+    <!-- Second half (120 to 240, trough 80): Control points at y approx 106 -->
+    <path d="M 0 0 
+             C 40 -106 80 -106 120 0 
+             C 160 106 200 106 240 0" 
+          fill="none" stroke="#003366" stroke-width="2" />
+
+    <!-- Point on Wave -->
+    <!-- We need a point where y = -56.57 (approx 0.707 * 80) -->
+    <!-- This corresponds to 45 degrees phase (1/8 of period) -->
+    <!-- Period is 240, so x = 30 -->
+    <circle cx="30" cy="-56.57" r="6" fill="#FF5733" />
+    
+  </g>
+
+  <!-- ========================================== -->
+  <!-- CONNECTIONS (PROJECTION LINES) -->
+  <!-- ========================================== -->
+  <!-- Line from Circle Dot (150+56.57, 200-56.57) to Wave Dot (420+30, 200-56.57) -->
+  <!-- Absolute Y = 143.43 -->
+  <!-- Start x = 206.57 (Circle dot absolute x) -->
+  <!-- End x = 450 (Wave dot absolute x: 420+30) -->
+  <line x1="156.57" y1="143.43" x2="670" y2="143.43" stroke="#999" stroke-width="1" stroke-dasharray="4,4" />
+
+</svg>

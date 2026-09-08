@@ -1,0 +1,75 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{decorations.pathreplacing, calligraphy}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ---------------------------------------------------------------
+% Señal: x(t) = sin(πt) + 0.4 sin(3πt),  T_0 = 2
+% Se muestran 3 períodos completos: t ∈ [-2, 4]
+% Se elige t_0 = 0.5 para la anotación de correspondencia.
+% ---------------------------------------------------------------
+
+\begin{axis}[
+    width=12cm, height=5.5cm,
+    axis lines=center,
+    axis line style={->},
+    axis on top=true,
+    xlabel={$t$}, xlabel style={right},
+    ylabel={$x(t)$}, ylabel style={above},
+    xmin=-2.8, xmax=5.2,
+    ymin=-1.7, ymax=2.0,
+    xtick={-2, 0, 2, 4},
+    xticklabels={},
+    ytick=\empty,
+    clip=false,
+]
+
+    % --- Extensión punteada más allá del dominio principal ---
+    \addplot[utnblue, thick, dashed, domain=-2.8:-2, samples=20]
+        {sin(deg(pi*x)) + 0.4*sin(deg(3*pi*x))};
+    \addplot[utnblue, thick, dashed, domain=4:5.2, samples=30]
+        {sin(deg(pi*x)) + 0.4*sin(deg(3*pi*x))};
+
+    % --- Señal principal: 3 períodos ---
+    \addplot[utnblue, thick, domain=-2:4, samples=200]
+        {sin(deg(pi*x)) + 0.4*sin(deg(3*pi*x))};
+
+    % --- Líneas verticales punteadas en t_0 = 0.5 y t_0 + T_0 = 2.5 ---
+    \addplot[gray, dashed, thin] coordinates {(0.5, -1.55) (0.5, 1.32)};
+    \addplot[gray, dashed, thin] coordinates {(2.5, -1.55) (2.5, 1.32)};
+
+    % --- Puntos de correspondencia sobre la curva ---
+    \addplot[utnblue, only marks, mark=*, mark size=2pt]
+        coordinates {(0.5,  {sin(deg(pi*0.5)) + 0.4*sin(deg(3*pi*0.5))})
+                     (2.5,  {sin(deg(pi*2.5)) + 0.4*sin(deg(3*pi*2.5))})};
+
+    % --- Etiqueta de correspondencia ---
+    \node[utnblue!70!black, font=\footnotesize, anchor=south]
+        at (axis cs:1.5, 1.55) {$x(t_0) = x(t_0 + T_0)$};
+    \draw[->, utnblue!60!black, thin]
+        (axis cs:0.9, 1.50) -- (axis cs:0.55, 1.35);
+    \draw[->, utnblue!60!black, thin]
+        (axis cs:2.1, 1.50) -- (axis cs:2.45, 1.35);
+
+    % --- Etiquetas del eje x ---
+    \node[anchor=north, font=\footnotesize] at (axis cs:-2, 0) {$-T_0$};
+    \node[anchor=north, font=\footnotesize] at (axis cs: 2, 0) {$T_0$};
+    \node[anchor=north, font=\footnotesize] at (axis cs: 4, 0) {$2T_0$};
+    \node[anchor=north east, font=\footnotesize] at (axis cs:0, 0) {$0$};
+
+    % --- Flecha de doble punta: período fundamental T_0 ---
+    \draw[<->, thick, utnblue!80!black]
+        (axis cs:0, -1.55) -- (axis cs:2, -1.55)
+        node[midway, below, font=\footnotesize] {$T_0$ (período fundamental)};
+
+    % --- Flecha de doble punta: 2T_0 también válido, pero no fundamental ---
+    \draw[<->, thin, gray]
+        (axis cs:-2, -1.30) -- (axis cs:2, -1.30)
+        node[midway, above, font=\scriptsize, gray] {$2T_0$};
+
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,76 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Un color por muestra no nula, el mismo en (a) y en el panel que la aísla.
+\colorlet{cmenos1}{codegreen}
+\colorlet{ccero}{violet!85!white}
+\colorlet{cuno}{red!85!black}
+\colorlet{cdos}{orange!95!black}
+\colorlet{cnula}{utnblue}
+
+% Etiquetas del eje n dibujadas al final, para que queden por encima de los stems.
+\tikzset{etiqueta n/.style={font=\scriptsize, fill=white, inner sep=1pt, anchor=north,
+                            yshift=-3pt}}
+\newcommand{\etiquetasn}{%
+    \node[etiqueta n] at (axis cs:-2,0) {$-2$};
+    \node[etiqueta n] at (axis cs:-1,0) {$-1$};
+    \node[etiqueta n] at (axis cs:1,0)  {$1$};
+    \node[etiqueta n] at (axis cs:2,0)  {$2$};
+    \node[etiqueta n] at (axis cs:3,0)  {$3$};%
+}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \pgfplotsset{
+            width=4.1cm, height=1.95cm, scale only axis,
+            anchor=center,
+            axis lines=middle,
+            axis line style={->, thin, black},
+            xmin=-2.7, xmax=3.7, ymin=-1.45, ymax=2.55,
+            xtick={-2,-1,0,1,2,3}, xticklabels={}, ytick=\empty,
+            xlabel={$n$},
+            xlabel style={anchor=north west, at={(axis cs:3.55,0)}, font=\scriptsize},
+            title style={font=\scriptsize, at={(axis description cs:0,1)},
+                         anchor=south west, xshift=-0.45cm, yshift=1pt},
+            muestra/.style={ycomb, mark=*, mark size=1.6pt, thick},
+            clip=false,
+        }
+
+        % ===== Columna izquierda: la secuencia completa, centrada =====
+        \begin{axis}[at={(-1.5cm,-4.05cm)}, title={(a)\quad$x[n]$}]
+            \addplot[muestra, cnula]   coordinates {(-2,0) (3,0)};
+            \addplot[muestra, cmenos1] coordinates {(-1,1)};
+            \addplot[muestra, ccero]   coordinates {(0,2)};
+            \addplot[muestra, cuno]    coordinates {(1,-1)};
+            \addplot[muestra, cdos]    coordinates {(2,1.5)};
+            \etiquetasn
+        \end{axis}
+
+        % ===== Columna derecha: la descomposición, un impulso por panel =====
+        \begin{axis}[at={(6.2cm,0cm)}, title={(b)\quad$x[-1]\,\delta[n+1]$}]
+            \addplot[muestra, cnula]   coordinates {(-2,0) (0,0) (1,0) (2,0) (3,0)};
+            \addplot[muestra, cmenos1] coordinates {(-1,1)};
+            \etiquetasn
+        \end{axis}
+
+        \begin{axis}[at={(6.2cm,-2.7cm)}, title={(c)\quad$x[0]\,\delta[n]$}]
+            \addplot[muestra, cnula]   coordinates {(-2,0) (-1,0) (1,0) (2,0) (3,0)};
+            \addplot[muestra, ccero]   coordinates {(0,2)};
+            \etiquetasn
+        \end{axis}
+
+        \begin{axis}[at={(6.2cm,-5.4cm)}, title={(d)\quad$x[1]\,\delta[n-1]$}]
+            \addplot[muestra, cnula]   coordinates {(-2,0) (-1,0) (0,0) (2,0) (3,0)};
+            \addplot[muestra, cuno]    coordinates {(1,-1)};
+            \etiquetasn
+        \end{axis}
+
+        \begin{axis}[at={(6.2cm,-8.1cm)}, title={(e)\quad$x[2]\,\delta[n-2]$}]
+            \addplot[muestra, cnula]   coordinates {(-2,0) (-1,0) (0,0) (1,0) (3,0)};
+            \addplot[muestra, cdos]    coordinates {(2,1.5)};
+            \etiquetasn
+        \end{axis}
+
+    \end{tikzpicture}
+\end{document}

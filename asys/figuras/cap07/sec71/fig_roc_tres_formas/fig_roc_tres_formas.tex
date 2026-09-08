@@ -1,0 +1,107 @@
+% ============================================================
+% fig_roc_tres_formas.tex
+% Tres formas básicas de la ROC en el plano s, alineadas con los
+% ejemplos canónicos de §7.1.3:
+%   (a) Exponencial causal     e^{at} u(t)      Re{s} > a   (semiplano derecho)
+%   (b) Exponencial anticausal -e^{at} u(-t)    Re{s} < a   (semiplano izquierdo)
+%   (c) Exponencial bilateral  e^{-a|t|}       -a < Re{s} < a  (franja)
+% Estilo 2D consistente con sec28/fig_roc_laurent.
+% ============================================================
+%\PassOptionsToPackage{gray}{xcolor}
+
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=0.85, font=\small]
+
+% Constante a > 0 elegida en a = 1.5 para que el polo positivo caiga
+% visiblemente a la derecha del origen y, en los paneles (b) y (c),
+% el eje imaginario quede claramente dentro de la región sombreada.
+
+% =====================================================================
+% Panel (a): semiplano derecho — Re{s} > a, con a > 0
+%   La ROC NO contiene al eje imaginario => no hay TFTC.
+% =====================================================================
+\begin{scope}[shift={(0,0)}]
+    % --- 2. Fills ---
+    \fill[cyan!15] (1.5, -2.5) rectangle (3, 2.5);
+
+    % --- 3. Ejes y fronteras ---
+    \draw[->, thick] (-3, 0) -- (3.2, 0) node[right] {$\sigma$};
+    \draw[->, thick] (0, -2.5) -- (0, 2.7) node[above right, inner sep=1pt] {$j\omega$};
+    \draw[dashed, thick, gray] (1.5, -2.5) -- (1.5, 2.5);
+
+    % --- 4. Anotaciones ---
+    \fill[black] (0,0) circle (1pt);
+
+    \node[red, font=\normalsize] at (1.5, 0) {$\times$};
+    \node[red, above right, font=\scriptsize, inner sep=1pt]
+        at (1.5, 0.05) {$s\!=\!a$};
+
+    \draw (1.5, 0.08) -- (1.5, -0.08);
+    \node[below, font=\scriptsize] at (1.5, -0.1) {$a$};
+
+    \node[utnblue!80!black, font=\scriptsize] at (2.3, 1.7) {ROC};
+
+    \node[anchor=south, font=\small] at (0, 2.9) {(a)};
+\end{scope}
+
+% =====================================================================
+% Panel (b): semiplano izquierdo — Re{s} < a, con a > 0
+%   La ROC contiene al eje imaginario => sí hay TFTC.
+% =====================================================================
+\begin{scope}[shift={(7,0)}]
+    \fill[cyan!15] (-3, -2.5) rectangle (1.5, 2.5);
+
+    \draw[->, thick] (-3, 0) -- (3.2, 0) node[right] {$\sigma$};
+    \draw[->, thick] (0, -2.5) -- (0, 2.7) node[above right, inner sep=1pt] {$j\omega$};
+    \draw[dashed, thick, gray] (1.5, -2.5) -- (1.5, 2.5);
+
+    \fill[black] (0,0) circle (1pt);
+
+    \node[red, font=\normalsize] at (1.5, 0) {$\times$};
+    \node[red, above right, font=\scriptsize, inner sep=1pt]
+        at (1.5, 0.05) {$s\!=\!a$};
+
+    \draw (1.5, 0.08) -- (1.5, -0.08);
+    \node[below, font=\scriptsize] at (1.5, -0.1) {$a$};
+
+    \node[utnblue!80!black, font=\scriptsize] at (-1.8, 1.7) {ROC};
+
+    \node[anchor=south, font=\small] at (0, 2.9) {(b)};
+\end{scope}
+
+% =====================================================================
+% Panel (c): franja — -a < Re{s} < a, con a > 0
+%   La ROC contiene al eje imaginario => sí hay TFTC.
+% =====================================================================
+\begin{scope}[shift={(14,0)}]
+    \fill[cyan!15] (-1.5, -2.5) rectangle (1.5, 2.5);
+
+    \draw[->, thick] (-3, 0) -- (3.2, 0) node[right] {$\sigma$};
+    \draw[->, thick] (0, -2.5) -- (0, 2.7) node[above right, inner sep=1pt] {$j\omega$};
+    \draw[dashed, thick, gray] (-1.5, -2.5) -- (-1.5, 2.5);
+    \draw[dashed, thick, gray] (1.5, -2.5) -- (1.5, 2.5);
+
+    \fill[black] (0,0) circle (1pt);
+
+    \node[red, font=\normalsize] at (1.5, 0) {$\times$};
+    \node[red, above right, font=\scriptsize, inner sep=1pt]
+        at (1.5, 0.05) {$s\!=\!a$};
+    \node[red, font=\normalsize] at (-1.5, 0) {$\times$};
+    \node[red, above left, font=\scriptsize, inner sep=1pt]
+        at (-1.5, 0.05) {$s\!=\!-a$};
+
+    \draw (1.5, 0.08) -- (1.5, -0.08);
+    \node[below, font=\scriptsize] at (1.5, -0.1) {$a$};
+    \draw (-1.5, 0.08) -- (-1.5, -0.08);
+    \node[below, font=\scriptsize] at (-1.5, -0.1) {$-a$};
+
+    \node[utnblue!80!black, font=\scriptsize] at (0.7, 1.7) {ROC};
+
+    \node[anchor=south, font=\small] at (0, 2.9) {(c)};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

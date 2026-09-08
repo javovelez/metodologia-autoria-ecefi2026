@@ -1,0 +1,121 @@
+% ==============================================================================
+% SETUP.TEX - CONFIGURACIÓN GLOBAL DEL PROYECTO TC2
+% ==============================================================================
+\ifdefined\SETUPCONFIGURED
+\else
+\newcommand{\SETUPCONFIGURED}{}
+
+% Este archivo centraliza todos los paquetes y estilos.
+% Debe incluirse en el preámbulo del libro principal y de los archivos standalone.
+
+% --- 1. CODIFICACIÓN E IDIOMA ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-tabla]{babel}  
+\usepackage{csquotes} 
+
+\usepackage{import}
+\usepackage[mode=image, subpreambles=false]{standalone}
+
+% --- 2. MATEMÁTICAS Y CIENCIAS ---
+\usepackage{amsmath, amssymb, amsfonts, mathtools}
+
+% Operadores en notación español/europea (seno, coseno y seno hiperbólicos)
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\sh}{sh}
+
+% --- 3. DISEÑO Y GEOMETRÍA --- 
+\usepackage[left=2.5cm,right=2.5cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{parskip} 
+\usepackage{float}   
+
+% --- 4. GRÁFICOS Y TABLAS ---
+\usepackage{graphicx}
+\usepackage{booktabs} 
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, angles, quotes, babel, shapes.geometric}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{external}
+\usepgfplotslibrary{patchplots}
+\pgfplotsset{compat=1.18}
+\usepackage[siunitx, RPvoltages]{circuitikz}
+
+% --- 5. COLORES Y CAJAS ---
+\usepackage[table]{xcolor}
+\usepackage[theorems, most]{tcolorbox}
+
+\definecolor{utnblue}{RGB}{0, 51, 102}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+% --- 6. ENTORNOS PERSONALIZADOS (CAJAS) ---
+\newtcolorbox{pedagogico}{
+    colback=codegreen!5!white,
+    colframe=codegreen,
+    title=\textbf{Enfoque Pedagógico},
+    fonttitle=\bfseries,
+    sharp corners,
+    boxrule=0.5mm
+}
+
+\newtcolorbox{ingenieria}{
+    colback=utnblue!5!white,
+    colframe=utnblue,
+    title=\textbf{Utilidad Ingenieril},
+    fonttitle=\bfseries,
+    sharp corners,
+    boxrule=0.5mm
+}
+
+\newtcolorbox{nota}{
+    colback=codegray!5!white,
+    colframe=codegray,
+    title=\textbf{Nota},
+    fonttitle=\bfseries,
+    sharp corners,
+    boxrule=0.5mm
+}
+
+% --- 7. CÓDIGO FUENTE (LISTINGS) ---
+\usepackage{listings}
+\lstdefinestyle{miestilo}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single,                    
+    rulecolor=\color{codegray}
+}
+\lstset{style=miestilo}
+\lstset{literate={ñ}{{\~n}}1 {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1}
+
+% --- 8. HIPERVÍNCULOS ---
+\usepackage[colorlinks=true, linkcolor=utnblue, urlcolor=utnblue, citecolor=utnblue]{hyperref}
+
+% --- 9. PLACEHOLDER PARA FIGURAS PENDIENTES ---
+% Marca el lugar y la descripción de una figura aún no dibujada (p. ej. Cap. 5:
+% circuitos y gráficas diferidos). Greppable por \figpendiente para el pase posterior.
+\newcommand{\figpendiente}[1]{%
+  \begin{center}%
+  \setlength{\fboxsep}{6pt}%
+  \fbox{\parbox{0.85\linewidth}{\centering\small\itshape
+  [\textbf{Figura pendiente}]\\[2pt] #1}}%
+  \end{center}}
+
+\fi

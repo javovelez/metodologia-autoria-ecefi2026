@@ -1,0 +1,41 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{axis}[
+            width=14cm, height=6cm,
+            axis lines=center,
+            xlabel={$t$ [ms]},
+            ylabel={$v(t)$ [V]},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}},
+            ylabel style={anchor=south east, at={(axis description cs:0,1)}},
+            xmin=-5, xmax=65,
+            ymin=-420, ymax=380,
+            clip=false,
+            axis line style={->, thick},
+            xtick={0, 10, 20, 30, 40, 50, 60},
+            ytick={-311, 0, 311},
+            yticklabels={$-311$, $0$, $311$},
+            grid=major,
+            grid style={gray!20},
+            every tick label/.style={font=\footnotesize},
+        ]
+            % Señal senoidal continua: v(t) = 311 sin(2π·50·t)
+            % Con t en ms: v(t) = 311 sin(2π·t/20)
+            \addplot[domain=-3:62, samples=500, ultra thick, utnblue, smooth] 
+                {311*sin(deg(2*pi*x/20))};
+
+            % Marcar amplitud pico
+            \draw[<->, thick, red!70!black] (axis cs:5, 0) -- (axis cs:5, 311) 
+                node[midway, right, font=\footnotesize] {$V_p = 311$ V};
+
+            % Marcar período
+            \draw[<->, thick, red!70!black] (axis cs:0, -350) -- (axis cs:20, -350) 
+                node[midway, below, font=\footnotesize] {$T = 20$ ms};
+
+        \end{axis}
+
+    \end{tikzpicture}
+\end{document}

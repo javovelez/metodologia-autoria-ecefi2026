@@ -1,0 +1,72 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_traslado_espectral
+% Producto de una senal limitada en banda por cos(w_0 t).
+% (a) Espectro X(jw) de la senal original: triangulo centrado en 0.
+% (b) Espectro de x(t) cos(w_0 t): dos copias a media altura en +/- w_0.
+% Notacion generica (X, w_0): consistente con la prosa de la subseccion
+% "La operacion: producto por coseno y su efecto espectral".
+% Parametros: ancho de banda = 2, w_0 = 10.
+% Sizing: preset S3 (2 paneles apilados, w 10 cm, h 4.5 cm).
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% Panel (a): M(jw) - espectro original
+\begin{axis}[
+    name=panel_a,
+    width=10cm, height=4.5cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-14, xmax=14, ymin=-0.2, ymax=1.4,
+    xtick={-10, 0, 10},
+    xticklabels={$-\omega_0$, $0$, $\omega_0$},
+    ytick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    ylabel={$X(j\omega)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Triangulo: altura 1 en w=0, soporte [-2, 2]
+    \addplot[utnblue, very thick] coordinates {(-14,0) (-2,0) (0,1) (2,0) (14,0)};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.25, 1.02) {$1$};
+\end{axis}
+
+% Panel (b): espectro modulado
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.south)+(0,-1.4cm)$)}, anchor=north,
+    width=10cm, height=4.5cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-14, xmax=14, ymin=-0.2, ymax=1.4,
+    xtick={-12, -10, -8, 0, 8, 10, 12},
+    xticklabels={, $-\omega_0$, , $0$, , $\omega_0$, },
+    ytick={0, 0.5},
+    yticklabels={$0$, $1/2$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Copia centrada en -w_c = -10: triangulo altura 0.5 en w=-10, soporte [-12, -8]
+    \addplot[red!80!black, very thick]
+        coordinates {(-14,0) (-12,0) (-10,0.5) (-8,0) (-0.5,0)};
+    % Copia centrada en +w_c = 10: triangulo altura 0.5 en w=10, soporte [8, 12]
+    \addplot[red!80!black, very thick]
+        coordinates {(0.5,0) (8,0) (10,0.5) (12,0) (14,0)};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

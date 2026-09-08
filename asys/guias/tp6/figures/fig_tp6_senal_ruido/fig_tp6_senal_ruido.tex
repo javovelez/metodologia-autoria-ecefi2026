@@ -1,0 +1,47 @@
+\documentclass[border=4mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=3pt,width=3pt]}, font=\small]
+\begin{axis}[
+    axis lines=middle,
+    axis line style={->, thin, black},
+    axis on top,
+    width=8.4cm, height=4.6cm,
+    xmin=-2150, xmax=2150,
+    ymin=-0.10, ymax=1.38,
+    xlabel={$\omega$ [rad/s]},
+    ylabel={$|X(j\omega)|$},
+    xlabel style={font=\small, anchor=north west},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    xtick={-2000,-1500,-1000,1000,1500,2000},
+    xticklabels={$-\omega_2$, $-\omega_1$, $-\omega_{\max}$,
+                 $\omega_{\max}$, $\omega_1$, $\omega_2$},
+    ytick=\empty,
+    ticklabel style={font=\scriptsize},
+    clip=false,
+]
+    % --- 2. Fills / regiones ---
+    \addplot[fill=utnblue!20, draw=none]
+        coordinates {(-1000,0) (0,1) (1000,0)} \closedcycle;
+    \addplot[fill=red!15, draw=none]
+        coordinates {(-2000,0) (-2000,0.45) (-1500,0.45) (-1500,0)} \closedcycle;
+    \addplot[fill=red!15, draw=none]
+        coordinates {(1500,0) (1500,0.45) (2000,0.45) (2000,0)} \closedcycle;
+
+    % --- 3. Curvas principales ---
+    \addplot[utnblue, semithick]
+        coordinates {(-1000,0) (0,1) (1000,0)};
+    \addplot[red!80!black, semithick]
+        coordinates {(-2000,0) (-2000,0.45) (-1500,0.45) (-1500,0)};
+    \addplot[red!80!black, semithick]
+        coordinates {(1500,0) (1500,0.45) (2000,0.45) (2000,0)};
+
+    % --- 4. Anotaciones ---
+    \node[utnblue, font=\small]        at (axis cs:-430,0.32)  {A};
+    \node[red!80!black, anchor=south, font=\small] at (axis cs:1750,0.50) {B};
+\end{axis}
+\end{tikzpicture}
+\end{document}

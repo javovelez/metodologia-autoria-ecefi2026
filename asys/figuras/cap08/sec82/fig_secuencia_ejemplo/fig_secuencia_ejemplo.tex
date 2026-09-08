@@ -1,0 +1,25 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{axis}[
+            width=13cm, height=5.5cm,
+            axis lines=middle,
+            axis line style={->, thin, black},
+            xmin=-3.6, xmax=5.6, ymin=-1.6, ymax=2.5,
+            xtick={-3,-2,-1,0,1,2,3,4,5}, ytick=\empty,
+            xlabel={$n$}, ylabel={$x[n]$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\footnotesize},
+            ylabel style={rotate=0, anchor=south east, at={(axis description cs:0,1)}, font=\footnotesize},
+            every tick label/.style={font=\footnotesize, fill=white, inner sep=1pt},
+            axis on top,
+            clip=false,
+        ]
+            \addplot[ycomb, mark=*, mark size=2pt, thick, utnblue] coordinates {
+                (-3,0.8) (-2,0.5) (-1,1.5) (0,2) (1,1) (2,-0.5) (3,-1) (4,-0.8) (5,0.4)
+            };
+        \end{axis}
+    \end{tikzpicture}
+\end{document}

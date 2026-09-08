@@ -1,0 +1,181 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\scriptsize,
+        mk/.style={fill=utnblue},
+        st/.style={utnblue, thick},
+        vec/.style={utnblue, semithick, -{Latex[length=4pt]}},
+        arco/.style={red!80!black, semithick, -{Latex[length=3pt]}},
+        ax/.style={->, thin, black},
+    ]
+        \def\rc{1.0}     % radio del círculo
+        \def\sx{2.7}     % inicio de los stems
+        \def\dx{0.40}    % paso horizontal de los stems
+        \def\colB{9.8}   % desplazamiento de la segunda columna
+        \newcommand{\stemaxis}{\draw[ax] (\sx-0.35,0) -- (\sx+8*\dx+0.45,0) node[right] {$n$};}
+        \newcommand{\stems}[1]{%
+            \stemaxis
+            \foreach \n/\v in {#1} {
+                \draw[st] (\sx+\n*\dx,0) -- (\sx+\n*\dx,\v);
+                \fill[mk] (\sx+\n*\dx,\v) circle (1.5pt);
+            }%
+            % etiquetas del eje n, al final para que tapen los stems negativos
+            \foreach \n in {0,...,8} {
+                \node[font=\tiny, inner sep=1pt, fill=white, anchor=north]
+                    at (\sx+\n*\dx,-0.02) {\n};
+            }%
+        }
+        \newcommand{\circulo}{\draw[gray!55, thin] (0,0) circle (\rc);}
+        \def\rl{1.20}    % radio de las etiquetas de orden
+        % puntos del círculo numerados por orden de aparición
+        % #1 = radio del marcador, #2 = lista angulo/etiqueta
+        \newcommand{\puntos}[2]{%
+            \foreach \ang/\lbl in {#2} {
+                \fill[mk] (\ang:\rc) circle (#1);
+                \node[utnblue, font=\tiny, inner sep=1pt] at (\ang:\rl) {\lbl};
+            }%
+        }
+        % espira para lambda >= 2pi: el radio crece a lo largo del giro, de modo que la
+        % vuelta completa no se superpone consigo misma y se distingue el excedente
+        % #1 = ángulo final (grados), #2 = radio inicial, #3 = radio final
+        \newcommand{\espira}[3]{%
+            \draw[arco] plot[domain=0:#1, samples=120, variable=\tesp]
+                ({\tesp}:{#2+(#3-#2)*\tesp/#1});%
+        }
+        % etiqueta de panel + valor de lambda, a la izquierda del círculo
+        \newcommand{\panel}[2]{%
+            \node at (-2.05,0.28) {#1};
+            \node at (-2.05,-0.30) {$\lambda=#2$};
+        }
+
+        % =========================== COLUMNA IZQUIERDA ===========================
+
+        % ---------- (a) lambda = 0 ----------
+        \begin{scope}[shift={(0,0)}]
+            \panel{(a)}{0}
+            \circulo
+            \fill[mk] (0:\rc) circle (1.8pt);
+            \node[utnblue, font=\tiny, anchor=west, inner sep=1pt] at (0:\rl) {$0,1,2,\dots$};
+            \draw[vec] (0,0) -- (0:\rc);
+            \stems{0/0.85,1/0.85,2/0.85,3/0.85,4/0.85,5/0.85,6/0.85,7/0.85,8/0.85}
+        \end{scope}
+
+        % ---------- (b) lambda = pi/8 ----------
+        \begin{scope}[shift={(0,-2.9)}]
+            \panel{(b)}{\pi/8}
+            \circulo
+            \puntos{1.4pt}{0/0, 22.5/1, 45/2, 67.5/3, 90/4, 112.5/5, 135/6, 157.5/7,
+                           180/8, 202.5/9, 225/10, 247.5/11, 270/12, 292.5/13, 315/14, 337.5/15}
+            \draw[vec] (0,0) -- (22.5:\rc);
+            \draw[arco] (0:0.60) arc (0:22.5:0.60);
+            \stems{0/0.85,1/0.785,2/0.601,3/0.325,4/0,5/-0.325,6/-0.601,7/-0.785,8/-0.85}
+        \end{scope}
+
+        % ---------- (c) lambda = pi/4 ----------
+        \begin{scope}[shift={(0,-5.8)}]
+            \panel{(c)}{\pi/4}
+            \circulo
+            \puntos{1.6pt}{0/0, 45/1, 90/2, 135/3, 180/4, 225/5, 270/6, 315/7}
+            \draw[vec] (0,0) -- (45:\rc);
+            \draw[arco] (0:0.42) arc (0:45:0.42);
+            \stems{0/0.85,1/0.601,2/0,3/-0.601,4/-0.85,5/-0.601,6/0,7/0.601,8/0.85}
+        \end{scope}
+
+        % ---------- (d) lambda = pi/2 ----------
+        \begin{scope}[shift={(0,-8.7)}]
+            \panel{(d)}{\pi/2}
+            \circulo
+            \puntos{1.6pt}{0/0, 90/1, 180/2, 270/3}
+            \draw[vec] (0,0) -- (90:\rc);
+            \draw[arco] (0:0.42) arc (0:90:0.42);
+            \stems{0/0.85,1/0,2/-0.85,3/0,4/0.85,5/0,6/-0.85,7/0,8/0.85}
+        \end{scope}
+
+        % ---------- (e) lambda = 3pi/4 ----------
+        \begin{scope}[shift={(0,-11.6)}]
+            \panel{(e)}{3\pi/4}
+            \circulo
+            \puntos{1.6pt}{0/0, 135/1, 270/2, 45/3, 180/4, 315/5, 90/6, 225/7}
+            \draw[vec] (0,0) -- (135:\rc);
+            \draw[arco] (0:0.42) arc (0:135:0.42);
+            \stems{0/0.85,1/-0.601,2/0,3/0.601,4/-0.85,5/0.601,6/0,7/-0.601,8/0.85}
+        \end{scope}
+
+        % ---------- (f) lambda = pi ----------
+        \begin{scope}[shift={(0,-14.5)}]
+            \panel{(f)}{\pi}
+            \circulo
+            \puntos{1.8pt}{0/0, 180/1}
+            \draw[vec] (0,0) -- (180:\rc);
+            \draw[arco] (0:0.42) arc (0:180:0.42);
+            \stems{0/0.85,1/-0.85,2/0.85,3/-0.85,4/0.85,5/-0.85,6/0.85,7/-0.85,8/0.85}
+        \end{scope}
+
+        % ============================ COLUMNA DERECHA ============================
+
+        % ---------- (g) lambda = 5pi/4 ----------
+        \begin{scope}[shift={(\colB,0)}]
+            \panel{(g)}{5\pi/4}
+            \circulo
+            \puntos{1.6pt}{0/0, 225/1, 90/2, 315/3, 180/4, 45/5, 270/6, 135/7}
+            \draw[vec] (0,0) -- (225:\rc);
+            \draw[arco] (0:0.42) arc (0:225:0.42);
+            \stems{0/0.85,1/-0.601,2/0,3/0.601,4/-0.85,5/0.601,6/0,7/-0.601,8/0.85}
+        \end{scope}
+
+        % ---------- (h) lambda = 3pi/2 ----------
+        \begin{scope}[shift={(\colB,-2.9)}]
+            \panel{(h)}{3\pi/2}
+            \circulo
+            \puntos{1.6pt}{0/0, 270/1, 180/2, 90/3}
+            \draw[vec] (0,0) -- (270:\rc);
+            \draw[arco] (0:0.42) arc (0:270:0.42);
+            \stems{0/0.85,1/0,2/-0.85,3/0,4/0.85,5/0,6/-0.85,7/0,8/0.85}
+        \end{scope}
+
+        % ---------- (i) lambda = 7pi/4 ----------
+        \begin{scope}[shift={(\colB,-5.8)}]
+            \panel{(i)}{7\pi/4}
+            \circulo
+            \puntos{1.6pt}{0/0, 315/1, 270/2, 225/3, 180/4, 135/5, 90/6, 45/7}
+            \draw[vec] (0,0) -- (315:\rc);
+            \draw[arco] (0:0.42) arc (0:315:0.42);
+            \stems{0/0.85,1/0.601,2/0,3/-0.601,4/-0.85,5/-0.601,6/0,7/0.601,8/0.85}
+        \end{scope}
+
+        % ---------- (j) lambda = 15pi/8 ----------
+        \begin{scope}[shift={(\colB,-8.7)}]
+            \panel{(j)}{15\pi/8}
+            \circulo
+            \puntos{1.4pt}{0/0, 337.5/1, 315/2, 292.5/3, 270/4, 247.5/5, 225/6, 202.5/7,
+                           180/8, 157.5/9, 135/10, 112.5/11, 90/12, 67.5/13, 45/14, 22.5/15}
+            \draw[vec] (0,0) -- (337.5:\rc);
+            \draw[arco] (0:0.42) arc (0:337.5:0.42);
+            \stems{0/0.85,1/0.785,2/0.601,3/0.325,4/0,5/-0.325,6/-0.601,7/-0.785,8/-0.85}
+        \end{scope}
+
+        % ---------- (k) lambda = 2pi ----------
+        \begin{scope}[shift={(\colB,-11.6)}]
+            \panel{(k)}{2\pi}
+            \circulo
+            \fill[mk] (0:\rc) circle (1.8pt);
+            \node[utnblue, font=\tiny, anchor=west, inner sep=1pt] at (0:\rl) {$0,1,2,\dots$};
+            \draw[vec] (0,0) -- (0:\rc);
+            \espira{360}{0.28}{0.52}
+            \stems{0/0.85,1/0.85,2/0.85,3/0.85,4/0.85,5/0.85,6/0.85,7/0.85,8/0.85}
+        \end{scope}
+
+        % ---------- (l) lambda = pi/4 + 2pi ----------
+        \begin{scope}[shift={(\colB,-14.5)}]
+            \panel{(l)}{\pi/4+2\pi}
+            \circulo
+            \puntos{1.6pt}{0/0, 45/1, 90/2, 135/3, 180/4, 225/5, 270/6, 315/7}
+            \draw[vec] (0,0) -- (45:\rc);
+            \espira{405}{0.28}{0.52}
+            \stems{0/0.85,1/0.601,2/0,3/-0.601,4/-0.85,5/-0.601,6/0,7/0.601,8/0.85}
+        \end{scope}
+
+    \end{tikzpicture}
+\end{document}

@@ -1,0 +1,33 @@
+% ============================================================
+% fig_polo_doble_origen.tex
+% Polo doble en el origen (p = 0, multiplicidad 2).
+% Aporte a h(t): rampa t u(t), que crece sin cota; la recta llena
+% el panel hasta cerca del borde superior. Marcador (2) sobre el polo.
+% Layout: [plano s]  L^{-1}  [h(t)].
+% ============================================================
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% --- Plano s ---
+\draw[->, thin] (-1.7, 0) -- (1.7, 0) node[below right, font=\footnotesize] {$\sigma$};
+\draw[->, thin] (0, -1.7) -- (0, 1.9) node[above, font=\footnotesize] {$j\omega$};
+\node[red, font=\large] at (0, 0) {$\times$};
+\node[red, above right, font=\scriptsize, inner sep=1pt] at (0.08, 0.08) {$(2)$};
+
+% --- Conector ---
+\draw[->, gray, thin] (2.2, 0) -- (3.4, 0)
+    node[midway, above, font=\footnotesize, gray] {$\mathcal{L}^{-1}$};
+
+% --- h(t) ---
+\begin{scope}[shift={(3.9, 0)}]
+    \draw[->, thin] (-0.3, 0) -- (4.0, 0) node[right, font=\footnotesize] {$t$};
+    \draw[->, thin] (0, -0.5) -- (0, 1.9) node[above, font=\footnotesize] {$h(t)$};
+    % Rampa t u(t): recta que crece y llena el panel.
+    \draw[red!80!black, thick] (0, 0) -- (3.7, 1.68);
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

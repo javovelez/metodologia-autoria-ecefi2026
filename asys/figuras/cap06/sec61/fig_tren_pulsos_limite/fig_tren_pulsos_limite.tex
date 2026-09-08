@@ -1,0 +1,89 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_tren_pulsos_limite
+% Tres paneles apilados verticalmente con tau fijo y T_0 creciente.
+% Orientacion apilada: la alineacion temporal de t = 0 en los tres
+% paneles hace inmediata la lectura de como, manteniendo el pulso
+% central inalterado, los pulsos vecinos se separan al crecer T_0.
+%
+% Convencion de pulso: outline (izq + arriba + der), sin sombreado,
+% para coherencia con fig_par_pulso_sinc.
+%
+% Puntos suspensivos a izquierda y derecha de cada panel indican que
+% la senal es periodica y continua mas alla de la ventana mostrada.
+%
+% Figura ejemplificativa (sin valores numericos sobre los ejes): los
+% valores tau = 1.5 y T_0 = 6, 10, 14 estan elegidos para que el pulso
+% se lea como rectangulo (no como stem), para que cada panel muestre
+% pocos periodos (5/3/3), y para que en el panel (b) el proximo pulso
+% caiga claramente fuera del rango (en +-20, con xmax = 17).
+%
+% Sizing: 3 paneles apilados, width 9cm, height 3cm por panel
+% (aspect 3:1, mas compacto en altura que el preset S4).
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=3pt,width=3pt]}, font=\scriptsize]
+
+\begin{groupplot}[
+    group style={
+        group size=1 by 3,
+        vertical sep=0.9cm,
+        x descriptions at=edge bottom,
+    },
+    width=9cm,
+    height=3cm,
+    xmin=-17, xmax=17,
+    xtick={0},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+    axis lines=center,
+    axis line style={->, thin},
+    ymin=-0.45, ymax=1.30,
+    ytick={0},
+    enlarge x limits=0.02,
+    clip mode=individual,
+    title style={font=\scriptsize, yshift=-2pt},
+]
+
+% Panel (a): T_0 = 6, tau = 1.5 -> pulsos en 0, +-6, +-12
+\nextgroupplot[title={(a)}]
+    \draw[utnblue, semithick] (axis cs:-12.75,0) -- (axis cs:-12.75,1) -- (axis cs:-11.25,1) -- (axis cs:-11.25,0);
+    \draw[utnblue, semithick] (axis cs:-6.75,0)  -- (axis cs:-6.75,1)  -- (axis cs:-5.25,1)  -- (axis cs:-5.25,0);
+    \draw[utnblue, semithick] (axis cs:-0.75,0)  -- (axis cs:-0.75,1)  -- (axis cs:0.75,1)   -- (axis cs:0.75,0);
+    \draw[utnblue, semithick] (axis cs:5.25,0)   -- (axis cs:5.25,1)   -- (axis cs:6.75,1)   -- (axis cs:6.75,0);
+    \draw[utnblue, semithick] (axis cs:11.25,0)  -- (axis cs:11.25,1)  -- (axis cs:12.75,1)  -- (axis cs:12.75,0);
+    \node[font=\scriptsize] at (axis cs:-15.2, 0.5) {$\cdots$};
+    \node[font=\scriptsize] at (axis cs:15.2, 0.5)  {$\cdots$};
+    \draw[<->, thin, gray] (axis cs:0,-0.15) -- (axis cs:6,-0.15);
+    \node[gray, font=\scriptsize] at (axis cs:3, -0.33) {$T_0$};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.1, 1.0) {$1$};
+
+% Panel (b): T_0 = 10, tau = 1.5 -> pulsos en 0, +-10
+\nextgroupplot[title={(b)}]
+    \draw[utnblue, semithick] (axis cs:-10.75,0) -- (axis cs:-10.75,1) -- (axis cs:-9.25,1) -- (axis cs:-9.25,0);
+    \draw[utnblue, semithick] (axis cs:-0.75,0)  -- (axis cs:-0.75,1)  -- (axis cs:0.75,1)  -- (axis cs:0.75,0);
+    \draw[utnblue, semithick] (axis cs:9.25,0)   -- (axis cs:9.25,1)   -- (axis cs:10.75,1) -- (axis cs:10.75,0);
+    \node[font=\scriptsize] at (axis cs:-15.2, 0.5) {$\cdots$};
+    \node[font=\scriptsize] at (axis cs:15.2, 0.5)  {$\cdots$};
+    \draw[<->, thin, gray] (axis cs:0,-0.15) -- (axis cs:10,-0.15);
+    \node[gray, font=\scriptsize] at (axis cs:5, -0.33) {$T_0$};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.1, 1.0) {$1$};
+
+% Panel (c): T_0 = 14, tau = 1.5 -> pulsos en 0, +-14
+\nextgroupplot[title={(c)}]
+    \draw[utnblue, semithick] (axis cs:-14.75,0) -- (axis cs:-14.75,1) -- (axis cs:-13.25,1) -- (axis cs:-13.25,0);
+    \draw[utnblue, semithick] (axis cs:-0.75,0)  -- (axis cs:-0.75,1)  -- (axis cs:0.75,1)   -- (axis cs:0.75,0);
+    \draw[utnblue, semithick] (axis cs:13.25,0)  -- (axis cs:13.25,1)  -- (axis cs:14.75,1)  -- (axis cs:14.75,0);
+    \node[font=\scriptsize] at (axis cs:-16, 0.5) {$\cdots$};
+    \node[font=\scriptsize] at (axis cs:16, 0.5)  {$\cdots$};
+    \draw[<->, thin, gray] (axis cs:0,-0.15) -- (axis cs:14,-0.15);
+    \node[gray, font=\scriptsize] at (axis cs:7, -0.33) {$T_0$};
+    \node[anchor=south west, font=\footnotesize] at (axis cs:0.1, 1.0) {$1$};
+
+\end{groupplot}
+
+\end{tikzpicture}
+\end{document}

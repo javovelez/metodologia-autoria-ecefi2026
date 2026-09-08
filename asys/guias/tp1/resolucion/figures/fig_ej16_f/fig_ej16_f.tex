@@ -1,0 +1,80 @@
+\documentclass[border=3mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[
+    group style={group size=2 by 2, horizontal sep=2.0cm, vertical sep=1.8cm},
+    width=5.5cm, height=4.0cm,
+    tick label style={font=\tiny},
+    label style={font=\scriptsize},
+    title style={font=\scriptsize\bfseries},
+    grid=major, grid style={gray!20},
+]
+
+% --- Panel 1: |F(jy)| ---
+% Zeros at y=+/-1 (numerator 1-y^2=0). No poles on Im axis.
+\nextgroupplot[
+    title={$|F(jy)|$\quad Eje Im},
+    xlabel={$y$}, ylabel={$|F|$},
+    xmin=-4, xmax=4, ymin=0, ymax=2,
+    restrict y to domain=0:2,
+]
+\addplot[utnblue, thick, domain=-4:4, samples=400, unbounded coords=jump]
+    {abs(1-x^2)/(sqrt(1+x^2)*(4+x^2))};
+
+% --- Panel 2: ang F(jy) ---
+% Split at y=0 and y=+/-1 where phase jumps occur
+\nextgroupplot[
+    title={$\angle F(jy)$\quad Eje Im},
+    xlabel={$y$}, ylabel={rad},
+    xmin=-4, xmax=4, ymin=-3.5, ymax=3.5,
+    ytick={-3.14159,-1.5708,0,1.5708,3.14159},
+    yticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+]
+\addplot[orange!80!black, thick, domain=-4:-2.85, samples=150, unbounded coords=jump]
+    {atan2( (x^2-1)*(8*x-x^3), (1-x^2)*(5*x^2-4) ) * pi/180};
+\addplot[orange!80!black, thick, domain=-2.81:-0.02, samples=150, unbounded coords=jump]
+    {atan2( (x^2-1)*(8*x-x^3), (1-x^2)*(5*x^2-4) ) * pi/180};
+\addplot[orange!80!black, thick, domain=0.02:2.81, samples=150, unbounded coords=jump]
+    {atan2( (x^2-1)*(8*x-x^3), (1-x^2)*(5*x^2-4) ) * pi/180};
+\addplot[orange!80!black, thick, domain=2.85:4, samples=150, unbounded coords=jump]
+    {atan2( (x^2-1)*(8*x-x^3), (1-x^2)*(5*x^2-4) ) * pi/180};
+
+% --- Panel 3: |F(e^jt)| ---
+% |e^{2jt}+1| = 2|cos(t)|; zeros at t=pi/2, -pi/2. Singularity at t=0 (pole z=1 on circle).
+\nextgroupplot[
+    title={$|F(e^{j\theta})|$\quad Circ.\ unit.},
+    xlabel={$\theta$ (rad)}, ylabel={$|F|$},
+    xmin=-3.14159, xmax=3.14159, ymin=0, ymax=3,
+    restrict y to domain=0:3,
+    xtick={-3.14159,-1.5708,0,1.5708,3.14159},
+    xticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+]
+\addplot[utnblue, thick, domain=-3.14159:-0.15, samples=400, unbounded coords=jump]
+    {2*abs(cos(deg(x)))/(sqrt(2-2*cos(deg(x)))*(5-4*cos(deg(x))))};
+\addplot[utnblue, thick, domain=0.15:3.14159, samples=400, unbounded coords=jump]
+    {2*abs(cos(deg(x)))/(sqrt(2-2*cos(deg(x)))*(5-4*cos(deg(x))))};
+
+% --- Panel 4: ang F(e^jt) ---
+\nextgroupplot[
+    title={$\angle F(e^{j\theta})$\quad Circ.\ unit.},
+    xlabel={$\theta$ (rad)}, ylabel={rad},
+    xmin=-3.14159, xmax=3.14159, ymin=-3.5, ymax=3.5,
+    ytick={-3.14159,-1.5708,0,1.5708,3.14159},
+    yticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+    xtick={-3.14159,-1.5708,0,1.5708,3.14159},
+    xticklabels={$-\pi$,$-\frac{\pi}{2}$,$0$,$\frac{\pi}{2}$,$\pi$},
+]
+\addplot[orange!80!black, thick, domain=-3.14159:-1.59, samples=150, unbounded coords=jump]
+    {atan2(sin(deg(2*x))*(cos(deg(3*x))-5*cos(deg(2*x))+8*cos(deg(x))-4) - (cos(deg(2*x))+1)*(sin(deg(3*x))-5*sin(deg(2*x))+8*sin(deg(x))), (cos(deg(2*x))+1)*(cos(deg(3*x))-5*cos(deg(2*x))+8*cos(deg(x))-4) + sin(deg(2*x))*(sin(deg(3*x))-5*sin(deg(2*x))+8*sin(deg(x)))) * pi/180};
+\addplot[orange!80!black, thick, domain=-1.55:-0.02, samples=200, unbounded coords=jump]
+    {atan2(sin(deg(2*x))*(cos(deg(3*x))-5*cos(deg(2*x))+8*cos(deg(x))-4) - (cos(deg(2*x))+1)*(sin(deg(3*x))-5*sin(deg(2*x))+8*sin(deg(x))), (cos(deg(2*x))+1)*(cos(deg(3*x))-5*cos(deg(2*x))+8*cos(deg(x))-4) + sin(deg(2*x))*(sin(deg(3*x))-5*sin(deg(2*x))+8*sin(deg(x)))) * pi/180};
+\addplot[orange!80!black, thick, domain=0.02:1.55, samples=200, unbounded coords=jump]
+    {atan2(sin(deg(2*x))*(cos(deg(3*x))-5*cos(deg(2*x))+8*cos(deg(x))-4) - (cos(deg(2*x))+1)*(sin(deg(3*x))-5*sin(deg(2*x))+8*sin(deg(x))), (cos(deg(2*x))+1)*(cos(deg(3*x))-5*cos(deg(2*x))+8*cos(deg(x))-4) + sin(deg(2*x))*(sin(deg(3*x))-5*sin(deg(2*x))+8*sin(deg(x)))) * pi/180};
+\addplot[orange!80!black, thick, domain=1.59:3.14159, samples=150, unbounded coords=jump]
+    {atan2(sin(deg(2*x))*(cos(deg(3*x))-5*cos(deg(2*x))+8*cos(deg(x))-4) - (cos(deg(2*x))+1)*(sin(deg(3*x))-5*sin(deg(2*x))+8*sin(deg(x))), (cos(deg(2*x))+1)*(cos(deg(3*x))-5*cos(deg(2*x))+8*cos(deg(x))-4) + sin(deg(2*x))*(sin(deg(3*x))-5*sin(deg(2*x))+8*sin(deg(x)))) * pi/180};
+
+\end{groupplot}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,90 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Referencia vertical en n=0, comun a todos los paneles.
+\newcommand{\refcero}{%
+    \draw[gray!55, thin, dashed]
+        (axis cs:0,0) -- (axis cs:0,\pgfkeysvalueof{/pgfplots/ymax});}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\small]
+        \begin{groupplot}[
+            group style={group size=2 by 5, horizontal sep=1.6cm, vertical sep=1.3cm},
+            width=5.6cm, height=2.5cm,
+            axis x line=middle, axis y line=left,
+            y axis line style={draw=none}, ytick style={draw=none}, yticklabels={},
+            axis line style={->, thin, black},
+            xmin=-1.3, xmax=5.9,
+            xtick={0,1,2,3,4,5},
+            xlabel={$n$},
+            xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\scriptsize},
+            every tick label/.style={font=\scriptsize, fill=white, inner sep=0.8pt},
+            title style={font=\scriptsize, yshift=-1pt},
+            ymajorgrids=true,
+            grid style={gray!30, thin},
+            nodes near coords, point meta=explicit symbolic,
+            every node near coord/.style={font=\scriptsize, text=black, anchor=south, inner sep=1.5pt, yshift=1pt},
+            entrada/.style={ycomb, mark=*, mark size=1pt, thick, utnblue},
+            salida/.style={ycomb, mark=*, mark size=1pt, thick, red!80!black},
+            ceroent/.style={only marks, mark=*, mark size=1pt, utnblue,
+                            point meta=none, nodes near coords={}},
+            cerosal/.style={only marks, mark=*, mark size=1pt, red!80!black,
+                            point meta=none, nodes near coords={}},
+            colentrada/.style={ymin=-0.5, ymax=6.0, ytick={1,2,3,4,5}},
+            colsalida/.style={ymin=-0.4, ymax=4.8, ytick={1,2,3,4}},
+            clip=false,
+        ]
+            % ---------------- fila 1: muestra n=0 ----------------
+            \nextgroupplot[colentrada, title={(a) \ $x[0]\,\delta[n]$}]
+                \refcero
+                \addplot[entrada] coordinates {(0,2) [$2$]};
+                \addplot[ceroent] coordinates {(1,0) (2,0) (3,0) (4,0) (5,0)};
+            \nextgroupplot[colsalida, title={(f) \ $x[0]\,h[n]$}]
+                \refcero
+                \addplot[salida] coordinates {(0,1) [$1$] (1,1) [$1$]};
+                \addplot[cerosal] coordinates {(2,0) (3,0) (4,0) (5,0)};
+
+            % ---------------- fila 2: muestra n=1 ----------------
+            \nextgroupplot[colentrada, title={(b) \ $x[1]\,\delta[n-1]$}]
+                \refcero
+                \addplot[entrada] coordinates {(1,4) [$4$]};
+                \addplot[ceroent] coordinates {(0,0) (2,0) (3,0) (4,0) (5,0)};
+            \nextgroupplot[colsalida, title={(g) \ $x[1]\,h[n-1]$}]
+                \refcero
+                \addplot[salida] coordinates {(1,2) [$2$] (2,2) [$2$]};
+                \addplot[cerosal] coordinates {(0,0) (3,0) (4,0) (5,0)};
+
+            % ---------------- fila 3: muestra n=2 ----------------
+            \nextgroupplot[colentrada, title={(c) \ $x[2]\,\delta[n-2]$}]
+                \refcero
+                \addplot[entrada] coordinates {(2,3) [$3$]};
+                \addplot[ceroent] coordinates {(0,0) (1,0) (3,0) (4,0) (5,0)};
+            \nextgroupplot[colsalida, title={(h) \ $x[2]\,h[n-2]$}]
+                \refcero
+                \addplot[salida] coordinates {(2,1.5) [$1{,}5$] (3,1.5) [$1{,}5$]};
+                \addplot[cerosal] coordinates {(0,0) (1,0) (4,0) (5,0)};
+
+            % ---------------- fila 4: muestra n=3 ----------------
+            \nextgroupplot[colentrada, title={(d) \ $x[3]\,\delta[n-3]$}]
+                \refcero
+                \addplot[entrada] coordinates {(3,5) [$5$]};
+                \addplot[ceroent] coordinates {(0,0) (1,0) (2,0) (4,0) (5,0)};
+            \nextgroupplot[colsalida, title={(i) \ $x[3]\,h[n-3]$}]
+                \refcero
+                \addplot[salida] coordinates {(3,2.5) [$2{,}5$] (4,2.5) [$2{,}5$]};
+                \addplot[cerosal] coordinates {(0,0) (1,0) (2,0) (5,0)};
+
+            % ---------------- fila 5: las dos sumas ----------------
+            \nextgroupplot[colentrada, title={(e) \ $x[n]$}]
+                \refcero
+                \addplot[entrada] coordinates {(0,2) [$2$] (1,4) [$4$] (2,3) [$3$] (3,5) [$5$]};
+                \addplot[ceroent] coordinates {(4,0) (5,0)};
+            \nextgroupplot[colsalida, title={(j) \ $y[n]$}]
+                \refcero
+                \addplot[salida] coordinates {(0,1) [$1$] (1,3) [$3$] (2,3.5) [$3{,}5$]
+                                              (3,4) [$4$] (4,2.5) [$2{,}5$]};
+                \addplot[cerosal] coordinates {(5,0)};
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}

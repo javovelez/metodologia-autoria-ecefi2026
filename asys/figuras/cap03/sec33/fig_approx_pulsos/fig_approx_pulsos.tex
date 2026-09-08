@@ -1,0 +1,136 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% Señal: x(t) = exp(-t/3)*sin(pi*t/2)
+%
+% Pulso base: p_Δ(t) = 1/Δ para 0 ≤ t < Δ  →  área = 1
+% Aproximación de la señal: \hat{x}(t) = \sum x(k\Delta) p_\Delta(t-k\Delta) \Delta
+% Cada pulso rectangular en la suma tiene:
+%   altura = x(k\Delta)
+%   ancho  = \Delta
+%   área   = x(k\Delta) \Delta
+%
+% Al reducir \Delta, la suma aproxima la integral de convolución
+%
+% Valores altura = x(k\Delta) para cada panel:
+%
+%  Δ=1.00:  t=0 → 0.000    t=1 → 0.717    t=2 → 0.000    t=3 → -0.368
+%
+%  Δ=0.50:  t=0.0→0.000  t=0.5→0.599  t=1.0→0.717  t=1.5→0.429
+%           t=2.0→0.000  t=2.5→-0.307 t=3.0→-0.368 t=3.5→-0.220
+%
+%  Δ=0.25:  t=0.00→0.000  t=0.25→0.352  t=0.50→0.599  t=0.75→0.720
+%           t=1.00→0.717  t=1.25→0.609  t=1.50→0.429  t=1.75→0.214
+%           t=2.00→0.000  t=2.25→-0.181 t=2.50→-0.307 t=2.75→-0.369
+%           t=3.00→-0.368 t=3.25→-0.313 t=3.50→-0.220 t=3.75→-0.110
+
+\pgfplotsset{
+  approx/.style={
+    width=5.5cm, height=4.5cm,
+    xmin=-0.2, xmax=4.5,
+    ymin=-0.65, ymax=1.35,
+    axis lines=center,
+    xlabel={$t$}, xlabel style={anchor=south west, inner sep=1pt},
+    xtick={0,1,2,3,4},
+    x tick label style={font=\scriptsize},
+    ytick={-1,0,1,2,3},
+    y tick label style={font=\scriptsize},
+    tick style={thin},
+    title style={font=\small, yshift=0ex},
+    clip=false,
+  },
+  pulso/.style={
+    utnblue, fill=utnblue!15, fill opacity=0.7,
+    ybar interval, line width=0.4pt,
+  },
+  destacado/.style={
+    utnblue, fill=utnblue!45, fill opacity=0.9,
+    ybar interval, line width=0.7pt,
+  },
+  curva/.style={
+    red, thick, densely dotted, domain=0:4, samples=200,
+  },
+}
+
+% ============================================================
+% Panel (a): Δ = 1   →   altura = x(k)
+% ============================================================
+\begin{axis}[approx, name=ax1,
+    title={(a) $\Delta = 1$},
+]
+
+\addplot[pulso] coordinates {
+    (0,0)(1,0.717)(2,0)(3,-0.368)(4,0)
+};
+% pulso destacado en t=[1,2]: área = x(1)*1 ≈ 0.717
+\addplot[destacado] coordinates {(1,0.717)(2,0)};
+% curva de referencia (punteada)
+\addplot[curva] {exp(-x/3)*sin(deg(pi*x/2))};
+% anotación ancho Δτ sobre el pulso destacado
+\draw[|-|, red, thin] (axis cs:1,-0.45) --
+    node[below, font=\scriptsize, inner sep=1pt]{$\Delta$} (axis cs:2,-0.45);
+% anotación área del pulso destacado ubicada arriba
+\node[font=\scriptsize, utnblue, anchor=south, inner sep=2pt] (area1) at (axis cs:1.5, 1.05)
+    {área $= x(1)\Delta$};
+\draw[->, utnblue, densely dashed, thin, shorten >=2pt, shorten <=1pt] 
+    (area1.south) -- (axis cs:1.5, 0.717);
+
+\end{axis}
+
+% ============================================================
+% Panel (b): Δ = 0.5   →   altura = x(kΔ)
+% ============================================================
+\begin{axis}[approx, name=ax2,
+    at={(ax1.outer east)}, anchor=outer west, xshift=2mm,
+    title={(b) $\Delta = 0{,}5$},
+]
+
+\addplot[pulso] coordinates {
+    (0.0, 0.000)(0.5, 0.599)(1.0, 0.717)(1.5, 0.429)
+    (2.0, 0.000)(2.5,-0.307)(3.0,-0.368)(3.5,-0.220)(4.0,0)
+};
+% pulso destacado en t=[1,1.5]: área x(1)*0.5 ≈ 0.358
+\addplot[destacado] coordinates {(1.0,0.717)(1.5,0)};
+\addplot[curva] {exp(-x/3)*sin(deg(pi*x/2))};
+\draw[|-|, red, thin] (axis cs:1,-0.45) --
+    node[below, font=\scriptsize, inner sep=1pt]{$\Delta$} (axis cs:1.5,-0.45);
+\node[font=\scriptsize, utnblue, anchor=south, inner sep=2pt] (area2) at (axis cs:1.25, 1.05)
+    {área $= x(1)\Delta$};
+\draw[->, utnblue, densely dashed, thin, shorten >=2pt, shorten <=1pt] 
+    (area2.south) -- (axis cs:1.25, 0.717);
+
+\end{axis}
+
+% ============================================================
+% Panel (c): Δ = 0.25   →   altura = x(kΔ)
+% ============================================================
+\begin{axis}[approx, name=ax3,
+    at={(ax2.outer east)}, anchor=outer west, xshift=2mm,
+    title={(c) $\Delta = 0{,}25$},
+]
+
+\addplot[pulso] coordinates {
+    (0.00, 0.000)(0.25, 0.352)(0.50, 0.599)(0.75, 0.720)
+    (1.00, 0.717)(1.25, 0.609)(1.50, 0.429)(1.75, 0.214)
+    (2.00, 0.000)(2.25,-0.181)(2.50,-0.307)(2.75,-0.369)
+    (3.00,-0.368)(3.25,-0.313)(3.50,-0.220)(3.75,-0.110)
+    (4.00,0)
+};
+% pulso destacado en t=[1,1.25]: área x(1)*0.25 ≈ 0.179
+\addplot[destacado] coordinates {(1.00,0.717)(1.25,0)};
+\addplot[curva] {exp(-x/3)*sin(deg(pi*x/2))};
+\draw[|-|, red, thin] (axis cs:1,-0.45) --
+    node[below, font=\scriptsize, inner sep=1pt]{$\Delta$} (axis cs:1.25,-0.45);
+\node[font=\scriptsize, utnblue, anchor=south, inner sep=2pt] (area3) at (axis cs:1.125, 1.05)
+    {área $= x(1)\Delta$};
+\draw[->, utnblue, densely dashed, thin, shorten >=2pt, shorten <=1pt] 
+    (area3.south) -- (axis cs:1.125, 0.717);
+
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

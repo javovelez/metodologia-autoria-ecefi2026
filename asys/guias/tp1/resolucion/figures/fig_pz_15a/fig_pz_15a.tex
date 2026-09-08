@@ -1,0 +1,24 @@
+\documentclass[border=4mm]{standalone}
+\input{../../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.0, font=\scriptsize]
+    \useasboundingbox (-1.5,-1.2) rectangle (2.0,1.2);
+
+    % Grid
+    \begin{scope}
+        \clip (-1.5,-1.2) rectangle (2.0,1.2);
+        \draw[help lines, gray!25, step=1] (-2,-2) grid (2,2);
+    \end{scope}
+
+    % Ejes
+    \draw[->, thick] (-1.5,0) -- (2.0,0) node[right] {$\operatorname{Re}$};
+    \draw[->, thick] (0,-1.2) -- (0,1.2) node[above] {$\operatorname{Im}$};
+    \draw (1,0.07)--(1,-0.07) node[below] {$1$};
+    \node[red!70!black, font=\normalsize] at (0,0) {$\times$};
+    \node[above right, red!70!black] at (0,0) {$0$};
+    \node[red!70!black, font=\normalsize] at (1,0) {$\times$};
+    \node[above right, red!70!black] at (1,0) {$1$};
+
+\end{tikzpicture}
+\end{document}

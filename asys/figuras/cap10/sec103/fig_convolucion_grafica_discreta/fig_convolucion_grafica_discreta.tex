@@ -1,0 +1,125 @@
+\documentclass[border=8mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% Franja gris sobre los k que la ventana cubre en el instante #1:
+% h[n-k] es no nula en k=n-1 y k=n.
+\newcommand{\ventana}[3]{%
+    \fill[black!8] (axis cs:{#1-1.45},#2) rectangle (axis cs:{#1+0.45},#3);}
+
+% Rotulo de fila, al margen izquierdo del primer panel de cada fila.
+\newcommand{\filalabel}[1]{%
+    \node[anchor=east, font=\scriptsize, inner sep=0pt]
+        at (axis description cs:-0.06,0.5) {#1};}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, font=\scriptsize]
+        \begin{groupplot}[
+            group style={group size=5 by 3,
+                         horizontal sep=0.28cm, vertical sep=0.85cm},
+            width=4.00cm, height=2.15cm,
+            axis x line=middle, axis y line=none,
+            axis line style={->, thin, black},
+            xmin=-1.8, xmax=4.8,
+            xtick={-1,0,1,2,3,4},
+            every tick label/.style={font=\tiny, fill=white, inner sep=0.6pt},
+            title style={font=\scriptsize, yshift=-1pt},
+            nodes near coords, point meta=explicit symbolic,
+            every node near coord/.style={font=\tiny, text=black, anchor=south,
+                                          inner sep=1.2pt, yshift=1pt},
+            entrada/.style={ycomb, mark=*, mark size=0.9pt, thick, utnblue},
+            resimp/.style={ycomb, mark=*, mark size=0.9pt, thick, red!80!black},
+            salida/.style={ycomb, mark=*, mark size=0.9pt, thick, red!80!black},
+            ceroent/.style={only marks, mark=*, mark size=0.9pt, utnblue,
+                            point meta=none, nodes near coords={}},
+            cerores/.style={only marks, mark=*, mark size=0.9pt, red!80!black,
+                            point meta=none, nodes near coords={}},
+            previa/.style={ycomb, mark=*, mark size=0.9pt, thick, red!35!white,
+                           point meta=none, nodes near coords={}},
+            escent/.style={ymin=-0.55, ymax=6.4},
+            escres/.style={ymin=-0.10, ymax=1.00},
+            escsal/.style={ymin=-0.45, ymax=5.2},
+            axis on top,
+            clip=false,
+        ]
+        % =====================================================================
+        % FILA 1 --- la entrada x[k], la misma en las cinco columnas
+        % =====================================================================
+        \nextgroupplot[escent, title={$n=0$}]
+            \filalabel{$x[k]$}
+            \ventana{0}{-0.55}{6.4}
+            \addplot[entrada] coordinates {(0,2) [$2$] (1,4) [$4$] (2,3) [$3$] (3,5) [$5$]};
+            \addplot[ceroent] coordinates {(-1,0) (4,0)};
+        \nextgroupplot[escent, title={$n=1$}]
+            \ventana{1}{-0.55}{6.4}
+            \addplot[entrada] coordinates {(0,2) [$2$] (1,4) [$4$] (2,3) [$3$] (3,5) [$5$]};
+            \addplot[ceroent] coordinates {(-1,0) (4,0)};
+        \nextgroupplot[escent, title={$n=2$}]
+            \ventana{2}{-0.55}{6.4}
+            \addplot[entrada] coordinates {(0,2) [$2$] (1,4) [$4$] (2,3) [$3$] (3,5) [$5$]};
+            \addplot[ceroent] coordinates {(-1,0) (4,0)};
+        \nextgroupplot[escent, title={$n=3$}]
+            \ventana{3}{-0.55}{6.4}
+            \addplot[entrada] coordinates {(0,2) [$2$] (1,4) [$4$] (2,3) [$3$] (3,5) [$5$]};
+            \addplot[ceroent] coordinates {(-1,0) (4,0)};
+        \nextgroupplot[escent, title={$n=4$}, xlabel={$k$},
+                       xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\tiny}]
+            \ventana{4}{-0.55}{6.4}
+            \addplot[entrada] coordinates {(0,2) [$2$] (1,4) [$4$] (2,3) [$3$] (3,5) [$5$]};
+            \addplot[ceroent] coordinates {(-1,0) (4,0)};
+
+        % =====================================================================
+        % FILA 2 --- los pesos h[n-k], desplazandose una muestra por columna
+        % =====================================================================
+        \nextgroupplot[escres]
+            \filalabel{$h[n-k]$}
+            \ventana{0}{-0.10}{1.00}
+            \addplot[resimp] coordinates {(-1,0.5) [$0{,}5$] (0,0.5) [$0{,}5$]};
+            \addplot[cerores] coordinates {(1,0) (2,0) (3,0) (4,0)};
+        \nextgroupplot[escres]
+            \ventana{1}{-0.10}{1.00}
+            \addplot[resimp] coordinates {(0,0.5) [$0{,}5$] (1,0.5) [$0{,}5$]};
+            \addplot[cerores] coordinates {(-1,0) (2,0) (3,0) (4,0)};
+        \nextgroupplot[escres]
+            \ventana{2}{-0.10}{1.00}
+            \addplot[resimp] coordinates {(1,0.5) [$0{,}5$] (2,0.5) [$0{,}5$]};
+            \addplot[cerores] coordinates {(-1,0) (0,0) (3,0) (4,0)};
+        \nextgroupplot[escres]
+            \ventana{3}{-0.10}{1.00}
+            \addplot[resimp] coordinates {(2,0.5) [$0{,}5$] (3,0.5) [$0{,}5$]};
+            \addplot[cerores] coordinates {(-1,0) (0,0) (1,0) (4,0)};
+        \nextgroupplot[escres, xlabel={$k$},
+                       xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\tiny}]
+            \ventana{4}{-0.10}{1.00}
+            \addplot[resimp] coordinates {(3,0.5) [$0{,}5$] (4,0.5) [$0{,}5$]};
+            \addplot[cerores] coordinates {(-1,0) (0,0) (1,0) (2,0)};
+
+        % =====================================================================
+        % FILA 3 --- la salida y[n], una muestra nueva por columna
+        % El rotulo de valor va solo sobre la muestra que nace en esa columna.
+        % Eje n, no k.
+        % =====================================================================
+        \nextgroupplot[escsal]
+            \filalabel{$y[n]$}
+            \addplot[salida] coordinates {(0,1) [$1$]};
+            \addplot[cerores] coordinates {(-1,0)};
+        \nextgroupplot[escsal]
+            \addplot[previa] coordinates {(0,1)};
+            \addplot[salida] coordinates {(1,3) [$3$]};
+            \addplot[cerores] coordinates {(-1,0)};
+        \nextgroupplot[escsal]
+            \addplot[previa] coordinates {(0,1) (1,3)};
+            \addplot[salida] coordinates {(2,3.5) [$3{,}5$]};
+            \addplot[cerores] coordinates {(-1,0)};
+        \nextgroupplot[escsal]
+            \addplot[previa] coordinates {(0,1) (1,3) (2,3.5)};
+            \addplot[salida] coordinates {(3,4) [$4$]};
+            \addplot[cerores] coordinates {(-1,0)};
+        \nextgroupplot[escsal, xlabel={$n$},
+                       xlabel style={anchor=north west, at={(axis description cs:1,0)}, font=\tiny}]
+            \addplot[previa] coordinates {(0,1) (1,3) (2,3.5) (3,4)};
+            \addplot[salida] coordinates {(4,2.5) [$2{,}5$]};
+            \addplot[cerores] coordinates {(-1,0)};
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}

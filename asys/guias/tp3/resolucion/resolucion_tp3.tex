@@ -1,0 +1,748 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titling} 
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage[mode=image]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, babel}
+
+\definecolor{utnblue}{RGB}{0, 51, 102}
+\definecolor{utnred}{RGB}{204, 0, 0}
+\definecolor{utngreen}{RGB}{0, 153, 76}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+\setlength{\headsep}{10pt}
+\setlength{\droptitle}{-0.5in} 
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large\bfseries}
+\posttitle{\par\end{center}\vspace{-1.5em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Resolución del Trabajo Práctico N$^\text{o}$3}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title{% 
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Resolución del Trabajo Práctico N$^{\text o}$3: Sistemas de tiempo continuo}%
+}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+	
+	\label{sec:resolucion}
+
+	% ***********************************************
+	% 				Ejercicio 1
+	% ***********************************************
+	\section*{Ejercicio 1: Linealidad de sistemas}
+	
+	Un sistema es \textbf{lineal} si cumple el principio de superposición (Sección~4.1.5 del libro): para cualesquiera entradas $x_1(t)$, $x_2(t)$ y constantes $\alpha$, $\beta$,
+	\[
+	\mathcal{T}\{\alpha\,x_1(t) + \beta\,x_2(t)\} = \alpha\,\mathcal{T}\{x_1(t)\} + \beta\,\mathcal{T}\{x_2(t)\}.
+	\]
+	Esto encierra dos sub-propiedades que deben cumplirse \textit{simultáneamente}: \textbf{aditividad} (la respuesta a la suma es la suma de las respuestas) y \textbf{homogeneidad} (escalar la entrada escala la salida en el mismo factor). Si alguna falla, el sistema \textbf{no es lineal}.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $y(t) = \cos[x(t)]$
+		
+		Verificamos la homogeneidad. Sea $x_1(t)$ una entrada con salida $y_1(t) = \cos[x_1(t)]$. Si escalamos la entrada por $\alpha$:
+		\[
+		\mathcal{T}\{\alpha\,x_1(t)\} = \cos[\alpha\,x_1(t)]
+		\]
+		Para que haya homogeneidad, esto debería ser igual a $\alpha\,y_1(t) = \alpha\cos[x_1(t)]$. Pero en general:
+		\[
+		\cos[\alpha\,x_1(t)] \neq \alpha\cos[x_1(t)]
+		\]
+		ya que el coseno no es una función lineal de su argumento. Por ejemplo, con $\alpha = 2$ y $x_1(t) = \pi/4$: $\cos(2\cdot\pi/4) = \cos(\pi/2) = 0$, pero $2\cos(\pi/4) = 2\cdot\frac{\sqrt{2}}{2} = \sqrt{2} \neq 0$.
+		
+		$\Rightarrow$ El sistema \textbf{no es lineal}.
+		
+		\item $y(t) = t^2 x(t-1)$
+		
+		Verificamos la superposición completa. Sean $x_1(t) \to y_1(t) = t^2 x_1(t-1)$ y $x_2(t) \to y_2(t) = t^2 x_2(t-1)$. Para la entrada combinada $\alpha\,x_1(t) + \beta\,x_2(t)$:
+		\begin{align*}
+		\mathcal{T}\{\alpha\,x_1(t) + \beta\,x_2(t)\} &= t^2 [\alpha\,x_1(t-1) + \beta\,x_2(t-1)] \\
+		&= \alpha\,t^2 x_1(t-1) + \beta\,t^2 x_2(t-1) \\
+		&= \alpha\,y_1(t) + \beta\,y_2(t) \quad \checkmark
+		\end{align*}
+		El factor $t^2$ es una función del tiempo (no de la entrada), por lo que actúa como un escalado que se distribuye linealmente. El retardo $x(t-1)$ también es una operación lineal. Ambas propiedades se cumplen.
+		
+		$\Rightarrow$ El sistema \textbf{es lineal}.
+		
+		\textit{Nota:} El factor $t^2$ hace que el sistema sea variante en el tiempo (la misma entrada aplicada en distintos instantes produce salidas de distinta amplitud), pero eso no afecta su linealidad. Linealidad e invarianza temporal son propiedades independientes.
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 2
+	% ***********************************************
+	\section*{Ejercicio 2: Invarianza temporal}
+	
+	Un sistema es \textbf{invariante en el tiempo} (IT) si un retardo en la entrada produce exactamente el mismo retardo en la salida, sin alterar su forma (Sección~4.1.6 del libro). La verificación se hace en dos rutas:
+	\begin{itemize}
+		\item \textbf{Ruta 1:} Retardar la entrada y luego aplicar el sistema: $y_1(t) = \mathcal{T}\{x(t-t_0)\}$.
+		\item \textbf{Ruta 2:} Aplicar el sistema y luego retardar la salida: $y_2(t) = y(t-t_0)$.
+	\end{itemize}
+	Si $y_1(t) = y_2(t)$ para todo $t$ y todo $t_0$, el sistema es IT.
+	
+	\textbf{Sistema:} $y(t) = tu(t)x(t)$
+	
+	\textbf{Ruta 1:} Sustituimos $x(t) \to x(t-t_0)$ en la regla del sistema:
+	\[
+	y_1(t) = t\,u(t)\,x(t-t_0)
+	\]
+	
+	\textbf{Ruta 2:} Primero calculamos la salida $y(t) = tu(t)x(t)$, y luego sustituimos $t \to t-t_0$:
+	\[
+	y_2(t) = (t-t_0)\,u(t-t_0)\,x(t-t_0)
+	\]
+	
+	Comparando ambas expresiones: en la Ruta~1 aparece $t\,u(t)$ multiplicando a $x(t-t_0)$, mientras que en la Ruta~2 aparece $(t-t_0)\,u(t-t_0)$. Claramente $t\,u(t) \neq (t-t_0)\,u(t-t_0)$ para $t_0 \neq 0$.
+	
+	$\Rightarrow$ El sistema \textbf{no es invariante en el tiempo}.
+	
+	La razón es que el factor $t\,u(t)$ depende explícitamente del tiempo absoluto: la misma entrada aplicada en distintos instantes será multiplicada por valores distintos de $t\,u(t)$, lo que altera la forma de la salida.
+
+	% ***********************************************
+	% 				Ejercicio 3
+	% ***********************************************
+	\section*{Ejercicio 3: Linealidad e invarianza temporal}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $y(t) = \sin[x(t)]$
+		
+		\textbf{Linealidad:} El razonamiento es análogo al Ejercicio~1a. Verificamos homogeneidad:
+		\[
+		\mathcal{T}\{\alpha\,x_1(t)\} = \sin[\alpha\,x_1(t)] \neq \alpha\sin[x_1(t)] = \alpha\,y_1(t)
+		\]
+		ya que $\sin(\alpha\,\theta) \neq \alpha\sin(\theta)$ en general. Por ejemplo, con $\alpha = 2$ y $x_1 = \pi/6$: $\sin(\pi/3) = \sqrt{3}/2$, pero $2\sin(\pi/6) = 1$.
+		
+		$\Rightarrow$ \textbf{No es lineal.}
+		
+		\textbf{Invarianza temporal:} La regla del sistema $\sin[\cdot]$ no involucra al tiempo $t$ explícitamente; opera punto a punto sobre el valor de la entrada.
+		\begin{itemize}
+			\item Ruta~1: $y_1(t) = \sin[x(t-t_0)]$
+			\item Ruta~2: $y_2(t) = y(t-t_0) = \sin[x(t-t_0)]$
+		\end{itemize}
+		$y_1(t) = y_2(t)$ para todo $t$ y $t_0$.
+		
+		$\Rightarrow$ \textbf{Es invariante en el tiempo.}
+		
+		\item $y(t) = [x(t)]^2$
+		
+		\textbf{Linealidad:} Verificamos homogeneidad:
+		\[
+		\mathcal{T}\{\alpha\,x_1(t)\} = [\alpha\,x_1(t)]^2 = \alpha^2[x_1(t)]^2 = \alpha^2 y_1(t) \neq \alpha\,y_1(t)
+		\]
+		La salida escala como $\alpha^2$ en lugar de $\alpha$. El cuadrador es el ejemplo clásico de sistema no lineal (Sección~4.1.5 del libro, Ejemplo~2).
+		
+		$\Rightarrow$ \textbf{No es lineal.}
+		
+		\textbf{Invarianza temporal:} La operación $[\cdot]^2$ no involucra a $t$ de forma explícita:
+		\begin{itemize}
+			\item Ruta~1: $y_1(t) = [x(t-t_0)]^2$
+			\item Ruta~2: $y_2(t) = [x(t-t_0)]^2$
+		\end{itemize}
+		$y_1 = y_2$ $\checkmark$
+		
+		$\Rightarrow$ \textbf{Es invariante en el tiempo.}
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 4
+	% ***********************************************
+	\section*{Ejercicio 4: Linealidad, invarianza temporal y causalidad}
+	
+	Un sistema es \textbf{causal} si la salida en cualquier instante $t_0$ depende únicamente de valores de la entrada en instantes $t \leq t_0$ (Sección~4.1.2 del libro).
+	
+	\textbf{Sistema:} $y(t) = x\!\left(\tfrac{1}{2}t\right)$
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Linealidad:}
+		\begin{align*}
+		\mathcal{T}\{\alpha\,x_1(t) + \beta\,x_2(t)\} &= \alpha\,x_1\!\left(\tfrac{t}{2}\right) + \beta\,x_2\!\left(\tfrac{t}{2}\right) \\
+		&= \alpha\,y_1(t) + \beta\,y_2(t) \quad \checkmark
+		\end{align*}
+		$\Rightarrow$ \textbf{Es lineal.}
+		
+		\item \textbf{Invarianza temporal:}
+		\begin{itemize}
+			\item Ruta~1: $y_1(t) = x\!\left(\tfrac{t}{2} - t_0\right)$
+			\item Ruta~2: $y_2(t) = y(t-t_0) = x\!\left(\tfrac{t-t_0}{2}\right) = x\!\left(\tfrac{t}{2} - \tfrac{t_0}{2}\right)$
+		\end{itemize}
+		Los argumentos son $\tfrac{t}{2} - t_0$ vs. $\tfrac{t}{2} - \tfrac{t_0}{2}$. Como $t_0 \neq t_0/2$ en general, $y_1 \neq y_2$.
+		
+		$\Rightarrow$ \textbf{No es invariante en el tiempo.}
+		
+		El sistema comprime el eje temporal: un retardo de $t_0$ en la entrada produce un retardo de sólo $t_0/2$ en la salida, distorsionando la escala temporal (análogo al Ejemplo~3 de la Sección~4.1.6 del libro).
+		
+		\item \textbf{Causalidad:} La condición de causalidad exige que, para todo $t_0$, la salida $y(t_0) = x(t_0/2)$ dependa de la entrada en un instante $t_0/2 \leq t_0$. Comparemos $t_0/2$ con $t_0$ según el signo de $t_0$:
+		\begin{itemize}
+			\item Si $t_0 > 0$: $t_0/2 < t_0$, la entrada se evalúa en un instante \textit{pasado} (cumple causalidad).
+			\item Si $t_0 = 0$: $t_0/2 = 0$, la entrada se evalúa en el mismo instante (cumple).
+			\item Si $t_0 < 0$: $t_0/2 > t_0$, la entrada se evalúa en un instante \textit{futuro} (\textbf{viola} causalidad).
+		\end{itemize}
+
+		Ejemplo concreto en $t_0 = -2$:
+		\[
+		y(-2) = x\!\left(\tfrac{-2}{2}\right) = x(-1)
+		\]
+		Para producir la salida en el instante $t_0 = -2$, el sistema necesita el valor de la entrada en $t = -1$. Pero $-1 > -2$: el instante $-1$ ocurre \textit{después} que el instante $-2$. Es decir, en el momento en que debemos entregar $y(-2)$, la entrada $x(-1)$ todavía no ha sucedido.
+
+		$\Rightarrow$ \textbf{No es causal.}
+
+		\textit{Interpretación didáctica:} el sistema $y(t) = x(t/2)$ \textbf{expande} el eje temporal de la entrada por un factor $2$. Visualmente, si grabamos $x(t)$ en una cinta y la reproducimos a la mitad de velocidad, obtenemos $y(t)$. Esa cinta ralentizada arrastra hacia adelante en el tiempo (hacia $+\infty$) los eventos del semieje positivo de $x$, pero arrastra hacia atrás en el tiempo (hacia $-\infty$) los eventos del semieje negativo de $x$. En consecuencia, en cualquier instante $t_0 < 0$ la salida está utilizando trozos de la entrada que, físicamente, aún no han llegado.
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 5
+	% ***********************************************
+	\section*{Ejercicio 5: Demostración de linealidad y no causalidad}
+	
+	\textbf{Sistema:} $y(t) = x(t-6) - x(1-t)$
+	
+	\textbf{Linealidad:} Sean $x_1(t) \to y_1(t) = x_1(t-6) - x_1(1-t)$ y $x_2(t) \to y_2(t) = x_2(t-6) - x_2(1-t)$. Para la entrada combinada:
+	\begin{align*}
+	\mathcal{T}\{\alpha\,x_1 + \beta\,x_2\} &= [\alpha\,x_1(t-6) + \beta\,x_2(t-6)] - [\alpha\,x_1(1-t) + \beta\,x_2(1-t)] \\
+	&= \alpha\,[x_1(t-6) - x_1(1-t)] + \beta\,[x_2(t-6) - x_2(1-t)] \\
+	&= \alpha\,y_1(t) + \beta\,y_2(t) \quad \checkmark
+	\end{align*}
+	El sistema es una combinación lineal de operaciones lineales (retardo y reflexión temporal), por lo que se cumple la superposición.
+	
+	$\Rightarrow$ \textbf{Es lineal.} $\blacksquare$
+	
+	\textbf{No causalidad:} Examinemos el término $x(1-t)$. Evaluemos la salida en $t = 0$:
+	\[
+	y(0) = x(0-6) - x(1-0) = x(-6) - x(1)
+	\]
+	La salida en $t = 0$ depende de $x(1)$, es decir, del valor de la entrada en el instante $t = 1$, que es un instante \textbf{futuro}. Esto viola la definición de causalidad.
+	
+	Más en general, el argumento $1-t$ evaluado para $t < 1$ da valores positivos mayores que cero: la reflexión temporal $x(1-t)$ accede a valores futuros de la entrada para instantes $t$ suficientemente pequeños.
+	
+	$\Rightarrow$ \textbf{No es causal.} $\blacksquare$
+
+	% ***********************************************
+	% 				Ejercicio 6
+	% ***********************************************
+	\section*{Ejercicio 6: Convolución de señales}
+	
+	La integral de convolución (Sección~4.2.3 del libro) permite calcular la salida de un sistema LIT conociendo su respuesta al impulso $h(t)$:
+	\[
+	y(t) = x(t) * h(t) = \int_{-\infty}^{\infty} x(\tau)\,h(t-\tau)\,d\tau
+	\]
+	Para señales causales ($x(t) = 0$ para $t<0$ y $h(t) = 0$ para $t<0$), los límites se reducen a:
+	\[
+	y(t) = \int_{0}^{t} x(\tau)\,h(t-\tau)\,d\tau, \qquad t \geq 0
+	\]
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $x(t)=e^{-3t}u(t)$, $h(t)=e^{-\frac{1}{2}t}u(t)$
+		
+		Ambas señales son causales. Para $t \geq 0$:
+		\begin{align*}
+		y(t) &= \int_0^t e^{-3\tau}\,e^{-\frac{1}{2}(t-\tau)}\,d\tau = e^{-\frac{t}{2}}\int_0^t e^{-3\tau}\,e^{\frac{\tau}{2}}\,d\tau \\
+		&= e^{-\frac{t}{2}}\int_0^t e^{-\frac{5}{2}\tau}\,d\tau = e^{-\frac{t}{2}}\left[\frac{e^{-\frac{5}{2}\tau}}{-\frac{5}{2}}\right]_0^t \\
+		&= e^{-\frac{t}{2}}\cdot\frac{-2}{5}\left(e^{-\frac{5}{2}t} - 1\right) = \frac{2}{5}\,e^{-\frac{t}{2}}\left(1 - e^{-\frac{5}{2}t}\right) \\
+		&= \frac{2}{5}\left(e^{-\frac{t}{2}} - e^{-3t}\right)
+		\end{align*}
+		
+		Resultado:
+		\[
+		\boxed{y(t) = \frac{2}{5}\left(e^{-t/2} - e^{-3t}\right)u(t)}
+		\]
+		
+		Este es un caso directo de la convolución de dos exponenciales causales (Sección~4.3.3 del libro) con $a=3$ y $b=1/2$:
+		$y(t) = \frac{e^{-at} - e^{-bt}}{b-a}\,u(t) = \frac{e^{-3t} - e^{-t/2}}{1/2 - 3}\,u(t) = \frac{2}{5}(e^{-t/2} - e^{-3t})\,u(t)$.
+		
+		\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.7\linewidth]{figures/fig_ej6a/fig_ej6a}
+		\caption{Inciso~a). Arriba:  $x(t) = e^{-3t}u(t)$ (azul) y $h(t) = e^{-t/2}u(t)$ (rojo), ambas decaen desde $1$ pero con constantes de tiempo muy distintas. Abajo: salida $y(t) = \tfrac{2}{5}(e^{-t/2}-e^{-3t})u(t)$, en su escala natural; alcanza un máximo $y_{\max}$ en $t^{*} = \ln(6)/(5/2)$.}
+		\end{figure}
+		
+		\item $x(t)=(t+1)u(t)$, $h(t)=e^{-2t}u(t)$
+		
+		Para $t \geq 0$:
+		\begin{align*}
+		y(t) &= \int_0^t (\tau+1)\,e^{-2(t-\tau)}\,d\tau = e^{-2t}\int_0^t (\tau+1)\,e^{2\tau}\,d\tau
+		\end{align*}
+		Resolvemos la integral por partes. Sea $I = \int_0^t (\tau+1)e^{2\tau}\,d\tau$. Con $u = \tau+1$, $dv = e^{2\tau}d\tau$:
+		\begin{align*}
+		I &= \left[(\tau+1)\frac{e^{2\tau}}{2}\right]_0^t - \int_0^t \frac{e^{2\tau}}{2}\,d\tau \\
+		&= \frac{(t+1)e^{2t}}{2} - \frac{1}{2} - \left[\frac{e^{2\tau}}{4}\right]_0^t \\
+		&= \frac{(t+1)e^{2t}}{2} - \frac{1}{2} - \frac{e^{2t}}{4} + \frac{1}{4} \\
+		&= \frac{(2t+2-1)e^{2t}}{4} - \frac{1}{4} = \frac{(2t+1)e^{2t} - 1}{4}
+		\end{align*}
+		
+		Multiplicando por $e^{-2t}$:
+		\[
+		\boxed{y(t) = \frac{1}{4}\left(2t + 1 - e^{-2t}\right)u(t)}
+		\]
+		
+		\begin{figure}[H]
+		\centering
+		\includestandalone[width=\linewidth]{figures/fig_ej6b/fig_ej6b}
+		\caption{Inciso~b). Arriba: entrada $x(t) = (t+1)\,u(t)$ (azul) y respuesta al impulso $h(t) = e^{-2t}\,u(t)$ (rojo); cada panel con su escala propia. Abajo: salida $y(t) = \tfrac{1}{4}(2t+1-e^{-2t})\,u(t)$, que crece asintóticamente con pendiente $1/2$ siguiendo la recta $(2t+1)/4$ (gris).}
+		\end{figure}
+		
+		\item $x(t) = tu(t)$, $h(t) = \cos(3t)\,u(t)$
+		
+		Para $t \geq 0$:
+		\[
+		y(t) = \int_0^t \tau\,\cos[3(t-\tau)]\,d\tau
+		\]
+		Expandimos $\cos[3(t-\tau)] = \cos(3t)\cos(3\tau) + \sin(3t)\sin(3\tau)$:
+		\begin{align*}
+		y(t) &= \cos(3t)\int_0^t \tau\cos(3\tau)\,d\tau + \sin(3t)\int_0^t \tau\sin(3\tau)\,d\tau
+		\end{align*}
+		
+		Calculamos cada integral por partes:
+		\begin{align*}
+		\int_0^t \tau\cos(3\tau)\,d\tau &= \left[\frac{\tau\sin(3\tau)}{3}\right]_0^t - \int_0^t \frac{\sin(3\tau)}{3}\,d\tau = \frac{t\sin(3t)}{3} + \frac{\cos(3t) - 1}{9}
+		\end{align*}
+		\begin{align*}
+		\int_0^t \tau\sin(3\tau)\,d\tau &= \left[-\frac{\tau\cos(3\tau)}{3}\right]_0^t + \int_0^t \frac{\cos(3\tau)}{3}\,d\tau = -\frac{t\cos(3t)}{3} + \frac{\sin(3t)}{9}
+		\end{align*}
+		
+		Sustituyendo y simplificando:
+		\begin{align*}
+		y(t) &= \cos(3t)\left[\frac{t\sin(3t)}{3} + \frac{\cos(3t)-1}{9}\right] + \sin(3t)\left[-\frac{t\cos(3t)}{3} + \frac{\sin(3t)}{9}\right] \\
+		&= \frac{t\sin(3t)\cos(3t)}{3} + \frac{\cos^2(3t)-\cos(3t)}{9} - \frac{t\sin(3t)\cos(3t)}{3} + \frac{\sin^2(3t)}{9} \\
+		&= \frac{\cos^2(3t) + \sin^2(3t) - \cos(3t)}{9}
+		\end{align*}
+		Usando $\cos^2 + \sin^2 = 1$:
+		\[
+		\boxed{y(t) = \frac{1 - \cos(3t)}{9}\,u(t)}
+		\]
+
+		\textit{¿Por qué la salida no contiene una rampa?} La intuición ``entra una rampa, sale una rampa'' supondría que el sistema acumula sin restar. Pero $h(t) = \cos(3t)$ tiene promedio nulo sobre cada período $2\pi/3$, así que la integral de un coseno no crece: oscila acotada. Concretamente, la respuesta al escalón es
+		\[
+		g_h(t) = \int_0^t \cos(3\tau)\,d\tau = \frac{\sin(3t)}{3},
+\]
+		que ya oscila entre $-1/3$ y $1/3$ sin tendencia. Como la rampa $tu(t)$ es la integral del escalón $u(t)$, la salida es la integral de $g_h$:
+		\[
+		y(t) = \int_0^t \frac{\sin(3\tau)}{3}\,d\tau = \frac{1-\cos(3t)}{9},
+\]
+		otra oscilación acotada, ahora desplazada al rango $[0,\, 2/9]$. La pendiente lineal del input nunca aparece en la salida porque cada ciclo del coseno aporta área neta cero al integrar: el sistema rechaza la componente DC y solo deja pasar el contenido cercano a su frecuencia de oscilación $\omega = 3$ rad/s.
+
+		\begin{figure}[H]
+		\centering
+		\includestandalone[width=\linewidth]{figures/fig_ej6c/fig_ej6c}
+		\caption{Inciso~c). Arriba: entrada $x(t) = t\,u(t)$ (azul, rampa lineal) y respuesta al impulso $h(t) = \cos(3t)\,u(t)$ (rojo, oscilación sostenida); cada panel con su escala propia. Abajo: salida $y(t) = (1-\cos 3t)/9\,u(t)$, oscilación sinusoidal de período $2\pi/3$ centrada en $1/9$ con amplitud $1/9$ (entre $0$ y $2/9$).}
+		\end{figure}
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 7
+	% ***********************************************
+	\section*{Ejercicio 7: Convolución con soporte acotado}
+	
+	\textbf{Señales:} $h(t) = e^{-t}u(t)u(5-t)$ y $x(t) = tu(t)u(3-t)$
+	
+	El factor $u(t)u(5-t)$ recorta a $h$ al intervalo $[0,5]$: $h(t) = e^{-t}$ para $0 \leq t \leq 5$ y cero fuera. Análogamente, $x(t) = t$ para $0 \leq t \leq 3$ y cero fuera. Por la propiedad de duración del soporte (Sección~4.3.5 del libro), la salida tendrá soporte $[0+0,\, 3+5] = [0,\, 8]$.
+
+	\begin{figure}[H]
+	\centering
+	\includestandalone[width=\linewidth]{figures/fig_ej7_signals/fig_ej7_signals}
+	\caption{Entrada $x(t)$ (azul, rampa truncada en $[0,3]$) y respuesta al impulso $h(t)$ (rojo, exponencial truncada en $[0,5]$). Ambas son señales causales con soporte acotado; sus saltos en los extremos derechos siguen la convención $u(0)=1$ (disco lleno arriba, círculo abierto abajo).}
+	\end{figure}
+
+	Aplicando la integral de convolución $y(t) = \int_{-\infty}^{\infty} x(\tau)\,h(t-\tau)\,d\tau$, el integrando es no nulo cuando $0 \leq \tau \leq 3$ (soporte de $x$) \textbf{y} $0 \leq t-\tau \leq 5$ (soporte de $h$), es decir, $t-5 \leq \tau \leq t$. La intersección de $[0,3]$ con $[t-5,\, t]$ produce las siguientes zonas:
+	
+	\begin{figure}[H]
+	\centering
+	\includestandalone[width=0.65\linewidth]{figures/fig_ej7_zonas/fig_ej7_zonas}
+	\caption{Procedimiento de invertir y desplazar para el Ejercicio~7.
+	         En azul, $x(\tau) = \tau$ sobre $[0,3]$; en rojo,
+	         $h(t-\tau) = e^{-(t-\tau)}$ sobre $[t-5,\, t]$.
+	         La región sombreada (gris) marca el intervalo de solapamiento sobre el que se integra el producto $x(\tau)\,h(t-\tau)$.}
+	\end{figure}
+	
+	\textbf{Zona I: $t < 0$.} No hay solapamiento. $y(t) = 0$.
+	
+	\textbf{Zona II: $0 \leq t \leq 3$.} Los límites son $0 \leq \tau \leq t$:
+	\begin{align*}
+	y(t) &= \int_0^t \tau\,e^{-(t-\tau)}\,d\tau = e^{-t}\int_0^t \tau\,e^{\tau}\,d\tau
+	\end{align*}
+	Integrando por partes ($\int \tau\,e^\tau\,d\tau = (\tau-1)e^\tau$):
+	\[
+	y(t) = e^{-t}\left[(t-1)e^t - (0-1)e^0\right] = e^{-t}\left[(t-1)e^t + 1\right] = t - 1 + e^{-t}
+	\]
+	
+	\textbf{Zona III: $3 < t \leq 5$.} Los límites son $0 \leq \tau \leq 3$:
+	\begin{align*}
+	y(t) &= e^{-t}\int_0^3 \tau\,e^{\tau}\,d\tau = e^{-t}\bigl[(\tau-1)e^{\tau}\bigr]_{0}^{3} \\
+	&= e^{-t}\left[(3-1)e^{3} - (0-1)e^{0}\right] = e^{-t}(2e^{3} + 1)
+	\end{align*}
+	
+	\textbf{Zona IV: $5 < t \leq 8$.} Los límites son $t-5 \leq \tau \leq 3$:
+	\begin{align*}
+	y(t) &= e^{-t}\int_{t-5}^{3} \tau\,e^{\tau}\,d\tau = e^{-t}\bigl[(\tau-1)e^{\tau}\bigr]_{t-5}^{3} \\
+	&= e^{-t}\left[(3-1)e^{3} - (t-5-1)e^{t-5}\right] = e^{-t}\left[2e^{3} - (t-6)e^{t-5}\right] \\
+	&= 2e^{3-t} - (t-6)e^{-5}
+	\end{align*}
+	
+	\textbf{Zona V: $t > 8$.} No hay solapamiento. $y(t) = 0$.
+	
+	Resultado completo:
+	\[
+	\boxed{y(t) = \begin{cases}
+	0, & t < 0, \\
+	t - 1 + e^{-t}, & 0 \leq t \leq 3, \\
+	(2e^3+1)\,e^{-t}, & 3 < t \leq 5, \\
+	2e^{3-t} - (t-6)e^{-5}, & 5 < t \leq 8, \\
+	0, & t > 8.
+	\end{cases}}
+	\]
+
+	\begin{figure}[H]
+	\centering
+	\includestandalone[width=0.95\linewidth]{figures/fig_ej7_resultado/fig_ej7_resultado}
+	\caption{Salida $y(t)$ del Ejercicio~7, con sus cinco zonas separadas por las transiciones $t=0,\,3,\,5,\,8$. Crece monótonamente en la Zona~II, alcanza el máximo $y(3) = 2 + e^{-3} \approx 2{,}05$ y decae en las Zonas~III y IV hasta anularse en $t = 8$.}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 8
+	% ***********************************************
+	\section*{Ejercicio 8: Convolución de pulso rectangular con rampa}
+	
+	\textbf{Señales:} $x(t) = 1$ para $0 \leq t \leq 1$ (pulso rectangular), $h(t) = t$ para $0 \leq t \leq 2$ (rampa).
+	
+	Ambas señales tienen soporte acotado. La salida tendrá soporte $[0+0,\, 1+2] = [0,\, 3]$. El soporte de $x$ es $[0,1]$ y el de $h$ es $[0,2]$; la versión invertida y desplazada $h(t-\tau) = (t-\tau)$ existe para $t-2 \leq \tau \leq t$.
+
+	\begin{figure}[H]
+	\centering
+	\includestandalone[width=0.8\linewidth]{figures/fig_ej8_signals/fig_ej8_signals}
+	\caption{Entrada $x(t)$ (azul, pulso rectangular en $[0,1]$) y respuesta al impulso $h(t)$ (rojo, rampa lineal en $[0,2]$). Ambas tienen soporte acotado; los saltos en los extremos siguen la convención $u(0)=1$.}
+	\end{figure}
+
+	\begin{figure}[H]
+	\centering
+	\includestandalone[width=0.7
+	\linewidth]{figures/fig_ej8_zonas/fig_ej8_zonas}
+	\caption{Procedimiento de invertir y desplazar para el Ejercicio~8. Zonas de solapamiento.}
+	\end{figure}
+	
+	\textbf{Zona I: $t < 0$.} Sin solapamiento. $y(t) = 0$.
+	
+	\textbf{Zona II: $0 \leq t \leq 1$.} Los límites son $0 \leq \tau \leq t$:
+	\[
+	y(t) = \int_0^t 1\cdot(t-\tau)\,d\tau = \left[t\tau - \frac{\tau^2}{2}\right]_0^t = t^2 - \frac{t^2}{2} = \frac{t^2}{2}
+	\]
+	
+	\textbf{Zona III: $1 < t \leq 2$.} Los límites son $0 \leq \tau \leq 1$ (el pulso $x$ determina el límite superior):
+	\[
+	y(t) = \int_0^1 (t-\tau)\,d\tau = \left[t\tau - \frac{\tau^2}{2}\right]_0^1 = t - \frac{1}{2}
+	\]
+	
+	\textbf{Zona IV: $2 < t \leq 3$.} Los límites son $t-2 \leq \tau \leq 1$:
+	\[
+	y(t) = \int_{t-2}^1 (t-\tau)\,d\tau = \left[t\tau - \frac{\tau^2}{2}\right]_{t-2}^1 = \left(t - \frac{1}{2}\right) - \left(t(t-2) - \frac{(t-2)^2}{2}\right)
+	\]
+	Simplificando:
+	\begin{align*}
+	y(t) &= t - \frac{1}{2} - t^2 + 2t + \frac{t^2 - 4t + 4}{2} = t - \frac{1}{2} - t^2 + 2t + \frac{t^2}{2} - 2t + 2 \\
+	&= -\frac{t^2}{2} + t + \frac{3}{2} = \frac{-(t^2 - 2t - 3)}{2} = \frac{(3-t)(1+t)}{2}
+	\end{align*}
+	Verificación: en $t=2$, $y(2) = (1)(3)/2 = 3/2 = 2 - 1/2$ $\checkmark$. En $t=3$, $y(3) = (0)(4)/2 = 0$ $\checkmark$.
+	
+	\textbf{Zona V: $t > 3$.} Sin solapamiento. $y(t) = 0$.
+	
+	Resultado:
+	\[
+	\boxed{y(t) = \begin{cases}
+	0, & t < 0, \\[2pt]
+	\dfrac{t^2}{2}, & 0 \leq t \leq 1, \\[6pt]
+	t - \dfrac{1}{2}, & 1 < t \leq 2, \\[6pt]
+	\dfrac{(3-t)(1+t)}{2}, & 2 < t \leq 3, \\[6pt]
+	0, & t > 3.
+	\end{cases}}
+	\]
+	
+	\begin{figure}[H]
+	\centering
+	\includestandalone[width=0.7\linewidth]{figures/fig_ej8/fig_ej8}
+	\caption{Resultado de la convolución del Ejercicio~8 (pulso rectangular con rampa).}
+	\end{figure}
+
+	% ***********************************************
+	% 				Ejercicio 9
+	% ***********************************************
+	\section*{Ejercicio 9: Interconexión de sistemas LIT}
+	
+	En la Sección~4.2.5 del libro se establece que:
+	\begin{itemize}
+		\item \textbf{Cascada:} $h(t) = h_1(t) * h_2(t)$ --- la respuesta al impulso equivalente es la \textit{convolución} de las individuales.
+		\item \textbf{Paralelo:} $h(t) = h_1(t) + h_2(t)$ --- la respuesta al impulso equivalente es la \textit{suma} de las individuales.
+	\end{itemize}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $h_1(t) = e^{-t}u(t)$, $h_2(t) = \delta(t-2)$
+		
+		\textbf{Cascada:} Usando la propiedad de convolución con impulso desplazado (Sección~4.3.7): $x(t)*\delta(t-t_0) = x(t-t_0)$:
+		\[
+		h_{\text{cas}}(t) = h_1(t) * \delta(t-2) = h_1(t-2) = e^{-(t-2)}u(t-2)
+		\]
+		La cascada con un impulso retardado simplemente desplaza la otra respuesta al impulso en 2 segundos.
+		
+		\textbf{Paralelo:}
+		\[
+		h_{\text{par}}(t) = e^{-t}u(t) + \delta(t-2)
+		\]
+		
+		\item $h_1(t) = u(t) - u(t-1)$, $h_2(t) = u(t) - u(t-1)$
+		
+		Ambas son pulsos rectangulares de duración $1$ y amplitud $1$.
+		
+		\textbf{Cascada:} Es la convolución de dos pulsos idénticos de ancho $a = b = 1$. Aplicando el resultado de la Sección~4.3.5: como $a = b$, el trapecio degenera en un \textbf{triángulo isósceles} de base $a+b = 2$ y altura $a = 1$:
+		\[
+		h_{\text{cas}}(t) = \begin{cases}
+		t, & 0 \leq t \leq 1, \\
+		2-t, & 1 < t \leq 2, \\
+		0, & \text{en otro caso.}
+		\end{cases}
+		\]
+		Es decir, $h_{\text{cas}}(t) = r(t) - 2r(t-1) + r(t-2)$, donde $r(t) = tu(t)$ es la rampa unitaria.
+		
+		\textbf{Paralelo:}
+		\[
+		h_{\text{par}}(t) = 2[u(t) - u(t-1)]
+		\]
+		Un pulso rectangular de duración $1$ y amplitud $2$.
+		
+		\item $h_1(t) = \delta(t) - \delta(t-T)$, $h_2(t) = u(t)$
+		
+		\textbf{Cascada:} Usamos la distributividad de la convolución y la propiedad del impulso:
+		\begin{align*}
+		h_{\text{cas}}(t) &= [\delta(t) - \delta(t-T)] * u(t) \\
+		&= \delta(t) * u(t) - \delta(t-T) * u(t) \\
+		&= u(t) - u(t-T)
+		\end{align*}
+		La cascada produce un pulso rectangular de duración $T$: el integrador $u(t)$ acumula la diferencia de impulsos.
+		
+		\textbf{Paralelo:}
+		\[
+		h_{\text{par}}(t) = \delta(t) - \delta(t-T) + u(t)
+		\]
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 10
+	% ***********************************************
+	\section*{Ejercicio 10: Estabilidad y causalidad de sistemas LIT}
+	
+	Para un sistema LIT, las propiedades se leen directamente de $h(t)$ (Sección~4.4 del libro):
+	\begin{itemize}
+		\item \textbf{Estabilidad BIBO:} el sistema es estable si y solo si $h(t)$ es absolutamente integrable: $\int_{-\infty}^{\infty}|h(t)|\,dt < \infty$.
+		\item \textbf{Causalidad:} el sistema es causal si y solo si $h(t) = 0$ para todo $t < 0$.
+	\end{itemize}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $h(t) = e^{-(1-2j)t}u(t)$
+		
+		\textbf{Causalidad:} $h(t) = 0$ para $t<0$ gracias al factor $u(t)$. $\Rightarrow$ \textbf{Causal.}
+		
+		\textbf{Estabilidad:} Calculamos $|h(t)| = |e^{-(1-2j)t}|\,|u(t)| = e^{-\text{Re}(1-2j)\,t}\,u(t) = e^{-t}\,u(t)$, ya que el módulo de $e^{j\omega t}$ es siempre $1$:
+		\[
+		\int_0^{\infty} e^{-t}\,dt = 1 < \infty
+		\]
+		$\Rightarrow$ \textbf{Estable.}
+		
+		\item $h(t) = e^{2t}\cos(3t)\,u(t+1)$
+		
+		\textbf{Causalidad:} El factor $u(t+1)$ se enciende en $t = -1$, por lo que $h(t) \neq 0$ para $-1 \leq t < 0$. $\Rightarrow$ \textbf{No causal.}
+		
+		\textbf{Estabilidad:} Para $t \geq -1$, $|h(t)| = e^{2t}|\cos(3t)|$:
+		\[
+		\int_{-1}^{\infty} e^{2t}|\cos(3t)|\,dt \geq \int_0^{\infty} e^{2t}|\cos(3t)|\,dt
+		\]
+		Como $e^{2t} \to \infty$ cuando $t \to \infty$ y $|\cos(3t)|$ no se anula en promedio, la integral diverge.
+		
+		$\Rightarrow$ \textbf{No estable.}
+		
+		\item $h(t) = e^{-t}\sin(2t)\,u(t)$
+		
+		\textbf{Causalidad:} $h(t) = 0$ para $t < 0$. $\Rightarrow$ \textbf{Causal.}
+		
+		\textbf{Estabilidad:} $|h(t)| \leq e^{-t}|\sin(2t)|\,u(t) \leq e^{-t}\,u(t)$:
+		\[
+		\int_0^{\infty} |h(t)|\,dt \leq \int_0^{\infty} e^{-t}\,dt = 1 < \infty
+		\]
+		$\Rightarrow$ \textbf{Estable.}
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 11
+	% ***********************************************
+	\section*{Ejercicio 11: Respuesta al impulso y respuesta al escalón}
+	
+	La Sección~4.4.4 del libro establece la relación entre ambas:
+	\[
+	g(t) = \int_{-\infty}^{t} h(\tau)\,d\tau \qquad \text{y} \qquad h(t) = \frac{d}{dt}g(t)
+	\]
+	La respuesta al escalón es la integral acumulada de $h(t)$; derivar $g(t)$ recupera $h(t)$.
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $h(t) = e^{-2t}u(t)$. Calcular $g(t)$.
+		
+		\[
+		g(t) = \int_{-\infty}^{t} e^{-2\tau}u(\tau)\,d\tau = \int_0^{t} e^{-2\tau}\,d\tau = \left[\frac{e^{-2\tau}}{-2}\right]_0^t = \frac{1 - e^{-2t}}{2}, \quad t \geq 0
+		\]
+		
+		Resultado:
+		\[
+		\boxed{g(t) = \frac{1}{2}(1 - e^{-2t})\,u(t)}
+		\]
+		La respuesta al escalón sube desde $0$ y tiende asintóticamente a $1/2$. El valor final $g(\infty) = 1/2$ coincide con $H(0) = \int_0^\infty h(\tau)\,d\tau = 1/2$.
+		
+		\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.85\linewidth]{figures/fig_ej11a/fig_ej11a}
+		\caption{Respuesta al impulso $h(t)$ y respuesta al escalón $g(t)$ del inciso~a).}
+		\end{figure}
+		
+		\item $g(t) = (1-e^{-t/\tau_0})u(t)$ con $\tau_0 = RC$. Recuperar $h(t)$.
+		
+		Derivamos:
+		\[
+		h(t) = \frac{d}{dt}g(t) = \frac{d}{dt}\left[(1 - e^{-t/\tau_0})u(t)\right]
+		\]
+		Usando la regla del producto y $\frac{d}{dt}u(t) = \delta(t)$:
+		\begin{align*}
+		h(t) &= \frac{1}{\tau_0}e^{-t/\tau_0}\,u(t) + (1 - e^{-t/\tau_0})\,\delta(t)
+		\end{align*}
+		El segundo término se evalúa en $t = 0$: $(1 - e^0)\delta(t) = 0$. Por lo tanto:
+		\[
+		\boxed{h(t) = \frac{1}{\tau_0}\,e^{-t/\tau_0}\,u(t)}
+		\]
+		Es la respuesta al impulso del circuito $RC$, una exponencial decreciente causal (Sección~4.4.4 del libro).
+		
+		\item $h(t) = \delta(t) - \delta(t-T)$ con $T > 0$. Calcular $g(t)$.
+		
+		\[
+		g(t) = \int_{-\infty}^{t} [\delta(\tau) - \delta(\tau - T)]\,d\tau = u(t) - u(t-T)
+		\]
+		
+		\[
+		\boxed{g(t) = u(t) - u(t-T)}
+		\]
+		Es un pulso rectangular de duración $T$. \textbf{Interpretación:} ante un escalón (que se enciende y permanece constante), el sistema produce una salida que vale $1$ durante los primeros $T$ segundos y luego vuelve a cero. El sistema ``recuerda'' la diferencia entre el valor actual y el valor de hace $T$ segundos. Es un \textbf{diferenciador temporal de ventana $T$}: mide el cambio neto de la entrada en los últimos $T$ segundos.
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 12
+	% ***********************************************
+	\section*{Ejercicio 12: Ecuaciones diferenciales y sistemas LIT}
+	
+	La Sección~4.5.1 del libro establece que una \textbf{ecuación diferencial lineal con coeficientes constantes} (EDLCC) con condiciones iniciales en reposo define un sistema LIT. Las condiciones para que esto se cumpla son:
+	\begin{enumerate}
+		\item La ecuación es \textbf{lineal} en $x(t)$ e $y(t)$ y sus derivadas.
+		\item Los coeficientes son \textbf{constantes} (independientes del tiempo).
+		\item Las condiciones iniciales están \textbf{en reposo}.
+	\end{enumerate}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $\dot{y}(t) + 3y(t) = 2x(t)$
+		
+		Es una EDLCC de orden $N = 1$: los coeficientes ($a_1 = 1$, $a_0 = 3$, $b_0 = 2$) son constantes y la ecuación es lineal en $y$, $\dot{y}$ y $x$. Con condiciones iniciales en reposo:
+		
+		$\Rightarrow$ \textbf{Es LIT.}
+		
+		\item $\dot{y}(t) + t\,y(t) = x(t)$
+		
+		El coeficiente $t$ que multiplica a $y(t)$ \textbf{depende del tiempo}. Esto rompe la invarianza temporal: si $y(t)$ es solución frente a $x(t)$, sustituir $t \to t - t_0$ cambia el coeficiente $t$ por $t - t_0$, de modo que $y(t-t_0)$ ya no resuelve la misma ecuación.
+		
+		$\Rightarrow$ \textbf{Es lineal, pero NO es invariante en el tiempo.} No es LIT.
+		
+		\item $\dot{y}(t) + y^2(t) = x(t)$
+		
+		El término $y^2(t)$ viola la linealidad. Si $y_1$ y $y_2$ resuelven la ecuación frente a $x_1$ y $x_2$, la combinación $\alpha y_1 + \beta y_2$ no resuelve la ecuación frente a $\alpha x_1 + \beta x_2$ porque $(\alpha y_1 + \beta y_2)^2 \neq \alpha y_1^2 + \beta y_2^2$.
+		
+		$\Rightarrow$ \textbf{NO es lineal.} No es LIT.
+		
+		\item $\ddot{y}(t) + 4\dot{y}(t) + 3y(t) = \dot{x}(t) + x(t)$
+		
+		Es una EDLCC de orden $N = 2$ con $M = 1$: coeficientes $a_2 = 1$, $a_1 = 4$, $a_0 = 3$, $b_1 = 1$, $b_0 = 1$, todos constantes. La ecuación es lineal en $y$, $\dot{y}$, $\ddot{y}$, $x$ y $\dot{x}$.
+		
+		$\Rightarrow$ \textbf{Es LIT.}
+	\end{enumerate}
+
+	% ***********************************************
+	% 				Ejercicio 13
+	% ***********************************************
+	\section*{Ejercicio 13: Diagramas en bloques con derivadores}
+	
+	La Sección~4.5.3 del libro describe la \textbf{realización directa con derivadores}: se despeja $y(t)$ de la EDLCC, lo que revela la estructura del diagrama. La salida se obtiene sumando los aportes de la entrada (escalados por $b_k/a_0$) con las realimentaciones de las derivadas de la salida (escaladas por $-a_k/a_0$).
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $\dot{y}(t) + 3y(t) = 2x(t)$
+		
+		Despejamos $y(t)$ (con $a_0 = 3$):
+		\[
+		y(t) = \frac{1}{3}\left[2x(t) - \dot{y}(t)\right] = \frac{2}{3}\,x(t) - \frac{1}{3}\,\dot{y}(t)
+		\]
+		
+		\textbf{Estructura del diagrama:}
+		\begin{itemize}
+			\item La entrada $x(t)$ se escala por la ganancia $b_0/a_0 = 2/3$.
+			\item La salida $y(t)$ pasa por un derivador para generar $\dot{y}(t)$.
+			\item $\dot{y}(t)$ se escala por $-a_1/a_0 = -1/3$ y se realimenta al sumador.
+			\item El sumador produce: $y(t) = \frac{2}{3}x(t) - \frac{1}{3}\dot{y}(t)$.
+		\end{itemize}
+		
+		El lazo de realimentación tiene un único derivador, coherente con el orden $N = 1$ de la EDLCC.
+		
+		\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.7\linewidth]{figures/fig_ej14a/fig_ej14a}
+		\caption{Diagrama en bloques con un derivador para la EDLCC de primer orden.}
+		\end{figure}
+		
+		\item $\ddot{y}(t) + 4\dot{y}(t) + 3y(t) = x(t)$
+		
+		Despejamos $y(t)$ (con $a_0 = 3$):
+		\[
+		y(t) = \frac{1}{3}\left[x(t) - 4\dot{y}(t) - \ddot{y}(t)\right] = \frac{1}{3}\,x(t) - \frac{4}{3}\,\dot{y}(t) - \frac{1}{3}\,\ddot{y}(t)
+		\]
+		
+		\textbf{Estructura del diagrama:}
+		\begin{itemize}
+			\item La entrada $x(t)$ se escala por $b_0/a_0 = 1/3$.
+			\item La salida $y(t)$ pasa por dos derivadores en cascada:
+			\begin{itemize}
+				\item El primer derivador genera $\dot{y}(t)$, que se escala por $-a_1/a_0 = -4/3$.
+				\item El segundo derivador genera $\ddot{y}(t)$, que se escala por $-a_2/a_0 = -1/3$.
+			\end{itemize}
+			\item Las tres ramas se suman: $y(t) = \frac{1}{3}x(t) - \frac{4}{3}\dot{y}(t) - \frac{1}{3}\ddot{y}(t)$.
+		\end{itemize}
+		
+		El lazo de realimentación tiene dos derivadores en cascada, coherente con el orden $N = 2$ de la EDLCC. La estructura es idéntica al Ejemplo~3 de la Sección~4.5.3 del libro (oscilador amortiguado), con distintos valores numéricos de las ganancias.
+		
+		\begin{figure}[H]
+		\centering
+		\includestandalone[width=0.7\linewidth]{figures/fig_ej14b/fig_ej14b}
+		\caption{Diagrama en bloques con dos derivadores en cascada para la EDLCC de segundo orden.}
+		\end{figure}
+	\end{enumerate}
+
+\end{document}

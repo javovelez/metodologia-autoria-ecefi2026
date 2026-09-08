@@ -1,0 +1,293 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath,mathtools,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+\usepackage{lastpage,tabto,xcolor}
+\usepackage[a4paper, top=0.8in, bottom=1in, left=0.7in, right=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{multicol}
+\usepackage{titling} % Para ajustar los espacios del título
+\usepackage{tasks} % Para listas en columnas
+\usepackage{float}
+\usepackage[mode=image]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=7cm,compat=1.15}
+\usepackage{caption}
+
+% Fecha de versión automática según fecha de compilación
+\newcommand{\verdate}{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+% Ajusta la separación entre el encabezado y el contenido
+\setlength{\headsep}{10pt}
+
+% Ajuste del título:
+\setlength{\droptitle}{-0.5in} % Mueve el título ligeramente hacia arriba
+\pretitle{\begin{center}\vspace{-1em}\normalfont\Large}
+	\posttitle{\par\end{center}\vspace{-4em}}
+\preauthor{\begin{center}\vspace{-0.5em}}
+	\postauthor{\par\end{center}}
+\predate{}\postdate{}
+
+\pagestyle{fancy}
+\lhead{\footnotesize Análisis de Señales y Sistemas  - Año \the\year{} Ver. \verdate}
+\rhead{\footnotesize Trabajo Práctico N$^\text{o}$7: Sistemas de tiempo discreto.}
+\rfoot{\footnotesize Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Título optimizado con espacios reducidos
+\title{%
+	{\normalsize Departamento de Ingeniería en Tecnologías Electrónicas, UTN FRM}\\[0.1cm]
+	{\large Análisis de Señales y Sistemas}\\[0.15cm]
+	{\normalsize Trabajo Práctico N$^{\text o}$7: Sistemas de tiempo discreto}%
+}
+\author{}
+\date{}
+
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+
+	% Entorno de dos columnas
+	\begin{multicols}{2}
+
+		\label{sec:enun}
+
+		{\small\noindent Salvo indicación en contrario, los sistemas
+		descritos por una ecuación en diferencias se toman en reposo
+		inicial.}
+
+		\vspace{0.4em}
+
+		% ***********************************************
+		% 		Propiedades de los sistemas discretos
+		% ***********************************************
+		\textbf{Propiedades de los sistemas discretos}
+		\begin{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 1
+		% ***********************************************
+		\item Sean los sistemas
+		\begin{align*}
+			\mathcal{T}_1&: \; y[n] = x[n] - 2\,x[n-2], \\
+			\mathcal{T}_2&: \; y[n] = x[n]\,x[n-1], \\
+			\mathcal{T}_3&: \; y[n] = \textstyle\sum_{k=n-2}^{n+2} x[k], \\
+			\mathcal{T}_4&: \; y[n] = (n+1)\,x[n].
+		\end{align*}
+		\begin{enumerate}
+			\item Indicar cuáles tienen memoria y cuáles son causales.
+			\item Determinar cuáles son lineales y cuáles invariantes en el
+			tiempo, exhibiendo un contraejemplo en cada caso negativo.
+			\item Determinar cuáles son estables BIBO.
+			\item Señalar cuál de los cuatro no puede usarse en un
+			procesamiento en tiempo real e indicar en qué situación sí es
+			utilizable.
+		\end{enumerate}
+
+		% ***********************************************
+		% 		Respuesta al impulso y convolución
+		% ***********************************************
+		\textbf{Respuesta al impulso y convolución}
+
+		% ***********************************************
+		% 				Ejercicio 2
+		% ***********************************************
+		\item Un sistema LIT responde a la ecuación
+		\[
+			y[n] = 2\,x[n] + x[n-1] - x[n-3],
+		\]
+		y se lo excita con la entrada
+		\[
+			x[n] = \{\, \underset{\uparrow}{1} \quad 2 \quad -1 \,\}.
+		\]
+		\begin{enumerate}
+			\item Obtener y graficar $h[n]$, indicando su soporte.
+			\item Calcular $y[n]$ armando la tabla de copias desplazadas de
+			$h[n]$, con una fila por muestra no nula de la entrada.
+			\item Recalcular la salida completa con el procedimiento de
+			invertir y desplazar, graficando $x[k]$ y $h[n-k]$ en cada
+			instante, y verificar que coincide con la última fila de la
+			tabla.
+			\item Contrastar el largo del soporte de la salida con el que
+			predice la regla $L_x + L_h - 1$.
+			\item Rehacer el cálculo como producto de polinomios y comparar
+			los coeficientes con la última fila de la tabla.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 3
+		% ***********************************************
+		\item Sean las convoluciones
+		\begin{align*}
+			y_1[n] &= \bigl(u[n]-u[n-4]\bigr) * \bigl(u[n]-u[n-3]\bigr), \\
+			y_2[n] &= \left(\tfrac{1}{2}\right)^{\!n} u[n] *
+			          \left(\delta[n]-\tfrac{1}{2}\,\delta[n-1]\right), \\
+			y_3[n] &= \left(\tfrac{1}{2}\right)^{\!n} u[n] *
+			          \left(\tfrac{1}{4}\right)^{\!n} u[n].
+		\end{align*}
+		\begin{enumerate}
+			\item Calcular y graficar $y_1[n]$, indicando su soporte.
+			\item Calcular $y_2[n]$ e indicar qué relación guardan entre sí
+			los dos sistemas cuyas respuestas al impulso se convolucionaron.
+			\item Calcular $y_3[n]$ en forma cerrada e indicar cuál de las dos
+			exponenciales gobierna el decaimiento cuando $n$ es grande.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 4
+		% ***********************************************
+		\item Un sistema LIT tiene respuesta al impulso
+		$h[n]=\left(\tfrac{1}{2}\right)^{n} u[n]$. Se llama $g[n]$ a la salida
+		que produce ante la entrada $u[n]$.
+		\begin{enumerate}
+			\item Resolver la suma de convolución y escribir $g[n]$ en forma
+			cerrada.
+			\item Mostrar, sobre esa misma suma, que $g[n]$ es la suma
+			acumulada de los valores $h[k]$ con $k \le n$.
+			\item Verificar que $h[n]=g[n]-g[n-1]$ y explicar por qué es la
+			primera diferencia la que recupera $h[n]$.
+			\item Determinar hacia qué valor tiende $g[n]$ al aumentar $n$ y
+			relacionar ese límite con la estabilidad del sistema.
+		\end{enumerate}
+
+		% ***********************************************
+		% 		Interconexión de sistemas LIT
+		% ***********************************************
+		\textbf{Interconexión de sistemas LIT}
+
+		% ***********************************************
+		% 				Ejercicio 5
+		% ***********************************************
+		\item El sistema de la Figura~\ref{fig:tp7_interconexion} se arma con
+		tres sistemas LIT de respuestas al impulso
+		\begin{align*}
+			h_1[n] &= \delta[n]+\delta[n-1], \\
+			h_2[n] &= \delta[n]-\delta[n-1], \\
+			h_3[n] &= \left(\tfrac{1}{2}\right)^{\!n} u[n].
+		\end{align*}
+
+		\begin{center}
+			\includestandalone[width=0.98\linewidth]{figures/fig_tp7_interconexion/fig_tp7_interconexion}
+			\captionof{figure}{Interconexión del ejercicio 5.}
+			\label{fig:tp7_interconexion}
+		\end{center}
+
+		\begin{enumerate}
+			\item Hallar la respuesta al impulso equivalente de las dos ramas
+			en paralelo e indicar qué operación aplica esa etapa sobre la
+			entrada.
+			\item Hallar la respuesta al impulso $h[n]$ del sistema completo.
+			\item Clasificar el sistema completo como FIR o IIR y determinar
+			si es estable.
+			\item Indicar si $h[n]$ cambia al intercambiar el orden de las dos
+			etapas de la cascada. Justificar.
+		\end{enumerate}
+
+		% ***********************************************
+		% 		Propiedades leídas en h[n]
+		% ***********************************************
+		\textbf{Propiedades leídas en $h[n]$}
+
+		% ***********************************************
+		% 				Ejercicio 6
+		% ***********************************************
+		\item Sean las respuestas al impulso
+		\begin{align*}
+			h_1[n] &= 3\,\delta[n], &
+			h_2[n] &= u[n]-u[n-5], \\
+			h_3[n] &= \left(\tfrac{3}{2}\right)^{\!n} u[n], &
+			h_4[n] &= 2^{n}\,u[-n], \\
+			h_5[n] &= \cos\!\left(\tfrac{\pi}{4}\,n\right) u[n]. &
+		\end{align*}
+		\begin{enumerate}
+			\item Indicar cuáles corresponden a sistemas sin memoria y cuáles
+			a sistemas causales.
+			\item Determinar cuáles corresponden a sistemas estables BIBO.
+			\item Clasificar cada sistema como FIR o IIR.
+			\item Señalar el sistema que resulta estable sin ser causal y
+			explicar por qué las dos condiciones son independientes entre sí.
+		\end{enumerate}
+
+		% ***********************************************
+		% 		Ecuaciones en diferencias y realización
+		% ***********************************************
+		\textbf{Ecuaciones en diferencias y realización}
+
+		% ***********************************************
+		% 				Ejercicio 7
+		% ***********************************************
+		\item Un sistema en reposo inicial ($y[-1]=0$) responde a la
+		ecuación en diferencias
+		\[
+			y[n] = x[n] + 0{,}8\,y[n-1].
+		\]
+		\begin{enumerate}
+			\item Correr la recursión con $x[n]=\delta[n]$ y escribir $h[n]$
+			en forma cerrada.
+			\item Clasificar el sistema como FIR o IIR y determinar si es
+			estable.
+			\item Calcular las primeras cinco muestras de la salida ante
+			$x[n]=u[n]$ y determinar hacia qué valor tiende.
+			\item Graficar la realización del sistema con retardos unitarios,
+			sumadores y escaladores.
+			\item Determinar qué valores del coeficiente que multiplica a
+			$y[n-1]$ producen un sistema inestable.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 8
+		% ***********************************************
+		\item Un sistema en reposo inicial ($y[-1]=y[-2]=0$) responde a la
+		ecuación en diferencias
+		\[
+			y[n] = x[n] + 0{,}9\,y[n-1] - 0{,}2\,y[n-2].
+		\]
+		\begin{enumerate}
+			\item Correr la recursión con $x[n]=\delta[n]$ y escribir las
+			primeras seis muestras de $h[n]$.
+			\item Clasificar el sistema como FIR o IIR e indicar cuántas
+			condiciones iniciales necesita la recursión para arrancar.
+			\item Calcular las primeras cinco muestras de la salida ante
+			$x[n]=u[n]$ y determinar hacia qué valor tiende, sin resolver la
+			recursión en forma cerrada.
+			\item Graficar la realización del sistema con retardos unitarios,
+			sumadores y escaladores.
+			\item Rehacer las primeras seis muestras de $h[n]$ con el
+			coeficiente de $y[n-2]$ cambiado de $-0{,}2$ a $+0{,}2$, indicar
+			qué le pasa a la salida y qué responde en ese caso el
+			procedimiento del inciso c) sobre el valor al que tiende.
+		\end{enumerate}
+
+		% ***********************************************
+		% 				Ejercicio 9
+		% ***********************************************
+		\item Sean los sistemas
+		\begin{align*}
+			\mathcal{T}_A&: \; y[n] = x[n]+x[n-1]+x[n-2]+x[n-3], \\
+			\mathcal{T}_B&: \; y[n] = y[n-1] + x[n] - x[n-4].
+		\end{align*}
+		\begin{enumerate}
+			\item Obtener $h[n]$ de cada uno corriendo la recursión con
+			$x[n]=\delta[n]$, tomando $y[-1]=0$ en $\mathcal{T}_B$.
+			\item Indicar si los dos sistemas son el mismo y justificar la
+			respuesta sobre las dos respuestas al impulso.
+			\item Graficar la realización de cada ecuación e indicar cuántos
+			retardos y cuántas sumas usa cada una.
+			\item Generalizar las dos ecuaciones a una ventana de $L$
+			muestras, contar las sumas que cada forma hace por muestra de
+			salida e indicar cuál conviene implementar cuando $L$ es grande.
+		\end{enumerate}
+
+		\end{enumerate}
+
+	\end{multicols}
+
+\end{document}

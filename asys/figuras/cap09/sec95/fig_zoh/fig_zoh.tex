@@ -1,0 +1,120 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_zoh
+% (a) tiempo: escalera (const plot) sobre muestras vs senal ideal (punteada).
+% (b) frecuencia: copias en 0,+-ws,+-2ws (ws=3) con la envolvente seno cardinal
+%     |sinc(w*pi/3)| (Delta t = 2pi/ws) por encima, ceros en multiplos de ws.
+% (c) el producto: cada copia multiplicada por la envolvente, con el filtro de
+%     reconstruccion marcado (corte en ws/2 = 1.5 y realce 1/|sinc| dentro de la banda).
+% (d) el espectro final: sobrevive solo la banda base, sin imagenes y con la caida
+%     de la envolvente ya compensada por el filtro.
+% El +1e-6 de los argumentos evita la division por cero de sinc en w=0 y en w=+-ws.
+
+\begin{document}
+\begin{tikzpicture}[>={Latex[length=3pt]}, font=\scriptsize]
+
+% ===================== (a) tiempo: escalera =====================
+\begin{axis}[
+    name=pa,
+    width=7.6cm, height=4.6cm,
+    axis lines=center, axis line style={->, thick},
+    xmin=-0.4, xmax=6.3, ymin=-0.5, ymax=1.2,
+    xtick={0,1,2,3,4,5}, xticklabels={}, ytick=\empty,
+    xlabel={$t$}, xlabel style={anchor=west, at={(axis description cs:1.0,0.42)}},
+    title={(a)}, title style={font=\scriptsize, yshift=-3pt},
+    enlarge x limits=false, clip mode=individual, axis on top,
+]
+    % senal ideal (punteada)
+    \addplot[gray!70, dotted, thick, smooth] coordinates {
+        (0,0.30) (1,0.70) (2,1.00) (3,0.75) (4,0.30) (5,-0.20)
+    };
+    % escalera ZOH (mantiene v_n sobre [n,n+1))
+    \addplot[const plot, utnblue, thick] coordinates {
+        (0,0.30) (1,0.70) (2,1.00) (3,0.75) (4,0.30) (5,-0.20) (6,-0.20)
+    };
+    % muestras
+    \addplot[only marks, mark=*, mark size=1.5pt,
+             mark options={fill=black, draw=black}]
+        coordinates {(0,0.30) (1,0.70) (2,1.00) (3,0.75) (4,0.30) (5,-0.20)};
+\end{axis}
+
+% ===================== (b) frecuencia: envolvente seno cardinal =====================
+\begin{axis}[
+    name=pb,
+    at={($(pa.south east)+(1.5cm,0)$)}, anchor=south west,
+    width=7.6cm, height=4.6cm,
+    axis lines=center, axis line style={->, thick},
+    xmin=-7.2, xmax=7.4, ymin=-0.12, ymax=1.05,
+    xtick={-6,-3,3,6}, xticklabels={$-2\omega_s$,$-\omega_s$,$\omega_s$,$2\omega_s$},
+    ytick=\empty,
+    every tick label/.style={font=\tiny},
+    xlabel={$\omega$}, xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+    title={(b)}, title style={font=\scriptsize, yshift=-3pt},
+    enlarge x limits=false, clip mode=individual, axis on top,
+]
+    % copias (triangulos) en 0,+-3,+-6
+    \addplot[gray!55, thick, fill=gray!10] coordinates {(-1,0)(0,0.85)(1,0)};
+    \addplot[gray!55, thick, fill=gray!10] coordinates {(2,0)(3,0.85)(4,0)};
+    \addplot[gray!55, thick, fill=gray!10] coordinates {(-4,0)(-3,0.85)(-2,0)};
+    \addplot[gray!55, thick, fill=gray!10] coordinates {(5,0)(6,0.85)(7,0)};
+    \addplot[gray!55, thick, fill=gray!10] coordinates {(-7,0)(-6,0.85)(-5,0)};
+    % envolvente seno cardinal |Delta t sinc(w Delta t/2)|, Delta t=2pi/3
+    \addplot[red!80!black, thick, samples=400, domain=-6.95:7.02]
+        {abs(sin(deg(x*pi/3))/(x*pi/3))*0.85};
+    \node[red!80!black, anchor=west, font=\tiny] at (axis cs:1.35,0.86) {envolvente};
+\end{axis}
+
+% ===================== (c) el producto y el filtro de reconstruccion =====================
+\begin{axis}[
+    name=pc,
+    at={($(pa.south west)+(0,-1.0cm)$)}, anchor=north west,
+    width=7.6cm, height=4.6cm,
+    axis lines=center, axis line style={->, thick},
+    xmin=-7.2, xmax=7.4, ymin=-0.12, ymax=1.05,
+    xtick={-6,-3,-1.5,1.5,3,6},
+    xticklabels={$-2\omega_s$,$-\omega_s$,,$\tfrac{\omega_s}{2}$,$\omega_s$,$2\omega_s$},
+    ytick=\empty,
+    every tick label/.style={font=\tiny},
+    xlabel={$\omega$}, xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+    title={(c)}, title style={font=\scriptsize, yshift=-3pt},
+    enlarge x limits=false, clip mode=individual, axis on top,
+]
+    % copias multiplicadas por la envolvente
+    \addplot[gray!55, thick, fill=gray!10, samples=120, domain=-1:1]
+        {0.85*(1-abs(x))*abs(sin(deg((x+1e-6)*pi/3))/((x+1e-6)*pi/3))} \closedcycle;
+    \addplot[gray!55, thick, fill=gray!10, samples=120, domain=2:4]
+        {0.85*(1-abs(x-3))*abs(sin(deg((x+1e-6)*pi/3))/((x+1e-6)*pi/3))} \closedcycle;
+    \addplot[gray!55, thick, fill=gray!10, samples=120, domain=-4:-2]
+        {0.85*(1-abs(x+3))*abs(sin(deg((x+1e-6)*pi/3))/((x+1e-6)*pi/3))} \closedcycle;
+    \addplot[gray!55, thick, fill=gray!10, samples=120, domain=5:7]
+        {0.85*(1-abs(x-6))*abs(sin(deg((x+1e-6)*pi/3))/((x+1e-6)*pi/3))} \closedcycle;
+    \addplot[gray!55, thick, fill=gray!10, samples=120, domain=-7:-5]
+        {0.85*(1-abs(x+6))*abs(sin(deg((x+1e-6)*pi/3))/((x+1e-6)*pi/3))} \closedcycle;
+    % filtro de reconstruccion: recuadro con corte en ws/2, como el pasabajos ideal
+    % de fig_reconstruccion_lp
+    \addplot[red!80!black, thick, dotted]
+        coordinates {(-1.5,0) (-1.5,0.95) (1.5,0.95) (1.5,0)};
+    \node[red!80!black, anchor=west, font=\tiny] at (axis cs:1.62,0.90) {filtro};
+\end{axis}
+
+% ===================== (d) el espectro final =====================
+\begin{axis}[
+    name=pd,
+    at={($(pb.south west)+(0,-1.0cm)$)}, anchor=north west,
+    width=7.6cm, height=4.6cm,
+    axis lines=center, axis line style={->, thick},
+    xmin=-7.2, xmax=7.4, ymin=-0.12, ymax=1.05,
+    xtick={-6,-3,3,6}, xticklabels={$-2\omega_s$,$-\omega_s$,$\omega_s$,$2\omega_s$},
+    ytick=\empty,
+    every tick label/.style={font=\tiny},
+    xlabel={$\omega$}, xlabel style={anchor=west, at={(axis description cs:1.0,0.18)}},
+    title={(d)}, title style={font=\scriptsize, yshift=-3pt},
+    enlarge x limits=false, clip mode=individual, axis on top,
+]
+    % banda base recuperada, sin imagenes y con la caida de la envolvente compensada
+    \addplot[utnblue, thick, fill=utnblue!14] coordinates {(-1,0)(0,0.85)(1,0)};
+\end{axis}
+\end{tikzpicture}
+\end{document}

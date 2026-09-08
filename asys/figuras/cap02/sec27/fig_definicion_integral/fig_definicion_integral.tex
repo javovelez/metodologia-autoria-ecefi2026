@@ -1,0 +1,108 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+\usetikzlibrary{decorations.markings}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, scale=1.0, font=\small,
+    evaluacion/.style={circle, fill=orange!80!black, inner sep=1.5pt}
+]
+
+    % Ejes (estilo original)
+    \draw[->, thick, black] (-0.5, 0) -- (11.5, 0) node[right] {Re};
+    \draw[->, thick, black] (0, -0.5) -- (0, 3.5) node[above] {Im};
+
+    % === SEGMENTO 1: z_A → z_1 → z_2 (CONTINUO) ===
+    \draw[utnblue!70!black, very thick,
+        decoration={
+            markings,
+            % z_A = z_0
+            mark=at position 0.00 with {
+                \draw[black, line width=1pt, line cap=round] (0,-2.7pt)--(0,2.7pt);
+                \node[below, font=\footnotesize] {$z_A = z_0$};
+            },
+            % bar{z}_1 entre z_0 y z_1
+            mark=at position 0.22 with {\node[evaluacion] {}; \node[above left, font=\footnotesize, orange!80!black] {$z^*_1$};},
+            % z_1
+            mark=at position 0.48 with {
+                \draw[black, line width=1pt, line cap=round] (0,-2.7pt)--(0,2.7pt);
+                \node[below right, font=\footnotesize] {$z_1$};
+            },
+            % bar{z}_2 entre z_1 y z_2
+            mark=at position 0.70 with {\node[evaluacion] {}; \node[above, font=\footnotesize, orange!80!black] {$z^*_2$};},
+            % z_2
+            mark=at position 1.00 with {
+                \draw[black, line width=1pt, line cap=round] (0,-2.7pt)--(0,2.7pt);
+                \node[below right, font=\footnotesize] {$z_2$};
+            }
+        },
+        postaction={decorate}
+    ] (0.5, 0.4) .. controls (1.0, 1.4) and (1.8, 2.2) .. (2.5, 2.1) .. controls (3.0, 2.0) and (3.4, 1.8) .. (3.8, 1.9);
+
+    % === SEGMENTO 2: z_2 → z_{k-1} (DISCONTINUO) ===
+    \draw[utnblue!70!black, very thick, densely dashed,
+        decoration={
+            markings,
+            mark=at position 1.00 with {
+                \draw[black, line width=1pt, line cap=round] (0,-2.7pt)--(0,2.7pt);
+                \node[below, font=\footnotesize] {$z_{k-1}$};
+            }
+        },
+        postaction={decorate}
+    ] (3.8, 1.9) .. controls (4.3, 2.2) and (4.8, 2.6) .. (5.3, 2.4);
+
+    % === SEGMENTO 3: z_{k-1} → z_k → z_{k+1} (CONTINUO) ===
+    \draw[utnblue!70!black, very thick,
+        decoration={
+            markings,
+            % bar{z}_k entre z_{k-1} y z_k
+            mark=at position 0.18 with {\node[evaluacion] {}; \node[above, font=\footnotesize, orange!80!black] {$z^*_k$};},
+            % z_k
+            mark=at position 0.42 with {
+                \draw[black, line width=1pt, line cap=round] (0,-2.7pt)--(0,2.7pt);
+                \node[below, font=\footnotesize] {$z_k$};
+            },
+            % bar{z}_{k+1} entre z_k y z_{k+1}
+            mark=at position 0.68 with {\node[evaluacion] {}; \node[above, font=\footnotesize, orange!80!black] {$z^*_{k+1}$};},
+            % z_{k+1}
+            mark=at position 1.00 with {
+                \draw[black, line width=1pt, line cap=round] (0,-2.7pt)--(0,2.7pt);
+                \node[below, font=\footnotesize] {$z_{k+1}$};
+            }
+        },
+        postaction={decorate}
+    ] (5.3, 2.4) .. controls (5.8, 2.1) and (6.3, 1.7) .. (6.8, 1.8) .. controls (7.4, 1.9) and (7.9, 1.6) .. (8.4, 1.7);
+
+    % === SEGMENTO 4: z_{k+1} → z_{n-1} (DISCONTINUO) ===
+    \draw[utnblue!70!black, very thick, densely dashed,
+        decoration={
+            markings,
+            mark=at position 1.00 with {
+                \draw[black, line width=1pt, line cap=round] (0,-2.7pt)--(0,2.7pt);
+                \node[below, font=\footnotesize] {$z_{n-1}$};
+            }
+        },
+        postaction={decorate}
+    ] (8.4, 1.7) .. controls (8.9, 2.0) and (9.4, 2.4) .. (9.8, 2.2);
+
+    % === SEGMENTO 5: z_{n-1} → z_B (CONTINUO) ===
+    \draw[utnblue!70!black, very thick,
+        decoration={
+            markings,
+            % bar{z}_n entre z_{n-1} y z_n
+            mark=at position 0.45 with {\node[evaluacion] {}; \node[above, font=\footnotesize, orange!80!black] {$z^*_n$};}
+        },
+        postaction={decorate}
+    ] (9.8, 2.2) .. controls (10.3, 2.0) and (10.7, 2.5) .. (11.0, 2.4);
+
+    % z_B = z_n: tick perpendicular dibujado manualmente.
+    % Tangente final: dir (10.7,2.5)->(11.0,2.4) = (0.3,-0.1), |t|=0.316
+    % Perpendicular unitaria: (0.316, 0.949). Desplazamiento: 2.7pt ≈ 0.095cm
+    % → dy_perp ≈ 0.030, dy_perp ≈ 0.090
+    \draw[black, line width=1pt, line cap=round] (10.970, 2.310) -- (11.030, 2.490);
+    \node[above right, font=\footnotesize] at (11.0, 2.4) {$z_B = z_n$};
+
+    % Etiqueta del contorno
+    \node[utnblue!70!black] at (5.5, 3.2) {Contorno $C$};
+
+\end{tikzpicture}
+\end{document}

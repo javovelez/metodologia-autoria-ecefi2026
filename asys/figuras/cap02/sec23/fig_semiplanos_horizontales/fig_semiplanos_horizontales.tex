@@ -1,0 +1,29 @@
+\documentclass[border={5mm 5mm 5mm 0mm}]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=0.8, font=\small]
+        \begin{scope}
+            % Sombreado de la regiÃ³n Im{z} > 1
+            \fill[cyan!15] (-2.5,1) rectangle (2.5,2.0);
+            
+            % Ejes
+            \draw[->] (-2.5,0) -- (2.5,0) node[right] {Re};
+            \draw[->] (0,-1) -- (0,2.1) node[above] {Im};
+            
+            % LÃ­nea de frontera en y=1 (discontinua)
+            \draw[dashed, thick] (-2.5,1) -- (2.5,1);
+            
+            % Etiqueta del valor lÃ­mite
+            \node[below left] at (0,1) {$1$};
+            
+            % Etiqueta de la regiÃ³n
+            \node at (0, 1.5) {$\text{Im}\{z\} > 1$};
+            
+            % Texto descriptivo (opcional, acorde al estilo de otras figuras)
+            \node at (0, -1.5) {\textbf{Semiplano Superior}};
+        \end{scope}
+    \end{tikzpicture}
+\end{document}

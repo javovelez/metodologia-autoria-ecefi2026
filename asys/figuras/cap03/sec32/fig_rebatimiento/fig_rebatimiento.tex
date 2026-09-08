@@ -1,0 +1,45 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+\pgfplotsset{
+    panel/.style={
+        width=13cm, height=3.5cm,
+        xmin=-3, xmax=3,
+        ymin=-0.1, ymax=1.4,
+        axis lines=center,
+        xtick={-3,-2,-1,0,1,2},
+        ytick={0,1},
+        yticklabels={$0$,$1$},
+        tick style={thin},
+        xlabel={$t$},
+        xlabel style={anchor=north},
+        ylabel style={
+            font=\small, rotate=0, anchor=south east,
+            at={(axis description cs:0,1)}
+        },
+        clip=false,
+    }
+}
+
+% ---- panel (a): x(t) = pulso triangular, soporte [0,2], pico en t=1 ----
+\begin{axis}[panel, name=ax1,
+    ylabel={$x(t)$},
+    title={(a)}, title style={font=\small\bfseries}]
+\addplot[utnblue, very thick] coordinates {(-3,0)(0,0)(1,1)(2,0)(3,0)};
+\node[above right, utnblue, font=\scriptsize] at (axis cs:1,1){pico en $1$};
+\end{axis}
+
+% ---- panel (b): x(-t) = triángulo reflejado, soporte [-2,0], pico en t=-1 ----
+\begin{axis}[panel, name=ax2,
+    at={(ax1.below south west)}, anchor=above north west, yshift=-6pt,
+    ylabel={$x(-t)$},
+    title={(b)}, title style={font=\small\bfseries}]
+\addplot[red!80!black, very thick] coordinates {(-3,0)(-2,0)(-1,1)(0,0)(3,0)};
+\node[above left, red!80!black, font=\scriptsize] at (axis cs:-1,1){pico en $-1$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

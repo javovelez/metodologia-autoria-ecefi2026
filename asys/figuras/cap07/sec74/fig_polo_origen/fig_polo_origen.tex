@@ -1,0 +1,31 @@
+% ============================================================
+% fig_polo_origen.tex
+% Polo simple en el origen (p = 0).
+% Aporte a h(t): constante A u(t).
+% Layout: [plano s]  L^{-1}  [h(t)].
+% ============================================================
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% --- Plano s ---
+\draw[->, thin] (-1.7, 0) -- (1.7, 0) node[below right, font=\footnotesize] {$\sigma$};
+\draw[->, thin] (0, -1.7) -- (0, 1.9) node[above, font=\footnotesize] {$j\omega$};
+\node[red, font=\large] at (0, 0) {$\times$};
+
+% --- Conector ---
+\draw[->, gray, thin] (2.2, 0) -- (3.4, 0)
+    node[midway, above, font=\footnotesize, gray] {$\mathcal{L}^{-1}$};
+
+% --- h(t) ---
+\begin{scope}[shift={(3.9, 0)}]
+    \draw[->, thin] (-0.3, 0) -- (4.0, 0) node[right, font=\footnotesize] {$t$};
+    \draw[->, thin] (0, -0.5) -- (0, 1.9) node[above, font=\footnotesize] {$h(t)$};
+    \draw[red!80!black, thick] (0, 1.4) -- (3.8, 1.4);
+    \fill[red!80!black] (0, 1.4) circle (1.1pt);
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

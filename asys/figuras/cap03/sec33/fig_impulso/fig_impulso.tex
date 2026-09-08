@@ -1,0 +1,74 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ---- panel (a): cuatro pulsos p_a con área=1, a decreciente ----
+\begin{axis}[
+    name=ax1,
+    width=7.5cm,
+    xmin=-1.6, xmax=1.6,
+    ymin=-0.4, ymax=5,
+    axis equal image,
+    axis lines=center,
+    xtick={0},
+    xticklabels={$0$},
+    ytick={0},
+    yticklabels={$0$},
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={(a) Pulsos $\delta_{\Delta}(t)$ con área $= 1$},
+    title style={font=\small\bfseries},
+    clip=false,
+]
+% a = 2.0 → altura 0.5, soporte [-1, 1]
+\addplot[color=violet!0!cyan, thick]
+    coordinates {(-1.6,0)(-1,0)(-1,0.5)(1,0.5)(1,0)(1.6,0)};
+\node[right, color=violet!0!cyan, font=\scriptsize] at (axis cs:0.8,0.7) {$\Delta=2$};
+% a = 1.0 → altura 1, soporte [-0.5, 0.5]
+\addplot[color=violet!33!cyan, thick]
+    coordinates {(-1.6,0)(-0.5,0)(-0.5,1)(0.5,1)(0.5,0)(1.6,0)};
+\node[right, color=violet!33!cyan, font=\scriptsize] at (axis cs:0.4,1.3) {$\Delta=1$};
+% a = 0.5 → altura 2, soporte [-0.25, 0.25]
+\addplot[color=violet!66!cyan, thick]
+    coordinates {(-1.6,0)(-0.25,0)(-0.25,2)(0.25,2)(0.25,0)(1.6,0)};
+\node[right, color=violet!66!cyan, font=\scriptsize] at (axis cs:0.23,2.2) {$\Delta=0{,}5$};
+% a = 0.25 → altura 4, soporte [-0.125, 0.125]
+\addplot[color=violet!100!cyan, thick]
+    coordinates {(-1.6,0)(-0.125,0)(-0.125,4)(0.125,4)(0.125,0)(1.6,0)};
+\node[right, color=violet!100!cyan, font=\scriptsize] at (axis cs:0.14,4) {$\Delta=0{,}25$};
+\end{axis}
+
+% ---- panel (b): δ(t) como flecha ----
+\begin{axis}[
+    name=ax2,
+    at={(ax1.right of south east)}, anchor=left of south west, xshift=12pt,
+    width=5.5cm, height=5.5cm,
+    xmin=-1.6, xmax=1.6,
+    ymin=-0.4, ymax=5,
+    axis lines=center,
+    xtick={0},
+    xticklabels={$0$},
+    ytick={0},
+    yticklabels={$0$},
+    tick style={thin},
+    xlabel={$t$}, xlabel style={anchor=north},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}},
+    title={(b) $\delta(t) = \displaystyle\lim_{\Delta\to 0}\delta_{\Delta}(t)$},
+    title style={font=\small\bfseries},
+    clip=false,
+]
+% impulso: flecha vertical
+\draw[->, utnblue, very thick, line width=1.5pt]
+    (axis cs:0,0) -- (axis cs:0,4.3);
+% área annotation
+\node[anchor=south west, font=\scriptsize] at (axis cs:0.08,2.0) {área $= 1$};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

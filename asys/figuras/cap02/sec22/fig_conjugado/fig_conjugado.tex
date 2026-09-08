@@ -1,0 +1,40 @@
+\documentclass[border=0mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=1.2], , font=\small
+        % Ejes
+        \draw[->,very thick] (-0.5,0) -- (4,0) node[right] {Re};
+        \draw[->, very thick] (0,-2.5) -- (0,2.5) node[above] {Im};
+        
+        % Coordenadas
+        \coordinate (O) at (0,0);
+        \coordinate (Z) at (2.5, 1.5);
+        \coordinate (Zconj) at (2.5, -1.5);
+        
+        % Vectores
+        \draw[->, very thick, utnblue] (O) -- (Z) node[above right] {$z = x + jy$};
+        \draw[->, very thick, utnblue] (O) -- (Zconj) node[below right] {$\bar{z} = x - jy$};
+        
+        % Linea de conexión (espejo)
+        \draw[dashed, gray] (Z) -- (Zconj);
+        
+        % Ángulos
+        \draw[->] (0.8,0) arc (0:31:0.8);
+        \node at (1, 0.3) {$\theta$};
+        
+        \draw[->] (0.8,0) arc (0:-31:0.8);
+        \node at (1, -0.3) {$-\theta$};
+        
+        % Puntos
+        \fill[utnblue] (Z) circle (1.5pt);
+        \fill[utnblue] (Zconj) circle (1.5pt);
+        
+        % Etiquetas ejes
+        \draw (2.5, 0.1) -- (2.5, -0.1) node[below] {$x$};
+        \draw (0.1, 1.5) -- (-0.1, 1.5) node[left] {$y$};
+        \draw (0.1, -1.5) -- (-0.1, -1.5) node[left] {$-y$};
+    \end{tikzpicture}
+\end{document}

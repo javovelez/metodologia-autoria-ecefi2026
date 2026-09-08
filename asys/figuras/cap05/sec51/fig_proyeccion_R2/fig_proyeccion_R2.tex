@@ -1,0 +1,45 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}[>=Latex, scale=1.6, font=\small]
+        % Coordenadas
+        \coordinate (O) at (0,0);
+        \coordinate (V) at (2.3,1.6);
+
+        % Ejes
+        \draw[->, thick, black] (-0.3,0) -- (3.2,0) node[right] {$x$};
+        \draw[->, thick, black] (0,-0.3) -- (0,2.3) node[above] {$y$};
+
+        % Líneas punteadas auxiliares (proyección)
+        \draw[dashed, gray] (V) -- (2.3,0);
+        \draw[dashed, gray] (V) -- (0,1.6);
+
+        % Proyecciones vectoriales sobre los ejes
+        \draw[->, very thick, red!80!black] (0,0) -- (2.3,0);
+        \draw[->, very thick, red!80!black] (0,0) -- (0,1.6);
+
+        % Vectores de base (ortogonales, NO unitarios; encima de las proyecciones
+        % para que sus arrowheads sean visibles)
+        \draw[->, thick, black] (O) -- (1.5,0);
+        \draw[->, thick, black] (O) -- (0,0.7);
+
+        % Vector v (utnblue, protagonista)
+        \draw[->, very thick, utnblue] (O) -- (V);
+        \fill[utnblue] (V) circle (1.5pt);
+
+        % Etiquetas de los basis vectors
+        \node[anchor=south,      font=\small] at (1.5, 0.05) {$\vect{e}_1$};
+        \node[anchor=west,       font=\small] at (0.05, 0.7) {$\vect{e}_2$};
+
+        % Etiqueta del vector v
+        \node[anchor=south west, font=\small] at (V) {$\vect{v}$};
+
+        % Etiquetas de las proyecciones vectoriales (color de las componentes)
+        \node[anchor=north, font=\small, red!80!black] at (1.15, -0.25)
+            {$\displaystyle \vect{v}_1 = \frac{\langle \vect{v},\vect{e}_1\rangle}{\|\vect{e}_1\|^2}\,\vect{e}_1$};
+        \node[anchor=east,  font=\small, red!80!black] at (-0.22, 0.85)
+            {$\displaystyle \vect{v}_2 = \frac{\langle \vect{v},\vect{e}_2\rangle}{\|\vect{e}_2\|^2}\,\vect{e}_2$};
+    \end{tikzpicture}
+\end{document}

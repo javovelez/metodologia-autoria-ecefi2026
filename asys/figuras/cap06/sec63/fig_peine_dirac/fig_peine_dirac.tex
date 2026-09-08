@@ -1,0 +1,82 @@
+\documentclass[border=5mm]{standalone}
+\input{../../../../setup.tex}
+% \PassOptionsToPackage{gray}{xcolor}
+
+% fig_peine_dirac
+% Auto-dualidad del peine de Dirac.
+% (a) Tren de impulsos en t con paso T_0; cada impulso de peso 1.
+% (b) Tren de impulsos en omega con paso omega_0 = 2*pi/T_0; cada uno de peso 2*pi/T_0.
+% Eleccion: T_0 = 1, asi omega_0 = 2*pi ~ 6.28. Visualmente: tren denso en t,
+% tren ralo en omega.
+% Sizing: 2 paneles apilados, w 11cm, h 3.8cm.
+
+\begin{document}
+\begin{tikzpicture}[>=Latex, font=\small]
+
+% ===== Panel (a): tren en t =====
+\begin{axis}[
+    name=panel_a,
+    width=11cm, height=3.8cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-23, xmax=23, ymin=-0.2, ymax=1.4,
+    xtick={-21,-14,-7,0,7,14,21},
+    xticklabels={$-3T_0$,$-2T_0$,$-T_0$,$0$,$T_0$,$2T_0$,$3T_0$},
+    ytick={0,1},
+    yticklabels={$0$,$1$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$t$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    ylabel={$\delta^{T_0}(t)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(a)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Impulsos en t = k*T_0 con T_0 = 7 (escalado visual). Peso = 1.
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:-21,0) -- (axis cs:-21,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:-14,0) -- (axis cs:-14,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:-7,0)  -- (axis cs:-7,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:0,0)   -- (axis cs:0,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:7,0)   -- (axis cs:7,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:14,0)  -- (axis cs:14,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:21,0)  -- (axis cs:21,1);
+\end{axis}
+
+% ===== Panel (b): tren en omega =====
+\begin{axis}[
+    name=panel_b,
+    at={($(panel_a.south)+(0,-1.4cm)$)}, anchor=north,
+    width=11cm, height=3.8cm,
+    axis lines=center,
+    axis line style={->, thick},
+    xmin=-23, xmax=23, ymin=-0.2, ymax=1.4,
+    xtick={-18.8496,-12.5664,-6.2832,0,6.2832,12.5664,18.8496},
+    xticklabels={$-3\omega_0$,$-2\omega_0$,$-\omega_0$,$0$,$\omega_0$,$2\omega_0$,$3\omega_0$},
+    ytick={0,1},
+    yticklabels={$0$,$\tfrac{2\pi}{T_0}$},
+    every tick label/.style={font=\footnotesize},
+    xlabel={$\omega$},
+    xlabel style={anchor=west, at={(axis description cs:1.0,0.16)}},
+    ylabel={$X(j\omega)$},
+    ylabel style={font=\small, rotate=0, anchor=south east,
+                  at={(axis description cs:0,1)}, xshift=-2pt},
+    title={(b)},
+    title style={font=\small, yshift=-2pt},
+    enlarge x limits=0.02,
+    clip mode=individual,
+]
+    % Impulsos en omega = k*omega_0 con omega_0 = 2*pi ~ 6.2832. Peso visual normalizado a 1.
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:-18.8496,0) -- (axis cs:-18.8496,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:-12.5664,0) -- (axis cs:-12.5664,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:-6.2832,0)  -- (axis cs:-6.2832,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:0,0)        -- (axis cs:0,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:6.2832,0)   -- (axis cs:6.2832,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:12.5664,0)  -- (axis cs:12.5664,1);
+    \draw[utnblue, very thick, ->, >=Latex] (axis cs:18.8496,0)  -- (axis cs:18.8496,1);
+\end{axis}
+
+\end{tikzpicture}
+\end{document}
