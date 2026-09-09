@@ -174,7 +174,7 @@ PAGINA = f"""<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catálogo de figuras — Análisis de Señales y Sistemas</title>
-<meta name="description" content="Las {total} figuras del libro de Análisis de Señales y Sistemas, cada una con su fuente TikZ y su salida vectorial.">
+<meta name="description" content="Figuras del libro de Análisis de Señales y Sistemas, cada una con su fuente TikZ y su salida vectorial.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <style>
 :root{{
@@ -259,7 +259,7 @@ footer p{{margin:0 0 10px; max-width:70ch}}
 <header>
   <p class="migas"><a href="index.html">Material de respaldo</a> · ECEFI 2026</p>
   <h1>Catálogo de figuras</h1>
-  <p class="bajada">Las {total} figuras del libro de <strong>Análisis de Señales y
+  <p class="bajada">{total} figuras del libro de <strong>Análisis de Señales y
   Sistemas</strong>, al 7 de septiembre de 2026. Ninguna es una imagen insertada desde otra
   aplicación: cada una es un programa TikZ que se compila, de modo que cambiar un parámetro y
   recompilar la regenera. La miniatura abre el PDF vectorial; al lado está el código que lo
@@ -273,9 +273,9 @@ footer p{{margin:0 0 10px; max-width:70ch}}
 {chr(10).join(cuerpo)}
 
 <footer>
-  <p>Esta es la totalidad de las figuras del libro a la fecha indicada, no una selección; el
-  libro, en cambio, sigue en redacción y el catálogo crece con él. El resto del material de
-  muestra está en <a href="index.html">la página principal</a>.</p>
+  <p>El libro sigue en redacción y el catálogo se rearma con él, de modo que lo que se ve acá
+  corresponde a la fecha indicada. El resto del material de muestra está en
+  <a href="index.html">la página principal</a>.</p>
   <p>Javier Ignacio Velez · Departamento de Ingeniería en Tecnologías Electrónicas ·
   Universidad Tecnológica Nacional, Facultad Regional Mendoza ·
   <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">CC BY-NC-SA 4.0</a></p>
