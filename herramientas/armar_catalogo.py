@@ -110,7 +110,10 @@ for carpeta, num in CAPS:
             destino = os.path.join(raiz_fig, "cap%02d" % num, "sec" + sec, fig)
             os.makedirs(destino, exist_ok=True)
             for a in sorted(os.listdir(origen)):
-                if a.endswith(BASURA) or os.path.isdir(os.path.join(origen, a)): continue
+                # los .synctex llevan sufijos variables —.gz, (busy)— mientras
+                # el repo de origen compila, así que se descartan por nombre
+                if a.endswith(BASURA) or ".synctex" in a: continue
+                if os.path.isdir(os.path.join(origen, a)): continue
                 shutil.copy2(os.path.join(origen, a), os.path.join(destino, a))
 
             os.makedirs(os.path.join(raiz_mini, "cap%02d" % num), exist_ok=True)

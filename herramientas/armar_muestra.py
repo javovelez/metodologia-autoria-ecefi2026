@@ -66,6 +66,16 @@ for s in "12345":
 # --- ASyS: guías de trabajos prácticos 1 a 7, con sus resoluciones -----------
 for n in range(1, 8):
     copiar_dir("libro_asys/Gabinete/tp%d" % n, "asys/guias/tp%d" % n)
+# El TP4 viene partido en dos en el repo de origen, bajo nombres con mayúscula y
+# espacio que no sirven para una URL. Se publican en minúscula y con guion.
+for viejo, nuevo in [("Parte a", "parte-a"), ("Parte b", "parte-b")]:
+    origen = os.path.join(DEST, "asys/guias/tp4", viejo)
+    if os.path.isdir(origen):
+        os.rename(origen, os.path.join(DEST, "asys/guias/tp4", nuevo))
+# La carpeta del TP4 lleva adentro una copia del capítulo 6 del libro, como
+# material de consulta. Del libro se publica el capítulo 5 y ningún otro.
+_cap6 = os.path.join(DEST, "asys/guias/tp4/parte-a/Capitulo06.pdf")
+if os.path.isfile(_cap6): os.remove(_cap6)
 
 # --- ASyS: animaciones (se excluyen las del capítulo 10, aún sin terminar) ---
 ANIM = ["convolucion_dos_pulsos", "convolucion_pulso_exp", "convolucion_dos_exp",
@@ -82,16 +92,6 @@ for a in ANIM:
             elif f.startswith("moodle_"):
                 os.remove(os.path.join(raiz, f))
 
-# --- ASyS: figuras 3D del capítulo 2 (fuente TikZ y salida compilada) --------
-FIG3D = ["22/fig_espirales_omega", "22/fig_espirales_sigma", "22/fig_vector_giratorio",
-         "24/fig_superficie_magnitud", "24/fig_superficies_z2",
-         "26/fig_topografia_polos_ceros", "28/taylor_complejo",
-         "28/taylor_vs_laurent", "28/fig_regiones_convergencia"]
-for ruta in FIG3D:
-    sec, fig = ruta.split("/")
-    copiar_dir("libro_asys/02capitulo/%s/figures/%s" % (sec, fig),
-               "asys/figuras-3d/%s" % fig)
-
 # --- ASyS: presentaciones de clase, solo la salida compilada -----------------
 # Las dieciséis clases cubren los capítulos 1 a 10, así que ninguna cae en el
 # material sin revisar. La fuente Beamer no se publica: incluye figuras del libro
@@ -102,9 +102,16 @@ for n in range(1, 17):
            "asys/presentaciones/%s.pdf" % clase)
 
 # --- TC2: trabajo práctico 4 (enunciado, resolución y presentación) ----------
-copiar_dir("libro-tc2/gabinete/tp4", "tc2/tp4")
-for f in os.listdir(os.path.join(DEST, "tc2/tp4")):
-    if f.endswith(".docx"): os.remove(os.path.join(DEST, "tc2/tp4", f))
+# El subárbol espeja la raíz del repo de origen para que los \input relativos
+# de las fuentes resuelvan donde quedan publicadas.
+copiar("libro-tc2/setup.tex", "tc2/setup.tex")
+copiar_dir("libro-tc2/gabinete/tp4", "tc2/gabinete/tp4")
+# El enunciado no se publica: está en revisión. Se publican la resolución y la
+# presentación con que se dicta.
+_tp4 = os.path.join(DEST, "tc2/gabinete/tp4")
+for f in os.listdir(_tp4):
+    if f.endswith(".docx") or f.startswith("TC-TP4-24-enunciado"):
+        os.remove(os.path.join(_tp4, f))
 
 # --- RNP: cuaderno entregable, sin resolver ---------------------------------
 # La fuente .lab.md queda fuera: lleva adentro los bloques ```python solution```.
