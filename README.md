@@ -17,7 +17,7 @@ Electrónicas, Universidad Tecnológica Nacional, Facultad Regional Mendoza.
 El material de las tres asignaturas está en producción. Acá se publica solo una selección,
 elegida para que el lector pueda examinar el método y sus resultados sin acceder a los
 repositorios completos. **Falta la mayor parte** de los capítulos, de las guías, de las
-presentaciones, de las animaciones y de los bancos de evaluación. Lo publicado corresponde al
+animaciones y de los bancos de evaluación. Lo publicado corresponde al
 estado de avance del **7 de septiembre de 2026** y está sujeto a revisión.
 
 Tampoco se publica material resuelto que esté en uso: las fuentes `.lab.md` de los
@@ -45,6 +45,7 @@ fuera.
 | `asys/figuras/` | Las 201 figuras que el texto de los capítulos 1 a 10 referencia, cada una con su fuente TikZ y su PDF vectorial |
 | `asys/miniaturas/` | Rasterizaciones de esas figuras, para el catálogo |
 | `asys/capitulo-05/` | Un capítulo completo: PDF, las cinco secciones en LaTeX y sus figuras |
+| `asys/presentaciones/` | Las presentaciones Beamer de las dieciséis clases, en PDF. La fuente no se publica: incluye figuras del libro por ruta relativa y fuera de su repositorio esas rutas no resolverían |
 | `asys/guias/` | Las siete guías de trabajos prácticos con sus resoluciones, fuente y PDF |
 | `asys/animaciones/` | Diez animaciones interactivas, cada una una página HTML autónoma que no pide nada a la red |
 | `tc2/gabinete/tp4/` | Teoría de los Circuitos II: resolución y presentación de un trabajo práctico, con los `.sch` que alimentan la biblioteca de esquemáticos. El enunciado no se publica: está en revisión |

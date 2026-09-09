@@ -10,7 +10,9 @@ BASURA = (".aux", ".log", ".out", ".fls", ".fdb_latexmk", ".synctex.gz", ".nav",
 DIRS_FUERA = {"archivo", "archivo_ignorar", "_legacy", "__pycache__", ".git"}
 
 def sirve(nombre):
-    return not (nombre.endswith(BASURA) or nombre == ".DS_Store")
+    # Los .synctex aparecen con sufijos variables —.gz, (busy)— mientras compila
+    # el repo de origen, así que se descartan por nombre y no por extensión.
+    return not (nombre.endswith(BASURA) or nombre == ".DS_Store" or ".synctex" in nombre)
 
 def copiar_dir(src, dst, solo=None):
     src = os.path.join(PROY, src); dst = os.path.join(DEST, dst)
@@ -89,6 +91,15 @@ for ruta in FIG3D:
     sec, fig = ruta.split("/")
     copiar_dir("libro_asys/02capitulo/%s/figures/%s" % (sec, fig),
                "asys/figuras-3d/%s" % fig)
+
+# --- ASyS: presentaciones de clase, solo la salida compilada -----------------
+# Las dieciséis clases cubren los capítulos 1 a 10, así que ninguna cae en el
+# material sin revisar. La fuente Beamer no se publica: incluye figuras del libro
+# por ruta relativa y fuera de su repo esos \includegraphics no resolverían.
+for n in range(1, 17):
+    clase = "clase%02d" % n
+    copiar("libro_asys/Presentaciones/%s/%s.pdf" % (clase, clase),
+           "asys/presentaciones/%s.pdf" % clase)
 
 # --- TC2: trabajo práctico 4 (enunciado, resolución y presentación) ----------
 copiar_dir("libro-tc2/gabinete/tp4", "tc2/tp4")
