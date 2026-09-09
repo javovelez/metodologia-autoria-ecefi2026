@@ -160,7 +160,7 @@ Lookup en `NOTATION.md`. Resumen rápido:
 
 ### 3.5. Entornos y figuras
 
-Entornos `resultado` y `nota`: ver `CLAUDE.md §6` para uso, y `NOTATION.md` para reglas de contenido.
+Entornos `resultado` y `nota`: ver `AGENTS.md §6` para uso, y `NOTATION.md` para reglas de contenido.
 
 Figuras: usar `create_2d_figures` para 2D, `create_block_diagrams` para diagramas de flujo de señal, y `3d_figures` para superficies 3D. Convenciones técnicas en `README.md §4`.
 

@@ -8,7 +8,7 @@ Referencia rápida del protocolo de trabajo con Claude Code en este proyecto.
 
 | Archivo | Rol | Se carga… |
 |---|---|---|
-| `CLAUDE.md` | Brief de arranque: estructura del proyecto, convenciones, reglas operativas | **Automático** al inicio de cada conversación |
+| `AGENTS.md` | Brief de arranque: estructura del proyecto, convenciones, reglas operativas | **Automático** al inicio de cada conversación |
 | `README.md` | Referencia técnica completa: arquitectura, figuras, estilo (§8), convenciones LaTeX (§9) | A pedido, cuando hay dudas de profundidad |
 | `avance.md` | Registro de lo ya escrito: temas, notación, ejemplos, figuras por sección | A pedido, antes de redactar contenido nuevo |
 | `Gabinete/gabinete.md` | Especificaciones de TPs: formato, estilo, figuras | A pedido al trabajar en TPs |
@@ -48,7 +48,7 @@ necesito una figura que muestre la respuesta al impulso h[n] para n = -2..5
 ### 3a. Escribir una sección del libro
 
 ```
-1. [automático] CLAUDE.md cargado → Claude conoce el proyecto
+1. [automático] AGENTS.md cargado → Claude conoce el proyecto
 2. [tú] "Escribir sección X.Y: [tema]" (+ invocar /write_section)
 3. [Claude] Lee avance.md → verifica notación y contenido existente
 4. [Claude] Lee README.md §8 → aplica reglas de estilo
@@ -103,7 +103,7 @@ necesito una figura que muestre la respuesta al impulso h[n] para n = -2..5
 
 ## 4. Reglas que Claude ya conoce (no necesitás repetirlas)
 
-Están en `CLAUDE.md` y en cada skill. Se aplican automáticamente:
+Están en `AGENTS.md` y en cada skill. Se aplican automáticamente:
 
 | Regla | Qué hace Claude |
 |---|---|
@@ -139,7 +139,7 @@ Están en `CLAUDE.md` y en cada skill. Se aplican automáticamente:
 
 ```text
 / (Raíz)
-├── CLAUDE.md                        ← Brief auto-cargado (no editar a mano salvo cambios de protocolo)
+├── AGENTS.md                        ← Brief auto-cargado (no editar a mano salvo cambios de protocolo)
 ├── WORKFLOW.md                      ← Este archivo
 ├── README.md                        ← Referencia técnica completa del libro
 ├── avance.md                        ← Registro de contenido ya escrito
@@ -192,4 +192,4 @@ Si surge un nuevo tipo de tarea recurrente (p. ej. "escribir ejercicios de TP" o
    ---
    ```
 3. Documentar: pre-flight, estructura de archivo, estilo, convenciones.
-4. Agregar el skill a la tabla de skills en `CLAUDE.md`.
+4. Agregar el skill a la tabla de skills en `AGENTS.md`.

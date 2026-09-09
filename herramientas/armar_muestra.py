@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Ensambla el repositorio de muestras a partir de los repos de cátedra (solo lectura)."""
-import os, shutil, sys
+import io, os, shutil, sys
 
 PROY = os.path.expanduser("~/Documents/proyectos")
 DEST = sys.argv[1]
@@ -102,9 +102,29 @@ for lab in ["3a", "4a", "5a"]:
            "rnp/laboratorios/Laboratorio_%s.ipynb" % lab)
 
 # --- El método: especificaciones e instrucciones modulares de ASyS -----------
-for f in ["CLAUDE.md", "STYLE.md", "NOTATION.md", "WORKFLOW.md"]:
-    copiar("libro_asys/%s" % f, "metodo/especificaciones/%s" % f)
+# El brief de arranque se publica como AGENTS.md. En el repo de cátedra lleva el
+# nombre que carga por defecto la herramienta con la que se trabaja; ese nombre es
+# de la herramienta y no del método, así que acá no se arrastra. README.md queda
+# libre para lo que nombra en el repo de origen: la referencia técnica del libro.
+BRIEF_ORIGEN, BRIEF = "CLAUDE.md", "AGENTS.md"
+ESPECIFICACIONES = [(BRIEF_ORIGEN, BRIEF), ("STYLE.md", "STYLE.md"),
+                    ("NOTATION.md", "NOTATION.md"), ("WORKFLOW.md", "WORKFLOW.md")]
+for origen, publicado in ESPECIFICACIONES:
+    copiar("libro_asys/%s" % origen, "metodo/especificaciones/%s" % publicado)
 for s in ["write_section", "review_section", "create_2d_figures", "3d_figures"]:
     copiar_dir("libro_asys/.claude/skills/%s" % s, "metodo/skills/%s" % s)
+
+# El renombre alcanza a las referencias al brief dentro de lo publicado: si no,
+# WORKFLOW.md y los skills apuntarían a un archivo que en el árbol no existe.
+# Solo cambia el nombre del archivo; el resto del texto se publica tal cual.
+for raiz, _, archivos in os.walk(os.path.join(DEST, "metodo")):
+    for a in archivos:
+        if not a.endswith(".md"): continue
+        ruta = os.path.join(raiz, a)
+        with io.open(ruta, encoding="utf-8") as fh:
+            texto = fh.read()
+        if BRIEF_ORIGEN not in texto: continue
+        with io.open(ruta, "w", encoding="utf-8") as fh:
+            fh.write(texto.replace(BRIEF_ORIGEN, BRIEF))
 
 print("ensamblado en", DEST)
