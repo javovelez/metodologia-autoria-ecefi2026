@@ -282,9 +282,27 @@ footer p{{margin:0 0 10px; max-width:70ch}}
   <p>Javier Ignacio Velez · Departamento de Ingeniería en Tecnologías Electrónicas ·
   Universidad Tecnológica Nacional, Facultad Regional Mendoza ·
   <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">CC BY-NC-SA 4.0</a></p>
+  <p>Las visitas de esta página se cuentan con <a href="https://www.goatcounter.com/">GoatCounter</a>, sin cookies ni rastreo entre sitios.</p>
 </footer>
 
 </div>
+<script data-goatcounter="https://javovelez.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<script>
+  // Los PDF, los cuadernos y las animaciones los sirve GitHub Pages sin pasar por
+  // esta página, así que no generan una visita: se cuentan al hacer clic. El mismo
+  // bloque está en la otra página; si se toca acá, tocarlo allá.
+  document.addEventListener("click", function (e) {{
+    var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+    if (!a) return;
+    var h = a.getAttribute("href");
+    if (!h || /^(https?:|mailto:|#)/i.test(h)) return;
+    if (!/\.(pdf|ipynb)$/i.test(h) && h.indexOf("asys/animaciones/") !== 0) return;
+    if (window.goatcounter && window.goatcounter.count) {{
+      window.goatcounter.count({{path: h, title: a.textContent.trim(), event: true}});
+    }}
+  }});
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 <script>
