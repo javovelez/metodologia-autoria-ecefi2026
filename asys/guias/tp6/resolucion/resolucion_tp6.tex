@@ -130,7 +130,7 @@
 	\end{consigna}
 
 	\begin{enumerate}
-		\item \textbf{La secuencia.} Muestrear es evaluar la señal en $t = n\,\Delta t$:
+		\item Muestrear es evaluar la señal en $t = n\,\Delta t$:
 		\[
 			x[n] = x(n\,\Delta t)
 			     = 1{,}2\cos\!\big(2\pi\cdot 100 \cdot n\cdot 1{,}25\times 10^{-3}\big)
@@ -146,7 +146,7 @@
 		Ese número es el ángulo que el vector giratorio asociado avanza entre una muestra y
 		la siguiente, $\pi/4$ rad ($45^\circ$).
 
-		\item \textbf{Muestras por ciclo y período fundamental.} Si cada muestra avanza $\pi/4$,
+		\item Si cada muestra avanza $\pi/4$,
 		completar la vuelta de $2\pi$ requiere
 		\[
 			\frac{2\pi}{\lambda} = \frac{2\pi}{\pi/4} = 8 \ \text{muestras por ciclo}.
@@ -164,7 +164,7 @@
 		cuentas coinciden ---ocho muestras por ciclo y $N = 8$--- porque $k=1$; más adelante
 		veremos casos donde no coinciden.
 
-		\item \textbf{La grilla.} Con cuatro bits en signo-magnitud, un bit lleva el signo y
+		\item Con cuatro bits en signo-magnitud, un bit lleva el signo y
 		quedan tres para la magnitud, que recorre los enteros $m = 0, 1, \dots, 7$. Con paso
 		$q = 0{,}2$ V, el mayor valor representable es
 		\[
@@ -182,7 +182,7 @@
 		\]
 		repartidos entre $-1{,}4$ V y $+1{,}4$ V.
 
-		\item \textbf{La tabla.} El procedimiento, muestra por muestra, es: evaluar $x[n]$,
+		\item El procedimiento, muestra por muestra, es: evaluar $x[n]$,
 		dividir por el paso, redondear al entero más cercano ---esa es la magnitud $m$---,
 		escribir el signo en el bit más significativo y reconstruir el valor cuantizado como
 		$x_q[n] = \pm m\,q$. Sobre $n=1$, por ejemplo:
@@ -195,7 +195,7 @@
 
 		La novena muestra repetiría la primera, como corresponde a $N=8$.
 
-		\item \textbf{El error de redondeo.} Redondear al nivel más cercano no puede apartarse
+		\item Redondear al nivel más cercano no puede apartarse
 		más de medio paso de grilla:
 		\[
 			|e| \leq \frac{q}{2} = \frac{0{,}2}{2} = 0{,}1\ \text{V}.
@@ -269,11 +269,11 @@
 	y que fuera de esos índices la secuencia vale cero.
 
 	\begin{enumerate}
-		\item \textbf{La secuencia y su soporte.} El soporte ---el intervalo de índices donde
+		\item El soporte ---el intervalo de índices donde
 		la secuencia no es nula--- es $[-2,2]$. La gráfica es el panel (a) de la
 		Figura~\ref{fig:sol_ej2}: un segmento vertical por muestra, rematado con un punto.
 
-		\item \textbf{Las tres transformadas.} El soporte se razona antes de mover un solo
+		\item El soporte se razona antes de mover un solo
 		valor, porque así se sabe de antemano dónde tiene que caer cada muestra.
 
 		\emph{Desplazamiento $x[n-3]$.} La muestra que estaba en el índice $m$ pasa al índice
@@ -307,7 +307,7 @@
 		$\{\,\underset{\uparrow}{-2}\ \ 1\ \ 3\ \ 2\ \ -1\,\}$. Las cuatro secuencias están en
 		la Figura~\ref{fig:sol_ej2}.
 
-		\item \textbf{Cuáles son causales.} Una secuencia es causal si vale cero para todo
+		\item Una secuencia es causal si vale cero para todo
 		$n<0$. Mirando los soportes: $x[n]$ no lo es ($x[-2]\neq0$) y $x[-n]$ tampoco. En
 		cambio $x[n-3]$, con soporte $[1,5]$, y $x[2-n]$, con soporte
 		$[0,4]$, sí lo son. Vale la pena notar el mecanismo: el desplazamiento a la
@@ -346,7 +346,7 @@
 	$x[4]=1$, $x[5]=3$.
 
 	\begin{enumerate}
-		\item \textbf{Decimación $y[n]=x[2n]$.} Se evalúa $x$ en los índices pares:
+		\item Se evalúa $x$ en los índices pares:
 		\[
 			y[0]=x[0]=1,\quad y[1]=x[2]=2,\quad y[2]=x[4]=1,\quad y[3]=x[6]=0,
 		\]
@@ -357,7 +357,7 @@
 		De las seis muestras originales sobreviven tres: las de índice par. Las de índice
 		impar ---los valores $-1$, $0$ y $3$--- desaparecen.
 
-		\item \textbf{Interpolación $w[n]=x[n/3]$.} La definición pide que $n/3$ sea entero;
+		\item La definición pide que $n/3$ sea entero;
 		donde no lo es, la secuencia vale cero. Las muestras heredadas de $x$ caen en los
 		múltiplos de tres:
 		\[
@@ -368,7 +368,7 @@
 		Figura~\ref{fig:sol_ej3} muestra las tres secuencias sobre el mismo eje, de modo que
 		se vea cómo una se comprime y la otra se estira.
 
-		\item \textbf{Reversibilidad.} A partir de $y[n]$ \emph{no} se puede recuperar $x[n]$.
+		\item A partir de $y[n]$ \emph{no} se puede recuperar $x[n]$.
 		La decimación descartó $x[1]$, $x[3]$ y $x[5]$, y esos valores no están en ninguna
 		parte de $y$: cualquier secuencia que coincida con $x$ en los índices pares produce la
 		misma $y$. La operación borra información.
@@ -380,7 +380,7 @@
 		La asimetría tiene una lectura simple: la decimación descarta muestras, la interpolación
 		agrega ceros. Solo la segunda es reversible.
 
-		\item \textbf{Por qué el escalado temporal no se traslada.} En tiempo continuo, $x(at)$ es una
+		\item En tiempo continuo, $x(at)$ es una
 		sola operación bien definida para cualquier $a$ real: la señal existe en todo instante,
 		así que $x(at)$ tiene un valor para cada $t$. En tiempo discreto, la secuencia solo
 		tiene valores sobre los enteros, y ahí las dos direcciones se comportan de manera distinta:
@@ -426,7 +426,7 @@
 	La secuencia es $x[-2]=6$, $x[-1]=4$, $x[0]=-2$, $x[1]=-2$, y cero fuera.
 
 	\begin{enumerate}
-		\item \textbf{Las dos componentes.} El primer paso es siempre construir $x[-n]$,
+		\item El primer paso es siempre construir $x[-n]$,
 		porque las dos fórmulas la necesitan. Rebatir intercambia el valor del índice $m$
 		con el del índice $-m$:
 		\[
@@ -443,11 +443,11 @@
 		\]
 		La Tabla~\ref{tab:sol_ej4} recoge el cálculo completo.
 
-		\item \textbf{Las gráficas.} Las tres secuencias están en la
+		\item Las tres secuencias están en la
 		Figura~\ref{fig:sol_ej4}. Se ve de un vistazo lo que la tabla dice con números:
 		$x_p$ es simétrica respecto del eje vertical y $x_i$ es antisimétrica.
 
-		\item \textbf{Las dos verificaciones.} La primera es que $x_i[0]=0$, y así
+		\item La primera es que $x_i[0]=0$, y así
 		resulta, porque la fórmula en $n=0$ pide $\tfrac12(x[0]-x[0])$, que vale cero
 		cualquiera sea la secuencia. Toda componente impar se anula en el origen.
 
@@ -570,7 +570,7 @@
 	\end{figure}
 
 	\begin{enumerate}
-		\item \textbf{Orden por velocidad de oscilación.} La velocidad la fija el
+		\item La velocidad la fija el
 		\emph{tamaño} del paso angular, es decir $|\lambda|$ una vez reducido, sin importar el
 		sentido: un vector que retrocede $30^\circ$ por muestra oscila tan rápido como uno que
 		avanza $30^\circ$. Entonces
@@ -586,7 +586,7 @@
 		La más lenta es $\lambda_5$ y las más rápidas son $\lambda_4$ y $\lambda_6$, que están
 		justo en el tope: alternan $+1,-1,+1,\dots$
 
-		\item \textbf{Qué pares coinciden y en qué.} Aquí hay dos hechos distintos que se
+		\item Aquí hay dos hechos distintos que se
 		confunden con facilidad.
 
 		\emph{Misma secuencia $e^{j\lambda n}$}: pasa cuando las frecuencias reducidas son
@@ -608,7 +608,7 @@
 		Los dos vectores giran a la misma velocidad en sentidos opuestos: comparten el coseno
 		---que no distingue el sentido del giro--- pero son secuencias distintas.
 
-		\item \textbf{Por qué sumar $2\pi$ no cambia nada.} La cuenta es corta:
+		\item La cuenta es corta:
 		\[
 			e^{j(\lambda+2\pi)n}
 			= e^{j\lambda n}\,e^{j2\pi n}
@@ -646,7 +646,7 @@
 	segundo.
 
 	\begin{enumerate}
-		\item \textbf{Los cuatro valores de $\lambda$.} Se aplica $\lambda = \omega\,\Delta t$:
+		\item Se aplica $\lambda = \omega\,\Delta t$:
 		\[
 			\begin{aligned}
 				\Delta t = 1\ \text{ms}: &\quad \lambda = 100\pi\cdot 10^{-3} = 0{,}1\pi = \tfrac{\pi}{10} && (18^\circ),\\
@@ -656,7 +656,7 @@
 			\end{aligned}
 		\]
 
-		\item \textbf{Giro aparente.} La reducción a $(-\pi,\pi]$ es la que dice qué ve quien
+		\item La reducción a $(-\pi,\pi]$ es la que dice qué ve quien
 		solo tiene las fotos, porque de todos los ángulos que llevan al mismo punto la
 		secuencia registra el más corto.
 		\begin{itemize}[nosep]
@@ -679,7 +679,7 @@
 		Los dos últimos casos son el mismo fenómeno con distinta intensidad: la secuencia
 		registra dónde quedó el vector, no cuántas vueltas dio para llegar ahí.
 
-		\item \textbf{Cuándo se puede seguir el giro.} El giro es inequívoco mientras el avance
+		\item El giro es inequívoco mientras el avance
 		por foto sea menor que media vuelta, porque en cuanto pasa de $\pi$ el camino corto
 		entre dos fotos consecutivas es el de sentido contrario. La condición es
 		\[
@@ -836,7 +836,7 @@
 	partir de $\lambda$, se fija $N$ y se busca qué $\lambda$ lo produce.
 
 	\begin{enumerate}
-		\item \textbf{Los valores posibles.} Pedir período fundamental $N=10$ es pedir
+		\item Pedir período fundamental $N=10$ es pedir
 		\[
 			\frac{\lambda}{2\pi}=\frac{k}{10}
 			\qquad\text{con } \frac{k}{10} \text{ \emph{irreducible}},
@@ -852,7 +852,7 @@
 		Para cada uno, $\lambda = 2\pi k/10 = \pi k/5$ y $\Delta t = \lambda/20 = \pi k/100$
 		segundos. La Tabla~\ref{tab:sol_ej8} reúne las cuatro soluciones.
 
-		\item \textbf{Ciclos de $x(t)$ por período de la secuencia.} El período de la señal
+		\item El período de la señal
 		continua es $T_0 = 2\pi/20 = \pi/10$ s. Un período de la secuencia dura $N$ muestras,
 		es decir
 		\[
@@ -869,7 +869,7 @@
 		entero entre muestra y muestra---, de modo que provienen de ciclos distintos aunque
 		describan la misma secuencia periódica.
 
-		\item \textbf{Cuáles cumplen Nyquist.} La condición de muestrear por encima del doble de
+		\item La condición de muestrear por encima del doble de
 		la frecuencia de la señal es
 		\[
 			\omega_s > 2\omega
@@ -933,7 +933,7 @@
 	\end{consigna}
 
 	\begin{enumerate}
-		\item \textbf{Las armónicas distintas.} Con $N=6$ la fundamental es
+		\item Con $N=6$ la fundamental es
 		$\lambda_1 = 2\pi/6 = \pi/3$, y las armónicas son sus múltiplos:
 		\[
 			\phi_k[n] = e^{j\frac{2\pi}{6}kn} = e^{j\frac{\pi}{3}kn},
@@ -953,7 +953,7 @@
 		fuerte con el tiempo continuo, donde las armónicas $e^{jk\omega_0 t}$ son infinitas y
 		todas distintas.
 
-		\item \textbf{Las armónicas de frecuencia mayor que $\pi$.} Las dos últimas del
+		\item Las dos últimas del
 		conjunto pasan de $\pi$,
 		\[
 			\lambda_4 = \frac{4\pi}{3}\ (240^\circ),
@@ -1017,7 +1017,7 @@
 		el vector empieza a girar en el otro sentido y cada vez más despacio, hasta que en
 		$k=6$ vuelve a estar quieto.
 
-		\item \textbf{Mismo período, distinta velocidad.} Se aplica la condición de
+		\item Se aplica la condición de
 		periodicidad a los dos valores propuestos:
 		\[
 			\lambda = \frac{2\pi}{5}:\ \ \frac{\lambda}{2\pi}=\frac{1}{5}
@@ -1141,7 +1141,7 @@
 		amortiguada puede tener. Todo el eje real negativo del plano complejo produce este
 		signo alternante.
 
-		\item \textbf{Energía o potencia.} Para la secuencia del inciso (a), acotando el coseno
+		\item Para la secuencia del inciso (a), acotando el coseno
 		por uno,
 		\[
 			E_x = \sum_{n=0}^{\infty}\big|(0{,}9)^n\cos(\pi n/6)\big|^2
@@ -1164,7 +1164,7 @@
 		que $(0{,}9)^n$ crece sin cota cuando $n\to-\infty$, y ninguna de las dos sería de
 		energía.
 
-		\item \textbf{Amplitud constante.} La parte real es
+		\item La parte real es
 		$\operatorname{Re}\{x[n]\} = r^n\cos(\lambda n)\,u[n]$, así que la amplitud la fija la
 		envolvente $r^n$, y esa envolvente es constante solo si $r^n=1$ para todo $n$, es decir
 		si
@@ -1234,8 +1234,7 @@
 	qué índice ``se enciende'' cada escalón y armar la tabla de tramos.
 
 	\begin{enumerate}
-		\item \textbf{Las cuatro gráficas.}
-		\begin{enumerate}[label=\textup{\roman*.}, leftmargin=*, itemsep=4pt]
+		\item \begin{enumerate}[label=\textup{\roman*.}, leftmargin=*, itemsep=4pt]
 				\item $x_1[n]=u[n+2]-u[n-3]$. El primer escalón vale uno desde $n=-2$; el
 			segundo, desde $n=3$. La resta vale uno donde el primero ya se encendió y el segundo
 			todavía no:
@@ -1278,7 +1277,7 @@
 			índices. Las cuatro secuencias están en la Figura~\ref{fig:sol_ej11}.
 		\end{enumerate}
 
-		\item \textbf{Representación de $x_3$ por impulsos.} La fórmula general
+		\item La fórmula general
 		$x[n]=\sum_k x[k]\,\delta[n-k]$ se aplica escribiendo un término por cada muestra no
 		nula, con la muestra como coeficiente y su índice como desplazamiento:
 		\[
@@ -1335,7 +1334,7 @@
 	\]
 
 	\begin{enumerate}
-		\item \textbf{Ángulo por cuadro.} Con $20$ vueltas por segundo, la velocidad angular es
+		\item Con $20$ vueltas por segundo, la velocidad angular es
 		$\omega = 2\pi\cdot 20 = 40\pi$ rad/s, y entre cuadro y cuadro la marca avanza
 		\[
 			\lambda = \omega\,\Delta t = \frac{40\pi}{24} = \frac{5\pi}{3}\ \text{rad}
@@ -1345,7 +1344,7 @@
 		vueltas por segundo completa $20/24 = 5/6$ de vuelta, y cinco sextos de $2\pi$ son
 		$5\pi/3$.
 
-		\item \textbf{Lo que se ve en la pantalla.} La marca avanza casi una vuelta entera por
+		\item La marca avanza casi una vuelta entera por
 		cuadro, así que el camino corto entre dos posiciones consecutivas va para el otro lado.
 		Reduciendo al intervalo $(-\pi,\pi]$:
 		\[
@@ -1360,7 +1359,7 @@
 		Una rueda que gira a $20$ vueltas por segundo hacia adelante se ve como una de $4$
 		vueltas por segundo hacia atrás.
 
-		\item \textbf{Cuándo parece quieta.} La rueda aparece quieta si entre cuadro y cuadro la
+		\item La rueda aparece quieta si entre cuadro y cuadro la
 		marca vuelve exactamente a su posición, es decir si el avance es un número entero de
 		vueltas:
 		\[
@@ -1374,7 +1373,7 @@
 		---además del caso trivial de la rueda detenida---. La velocidad de filmación queda
 		``ciega'' a sus propios múltiplos.
 
-		\item \textbf{Máxima velocidad sin ambigüedad.} El giro se sigue bien mientras el avance
+		\item El giro se sigue bien mientras el avance
 		por cuadro no llegue a media vuelta:
 		\[
 			|\lambda| < \pi
@@ -1427,7 +1426,7 @@
 	La señal está limitada en banda con $\omega_M = 3000\pi$ rad/s.
 
 	\begin{enumerate}
-		\item \textbf{Muestreo con $\Delta t = 0{,}2$ ms.} La frecuencia de muestreo es
+		\item La frecuencia de muestreo es
 		\[
 			\omega_s = \frac{2\pi}{\Delta t} = \frac{2\pi}{0{,}2\times10^{-3}}
 			         = 10\,000\pi \ \text{rad/s} \approx 31\,416\ \text{rad/s},
@@ -1455,7 +1454,7 @@
 		eje en $\omega_s$ deja cada copia sobre la posición de su vecina y la figura queda como
 		estaba. En símbolos, $X_s(j(\omega+\omega_s)) = X_s(j\omega)$.
 
-		\item \textbf{Muestreo con $\Delta t = 0{,}4$ ms.} Al duplicar el intervalo, la
+		\item Al duplicar el intervalo, la
 		frecuencia de muestreo se reduce a la mitad y el factor de escala también:
 		\[
 			\omega_s = \frac{2\pi}{0{,}4\times10^{-3}} = 5000\pi\ \text{rad/s}
@@ -1478,7 +1477,7 @@
 		original: el valle que en el caso anterior bajaba hasta cero ahora aparece relleno
 		con contenido que no pertenece ahí. Es lo que se ve en el panel (b).
 
-		\item \textbf{Las mismas gráficas sobre el eje $\lambda$.} Cambiar de unidad es
+		\item Cambiar de unidad es
 		multiplicar cada frecuencia por $\Delta t$. Lo primero que cambia es la separación entre
 		copias, que en los dos casos pasa a ser la misma:
 		\[
@@ -1635,14 +1634,14 @@
 	rad/s, y se muestrea con $\omega_s = 80$ rad/s.
 
 	\begin{enumerate}
-		\item \textbf{Condición de Nyquist.} La velocidad de Nyquist de esta señal es
+		\item La velocidad de Nyquist de esta señal es
 		$2\omega_M = 30\pi \approx 94{,}25$ rad/s, y
 		\[
 			\omega_s = 80 \;<\; 94{,}25 = 2\omega_M .
 		\]
 		\textbf{No se cumple}: se está muestreando por debajo de lo necesario.
 
-		\item \textbf{Componentes bien muestreadas.} El criterio, componente por componente, es
+		\item El criterio, componente por componente, es
 		caer por debajo de la frecuencia de Nyquist $\omega_s/2 = 40$ rad/s:
 		\[
 			6\pi \approx 18{,}85 < 40 \ \checkmark,
@@ -1654,7 +1653,7 @@
 		Las dos primeras quedan bien muestreadas; la de $15\pi$ es la única que viola la
 		condición, y es la que causa todo el problema.
 
-		\item \textbf{La frecuencia alias.} La componente de $\omega_0 = 15\pi$ genera réplicas
+		\item La componente de $\omega_0 = 15\pi$ genera réplicas
 		en $\omega_0 - k\omega_s$; hay que elegir el $k$ que la acerque más al origen, que
 		aquí es $k=1$:
 		\[
@@ -1668,7 +1667,7 @@
 		muestreada, $6\pi \approx 18{,}85$ rad/s, queda lejos. El intruso se instala
 		prácticamente encima de un vecino real.
 
-		\item \textbf{¿Se puede recuperar?} \textbf{No.} Después del muestreo, el alias
+		\item \textbf{No.} Después del muestreo, el alias
 		ocupa \emph{exactamente} la frecuencia $32{,}88$ rad/s, indistinguible de una
 		componente genuina de esa frecuencia que la señal podría haber tenido. Ningún
 		procesamiento posterior ---analógico o digital--- tiene información para separarlas,
@@ -1676,7 +1675,7 @@
 		única defensa es actuar antes: o se filtra la componente rápida en tiempo continuo, o
 		se aumenta la frecuencia de muestreo.
 
-		\item \textbf{Mínima frecuencia de muestreo.} La condición es
+		\item La condición es
 		\[
 			\omega_s > 2\omega_M = 30\pi \approx 94{,}25\ \text{rad/s},
 		\]
@@ -1714,7 +1713,7 @@
 	El espectro es nulo fuera de $|\omega| < 500$ rad/s, así que $\omega_M = 500$ rad/s.
 
 	\begin{enumerate}
-		\item \textbf{Frecuencias características y verificación.} Con $f_s = 150$ Hz,
+		\item Con $f_s = 150$ Hz,
 		\[
 			\omega_s = 2\pi f_s = 300\pi \approx 942{,}5 \ \text{rad/s},
 			\qquad
@@ -1728,7 +1727,7 @@
 		La condición de no solapamiento \textbf{no se cumple}, aunque por poco: bastaría con
 		aumentar la frecuencia de muestreo algo más del $6\%$.
 
-		\item \textbf{Qué se solapa y dónde cae.} Hay dos preguntas distintas y conviene
+		\item Hay dos preguntas distintas y conviene
 		separarlas.
 
 		\emph{Dónde se solapan las copias.} La copia central ocupa hasta $500$ rad/s y la
@@ -1749,11 +1748,11 @@
 			\boxed{\;442{,}5 < |\omega| < 471{,}2 \ \text{rad/s}.\;}
 		\]
 
-		\item \textbf{La gráfica.} La Figura~\ref{fig:sol_ej16} muestra las dos vistas: el
+		\item La Figura~\ref{fig:sol_ej16} muestra las dos vistas: el
 		espectro muestreado completo con sus copias solapadas, y el detalle de la banda base
 		con la zona contaminada.
 
-		\item \textbf{La componente de $\omega = 460$ rad/s.} Como $460 < 471{,}2$, esta
+		\item Como $460 < 471{,}2$, esta
 		componente está por debajo de la frecuencia de Nyquist: su propia réplica cae donde
 		corresponde y no se convierte en alias de nada. Pero $460$ está dentro del tramo
 		contaminado, así que \emph{recibe} el alias de otra componente. Cuál, se despeja de la
@@ -1772,7 +1771,7 @@
 		pero con un error de amplitud del $44\%$, y no hay forma de separar las dos
 		contribuciones.
 
-		\item \textbf{Mínima frecuencia de muestreo.} Se pide $\omega_s > 2\omega_M = 1000$
+		\item Se pide $\omega_s > 2\omega_M = 1000$
 		rad/s, es decir
 		\[
 			f_s > \frac{1000}{2\pi} = 159{,}2\ \text{Hz}.
@@ -1837,9 +1836,7 @@
 	posible el ejercicio.
 
 	\begin{enumerate}
-		\item \textbf{Muestreo con $\omega_s = 2500$ rad/s.}
-
-		\emph{La banda base.} Es la franja $|\omega| < \omega_s/2 = 1250$ rad/s, que es lo que
+		\item \emph{La banda base.} Es la franja $|\omega| < \omega_s/2 = 1250$ rad/s, que es lo que
 		la secuencia guarda. La banda útil llega hasta $\omega_{\max} = 1000$ rad/s, así que
 		entra entera y le sobra una franja libre de $250$ rad/s hasta el borde.
 
@@ -1893,7 +1890,7 @@
 		es el ruido, que empuja la frecuencia máxima de $1000$ a $2000$ rad/s y con ella la
 		velocidad de Nyquist de $2000$ a $4000$ rad/s.
 
-		\item \textbf{Dos maneras de evitarlo.} Las dos estrategias atacan el problema desde
+		\item Las dos estrategias atacan el problema desde
 		lados opuestos: una elimina el ruido, la otra le hace lugar.
 
 		\emph{Primera: filtrar antes de muestrear.} Se intercala un pasabajos analógico
@@ -1935,7 +1932,7 @@
 		filtro una banda de transición más ancha, y con eso el filtro puede ser de menor orden,
 		pero no lo reemplaza.
 
-		\item \textbf{Por qué el antialiasing es analógico y va antes.} Porque después del
+		\item Porque después del
 		muestreo ya es tarde. Una vez que las réplicas del ruido se sumaron sobre la banda
 		útil, la señal y el alias ocupan exactamente las mismas frecuencias, y no queda ninguna
 		característica que permita separarlos: cualquier filtro que borre el alias borra
@@ -1945,7 +1942,7 @@
 		muestrear, el ruido vive en $[1500,2000]$ y basta un pasabajos común para sacarlo;
 		después de muestrear, vive en $[500,1000]$, encima de la señal.
 
-		\item \textbf{Por qué el corte se ubica por debajo de la frecuencia de Nyquist.} Porque
+		\item Porque
 		los filtros reales no cortan de manera abrupta: entre la banda de paso y la banda de
 		rechazo hay una \emph{banda de transición} donde la atenuación crece gradualmente. Si el
 		corte se pusiera justo en $\omega_s/2$, todo lo que cae en esa transición pasaría
@@ -2013,7 +2010,7 @@
 	\end{consigna}
 
 	\begin{enumerate}
-		\item \textbf{La banda de audio sobre el eje $\lambda$.} Con $f_s = 44{,}1$ kHz se
+		\item Con $f_s = 44{,}1$ kHz se
 		aplica $\lambda = 2\pi f/f_s$ a los dos extremos:
 		\[
 			\lambda_{\min} = \frac{2\pi\cdot 20}{44\,100} = 2{,}85\times10^{-3}\ \text{rad}
@@ -2032,7 +2029,7 @@
 		apenas un $10{,}25\%$ por encima; ese margen chico en hertz es el mismo margen chico
 		que se ve entre $0{,}907\pi$ y $\pi$.
 
-		\item \textbf{El muestreo que iguala los dos tramos.} Se pide que la señal de vibración
+		\item Se pide que la señal de vibración
 		llegue al mismo $\lambda_{\max}$, así que se iguala y se despeja la frecuencia de
 		muestreo:
 		\[
@@ -2053,7 +2050,7 @@
 		cociente. El intervalo de muestreo, en cambio, se estira cuarenta veces: $22{,}7\
 		\mu$s para el audio contra $0{,}907$ ms para la vibración.
 
-		\item \textbf{Las dos representaciones.} Son la misma, y ese es el punto. Los dos
+		\item Son la misma, y ese es el punto. Los dos
 		paneles de la Figura~\ref{fig:sol_ej18} tienen el dibujo idéntico: la misma banda
 		ocupada entre $-0{,}907\pi$ y $0{,}907\pi$, la misma banda base, las mismas imágenes
 		separadas $2\pi$. Lo único que los distingue es la regla en hertz que va debajo del
@@ -2064,7 +2061,7 @@
 		acelerómetro, ni que los fenómenos que las produjeron transcurren a ritmos que
 		difieren en un factor de cuarenta.
 
-		\item \textbf{La misma $\lambda$ en los dos casos.} Se despeja $f$ de
+		\item Se despeja $f$ de
 		$\lambda = 2\pi f/f_s$, con $f = \lambda f_s/2\pi$:
 		\[
 			\lambda=\frac{\pi}{3}

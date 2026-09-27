@@ -1,6 +1,6 @@
-# Convenciones de Notación — Análisis de Señales y Sistemas
+# Convenciones de notación
 
-Documento de referencia (lookup). Las convenciones son **estrictas**: las alternativas listadas como incorrectas no se usan en ninguna parte del proyecto.
+Documento de consulta. Las convenciones son estrictas, y las alternativas marcadas como incorrectas no se usan en ninguna parte del proyecto.
 
 ---
 
@@ -10,8 +10,8 @@ Documento de referencia (lookup). Las convenciones son **estrictas**: las altern
 |---|---|---|---|
 | Unidad imaginaria | `j` | `i` | Convención de ingeniería; `i` se reserva para corriente eléctrica. |
 | Conjugado complejo | `\bar{z}` o `\overline{z}` | `z^*` | El asterisco se evita en todo el libro. |
-| Parte real | `\operatorname{Re}\{z\}` o `\text{Re}\{z\}` | `Re(z)` con paréntesis | — |
-| Parte imaginaria | `\operatorname{Im}\{z\}` o `\text{Im}\{z\}` | `Im(z)` con paréntesis | — |
+| Parte real | `\operatorname{Re}\{z\}` o `\text{Re}\{z\}` | `Re(z)` con paréntesis | |
+| Parte imaginaria | `\operatorname{Im}\{z\}` o `\text{Im}\{z\}` | `Im(z)` con paréntesis | |
 | Argumento principal | `\operatorname{Arg}(z)` | `arg(z)` | Mayúscula para principal. |
 
 ---
@@ -25,7 +25,7 @@ Documento de referencia (lookup). Las convenciones son **estrictas**: las altern
 | Funciones auxiliares en demostraciones | `a(t)`, `b(t)` | Cuando se necesitan funciones par/impar auxiliares en pruebas de unicidad, usar `a` y `b` para evitar conflicto con los subíndices `p`/`i` y con `p`, `q` enteros en condiciones de racionalidad. |
 | Período fundamental | `T_0` | Subíndice cero. |
 | Frecuencia angular | `\omega_0` | Preferido sobre `2\pi f_0` en el cuerpo del libro. |
-| Frecuencia digital | `\lambda` | Frecuencia de una secuencia, en radianes por muestra: **es un ángulo** (el que avanza el vector giratorio entre muestra y muestra). Relación con el muestreo: `\lambda = \omega \Delta t`. Vive en un intervalo de longitud `2\pi`. Introducida en el Capítulo 8 (tiempo discreto). |
+| Frecuencia digital | `\lambda` | Frecuencia de una secuencia, en radianes por muestra. Es el ángulo que avanza el vector giratorio entre una muestra y la siguiente. Se relaciona con el muestreo por `\lambda = \omega \Delta t` (`eq:frecuencia_digital`). El espectro de una secuencia es periódico de período `2\pi` y se grafica y se razona sobre el intervalo `[-\pi,\pi]`; el círculo se nombra pero no es la representación de trabajo. Introducida en el Capítulo 8. |
 | Intervalo de muestreo | `\Delta t` | Tiempo entre muestras consecutivas. Símbolo primario del proyecto. También llamado `T_s` (*sampling time*) en la literatura en inglés; aclararlo la primera vez que aparece. |
 
 ---
@@ -35,7 +35,7 @@ Documento de referencia (lookup). Las convenciones son **estrictas**: las altern
 | Variable | Forma | Contexto |
 |---|---|---|
 | Laplace | `s = \sigma + j\omega` | Tiempo continuo. |
-| Z | `z = re^{j\lambda}` | Tiempo discreto. El argumento es la **frecuencia digital** $\lambda$, el mismo símbolo que en el resto del bloque discreto: sobre el círculo unidad ($r=1$), $z = e^{j\lambda}$ es el punto donde vive la transformada de Fourier de tiempo discreto. Nunca `\theta`. |
+| Z | `z = re^{j\lambda}` | Tiempo discreto. El argumento es la frecuencia digital $\lambda$, el mismo símbolo que en el resto del bloque discreto. Sobre la circunferencia de radio uno ($r=1$), $z = e^{j\lambda}$ es el punto donde se evalúa la transformada de Fourier de tiempo discreto. Nunca `\theta`. |
 | Plano complejo general | `z = x + jy` | Capítulo de variable compleja. |
 
 ---
@@ -79,15 +79,15 @@ La flecha señala `x[0]`; a la derecha van los índices positivos, a la izquierd
 
 ## Vectores (sentido discreto)
 
-Un vector en sentido discreto —lista finita de coordenadas, $\mathbb{R}^n$ o $\mathbb{C}^n$— se escribe con **negrita y flecha arriba**.
+Un vector en sentido discreto, es decir una lista finita de coordenadas en $\mathbb{R}^n$ o $\mathbb{C}^n$, se escribe con negrita y flecha arriba.
 
 | Elemento | Correcto | Incorrecto | Notas |
 |---|---|---|---|
 | Vector | `\vect{v}` | `\mathbf{v}`, `\vec{v}` solo | Macro definido en `setup.tex` que produce `\vec{\mathbf{v}}`. |
 | Versor de base | `\vect{e}_k` | `\mathbf{e}_k` | El subíndice queda fuera del macro. |
-| Vector nulo | `\vect{0}` | `\mathbf{0}` | — |
+| Vector nulo | `\vect{0}` | `\mathbf{0}` | |
 
-La convención aplica solo a vectores discretos (álgebra lineal). Las señales —funciones de tiempo continuo o discreto— se escriben con su notación habitual: `x(t)`, `x[n]`, sin negrita ni flecha.
+La convención aplica solo a vectores discretos de álgebra lineal. Las señales, sean de tiempo continuo o discreto, se escriben con su notación habitual, `x(t)` o `x[n]`, sin negrita ni flecha. En los trabajos prácticos `\mathbf{...}` resalta resultados numéricos y no se toca.
 
 ---
 
@@ -124,8 +124,33 @@ En el cuerpo del libro (y en TPs y presentaciones derivadas), las referencias a 
 | Elemento | Correcto | Incorrecto | Notas |
 |---|---|---|---|
 | Capítulo | `el Capítulo~\ref{cap05}` | `§\ref{cap05}`, `Cap.~5`, `(cf.~\ref{cap05})` | Palabra completa + `\ref{}`. |
-| Sección | `la Sección~\ref{sec:serie_fourier}` | `§\ref{sec:...}`, `Sec.~5.2`, `§5.2` | — |
-| Subsección | `la Subsección~\ref{subsec:prop_conjugacion}` | `§\ref{subsec:...}`, `§5.3.6` | — |
-| Referencia genérica | `esta sección`, `el capítulo anterior` | — | Minúscula y sin `\ref{}` cuando es deíctica. |
+| Sección | `la Sección~\ref{sec:serie_fourier}` | `§\ref{sec:...}`, `Sec.~5.2`, `§5.2` | |
+| Subsección | `la Subsección~\ref{subsec:prop_conjugacion}` | `§\ref{subsec:...}`, `§5.3.6` | |
+| Ecuación | `la ecuación~\eqref{eq:x}` | `por~\eqref{eq:x}` suelto | Minúscula. Si ya hay un sustantivo (*la fórmula de análisis~\eqref{}*), se deja. |
+| Referencia genérica | `esta sección`, `el capítulo anterior` | | Minúscula y sin `\ref{}` cuando es deíctica. |
 
 El símbolo `§` queda reservado para archivos meta del proyecto (`STYLE.md`, `DECISIONES.md`, `WORKFLOW.md`, `avance.md`, comentarios `%` de figuras). **No se usa en prosa del libro.** Detalle: `STYLE.md §8`.
+
+---
+
+## Señales y funciones con convención fija
+
+| Objeto | Convención | Notas |
+|---|---|---|
+| Escalón unitario | $u(0)=1$ | En las figuras, disco lleno en el valor 1 en $t=0$, sin círculo abierto. |
+| Peine de Dirac | $\delta^{T_0}(t)=\sum_n \delta(t-nT_0)$; en frecuencia $\delta^{\omega_0}(\omega)$ | No se usa `\sha` ni un símbolo especial. En prosa, *peine de Dirac* o *tren de impulsos*. |
+| Seno cardinal | `\operatorname{sinc}(\cdot)` en las ecuaciones | En prosa *el seno cardinal*, nunca *la sinc*. |
+| Soporte | Intervalo cerrado: *soporte $[-2,2]$* | Nunca como conjunto por extensión, tampoco en tiempo discreto. Con coma decimal, punto y coma como separador: $(471{,}2;\,500)$. El soporte se da siempre explícito. |
+| Cociente de polinomios | Numerador $P$, denominador $Q$ | Uniforme en todo el libro, en $s$ y en $z$. |
+| Residuos de fracciones simples | Una letra por polo: $A$, $B$, $C$ | Polo múltiple con subíndice de potencia; par complejo $A$ y $\bar A$. |
+| Ganancia de la forma factorizada | $K$ | |
+| Cociente de una división impropia | $E(s)$, con resto $R(s)$ | $Q$ queda para el denominador. |
+| Coeficientes de una ecuación diferencial o en diferencias | $a_k$ (salida), $b_k$ (entrada) | |
+| Coeficientes de Fourier | $c_k$; $d_k$ para la salida de un sistema | $a_k$, $b_k$ solo dentro de la serie trigonométrica. |
+| Abreviaturas | SFTC, TFTC, TL, TFTD, DFT, FFT | La transformada Z no lleva abreviatura en el apunte. |
+
+---
+
+## Caracteres y codificación en los `.tex`
+
+Nunca se pegan caracteres matemáticos Unicode (flechas, $\leq$, $\infty$, $\pi$, el símbolo de grado). El proyecto compila con `T1 fontenc`, que no los representa, y el error aparece recién al compilar el capítulo entero. Se usa la macro de LaTeX (`\leftrightarrow`, `\to`, `\leq`, `\infty`, `\pi`, `^\circ`) o se dice con palabras. Tampoco se usa el em-dash Unicode; ver `STYLE.md §14.5`.

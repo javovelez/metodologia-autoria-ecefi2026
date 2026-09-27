@@ -1,370 +1,470 @@
-# Estilo de Redacción — Análisis de Señales y Sistemas
+# Estilo de redacción
 
-Este documento es la **referencia única de estilo** para todo el proyecto: libro, trabajos prácticos y presentaciones. Debe leerse antes de redactar cualquier prosa nueva.
+Versión 3, del 2026-09-25. Este documento es la referencia única de estilo del proyecto. Rige el libro, los apuntes, los trabajos prácticos, las presentaciones y los parciales. Se lee entero antes de redactar prosa nueva y antes de revisar prosa existente.
+
+Las guías de cada sub-proyecto (`fourier_discreto/REDACCION.md`, `Gabinete/gabinete.md`, `Presentaciones/presentaciones.md`, `evaluaciones/PARCIALES.md`) ajustan este documento a su formato y no lo contradicen. Si aparece una contradicción, manda este documento y hay que avisarle al usuario para corregir la guía.
+
+La numeración cambió en esta versión. En los registros históricos (`avance.md`, las bitácoras de los apuntes) las referencias a la versión anterior se traducen así.
+
+| Versión 2 | Versión 3 |
+|---|---|
+| §13.1 a §13.5, §13.8, §13.11 (calcos, alcance adverbial, sujeto inestable) | §14.9 y §14.10 |
+| §13.6 y §13.7 (vocabulario, *dar*) | §16 |
+| §13.9 (dos puntos) | §14.6 |
+| §13.10 (oraciones telegráficas) | §14.2 |
+| §13.12 (apertura de párrafo) | §14.3 |
 
 ---
 
 ## 0. Alcance
 
-Las reglas y la voz que este documento describe aplican al **cuerpo principal del libro: del Capítulo 3 en adelante**, y a todo el material derivado (TPs, presentaciones).
-
-Los Capítulos 1 y 2 (introducción y variable compleja) ya están escritos y deben tratarse como **antesala compacta**, no como modelo tonal del resto del libro. Capítulo 2 en particular está deliberadamente comprimido: se presenta como obligatorio porque la materia lo exige, pero el autor priorizó dar peso a los conceptos que reaparecen y mantener el resto en bajo perfil. **No usar el estilo del Cap. 2 como referencia para nada de redacción nueva.**
+Las reglas aplican al cuerpo principal del libro, del Capítulo 3 en adelante, y a todo el material derivado. Los Capítulos 1 y 2 están escritos en un registro deliberadamente comprimido, porque son una antesala de variable compleja, y no se usan como modelo de nada.
 
 ---
 
 ## 1. Propósito del libro
 
-El libro busca ser **más abordable** que la mayoría de los textos existentes en Análisis de Señales y Sistemas. La diferencia se construye con cuatro decisiones tonales sostenidas:
+El libro busca ser más abordable que la mayoría de los textos de Análisis de Señales y Sistemas. Esa diferencia se sostiene con cuatro decisiones de tono.
 
-- **Lenguaje cercano**: prosa de docente que explica, no de tratado que enuncia. Conversacional sin ser informal.
-- **Explicaciones didácticas que no saltean pasos**: cuando un paso algebraico o un argumento puede parecer obvio para alguien que ya sabe, **se hace explícito** para el lector que está aprendiendo. La ausencia de "es fácil ver que" es una decisión activa, no un descuido.
-- **Ejemplos fáciles de digerir**: los ejemplos no se eligen por elegancia matemática sino por accesibilidad. Cuando hay dos ejemplos posibles, gana el más simple, aunque el otro sea más impresionante.
-- **Intuición siempre a la vista**: en ningún punto del desarrollo el lector debería perder el hilo de **qué estamos haciendo y por qué**. Si un pasaje matemático corre el riesgo de hacer que el lector pierda la intuición, se intercala una oración que la rescata.
+- **Lenguaje cercano.** La prosa es la de un docente que explica, no la de un tratado que enuncia. Es conversacional sin ser informal.
+- **Explicaciones que no saltean pasos.** Cuando un paso puede parecer obvio para quien ya sabe, se hace explícito para quien está aprendiendo.
+- **Ejemplos fáciles de digerir.** Entre dos ejemplos válidos gana el más simple, aunque el otro sea más vistoso.
+- **Intuición siempre a la vista.** En ningún punto el lector debería perder el hilo de qué estamos haciendo y por qué.
 
-Estas cuatro decisiones son el **norte**. Cuando una regla específica de este documento entra en conflicto con cualquiera de ellas, gana la decisión tonal.
+Cuando una regla de este documento entra en conflicto con alguna de estas cuatro decisiones, gana la decisión de tono.
 
 ---
 
-## 2. Los cuatro pilares (cómo, no qué)
+## 2. Los pilares del registro
 
-### Rigor sin pedantería
+**Rigor sin pedantería.** Las explicaciones son matemáticamente precisas. Se evitan las construcciones rebuscadas, rimbombantes o poéticas, como *"pulcra superposición"* o *"fatal y rigurosamente dictaminadas"*.
 
-Las explicaciones deben ser matemáticamente precisas y correctas en su base teórica (ej. "región de analiticidad", "singularidad dentro del contorno"). Sin embargo, **deben evitarse rotundamente** construcciones semánticas innecesariamente rebuscadas, rimbombantes o de literatura poética/metafísica.
+**Amigable sin ser romántico.** El tono es el de un docente que ordena un concepto difícil de forma directa. Las fórmulas no se califican de *"monumentales"*, *"mágicas"* ni *"fascinantes"*, y no se escriben imágenes como *"el monopolio de los polos"*.
 
-- Evitar: *"pulcra superposición"*, *"fatal y rigurosamente dictaminadas"*.
+**Exactitud sin ambigüedades coloquiales.** La simpleza nunca se consigue a costa de la precisión. *"Integrar sobre la nada da cero"* es informal y además impreciso.
 
-### Amigable sin ser romántico
+**Registro natural del castellano.** Se prefieren los verbos y sustantivos comunes a las nominalizaciones forzadas (*"al acotar"* y no *"el acotamiento"*; *"la aclaración"* y no *"el aclarado"*). El libro se escribe en castellano y no se redacta en inglés para traducirlo después.
 
-El tono debe asemejarse al de un docente estructurando un concepto complejo de forma directa, ágil y conversacional, pero sin caer en un exceso de metáforas emocionales o lúdicas.
+**Pragmático y operativo.** El texto se ocupa del mecanismo de la herramienta y de cómo el lector opera con ella para resolver problemas de ingeniería.
 
-- Evitar calificar fórmulas matemáticas de *"monumentales"*, *"mágicas"*, *"fascinantes"*.
-- Evitar formulaciones como *"el monopolio de los polos"*.
-
-### Exactitud sin ambigüedades coloquiales
-
-Se busca simpleza, pero **jamás a costa de volver impreciso el concepto matemático**. Deben evitarse frases excesivamente informales que deformen u omitan la teoría subyacente.
-
-- Evitar: *"integrar sobre la nada da cero"*.
-- Preferir: *"integrar curvas nulas de singularidades"*.
-
-### Registro natural del castellano
-
-Preferir formas verbales o sustantivos comunes; evitar nominalizaciones forzadas que suenan rebuscadas aunque sean gramaticalmente correctas. Este pilar cubre el **vocabulario**; el fraseo a nivel de oración (clivadas antepuestas, sujetos nominales pesados, deícticos informales, ambigüedad de alcance) tiene su propio catálogo en **§13**.
-
-- Preferir *"la aclaración"* o *"el calificativo"*, no *"el aclarado"*.
-- Preferir *"al acotar"*, no *"el acotamiento"*.
-- **No usar abreviaturas latinas** (`cf.`, `e.g.`, `i.e.`, `vs.`, `etc.` cuando sustituye razonamiento). Reemplazar por construcciones en castellano natural: *"ver"*, *"como en"*, *"introducido en"*, *"por ejemplo"*, *"es decir"*, *"frente a"*. Caso típico: `(cf. capítulo~\ref{capXX})` → `(ver capítulo~\ref{capXX})` o `(como en el capítulo~\ref{capXX})`.
-- **No usar el símbolo `§`** para referenciar capítulos, secciones o subsecciones en prosa. Escribir la palabra completa: *"el Capítulo~\ref{...}"*, *"la Sección~\ref{...}"*, *"la Subsección~\ref{...}"*. El detalle de la regla y el formato canónico están en §8.
-
-### Pragmático y operativo
-
-El texto debe focalizarse directamente en el mecanismo topológico o algebraico de la herramienta y en cómo el estudiante debe operar con ella para resolver problemas de ingeniería.
+**Cercano pero claro.** La cercanía viene de la voz del docente y de la primera persona del plural (*"veamos"*, *"fijemos $N$"*, *"aumentemos $\lambda$"*). No viene de los modismos. Ante la duda entre una versión coloquial y una explícita, gana la explícita, sin llegar al tono de tratado.
 
 ---
 
 ## 3. No saltear pasos
 
-Esta regla amerita su propia sección porque es la más fácil de violar sin darse cuenta.
+Cuando una manipulación algebraica puede no ser inmediata para el lector, se desarrolla. Una cadena de cinco pasos chequeables a ojo está bien. Si uno de los cinco requiere reagrupar, factorizar o aplicar una identidad no trivial, ese paso se muestra.
 
-**Cuando una manipulación algebraica corre el riesgo de no ser inmediata para el lector, se desarrolla.** No se asume que el lector "lo va a ver". Si la cadena tiene cinco pasos y los cinco son chequeables a ojo, está bien. Si tiene cinco pasos y uno requiere reagrupar, factorizar o aplicar una identidad no trivial, ese paso se muestra.
+Estas frases delatan un salto y se reemplazan por el paso real.
 
-Frases que delatan un salto y deberían reemplazarse por el paso real:
+| Frase | Qué hacer |
+|---|---|
+| *"es fácil ver que"* | Mostrar el paso. |
+| *"se sigue inmediatamente"* | Desarrollarlo en una línea. |
+| *"un cálculo directo muestra"* | Hacer el cálculo. |
+| *"de forma análoga"* | Solo si el caso análogo está desarrollado y la analogía es estructural. |
+| *"como sabemos"* | Decir dónde se estableció o reponerlo. |
 
-- *"es fácil ver que"* → mostralo.
-- *"se sigue inmediatamente"* → desarrollalo en una línea.
-- *"un cálculo directo muestra"* → hacelo.
-- *"de forma análoga"* → bien si el caso análogo está completamente desarrollado y la analogía es estructural; mal si oculta el segundo caso por cansancio.
+La regla no pide explicar cada paso a la altura del primer año de cálculo. Pide hacer visible el paso que requiere algo que no está en la línea anterior. En los ejemplos numerados y en los trabajos prácticos la regla es estricta, porque ahí el lector aprende a operar.
 
-Esto no significa explicar todo paso a la altura del primer año de cálculo. Significa: cuando el paso requiere algo que no está a la vista en la línea anterior, hacerlo visible.
+Cuando una cuenta se puede escribir, se escribe en display con sus pasos. Describirla en prosa obliga al lector a rehacerla de memoria.
 
 ---
 
-## 4. Intuición primero, formalización después (preferencia por defecto)
+## 4. Intuición primero, formalización después
 
-**Cuando es viable, presentar primero la intuición de qué estamos haciendo y por qué, y recién después formalizar.** Esta es la preferencia por defecto del libro porque ayuda a que el lector sepa qué está haciendo con motivación, en vez de seguir una definición sin saber adónde va.
+La preferencia por defecto es presentar primero la intuición de qué estamos haciendo y por qué, y formalizar después. Así el lector sabe adónde va antes de seguir una definición.
 
-La preferencia es **fuerte pero no obligatoria**: cuando otro camino resulta claramente mejor para un concepto particular, ese se elige sin culpa. La regla es **no forzar intuición-primero cuando hay un camino mejor**, no "siempre intuición-primero".
+La preferencia es fuerte pero no obligatoria. Otro orden funciona mejor en tres casos.
 
-Casos donde otro camino suele funcionar mejor:
+- Una definición corta y autosuficiente cuyo interés está en sus consecuencias, como la periodicidad o la paridad.
+- La continuidad estructural con lo recién visto, cuando un párrafo de motivación sería redundante.
+- Un reposicionamiento que abre un capítulo o una sección y necesita declarar primero el cambio de marco.
 
-- **Definición corta y autosuficiente** cuyo trabajo está en explorar consecuencias (ej. periodicidad, paridad). La motivación gana fuerza llegando después porque ya se tiene el objeto definido.
-- **Continuidad estructural** con lo recién visto, donde el lector llega con suficiente contexto y un párrafo de motivación previa sería redundante.
-- **Reposicionamiento** que abre un capítulo o sección y necesita primero declarar el cambio de marco antes de motivar dentro de él.
-
-En todos los demás casos, considerar primero la apertura por intuición. Si no hay razón clara para apartarse, ese es el camino.
+Intuición primero no significa enunciar la tesis de la sección antes de que el lector tenga el objeto delante (ver la Sección 13.1 de este documento).
 
 ---
 
 ## 5. Sostener la intuición
 
-La matemática del libro es densa por naturaleza (ecuaciones diferenciales, transformadas, análisis en frecuencia). El riesgo permanente es que el lector siga las cuentas y pierda el sentido. Reglas operativas para evitarlo:
+La matemática del libro es densa, y el riesgo permanente es que el lector siga las cuentas y pierda el sentido.
 
-- **Después de un desarrollo algebraico de más de tres líneas**, una oración que vuelva a poner sobre la mesa qué estamos calculando y para qué. No "lo que hicimos fue X" como muletilla, sino una frase corta que reconecta.
-- **Cuando se introduce un nombre técnico nuevo** (transformada, función propia, etc.), una oración inmediatamente posterior que dice qué hace, no qué es. La definición formal puede llegar después.
-- **En cierres de subsección**, dejar al lector con la imagen mental de qué se ganó. No con la última fórmula del desarrollo.
-- **El cierre no adelanta el mecanismo de lo que viene.** Nombrar la pregunta que queda abierta orienta; desarrollar por anticipado el procedimiento que la sección siguiente va a construir obliga al lector a procesar dos veces lo mismo y le quita su lugar a esa sección. Un cierre de dos o tres oraciones que señala qué imagen queda en pie y qué falta resolver es suficiente.
-- **Si una sección tiene un objeto recurrente** (un sistema RC, un masa-resorte), volver a él al cerrar para que el lector compruebe que la herramienta nueva dice algo sobre el objeto que ya conocía.
-
----
-
-## 6. Cadencia y densidad
-
-El "punto dulce" entre intuición y rigor se sostiene más con cadencia que con cantidad de explicación.
-
-- **Toda fórmula display importante** va precedida o seguida (o ambas) por una oración en prosa que la motiva, la lee o la interpreta. Una fórmula display sin amarra textual queda flotando.
-- **Dos fórmulas display consecutivas sin prosa intermedia están desaconsejadas** salvo dentro de cuadros `resultado` o cuando una es consecuencia inmediata y trivial de la anterior.
-- **Después de una definición formal**, una oración debe ofrecer una lectura, una consecuencia o un caso de prueba antes de pasar al siguiente bloque. La definición sin lectura inmediata queda inerte.
+- **Después de un desarrollo de más de tres líneas**, una oración dice qué se obtuvo y para qué sirve, nombrando el objeto. Esa oración informa. No es una máxima que resume ni una repetición del resultado con otras palabras.
+- **Cuando se introduce un término técnico nuevo**, la oración siguiente dice qué hace ese objeto. La definición formal puede llegar después.
+- **El cierre de una subsección** dice qué quedó establecido y, si hace falta, qué pregunta queda abierta. Dos o tres oraciones alcanzan. El cierre no desarrolla el mecanismo de la sección siguiente, porque eso obliga a procesar dos veces lo mismo. Si un cierre sale denso, se recorta en lugar de explicarse más.
+- **Si la sección tiene un objeto recurrente** (un circuito RC, el promediador), se vuelve a él al cerrar, para que el lector compruebe que la herramienta nueva dice algo sobre un objeto que ya conocía.
 
 ---
 
-## 7. Vocabulario aplicado: test del borrado
+## 6. Cadencia y fórmulas
 
-El lector aprende esta matemática **sin** la base aplicada todavía. Nombrar dominios (filtro pasabajos, modulación AM, control PID, etc.) puede anclar o puede agregar carga cognitiva sin pagarla. Antes de soltar un término aplicado, aplicar este test:
-
-> Si borro el término aplicado y digo "este sistema" (o equivalente genérico), ¿el párrafo sigue funcionando? Si sí, el término estaba decorando: considerar borrarlo. Si no, el término estaba haciendo trabajo: dejarlo, y asegurarse de que el lector tenga al menos una imagen mental mínima de qué es.
-
-Tres criterios prácticos:
-
-- **Carga vs. trabajo.** Si el término aparece una vez como etiqueta y se sigue, funciona. Si es sujeto de tres oraciones, el lector necesita el concepto explicado.
-- **Autodefinición por contexto.** "El filtro pasabajos del oído humano deja pasar las frecuencias bajas y atenúa las altas" se autodefine. "Aplicamos un filtro pasabajos para suavizar la señal" supone que el lector ya sabe qué es eso.
-- **Asimetría con la matemática.** Los nombres físicos son opcionales en desarrollos puramente matemáticos. En cambio, en capítulos de sistemas (Cap. 4 en adelante) los nombres físicos pagan más, porque son el objeto de estudio.
+- Toda fórmula display importante va unida a una oración de prosa antes o después que la motiva o la lee.
+- No se encadenan dos fórmulas display sin prosa intermedia, salvo dentro de un cuadro `resultado` o cuando la segunda es consecuencia trivial de la primera.
+- Después de una definición formal, una oración ofrece una lectura, una consecuencia o un caso de prueba.
+- **Cálculo en display, mención en línea.** Va en display toda fórmula con límites, integrales con desarrollo, fracciones compuestas o cadenas de dos o más igualdades. Va en línea lo corto: un valor ($H(0)=1/2$), un par breve, una condición ($\operatorname{Re}\{s\}>a$). Si escribirla en línea obliga a degradar la notación, como poner `1/[(s+a)(s+b)]` en lugar de una fracción, va en display.
+- **Muchos casos paralelos van a una tabla.** Si un párrafo acumula varios casos con varias cantidades cada uno (valor, módulo, fase), los datos van a una tabla y la prosa enuncia la regla común y la interpretación.
 
 ---
 
-## 8. Referencias cruzadas
+## 7. Vocabulario aplicado y test del borrado
 
-### 8.1. Forma tipográfica
+El lector aprende esta matemática sin tener todavía la base aplicada. Nombrar un dominio (filtro pasabajos, modulación, control) puede anclar el concepto o puede agregar carga sin beneficio. Antes de usar un término aplicado se hace una prueba. Si al reemplazarlo por "este sistema" el párrafo sigue funcionando, el término decora y se considera borrarlo. Si el párrafo deja de funcionar, el término trabaja, se conserva y el lector necesita al menos una imagen mínima de qué es.
 
-En prosa del libro, las referencias a partes del texto se escriben con la **palabra completa** seguida de `\ref{}`:
+- Un término que aparece una vez como etiqueta funciona solo. Un término que es sujeto de tres oraciones necesita estar explicado.
+- *"El filtro pasabajos del oído deja pasar las frecuencias bajas y atenúa las altas"* se define por contexto. *"Aplicamos un filtro pasabajos"* supone que el lector ya sabe qué es.
+- En los capítulos de sistemas, del 4 en adelante, los nombres físicos se justifican más, porque son el objeto de estudio.
 
-- *"el Capítulo~\ref{cap05}"*, *"la Sección~\ref{sec:serie_fourier}"*, *"la Subsección~\ref{subsec:prop_conjugacion}"*.
-- En minúscula cuando el sustantivo común (*"esta sección"*, *"el capítulo anterior"*) y va sin `\ref{}`. Mayúscula inicial cuando se nombra una unidad específica con `\ref{}`.
+La clasificación del vocabulario seguro, del que requiere glosa y del que no está disponible todavía está en `DECISIONES.md §3`.
 
-**Prohibido el símbolo `§`** como abreviatura tipográfica:
+---
 
-- Evitar: `§\ref{...}`, `en~§\ref{...}`, `§5.3.6`.
-- Reemplazar por: `la sección~\ref{...}`, `en la sección~\ref{...}`, `la Sección~5.3.6`.
+## 8. Referencias
 
-El símbolo `§` se usa libremente en archivos meta del proyecto (`STYLE.md`, `DECISIONES.md`, `WORKFLOW.md`, `avance.md`, comentarios `%` de figuras, este documento) — pero no en el cuerpo del libro ni en presentaciones ni TPs.
+### 8.1. Referencias cruzadas
 
-**Tampoco** apostillas latinas como *"cf."* (ver §2): `(cf. capítulo~\ref{capXX})` → `(ver el capítulo~\ref{capXX})` o integrar la referencia en la prosa.
+- Se escriben con la palabra completa y mayúscula inicial: *el Capítulo~\ref{...}*, *la Sección~\ref{...}*, *la Subsección~\ref{...}*, *la Figura~\ref{...}*, *la Tabla~\ref{...}*. La palabra *ecuación* va en minúscula: *la ecuación~\eqref{...}*.
+- Las referencias deícticas van en minúscula y sin `\ref`: *esta sección*, *el capítulo anterior*.
+- El `\eqref` no cuelga suelto de una preposición o de un verbo. *"que por~\eqref{eq:x} vale $N$"* pasa a *"que por la ecuación~\eqref{eq:x} vale $N$"*. Si ya hay un sustantivo que nombra el objeto (*la fórmula de análisis~\eqref{...}*, *el par~\eqref{...}*), queda como está.
+- Un panel se cita con la figura completa, *la Figura~\ref{...}(a)*, y no como *"el panel (a)"* suelto.
+- Toda figura y toda tabla se nombran en la prosa en el punto donde el lector tiene que mirarlas.
+- El símbolo `§` y las abreviaturas latinas (`cf.`, `e.g.`, `i.e.`, `vs.`) no se usan en el cuerpo del libro, los trabajos prácticos ni las presentaciones. Tampoco en el chat con el usuario al presentar planes. En los archivos meta como este sí se usa `§`.
 
 ### 8.2. Referencias a capítulos futuros
 
-Mantenerlas al mínimo estricto, máximo una por subsección, y solo cuando la conexión sea **estructuralmente necesaria** para el concepto, no meramente recordatoria. Preferir formulaciones que establezcan la relevancia del concepto actual sin nombrar explícitamente el capítulo destino.
+Como máximo una por subsección, y solo cuando la conexión es estructural. Se prefiere decir para qué sirve el concepto actual sin nombrar el capítulo de destino. *"Esta propiedad simplifica el cálculo de coeficientes espectrales"* funciona mejor que *"como veremos en el Capítulo 5, la paridad determina los coeficientes nulos"*.
 
-- Correcto: *"esta propiedad simplifica el cálculo de coeficientes espectrales"*.
-- Evitar: *"como veremos en el Capítulo 5, la paridad determina los coeficientes de Fourier nulos"*.
+### 8.3. El libro es autónomo
+
+El libro no menciona trabajos prácticos, clases, presentaciones ni el banco de preguntas. *"Como se vio en clase"* o *"una observación del trabajo práctico"* no van. Si una motivación viene de una observación concreta, se incluye como ejemplo propio del texto. Las resoluciones de los trabajos prácticos tampoco citan secciones del libro, porque la estructura del libro puede cambiar.
 
 ---
 
-## 9. Vocabulario disponible
+## 9. Precisión del vocabulario técnico
 
-Los ejemplos y referencias se construyen con los conceptos **ya introducidos** hasta ese punto del libro. No invocar categorías que se definen más adelante.
-
-- Evitar: usar "sistema no invariante en el tiempo" como ejemplo en una subsección que todavía no definió la invariancia temporal.
-- Si el concepto a usar viene más adelante, reformular sin nombrarlo o elegir otro ejemplo.
+- **Un término se usa según su definición formal.** Antes de usar un término técnico se verifica dónde está definido en el libro. Si solo aparece en un pie de figura o en prosa suelta, no está definido. *Fasor* no está definido en el libro y no se usa. *Vector giratorio* está definido en la Sección 2.2 para $e^{j\omega t}$ y se acepta también para sus versiones escaladas $c_k\,e^{jk\omega_0 t}$.
+- **Un término definido se nombra y no se parafrasea.** Tres párrafos después de definir la velocidad de Nyquist, la prosa dice *velocidad de Nyquist* y no *"el doble de la frecuencia más alta de la señal"*.
+- **Un término técnico no se usa en su sentido corriente.** *Salida*, *entrada*, *respuesta*, *ganancia*, *orden* y *peso* son términos del libro. *"La salida viene del objeto que medimos"*, con *salida* en el sentido de escapatoria, hace buscar un sistema que no está.
+- ***Señal real* significa señal de valores reales.** Para el sentido práctico se escribe *"una señal que proviene de un fenómeno físico"* o *"una señal medida"*. Aplicado a aparatos, *real* se opone a *ideal* y se conserva (*filtro real*, *sistema real*).
+- **Una propiedad se demuestra donde vale siempre.** Si se sigue de la fórmula, se afirma sobre la fórmula y no sobre un caso particular. La memoria del promediador está en el término $x[n-1]$ y vale en cualquier instante, no solo cuando la entrada se apagó.
+- **Las afirmaciones son completas.** Una magnitud se da con su valor (*"queda libre una franja de ancho $\omega_s-2\omega_M$"*, no *"queda espacio libre"*). Un argumento hecho sobre un caso se generaliza diciendo por qué vale en todos. Si quedan dos casos pendientes, se anuncian los dos.
+- **Una metáfora aislada puede servir, una metáfora repetida no.** Una imagen que marca el grado de una analogía laxa se justifica (*"los polos y ceros son primos cercanos de los autovalores"*). Una imagen que se repite tres o cuatro veces en un capítulo se convierte en el término impreciso del capítulo y se reemplaza por la palabra exacta, que casi siempre ya está en el texto.
+- **La convergencia de una serie infinita no se da por supuesta.** Se precisa el sentido (puntual, en norma cuadrática, condiciones de Dirichlet) o se difiere explícitamente.
 
 ---
 
 ## 10. Demostraciones
 
-- La cadena de razonamiento que justifica el resultado presentado.
-- No se exige el nivel de un tratado matemático, pero sí la trazabilidad lógica que permite al estudiante verificar la afirmación.
-- Aplicar §3 (no saltear pasos) con énfasis: una demostración con saltos es la principal fuente de pérdida de lector.
-- Cuando la demostración es extensa y no agrega valor pedagógico inmediato, puede omitirse con una referencia explícita.
-- **Fin de demostración**: sin `\qed`, sin `$\square$`, sin "Q.E.D.", sin "demostrado". Las demostraciones terminan con la última línea de razonamiento, sin marcador.
+Una demostración es la cadena de razonamiento que permite al lector verificar el resultado. No se exige el nivel de un tratado, pero sí trazabilidad. Antes de la cadena de igualdades conviene decir en una oración qué observación la guía, para que el lector entre al cálculo sabiendo qué lo sostiene. Una demostración extensa que no aporta a la comprensión puede omitirse con una referencia explícita.
+
+Las demostraciones terminan con la última línea de razonamiento, sin `\qed`, sin $\square$ y sin *"demostrado"*.
 
 ---
 
-## 11. Ejemplos: dos modalidades
+## 11. Ejemplos
 
-Cada concepto relevante debe estar acompañado, **cuando sea pertinente y natural**, de un ejemplo. No se fuerzan cuando resultan obvios o redundantes con el texto principal.
+**Dos modalidades.** El ejemplo de fenómeno físico se prefiere cuando el concepto lo admite, y no requiere cálculo; alcanza con nombrar el fenómeno y decir qué aspecto del concepto ilustra. El ejemplo numerado se reserva para conceptos que solo se entienden ejecutando el procedimiento, se resuelve completo y llega a un resultado verificable. Se rotula *Ejemplo*, no *Ejemplo trabajado*.
 
-**Criterio de selección entre ejemplos posibles**: cuando hay dos ejemplos válidos, gana el más simple. La simplicidad no es debilidad pedagógica; es respeto por el ancho de banda cognitivo del lector que está aprendiendo.
+**Un ejemplo responde una pregunta.** Correr un sistema sobre una entrada concreta funciona si hay una pregunta pendiente (¿es causal?, ¿es estable?). Sin pregunta, el cálculo se lee como material sin propósito. Un ejemplo que quedó huérfano después de un cambio de estructura se reubica o se elimina.
 
-### Fenómeno físico o aplicación real
+**La apertura del ejemplo va directo a lo que se calcula.** Dice qué se quiere calcular, sobre qué señal y con qué hipótesis. No justifica por qué la configuración elegida es la más simple ni anticipa cuántos casos van a aparecer.
 
-Siempre preferible cuando el concepto lo admite. El objetivo es que el estudiante reconozca el concepto en algo tangible antes de abstraerlo.
+**Se describe lo que se hace, no lo que se descarta.** Una señal se construye sumando un tramo por vez, en lugar de escribirla de una sola vez y repararla después. La prosa presenta el método elegido y no narra el alternativo.
 
-- Ej.: "el ruido térmico en un resistor es una señal aleatoria; la tensión de red eléctrica es determinista".
-- Esta modalidad **no requiere cálculo**: alcanza con nombrar el fenómeno y explicar en qué aspecto ilustra el concepto.
+**Un resultado se deriva por un solo camino.** Dos derivaciones del mismo resultado parten la subsección en dos recorridos. Queda la que mejor acompaña a la figura y a lo que el capítulo necesita después.
 
-### Ejemplo numerado
+**No se plantea una forma de la fórmula que después no se usa.** Si el desarrollo, el cuadro y la figura trabajan con una forma, la lectura se presenta sobre esa forma. En la convolución el marco es dejar fija la señal e invertir y desplazar la respuesta al impulso.
 
-Reservado para conceptos cuya utilidad operativa solo se comprende ejecutando el procedimiento paso a paso.
-
-- Ej.: descomponer una señal en sus partes par e impar.
-- Debe resolverse completamente y llegar a un resultado verificable.
-- En el texto se introduce con el título escueto *Ejemplo* (y numeración cuando hay varios en la misma sección), no *Ejemplo trabajado*.
-- En ejemplos numerados, la regla §3 (no saltear pasos) es **estricta**: el ejemplo es el lugar donde el lector aprende a operar.
+**El ejemplo entrega lo que el resultado promete.** Si el coeficiente es complejo, se calculan el módulo y la fase.
 
 ---
 
-## 12. Figuras
+## 12. Figuras en la prosa
 
-Una ilustración del comportamiento descrito, especialmente cuando existe **geometría o evolución temporal** que el texto no puede transmitir con la misma claridad.
+Las convenciones técnicas de las figuras están en los skills `create_2d_figures`, `create_block_diagrams` y `3d_figures`. Esta sección trata de cómo la prosa usa las figuras.
 
-- Cada figura debe tener un `\label{}` y ser referenciada desde el texto.
-- No se incluyen figuras decorativas: cada figura paga su lugar resolviendo algo que la prosa no resuelve.
-- Convenciones técnicas de figuras: ver `README.md §4`.
+- **Las figuras se usan con generosidad.** Toda gráfica que ayude a seguir un concepto con geometría o evolución temporal se incluye. La pregunta es si ayuda a seguir el concepto, y ante la duda la respuesta es sí. Una figura puramente decorativa no se incluye.
+- **Toda representación descripta lleva figura.** Si la prosa describe una región del plano, un diagrama de polos y ceros o la forma de una señal, hay figura en ese punto.
+- **La figura va antes del razonamiento.** La prosa recorre lo que se ve panel por panel, sobre un ejemplo con números concretos, y el caso general se enuncia después del ejemplo. En una derivación, la figura entra apenas están presentados los objetos que intervienen y cada paso de la cuenta se relata sobre los paneles.
+- **La figura comparativa va donde se comparan los casos**, no adelantada al inicio de la subsección con detalles que el lector todavía no leyó.
+- **El nombre del resultado no se usa antes de derivarlo.** Si la figura aparece antes de la cuenta, sus paneles se describen con vocabulario disponible (*"el resultado de convolucionar las dos"*) y el término técnico (*"las copias del espectro"*) se reserva para cuando la cuenta lo establece. El `\caption` describe la figura terminada y ahí sí puede nombrarlo.
+- **Los paneles que la prosa compara llevan la misma escala.** Antes de escribir *"pasa de 9 a 5"*, verificar que los paneles compartan la unidad de los ejes.
+- **Las observaciones de un caso particular van al `\caption`**, describiendo la figura, sin pretender demostrar nada.
 
 ---
 
-## 13. Fraseo natural: estructuras que suenan traducidas
+## 13. Estructura de secciones y subsecciones
 
-El registro del §2 apunta al **vocabulario**; esta sección apunta a la **estructura de la oración**. Una oración puede sonar rebuscada o ajena al castellano aunque cada palabra sea correcta: el lector la percibe como "rara" sin poder señalar la palabra culpable, porque el problema está en el armado. Este es el catálogo de los patrones recurrentes, para buscarlos explícitamente en una pasada de revisión.
+### 13.1. Apertura
 
-**Principio que gobierna toda la sección: la estructura más simple que haga el trabajo.** Ante dos armados posibles, gana el simple, aunque el otro sea más compacto o suene más elegante. En la práctica: una predicación por oración siempre que se pueda; la afirmación principal en la oración principal, no colgada de un inciso o de una cola; y si una oración obliga a releerla para saber quién es el sujeto o a qué se refiere un pronombre, se parte en dos. La compresión no es un valor del libro; la claridad sí.
+La apertura de un capítulo o sección no explica el eje del capítulo. Una afirmación general hecha antes de que el lector haya visto un solo caso no se puede verificar y genera inseguridad. El eje lo plantea el título, lo muestran los ejemplos y lo nombra el cierre como observación de lo que acaba de pasar. En la apertura van el cambio de marco, la lectura de la ecuación que el lector tiene delante y el mapa del recorrido.
 
-Caso frecuente de este vicio: la **oración-percha**, una afirmación adelante y varios apéndices colgando de un solo eje ---inciso con guiones, coordinada con *"y"*, cola con *"con + sustantivo"*---. Señales para cazarla: coma seguida de *"con + sustantivo"* al final de la oración; inciso con guiones que repite lo que la oración ya dijo; sinónimo de refuerzo en la misma oración (*completa/entera*, *todo/entero*); pronombre átono (*la*, *lo*, *le*) a más de una cláusula de su antecedente o con dos candidatos del mismo género compitiendo. Suele venir con un verbo de proceso donde el sustantivo ya hacía el trabajo (*"un punto del plano lo registra"* → *"un punto del plano es"*), que es el mismo vicio del `dar` comodín de §13.7.
+Tampoco van inventarios de repaso. Listar lo que trajo el capítulo anterior o las seis propiedades que vienen obliga a retener nombres que todavía no se pueden usar.
 
-### 13.1. Deícticos informales de lugar
+### 13.2. El mapa del recorrido agrupa
 
-El par **acá/allá** es de registro coloquial. En el cuerpo del libro:
+El párrafo que anticipa el recorrido de una sección agrupa las subsecciones por etapas (*"En la entrada… En la salida…"*). No dedica una oración a cada subsección ni trae las justificaciones, que son el contenido de cada una.
 
-- *acá* → *aquí*; *allá* → *allí*.
-- Cuando *acá/allá* funcionan como taquigrafía de tiempo discreto frente a continuo (*"Allá $e^{j\omega t}$ era periódica… Acá el período es entero"*), preferir la referencia explícita: *"En el continuo…"*, *"En el discreto, en cambio,…"*. Es menos informal y, de paso, más claro.
+### 13.3. El instrumento después de su propósito
 
-### 13.2. Clivadas y comparativos antepuestos
+Un filtro o una operación no se usa en un argumento antes de que el texto haya dicho para qué sirve. Si el dispositivo se construye más adelante, el argumento se escribe en términos de la operación (*"quedarse con la copia central"*) y no del dispositivo.
 
-Construcciones de foco antepuesto con sabor a traducción del inglés:
+### 13.4. Una sola definición por concepto
 
-- Evitar: *"Lo que importa, sin embargo, no es tanto la fórmula como qué es $\lambda$."*
-- Preferir: *"Ahora bien, más que la fórmula, importa qué es $\lambda$."*
+Un concepto se define una vez. Una oración informal que define, seguida de un cuadro `resultado` que define lo mismo, es una duplicación. Antes del cuadro va una oración que dice qué pregunta responde la definición, no lo que dice.
 
-La alarma es el molde *"Lo que + verbo + no es (tanto) X sino/como Y"*. Casi siempre sale más directo invirtiendo a *"Más que X, importa Y"* o *"X importa menos que Y"*. (Es distinto de la negación retórica *"no es arbitrario: sino…"*, tratada aparte en `DECISIONES.md`.)
+### 13.5. Cuadros `resultado` y `nota`
 
-### 13.3. Sujetos de cláusula nominal pesados
+- El cuadro `resultado` lleva título y contiene solo el enunciado o la fórmula. Motivación, aclaraciones y conexiones van en la prosa de afuera. Si un concepto tiene varios resultados, cada uno va en su propio cuadro, unidos por prosa.
+- La posición del cuadro se evalúa en cada caso. Por defecto va al final, como resumen de un desarrollo que el lector ya siguió. Va al frente cuando el resultado es corto o funciona como definición desde la cual se construye el resto. Lo que no se permite es decidir por costumbre.
 
-Una oración cuyo sujeto es una subordinada larga con *"Que + subjuntivo"* tiende a leerse pesada:
+### 13.6. Títulos
 
-- Evitar: *"Que una secuencia sea, literalmente, una lista de números habilita algo imposible…"*
-- Preferir: *"Como una secuencia es, literalmente, una lista de números, se puede…"* (causal con *como* + verbo activo).
+El título de una subsección nombra lo que el lector se lleva y no el montaje del ejemplo. *"El efecto del sistema se lee en sus pesos"* nombra el resultado; *"Dos sistemas sobre una misma entrada"* describe la mesa de trabajo. Si el título sigue siendo cierto después de cambiar el ejemplo por otro equivalente, describe el montaje.
 
-No toda cláusula *"Que…"* antepuesta es mala: si es corta y el predicado es natural (*"Que el período deba ser entero es la fuente de todo"*), pasa. Se corrige cuando el sujeto es largo o el verbo principal es abstracto (*habilita*, *implica*, *conlleva*).
+### 13.7. Segunda explicación
 
-### 13.4. Perífrasis vacías y muletillas de realce
+Cuando una sección vuelve sobre un hecho ya explicado y lo lee desde otro dominio, ofrece una segunda explicación y no la explicación que faltaba. Decir *"la explicación que faltaba"* devalúa el capítulo anterior y describe mal lo que la sección aporta.
 
-- Perífrasis de relativo que no aporta: *"cuál de las dos es la que vamos a estudiar"* → *"cuál de las dos vamos a estudiar"*. Señal: *"es la que / son los que / fue el que"* seguido de un verbo que ya bastaba solo.
-- Muletillas de realce (*"Conviene…"*, *"Vale la pena…"*): son parte del registro docente y **no se prohíben**, pero se controla su densidad. Dos en la misma oración, o en oraciones contiguas, es una de más: reescribir una.
+### 13.8. El paralelismo con el continuo
 
-### 13.5. Ambigüedad de alcance adverbial
+En el bloque discreto (Caps. 8 a 13), apoyarse en el tiempo continuo sirve para no rederivar lo que se traslada. Esa economía se conserva. El paralelismo no se usa como marco explicativo, es decir, cada hecho discreto no se presenta como *"el gemelo"* o *"el eco"* de su par continuo. La comparación se nombra una vez, donde ahorra trabajo, y después los hechos discretos se enuncian en sus propios términos.
 
-Un adverbio mal ubicado puede invertir el sentido:
+### 13.9. Cantidad de secciones
 
-- Evitar: *"esto deja de cumplirse siempre"* (¿"ya no siempre se cumple" o "siempre deja de cumplirse"?).
-- Preferir: *"esto ya no es siempre cierto"*.
+La cantidad de secciones de un capítulo la decide el contenido. Los cinco archivos que deja `bootstrap_chapter` son andamiaje y no una decisión.
 
-Revisar en particular *siempre*, *solo*, *todavía* y *también* cuando quedan entre el verbo y su complemento.
+---
 
-### 13.6. Vocabulario con connotación indebida
+## 14. La oración y el párrafo
 
-Palabras correctas cuyo matiz distrae:
+**Principio que gobierna esta sección: la estructura más simple que haga el trabajo.** Entre dos armados posibles gana el simple, aunque el otro sea más compacto o suene más elegante. Una afirmación por oración siempre que se pueda. La afirmación principal va en la oración principal, no en un inciso ni en una cola. Si una oración obliga a releer para saber de qué habla, se parte en dos. La compresión no es un valor del libro y la claridad sí.
 
-- *"la notación que venimos arrastrando"* (*arrastrar* carga un tono de fastidio) → *"que venimos usando"*.
-- Un término que colisiona con un tecnicismo del capítulo: *"una diferencia discreta pero importante"* en un capítulo sobre señales **discretas** → *"sutil pero importante"*.
-- **Las muestras *ingresan*, no *entran*.** Para la llegada de una muestra o de un valor al sistema, el verbo es *ingresar*: *"la muestra que ingresa en $n$"*, *"desde ahí solo ingresan ceros"*. *Entrar* es de registro hablado y, además, choca con *entrada*, que es término definido. Vale para toda la familia (*entra*, *entró*, *entrar*).
-- **Nada de *dibujar* ni *dibujo*.** La familia entera queda fuera del cuerpo del libro, de los TP y de las presentaciones. Es de registro escolar y casi siempre tapa la operación real. El reemplazo por defecto es *graficar*, y *trazar* sirve igual. Según lo que se esté diciendo: una curva, una secuencia o un diagrama se *grafican*; una secuencia invertida se *refleja* (no *se dibuja al revés*); una figura *muestra*, *exhibe* o *pone* algo; un eje *va con línea punteada*. El sustantivo *dibujo* como sinónimo de *lo que se ve en el panel* se reemplaza por *la figura*, *el panel* o el nombre del objeto graficado.
+### 14.1. Cada oración nombra de qué habla
 
-### 13.7. El verbo comodín *dar*
+El lector no debería tener que volver a la oración anterior, y mucho menos al párrafo anterior, para saber de qué se habla. Es la falla que más molesta al leer en frío.
 
-**`dar` no se usa para expresar el resultado de una cuenta, una operación o una definición.** Es el verbo que aparece cuando no se nombró la relación real entre lo que se hace y lo que se obtiene: el mismo *da* cubre *"vale"*, *"produce"*, *"conduce a"* y *"queda"*, y ninguno de esos matices llega al lector. Además es de registro hablado, y en prosa técnica se lee dejado.
+- **Un pronombre o un demostrativo solo se usa si su antecedente está en la misma oración o en la inmediatamente anterior, y no hay otro candidato.** En cualquier otro caso se repite el nombre del objeto. Repetir el sustantivo no es un defecto de estilo en este libro.
+- **La primera oración de un párrafo nombra su objeto.** No abre con *"Ese rodeo"*, *"Esa fórmula"*, *"Los dos polos"*, *"El cuadro pide"* o *"La división tiene un límite"* cuando el objeto quedó en el párrafo anterior. Escribe *"La descomposición de $X(z)/z$ en fracciones simples"*, *"la fórmula de cobertura~\eqref{...}"*, *"los polos en $z=\rho e^{\pm j\lambda_0}$"*.
+- **Se evitan los referentes vagos**: *esto*, *eso*, *lo anterior*, *este resultado*, *el caso*, *las dos*, *la primera*, *la otra*, cuando no llevan el sustantivo que los identifica.
+- **Se prefiere el nombre propio del objeto** (el símbolo, la ecuación, el nombre del sistema) a una perífrasis como *"el factor que multiplica a todo"* o *"lo que veníamos viendo"*.
+- **Un sustantivo abstracto no reemplaza al objeto.** *La maniobra*, *la verificación*, *la traducción*, *el recorrido*, *la lectura*, *la cuenta*, *el ingrediente*, *la pieza*, *la clave*, *el precio* obligan al lector a reconstruir a qué operación concreta se refieren. Se nombra la operación: *"La verificación es un cambio de índice"* pasa a *"La propiedad se verifica con el cambio de índice $m=n-k$"*.
 
-La corrección **no es reemplazar mecánicamente por *resulta***: es preguntarse qué pasa exactamente y nombrarlo.
+### 14.2. Nada de oraciones comprimidas
+
+Una oración puede tener todas las palabras correctas y leerse como el resumen de otra oración más completa. Tres formas del defecto.
+
+- **Verbo de actividad elidido.** *"Queda el factor que multiplica a todo"* tiene la gramática de un título. La forma plena es *"Resta interpretar el factor $1/\Delta t$ que multiplica a la suma"*. Prueba del título: si la oración funciona tal cual como `\subsubsection*{}`, está escrita como encabezado y se reescribe.
+- **Sintagma sin anclaje.** *"el factor"* sin decir de dónde sale. Se ata a su origen: *"el factor que multiplica a la suma en la ecuación~\eqref{...}"*.
+- **Conceptos encadenados sin desarrollar.** *"Que una exponencial oscile no garantiza que la secuencia se repita"* pide desarrollar qué es oscilar (tomar valores que aumentan y disminuyen) y qué es repetirse (reproducir la misma sucesión de muestras). Se devuelven las palabras que dan claridad.
+
+### 14.3. La apertura del párrafo
+
+No hay una fórmula para abrir un párrafo. Hay tres aperturas que no se usan.
+
+1. **El anuncio vacío.** *"Antes de cualquier cuenta, fijemos cómo se lee el cuadro."* La oración promete lo que el párrafo va a decir y no dice nada. Se borra y el párrafo abre con su contenido.
+2. **La oración corta de intriga.** *"La división tiene un límite."*, *"Dividir por $z$ tiene una consecuencia."*, *"El álgebra es común a las tres."*, *"Lo nuevo está fuera de ese círculo."*, *"El precio está en el truncamiento."* Es una afirmación breve y abstracta que adelanta algo sin decirlo, para que la oración siguiente lo revele. Repetida a lo largo de una sección es la huella más visible de la redacción automática (ver la Sección 15). Se reemplaza por una oración que diga el contenido completo: *"La división larga entrega las muestras de a una y no produce una fórmula cerrada para $x[n]$."*
+3. **La apertura que depende del párrafo anterior**, descripta en la Sección 14.1.
+
+La apertura correcta es una oración completa, de largo normal, cuyo sujeto es el objeto nombrado y que afirma algo que el lector puede verificar. Puede ser corta si dice algo completo y concreto (*"Si $L>N$, las copias se superponen."*), pero la brevedad no es un objetivo.
+
+Tampoco se abre con muletillas de realce: *"Conviene…"*, *"Vale la pena…"*, *"Es importante notar…"*, *"Cabe destacar…"*. *"Conviene"* se conserva cuando afirma una conveniencia real (*"qué frecuencia de muestreo conviene usar"*).
+
+**Prueba de la pasada.** Se leen seguidas las primeras oraciones de todos los párrafos de una sección. Si muchas son de menos de diez palabras, si muchas empiezan con un sustantivo abstracto o un demostrativo, o si todas tienen el mismo molde, el patrón está instalado y se corrige en toda la sección. Después se releen para verificar lo contrario, que ninguna haya quedado de tres líneas, porque la corrección apurada tiende a soldar la apertura con la oración siguiente y fabrica una oración-percha (Sección 14.4).
+
+### 14.4. La oración-percha
+
+Es una afirmación adelante y varios apéndices colgados de un solo eje: un inciso, una coordinada con *y*, una cola con *"con + sustantivo"*. La pieza que cierra el argumento termina en la cola, que es la posición más débil.
+
+Señales para detectarla: una coma seguida de *"con + sustantivo"* al final de la oración; un inciso que repite lo que la oración ya dijo; un sinónimo de refuerzo en la misma oración (*completa/entera*); un pronombre átono lejos de su antecedente. Suele venir con un verbo de proceso donde el sustantivo alcanzaba (*"un punto del plano lo registra"* en lugar de *"un punto del plano es"*).
+
+La salida es partir en varias oraciones, cada una con su afirmación. Ejemplo rechazado: *"El círculo muestra la exponencial completa: cada foto es un número complejo (parte real y parte imaginaria) y un punto del plano la registra entera, con el índice de la foto al lado."* Versión aceptada: *"En el círculo, cada foto es un punto del plano, y la parte real y la parte imaginaria son sus dos coordenadas. Los índices dicen en qué orden el vector pasa por esos puntos. Con la posición y el orden a la vista, el círculo muestra la exponencial completa."*
+
+### 14.5. Sin em-dashes
+
+**El libro no usa em-dashes (`---` en LaTeX, `—` en Unicode) en la prosa, ni sueltos ni en pares.** Tampoco en títulos, rótulos, cuadros, ítems ni pies de figura.
+
+| Uso del em-dash | Reemplazo |
+|---|---|
+| Inciso breve | Comas: *"las componentes $v_1$ y $v_2$, que no dependen una de otra, …"* |
+| Aclaración larga | Una oración propia a continuación. |
+| Aclaración de notación o un dato accesorio | Paréntesis. |
+| Aposición al final de la oración | Coma, o reescribir para nombrar la relación (*porque*, *es decir*, *de modo que*). |
+| Separador en un título o rótulo | Punto (*Ejemplo 1. Sistema lineal*) o dos puntos en el rótulo. |
+
+El en-dash (`--`) sigue usándose en rangos (*pp. 10--16*) y en pares técnicos (*entrada acotada--salida acotada*).
+
+El texto ya escrito del libro tiene em-dashes. No se barren por iniciativa propia. Se corrigen al trabajar el párrafo que los contiene o cuando el usuario pide el barrido.
+
+### 14.6. Dos puntos con moderación
+
+Los dos puntos anuncian que lo que sigue explica, enumera o precisa lo anterior. Usados por costumbre, el texto toma un ritmo de fichas (afirmación, dos puntos, desarrollo) que el lector oye por encima del contenido. Además suelen tapar la relación real entre las dos mitades, que queda insinuada en lugar de dicha.
+
+**La preferencia por defecto es la oración corrida.** Los dos puntos entran en tres lugares.
+
+- Una enumeración real de varios elementos.
+- El anuncio de una fórmula display que la oración venía preparando.
+- Un rótulo o un título.
+
+**No se usan para presentar ni para concluir.** Estas formas no van en la prosa.
+
+| Forma | Ejemplo a evitar | Preferir |
+|---|---|---|
+| Presentación | *"La razón es simple: el factor no depende de $k$."* | *"El factor no depende de $k$."* o *"La razón es que el factor no depende de $k$."* |
+| Conclusión | *"El resultado es el esperado: el espectro se replica."* | *"El espectro se replica, como se esperaba."* |
+| Aposición explicativa | *"Cada aporte es del mismo tipo: el espectro convolucionado con un impulso."* | *"Cada aporte es el espectro convolucionado con un impulso."* |
+| Consecuencia | *"Las copias también: el panel (c) es un tren de triángulos."* | *"Las copias también se replican, y la Figura~\ref{...}(c) queda como un tren de triángulos."* |
+| Remisión | *"Esa cuenta ya está hecha: la propiedad~\eqref{...} dice que…"* | *"La propiedad~\eqref{...} ya resuelve esa cuenta, porque dice que…"* |
+| Anuncio de casos | *"Hay dos casos: …"* | *"Hay dos casos. En el primero…"* |
+
+Dos apariciones en el mismo párrafo son una de más, y en párrafos contiguos también.
+
+### 14.7. Un anuncio y una conclusión
+
+Un párrafo anuncia una vez lo que va a hacer y enuncia una vez el resultado. Dos anuncios de la misma operación, o una conclusión dicha tres veces (el resultado, *"esa es la explicación"*, una versión en cursiva, una imagen), se leen como redacción rebuscada aunque cada oración esté bien. La salida es borrar lo que sobra, no coserlo con un conector. Sobra primero el anuncio genérico y la conclusión metafórica.
+
+### 14.8. Negaciones
+
+- **El contenido no se enuncia en negativo.** *"No hay curva que graficar"* obliga al lector a imaginar un objeto para después borrarlo. Se dice lo que ocurre: *"en $\lambda=0$ la serie suma infinitos unos y crece sin cota"*. Una negación que llega después de una afirmación y la acota (*"No hay contradicción"*, *"Ni la forma ni la información cambiaron"*) es buena prosa y se conserva.
+- **Nada de *"no es X: es Y"* ni de sus variantes.** *"La ventaja no es estética: …"*, *"Esto no es arbitrario: …"*, *"No es una metáfora: …"*, *"No hace falta salir a buscarlas: …"*. Niegan un cargo que el lector no hizo y delatan inseguridad. Se afirma directamente: *"La convolución es la respuesta del sistema a la entrada."*
+
+### 14.9. Sujeto estable y lectura única
+
+- **El sujeto no cambia sin aviso bajo una coordinación con *y*.** *"Las copias lo comparten y no depende de $k$"* se lee un instante como *"las copias no dependen de $k$"*. Se escribe una afirmación por oración con su sujeto: *"Como no depende de $k$, el factor escala a todas las copias por igual."*
+- **Artículo y pronombre iguales en contacto.** *"La banda base no depende de la señal: la fija el muestreo"* se lee primero *"la fija"* como sustantivo. Se pone el sujeto adelante: *"La frecuencia de muestreo determina la banda base."*
+- **Orden sujeto, verbo, objeto**, salvo que haya una razón de énfasis. El orden objeto, verbo, sujeto obliga a esperar al final para saber quién hace qué.
+
+### 14.10. Calcos del inglés
+
+| Calco | Evitar | Preferir |
+|---|---|---|
+| Clivada antepuesta | *"Lo que importa no es tanto la fórmula como qué es $\lambda$."* | *"Más que la fórmula, importa qué es $\lambda$."* |
+| Sujeto de cláusula pesado | *"Que una secuencia sea una lista de números habilita…"* | *"Como una secuencia es una lista de números, se puede…"* |
+| Perífrasis de relativo | *"cuál de las dos es la que vamos a estudiar"* | *"cuál de las dos vamos a estudiar"* |
+| Alcance adverbial ambiguo | *"esto deja de cumplirse siempre"* | *"esto ya no es siempre cierto"* |
+| Orden de palabras | *"entra un número solo"* (*only one number*) | *"un solo número"* |
+| Imperativo de manual | *"Note que…"*, *"Observe que…"* | Afirmar directamente, o *"Observemos que…"* |
+| Pasiva con *ser* | *"el resultado es obtenido derivando"* | *"el resultado se obtiene derivando"* |
+| Gerundio de consecuencia | *"…, resultando en un espectro periódico"* | *"…, y el espectro queda periódico"* |
+| *Resultar en* | *"esto resulta en…"* | *"esto produce…"*, *"de aquí resulta que…"* |
+| Conectores calcados | *"Adicionalmente"*, *"En orden a"*, *"Esto es debido a"* | *"Además"*, *"Para"*, *"Esto se debe a"* |
+| Sujeto explícito | *"Nosotros podemos ver que…"* | *"Vemos que…"* |
+| Adjetivo antepuesto | *"la anterior ecuación"* | *"la ecuación anterior"* |
+
+Cuidado con *solo*, *siempre*, *todavía*, *también* e *incluso* entre el verbo y su complemento. La prueba es leer la oración en voz alta y ver si el adverbio parece calificar a la palabra equivocada.
+
+---
+
+## 15. La huella de la redacción automática
+
+Los modelos de lenguaje tienen tics de estilo que, repetidos, funcionan como una marca de agua. El lector no puede señalar la palabra culpable, pero reconoce el texto como fabricado. Ninguno de estos rasgos es un error gramatical aislado; el problema es la repetición. Al redactar se evitan, y al revisar se buscan activamente.
+
+| Tic | Ejemplo | Regla |
+|---|---|---|
+| Em-dash de inciso | *"la serie ---que converge--- vale…"* | Sección 14.5 |
+| Oración corta de intriga al abrir el párrafo | *"La división tiene un límite."* | Sección 14.3 |
+| Dos puntos de revelación | *"La razón es simple: …"* | Sección 14.6 |
+| Sustantivo abstracto como sujeto | *"La maniobra es…"*, *"La clave está en…"*, *"El precio es…"* | Sección 14.1 |
+| Demostrativo que remite lejos | *"Ese rodeo se evita…"*, *"Esos tres ingredientes…"* | Sección 14.1 |
+| Negación seguida de corrección | *"No es X, es Y"*, *"no X sino Y"* como molde | Sección 14.8 |
+| Cierre sentencioso | *"Eso es todo lo que hace falta."*, *"Ahí está la clave."* | Sección 14.7 |
+| Tríadas por ritmo | *"se apaga, oscila, crece"* cuando la enumeración no es exhaustiva | Enumerar solo lo que hay. |
+| Adverbios de refuerzo | *exactamente*, *literalmente*, *justamente*, *precisamente*, *de punta a punta*, *de una sola vez* | Se borran salvo que precisen algo. |
+| Verbos figurados | *vivir*, *habitar*, *cobrar*, *pagar*, *levantar*, *cargar*, *entrar en escena*, *se agota*, *abre* (una fórmula) | Nombrar la operación real (Sección 16). |
+| Cursiva o negrita de énfasis retórico | *"la suma **no cambia en nada**"* | La cursiva marca términos que se definen; la negrita, términos en su definición. |
+| Pregunta retórica y respuesta inmediata en serie | *"¿Por qué? Porque…"* varias veces por sección | Una pregunta se usa cuando es la pregunta real del párrafo. |
+
+Estas reglas valen también para las guías y los skills del proyecto. Los modelos imitan la prosa de las instrucciones que leen, así que un archivo de instrucciones lleno de em-dashes y dos puntos enseña a escribir con em-dashes y dos puntos.
+
+---
+
+## 16. Vocabulario
+
+### 16.1. Registro
+
+| Evitar | Preferir | Nota |
+|---|---|---|
+| *acá*, *allá* | *aquí*, *allí* | Para continuo frente a discreto, nombrarlos: *"en el tiempo continuo…"* |
+| *chico*, diminutivos | *pequeño* | |
+| *subir* (una magnitud) | *aumentar* | *"El coseno sube y baja"* describe el trazo y se conserva. |
+| *armar* | *construir* | |
+| *agarrar* | *encontrar*, *tomar* | |
+| *un montón de* | *una suma de*, *muchos* | |
+| *de un saque* | *de una sola vez*, o reescribir | |
+| *tira información a la basura* | *elimina información de forma irreversible* | |
+| *la culpa la tiene* | *la razón es* | |
+| *se van a infinito* | *divergen* | |
+| *a ojo* | *por comparación*, *por inspección* | *A ojo* sugiere una estimación donde el resultado es exacto. |
+| *la notación que venimos arrastrando* | *que venimos usando* | |
+| *una diferencia discreta* (en un capítulo sobre lo discreto) | *sutil* | Colisión con un término técnico. |
+
+### 16.2. Verbos comodín
+
+**`dar` no expresa el resultado de una cuenta, una operación o una definición.** El mismo *da* cubre *vale*, *produce*, *conduce a* y *queda*, y ninguno de esos matices llega al lector. La corrección consiste en preguntarse qué pasa y nombrarlo.
 
 | Contexto | Evitar | Preferir |
 |---|---|---|
-| Valor numérico de una cuenta | *"la integral da el ancho de la banda"* | *"la integral vale el ancho de la banda"*, *"es igual a"* |
-| Sustitución en una expresión | *"con $M=2$ eso da $y[0]=x[0]$"* | *"con $M=2$ queda $y[0]=x[0]$"* |
-| Efecto de una operación | *"multiplicar por $(-1)^n$ da…"* | *"multiplicar por $(-1)^n$ desplaza el espectro"* (nombrar el efecto), *"produce"* |
-| Consecuencia de aplicar una fórmula | *"la fórmula da $\delta[n-n_0]\leftrightarrow\ldots$"* | *"de la fórmula resulta…"*, *"la fórmula entrega…"* |
-| Dos objetos que coinciden | *"$\lambda=0$ y $\lambda=2\pi$ dan la misma señal"* | *"corresponden a la misma señal"*, *"producen"* |
-| Objeto al que se llega | *"sumar sus cuadrados da una serie del tipo $\sum 1/n^2$"* | *"sumar sus cuadrados conduce a una serie…"*, *"arroja"* |
-| Una tabla o figura que exhibe algo | *"la columna de la derecha da la palabra de cuatro bits"* | *"muestra"*, *"lista"*, *"indica"* |
-| Indiferencia | *"da igual"* | *"es indistinto"*, *"no importa"* |
+| Valor de una cuenta | *"la integral da el ancho"* | *"vale"*, *"es igual a"* |
+| Sustitución | *"con $M=2$ eso da $y[0]=x[0]$"* | *"queda"* |
+| Efecto de una operación | *"multiplicar por $(-1)^n$ da…"* | *"desplaza el espectro"*, *"produce"* |
+| Consecuencia de una fórmula | *"la fórmula da…"* | *"de la fórmula resulta…"* |
+| Dos objetos que coinciden | *"dan la misma señal"* | *"corresponden a la misma señal"* |
+| Objeto al que se llega | *"da una serie del tipo…"* | *"conduce a"*, *"arroja"* |
+| Tabla o figura | *"la columna da la palabra"* | *"muestra"*, *"indica"* |
+| Indiferencia | *"da igual"* | *"es indistinto"* |
 
-Repertorio de reemplazo: *valer, quedar, ser igual a, equivaler a, obtenerse, producir, arrojar, conducir a, llevar a, resultar, entregar, mostrar*.
+Se conserva el `dar` que es verbo propio: *"el vector da una vuelta"*, *"dar lugar a"*.
 
-Dos precisiones:
+**`hacer` tampoco es comodín.** *"Qué le hace el muestreo al espectro"* pasa a *"el muestreo replica el espectro"*; *"muestrear hace periódico al espectro"* pasa a *"vuelve periódico"*. Se conservan los usos propios (*hacen falta ocho fotos*) y el sustantivo *hecho*.
 
-- ***resultar en* es calco del inglés** (*results in*). Escribir *"de aquí resulta que…"*, *"esto produce…"*, *"esto conduce a…"*, no *"esto resulta en…"*. Es la misma alarma que el gerundio de consecuencia *"resultando en"*.
-- **`dar` es legítimo** cuando no es comodín sino el verbo propio: *"el vector da una vuelta entera cada tres muestras"* (giro), *"dar lugar a"* (locución fija). Ahí se deja. Lo que se corrige es el `dar` que podría reemplazarse por un verbo más preciso sin perder nada.
+**`dejar` como verbo de resultado** (*"dejan la misma secuencia"*) tiene el mismo problema y se reemplaza igual.
 
----
+### 16.3. Vocabulario fijado
 
-### 13.8. Orden de palabras calcado del inglés
-
-Además de los moldes de oración, hay calcos de **orden de palabras** que producen una lectura distinta de la buscada. El caso más traicionero es el *solo* posposado:
-
-- Evitar: *"en ese eje entra un número solo"* (calco de *only one number*; en castellano *un número solo* se lee como *un número solitario*).
-- Preferir: *"un solo número"*, *"solo un número"*, *"un único número"*.
-
-Mismo cuidado con *también*, *siempre*, *todavía* e *incluso* cuando quedan detrás del sustantivo o entre el verbo y su complemento (ver §13.5). La prueba rápida es leer la oración en voz alta: si el adverbio parece calificar a la palabra equivocada, está mal ubicado.
-
----
-
-### 13.9. Los dos puntos como muletilla de estructura
-
-Los dos puntos anuncian que lo que sigue explica, enumera o precisa lo que se acaba de decir. Una vez en un párrafo, ordenan. Repetidos, se vuelven el molde por defecto de la prosa y el texto adquiere un ritmo de fichas ---afirmación, dos puntos, desarrollo--- que el lector termina oyendo por encima del contenido. Además suelen tapar un problema real: la relación entre las dos mitades quedó sin nombrar, y los dos puntos la insinúan en lugar de decirla, que es el mismo vicio del `dar` comodín de §13.7.
-
-**La preferencia por defecto es la oración corrida. Los dos puntos entran cuando su claridad es superadora, no por costumbre.**
-
-Dónde pagan su lugar:
-
-- **Enumeración real** de varios elementos que vienen después.
-- **Anuncio de una fórmula display** que el párrafo estaba preparando.
-- **Definición o nombre** que se introduce inmediatamente después del objeto.
-
-Dónde sobran, y por dónde salir:
-
-| Función | Evitar | Preferir |
+| Término | Uso | No usar |
 |---|---|---|
-| Aposición explicativa | *"Cada aporte es del mismo tipo: el espectro convolucionado con un impulso."* | *"Cada aporte es el espectro convolucionado con un impulso."* |
-| Remisión a algo ya visto | *"esa cuenta ya está hecha: la propiedad~\eqref{...} dice que…"* | *"esa cuenta ya está hecha en la propiedad~\eqref{...}, que dice…"* |
-| Consecuencia | *"las copias también: el panel (c) es un tren infinito de triángulos."* | *"las copias también, y el panel (c) queda como un tren infinito de triángulos."* |
-| Refuerzo de lo ya dicho | *"el resultado es el esperado: el espectro se replica."* | *"el resultado esperado es que el espectro se replique."* |
-
-Prueba rápida en revisión: dos apariciones en el mismo párrafo, o en párrafos contiguos, son una de más. Reescribir la menos necesaria, no las dos.
-
----
-
-### 13.10. Oraciones telegráficas: verbo elidido y sintagma desnudo
-
-Una oración puede tener todas las palabras correctas y aun así leerse como el resumen de otra oración más completa, como si le faltaran conectores o artículos. El lector percibe una nota al margen donde esperaba prosa. El origen no es el vocabulario sino la **compresión sintáctica**: se eliden las articulaciones que la prosa académica hace explícitas.
-
-Caso canónico: *"Queda el factor que multiplica a todo."* Tiene los tres huecos a la vez.
-
-- **Verbo de actividad elidido.** La forma plena es *"Resta interpretar el factor…"*, *"Falta discutir…"*, *"Queda por examinar…"*. El verbo que dice qué se va a hacer con el objeto desapareció y quedó el existencial solo, sosteniendo un sustantivo. Eso es la gramática de un **título**, no de una frase.
-- **Sintagma nominal sin anclaje.** *"el factor"* llega sin decir de dónde sale. La forma plena lo ata a su origen: *"el factor que multiplica a la suma en~\eqref{...}"*. Cuando el anclaje falta, suele aparecer en su lugar una perífrasis vaga (*"que multiplica a todo"*, *"lo que veníamos viendo"*), que identifica peor que el nombre propio del objeto ---aquí, $1/\Delta t$---.
-- **Sin conector con lo anterior.** La oración aterriza sin bisagra. La forma plena dice de dónde viene: *"De las tres piezas…"*, *"De la ecuación anterior…"*.
-
-**Prueba del título**: si la oración se puede pegar tal cual como `\subsubsection*{}` y funciona, está escrita como encabezado. Reescribirla como prosa.
-
-Tres salidas, de menor a mayor intervención:
-
-| Salida | Resultado |
-|---|---|
-| Reponer el verbo de actividad | *"Resta interpretar el factor $1/\Delta t$ que multiplica a la suma."* |
-| Reponer verbo y conector | *"De la ecuación~\eqref{...} falta discutir el factor $1/\Delta t$."* |
-| Eliminar el anuncio y abrir con el contenido | *"Las copias comparten el mismo factor $1/\Delta t$…"* |
-
-La tercera es la preferida cuando el anuncio no orienta (ver §13.9): abrir un párrafo con su oración de menor densidad entierra la afirmación principal en segunda posición. La primera y la segunda valen cuando el pendiente sí orienta ---un tramo largo, varias piezas anunciadas---, porque ahí el anuncio hace trabajo de navegación.
+| Convolución gráfica | *invertir y desplazar* | *voltear*, *deslizar* |
+| Señal movida en el tiempo | *desplazada*, *desplazamiento* | *corrida*, *correr* |
+| Integral hasta $t$ | *integral acumulada* | *integral corrida* |
+| Llegada de una muestra al sistema | *ingresar* | *entrar* y su familia, porque choca con *entrada* |
+| Representar gráficamente | *graficar*, *trazar*; una secuencia invertida se *refleja*; una figura *muestra* | *dibujar*, *dibujo* |
+| Escalado por un coeficiente | *ponderado* | *pesado* (el verbo *pesar* como "importar" se conserva) |
+| Función $\operatorname{sinc}$ en prosa | *el seno cardinal* (masculino) | *la sinc* como sustantivo |
+| Término de una serie | *el armónico*, *los armónicos* (masculino) | *la armónica* como sustantivo; el adjetivo concuerda (*exponencial armónica*) |
+| Separación entre copias o bandas | *franja libre*, *espacio libre*, con su ancho | *hueco* (reservado a la ROC y a la interpolación) |
+| Integral de $|h|$ finita | *$|h|$ es absolutamente integrable* | *masa finita*, *masa total* |
 
 ---
 
-### 13.11. Sujeto inestable y dobles lecturas
+## 17. Pasada de revisión
 
-Dos fallas distintas con el mismo síntoma: el lector tiene que volver atrás y releer.
+La pasada de fraseo se hace aparte y al final, leyendo solo la prosa. Los calcos y los tics se detectan mucho mejor oración por oración que mientras se decide el contenido matemático.
 
-**Sujeto que cambia sin aviso bajo una coordinación con *y*.** La *y* promete continuidad, así que el lector arrastra el sujeto de la cláusula anterior. Si la siguiente tiene otro sujeto tácito, se produce un desvío de lectura real, no una incomodidad estética.
+Barrido léxico inicial (los falsos positivos se descartan uno por uno):
 
-- Evitar: *"Las copias lo comparten y no depende de $k$, así que afecta a cada una por igual."* El sujeto va copias → factor → factor, y se lee por un instante *"las copias no dependen de $k$"*.
-- Preferir: una predicación por oración, sujeto estable en cada una, premisa al frente. *"Como no depende de $k$, el factor escala a todas las copias por igual."*
+```bash
+f=archivo.tex
+grep -nE -- "---" $f                                   # em-dashes (14.5)
+grep -nE ":[^$]*$|: [a-záéíóú]" $f | grep -v "^\s*%"   # dos puntos en prosa (14.6)
+grep -niE "\b(acá|allá|chic[oa]s?)\b" $f               # registro (16.1)
+grep -niE "\b(da|dan|daba|daban|dará|darán|dio|dieron|dando)\b" $f   # dar (16.2)
+grep -niE "\bhac(e|en|er|ía)\b" $f                     # hacer (16.2)
+grep -niE "resulta(n|ndo)? en\b" $f                    # resultar en (14.10)
+grep -niE "\b(entra|entran|entró|entrar)\b" $f         # ingresar (16.3)
+grep -niE "\bdibuj" $f                                 # dibujar (16.3)
+grep -niE "^(Conviene|Vale la pena|Es importante|Cabe)" $f           # realce (14.3)
+grep -niE "\b(exactamente|literalmente|justamente|precisamente)\b" $f # refuerzo (15)
+grep -niE "no es (tanto|arbitrari|casual|una metáfora)" $f           # negación (14.8)
+```
 
-**Artículo y pronombre homófonos en contacto.** Secuencias como *la fija*, *la que la marca*, *lo que lo determina*: el lector parsea el primer elemento como artículo y el segundo como sustantivo o adjetivo, y descubre tarde que eran pronombre más verbo.
+Después de los barridos, la lectura fina.
 
-- Evitar: *"La banda base no depende de la señal: la fija el muestreo."* (*la fija* se lee primero como sintagma nominal, *la fija* frente a *la móvil*).
-- Preferir: el sujeto adelante. *"La frecuencia de muestreo $\omega_s$ determina la banda base."*
-
-El orden objeto-verbo-sujeto agrava las dos, porque obliga a esperar al final para saber quién hace qué. Preferir sujeto-verbo-objeto salvo que haya una razón de énfasis que lo justifique.
+1. ¿Las primeras oraciones de los párrafos, leídas seguidas, nombran su objeto y afirman algo completo? (14.1, 14.3)
+2. ¿Algún pronombre o demostrativo obliga a buscar el referente fuera de la oración anterior? (14.1)
+3. ¿Alguna oración se lee como título o como resumen de otra oración? (14.2)
+4. ¿Alguna oración cuelga más de una afirmación? (14.4)
+5. ¿Hay más de un dos puntos por párrafo, o alguno que presenta o concluye? (14.6)
+6. ¿Se anuncia o se concluye dos veces lo mismo? (14.7)
+7. ¿Se saltea algún paso, o una cuenta está descripta en prosa en lugar de escrita? (3)
+8. ¿Después de cada desarrollo largo hay una oración que dice qué se obtuvo? (5)
+9. ¿Cada figura, tabla y ecuación citada está nombrada con la palabra completa? (8.1)
+10. ¿Algún término técnico está usado fuera de su definición o en su sentido corriente? (9)

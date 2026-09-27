@@ -129,20 +129,40 @@ ESPECIFICACIONES = [(BRIEF_ORIGEN, BRIEF), ("STYLE.md", "STYLE.md"),
                     ("NOTATION.md", "NOTATION.md"), ("WORKFLOW.md", "WORKFLOW.md")]
 for origen, publicado in ESPECIFICACIONES:
     copiar("libro_asys/%s" % origen, "metodo/especificaciones/%s" % publicado)
-for s in ["write_section", "review_section", "create_2d_figures", "3d_figures"]:
+SKILLS = ["write_section", "review_section", "create_2d_figures", "3d_figures"]
+for s in SKILLS:
     copiar_dir("libro_asys/.claude/skills/%s" % s, "metodo/skills/%s" % s)
+
+# Las tablas de skills del brief y de WORKFLOW.md enumeran todos los del repo de
+# origen, y de las instrucciones modulares se dice que son algunas, sin declarar
+# cuántas hay. De esas tablas se quitan las filas de los skills que no se
+# publican; las menciones sueltas en la prosa quedan, porque no cuentan nada.
+_TODOS = set(os.listdir(os.path.join(PROY, "libro_asys/.claude/skills")))
+_FILA_SKILL = _re.compile(r"^\|\s*`/?([\w-]+)`\s*\|")
+
+def fila_fuera(linea):
+    m = _FILA_SKILL.match(linea)
+    return bool(m) and m.group(1) in _TODOS and m.group(1) not in SKILLS
+
+# Un párrafo con una ruta del equipo del autor describe su instalación local y
+# no el método, así que tampoco se publica.
+def parrafo_local(p):
+    return "~/.claude/" in p or "/Users/" in p
 
 # El renombre alcanza a las referencias al brief dentro de lo publicado: si no,
 # WORKFLOW.md y los skills apuntarían a un archivo que en el árbol no existe.
-# Solo cambia el nombre del archivo; el resto del texto se publica tal cual.
+# Fuera de ese renombre y de los dos filtros de arriba, el texto se publica tal cual.
 for raiz, _, archivos in os.walk(os.path.join(DEST, "metodo")):
     for a in archivos:
         if not a.endswith(".md"): continue
         ruta = os.path.join(raiz, a)
         with io.open(ruta, encoding="utf-8") as fh:
             texto = fh.read()
-        if BRIEF_ORIGEN not in texto: continue
+        nuevo = texto.replace(BRIEF_ORIGEN, BRIEF)
+        nuevo = "".join(l for l in nuevo.splitlines(True) if not fila_fuera(l))
+        nuevo = "\n\n".join(p for p in nuevo.split("\n\n") if not parrafo_local(p))
+        if nuevo == texto: continue
         with io.open(ruta, "w", encoding="utf-8") as fh:
-            fh.write(texto.replace(BRIEF_ORIGEN, BRIEF))
+            fh.write(nuevo)
 
 print("ensamblado en", DEST)

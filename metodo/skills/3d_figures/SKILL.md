@@ -9,15 +9,15 @@ Este skill se especializa en visualizar funciones racionales de transferencia $H
 
 ---
 
-## Bloque 1 — Pre-flight
+## Bloque 1. Pre-flight
 
-1. **`STYLE.md §12`** y **`NOTATION.md`** — igual que en figuras 2D.
-2. **El texto que rodea a la figura** — la superficie 3D casi siempre va junto a un diagrama de polos y ceros 2D y un par de cortes 2D. Confirmar qué cuenta cada figura del conjunto para no duplicar.
-3. **La función racional concreta** — saber cuáles son los polos, cuáles los ceros, dónde está cada singularidad, qué rango del plano captura la información relevante.
+1. **`STYLE.md §12`** y **`NOTATION.md`**, igual que en las figuras 2D.
+2. **El texto que rodea a la figura.** La superficie 3D casi siempre va junto a un diagrama de polos y ceros 2D y un par de cortes 2D. Confirmar qué cuenta cada figura del conjunto para no duplicar.
+3. **La función racional concreta.** Hay que saber cuáles son los polos, cuáles los ceros, dónde está cada singularidad, qué rango del plano captura la información relevante.
 
 ---
 
-## Bloque 2 — Deliberación
+## Bloque 2. Deliberación
 
 ### 2.1. ¿La superficie 3D paga su lugar?
 
@@ -39,7 +39,7 @@ Si una sección presenta varias superficies (por ejemplo, $H_1$ y $H_2$), manten
 
 ---
 
-## Bloque 3 — Forma técnica
+## Bloque 3. Forma técnica
 
 ### 3.1. Escalado no lineal de color (crítico)
 
@@ -157,7 +157,7 @@ Usar `\addplot3` con `variable=u` (radial) y `variable y=v` (angular), extrayend
 
 ---
 
-## Bloque 4 — Compilación e inclusión
+## Bloque 4. Compilación e inclusión
 
 ### 4.1. Compilación
 
@@ -186,7 +186,7 @@ Igual que figuras 2D, con `\caption` y `\label` dentro del `minipage`:
 
 ---
 
-## Bloque 5 — Post-creación
+## Bloque 5. Post-creación
 
 - Verificar que el PDF muestra los polos como picos legibles **y** los ceros como valles claros (no como fondo plano).
 - Si la superficie va acompañada de cortes 2D o de un diagrama PZ, verificar que el conjunto cuenta una historia coherente: el lector debe poder mirar el 3D, mirar el corte, y ver la correspondencia.

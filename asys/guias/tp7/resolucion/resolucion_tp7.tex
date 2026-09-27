@@ -150,7 +150,7 @@
 	\]
 
 	\begin{enumerate}
-		\item \textbf{Memoria y causalidad.} Solo $\mathcal{T}_4$ es sin memoria, porque su
+		\item Solo $\mathcal{T}_4$ es sin memoria, porque su
 		salida en el instante $n$ se arma con la muestra $x[n]$ y nada más. El factor
 		$(n+1)$ no aporta memoria, ya que es un número que el sistema conoce por el índice
 		en que está trabajando y no un valor guardado de la entrada. Los otros tres tienen
@@ -168,7 +168,7 @@
 		sin memoria es automáticamente causal, porque usar solo $x[n]$ ya cumple la
 		condición $k\le n$.
 
-		\item \textbf{Linealidad e invarianza temporal.} Los sistemas $\mathcal{T}_1$ y
+		\item Los sistemas $\mathcal{T}_1$ y
 		$\mathcal{T}_3$ combinan muestras desplazadas de la entrada con coeficientes
 		constantes, que es la forma que la regla práctica reconoce, así que son LIT. De
 		todos modos conviene verificarlo con la definición al menos una vez.
@@ -257,7 +257,7 @@
 		porque ahora la muestra no nula cae en $n=1$ y allí el factor vale $2$. Las dos
 		secuencias difieren, así que el sistema no es invariante en el tiempo.
 
-		\item \textbf{Estabilidad BIBO.} Se parte de una cota $|x[n]| \le M_x$ para toda
+		\item Se parte de una cota $|x[n]| \le M_x$ para toda
 		muestra y se busca una cota para la salida, acotando cada término con la desigualdad
 		triangular:
 		\[
@@ -282,7 +282,7 @@
 		grande. El motivo es el mismo factor que rompía la invarianza, porque un coeficiente
 		que crece con el índice termina amplificando sin límite.
 
-		\item \textbf{Tiempo real y fuera de línea.} El único que no puede usarse en tiempo
+		\item El único que no puede usarse en tiempo
 		real es $\mathcal{T}_3$, y es el único no causal, lo cual no es casualidad. En un
 		procesamiento en tiempo real las muestras ingresan de a una al ritmo del muestreo, y
 		en el instante $n$ el sistema dispone de $x[n]$, de las anteriores y de las salidas
@@ -384,7 +384,7 @@
 	$x[2]=-1$ y vale cero fuera del soporte $[0,2]$.
 
 	\begin{enumerate}
-		\item \textbf{La respuesta al impulso.} Se obtiene reemplazando la entrada por
+		\item Se obtiene reemplazando la entrada por
 		$\delta[n]$ en la ecuación del sistema. Cada término $x[n-k]$ pasa a ser
 		$\delta[n-k]$, así que
 		\[
@@ -401,7 +401,7 @@
 		nulas. Los paneles (a) y (b) de la Figura~\ref{fig:sol_ej2} muestran la entrada y la
 		respuesta al impulso.
 
-		\item \textbf{La tabla de copias desplazadas.} La entrada tiene tres muestras no
+		\item La entrada tiene tres muestras no
 		nulas, así que la salida es la suma de tres copias de $h[n]$. Cada copia se escala
 		por el valor de la muestra que la produce y arranca en la posición de esa muestra.
 		La Tabla~\ref{tab:sol_ej2} ordena la cuenta con una fila por copia y una columna por
@@ -438,7 +438,7 @@
 		aportes de esa columna sí son no nulos y se cancelan entre sí, $0+2-2=0$. El panel
 		(c) de la Figura~\ref{fig:sol_ej2} muestra la salida.
 
-		\item \textbf{La salida instante por instante.} La segunda lectura calcula un valor
+		\item La segunda lectura calcula un valor
 		de la salida por vez. Se elige el instante $n$, se arma el peso $h[n-k]$ que le
 		corresponde a cada muestra de la entrada y se suman los productos,
 		\[
@@ -490,7 +490,7 @@
 		productos en distinto orden, la tabla acumulando las copias que caen en cada instante
 		y la ventana ponderando las muestras de la entrada que lo alimentan.
 
-		\item \textbf{El largo del soporte.} La entrada ocupa $L_x=3$ muestras y la respuesta
+		\item La entrada ocupa $L_x=3$ muestras y la respuesta
 		al impulso $L_h=4$, de modo que la regla predice
 		\[
 			L_y = L_x + L_h - 1 = 3 + 4 - 1 = 6 \ \text{muestras}.
@@ -500,7 +500,7 @@
 		distintas y cubren $L_x=3$ columnas, y la última fila se prolonga $L_h-1=3$ columnas
 		más hacia la derecha.
 
-		\item \textbf{El producto de polinomios.} A cada secuencia causal se le asocia el
+		\item A cada secuencia causal se le asocia el
 		polinomio en el marcador $D$ cuyos coeficientes son sus muestras, con $D^k$ ocupando
 		el lugar del índice $k$:
 		\[
@@ -552,7 +552,7 @@
 	\end{consigna}
 
 	\begin{enumerate}
-		\item \textbf{Dos pulsos rectangulares.} La diferencia de dos escalones desplazados
+		\item La diferencia de dos escalones desplazados
 		es un pulso, y lo primero es escribir las dos secuencias por extensión. El escalón
 		$u[n]$ vale uno desde $n=0$ en adelante y $u[n-4]$ vale uno desde $n=4$, así que la
 		resta deja cuatro unos,
@@ -601,7 +601,7 @@
 		simétrica. Es la versión discreta del trapecio que producen dos pulsos rectangulares
 		en tiempo continuo.
 
-		\item \textbf{Una exponencial contra dos impulsos.} Convolucionar con un impulso
+		\item Convolucionar con un impulso
 		desplazado es desplazar, porque $x[n]*\delta[n-n_0]=x[n-n_0]$. La segunda secuencia
 		tiene dos impulsos, así que por distributividad la convolución se separa en dos
 		términos:
@@ -631,7 +631,7 @@
 		dos sistemas son entonces \textbf{mutuamente inversos}: encadenados en cualquier
 		orden reconstruyen la entrada, así que cada uno deshace exactamente el efecto del otro.
 
-		\item \textbf{Dos exponenciales causales.} Los dos escalones recortan el rango del
+		\item Los dos escalones recortan el rango del
 		índice. El primer factor anula los términos con $k<0$ y el segundo los que tienen
 		$n-k<0$, es decir $k>n$, de modo que sobreviven los índices $0 \le k \le n$ y la suma
 		queda finita:
@@ -709,7 +709,7 @@
 	\end{consigna}
 
 	\begin{enumerate}
-		\item \textbf{La forma cerrada.} La salida ante el escalón es la convolución entre
+		\item La salida ante el escalón es la convolución entre
 		$h[n]$ y $u[n]$,
 		\[
 			g[n] = \sum_{k=-\infty}^{\infty} h[k]\,u[n-k]
@@ -732,8 +732,8 @@
 		Los primeros valores son $g[0]=1$, $g[1]=1{,}5$, $g[2]=1{,}75$ y $g[3]=1{,}875$, que
 		es la sucesión creciente del panel (a) de la Figura~\ref{fig:sol_ej4}.
 
-		\item \textbf{$g[n]$ es la suma acumulada de $h[n]$.} El paso está a la vista en la
-		cuenta anterior, y vale para cualquier sistema LIT, no solo para este. Volviendo a la
+		\item La respuesta al escalón es la suma acumulada de $h[n]$, y el paso está a la
+		vista en la cuenta anterior. Vale para cualquier sistema LIT, no solo para este. Volviendo a la
 		suma antes de reemplazar la exponencial,
 		\[
 			g[n] = \sum_{k=-\infty}^{\infty} h[k]\,u[n-k],
@@ -748,7 +748,7 @@
 		porque $g[2]=h[0]+h[1]+h[2]=1+0{,}5+0{,}25=1{,}75$, el mismo valor de la forma
 		cerrada.
 
-		\item \textbf{La primera diferencia recupera $h[n]$.} Con $g[n]$ escrita como suma
+		\item Con $g[n]$ escrita como suma
 		acumulada, la resta de dos totales consecutivos cancela todo lo acumulado hasta el
 		instante anterior y deja un único término,
 		\[
@@ -775,7 +775,7 @@
 		$h[n]$. La operación que en la entrada convierte el escalón en impulso es la misma
 		que en la salida convierte $g[n]$ en $h[n]$.
 
-		\item \textbf{El límite y la estabilidad.} Al aumentar $n$, el término
+		\item Al aumentar $n$, el término
 		$\left(\tfrac12\right)^n$ se achica hacia cero y
 		\[
 			\boxed{\;\lim_{n\to\infty} g[n] = 2.\;}
@@ -851,7 +851,7 @@
 	muestras y solo difieren en el signo con que interviene la más vieja.
 
 	\begin{enumerate}
-		\item \textbf{Las dos ramas en paralelo.} Las ramas reciben la misma entrada y sus
+		\item Las ramas reciben la misma entrada y sus
 		salidas se suman, así que el equivalente es la suma de las respuestas al impulso:
 		\[
 			h_{12}[n] = h_1[n]+h_2[n]
@@ -870,7 +870,7 @@
 		vieja y duplica la actual, que es la misma cuenta escrita sobre las señales en lugar
 		de sobre los impulsos.
 
-		\item \textbf{El sistema completo.} La etapa en paralelo está en cascada con $h_3$,
+		\item La etapa en paralelo está en cascada con $h_3$,
 		de modo que la respuesta al impulso total es la convolución de las dos:
 		\[
 			h[n] = h_{12}[n] * h_3[n] = 2\,\delta[n] * \left(\tfrac{1}{2}\right)^{\!n} u[n].
@@ -884,7 +884,7 @@
 		donde la segunda forma absorbe el $2$ en el exponente. El sistema completo es la
 		misma exponencial de la tercera etapa con el doble de amplitud.
 
-		\item \textbf{FIR o IIR, y estabilidad.} El soporte de $h[n]$ es $[0,\infty)$, porque
+		\item El soporte de $h[n]$ es $[0,\infty)$, porque
 		la exponencial no se anula en ningún $n\ge 0$, así que el sistema es \textbf{IIR}. Su
 		estabilidad se decide con la sumabilidad absoluta,
 		\[
@@ -896,7 +896,7 @@
 		resultado, porque tienen soporte finito y todo sistema FIR es estable; quien decide
 		es la tercera etapa.
 
-		\item \textbf{El orden de la cascada.} La respuesta al impulso no cambia. La cascada
+		\item La respuesta al impulso no cambia. La cascada
 		de dos sistemas LIT tiene por respuesta la convolución de las dos, y la convolución
 		es conmutativa,
 		\[
@@ -968,7 +968,7 @@
 	\end{itemize}
 
 	\begin{enumerate}
-		\item \textbf{Memoria y causalidad.} Sin memoria hay uno solo, $h_1[n]=3\delta[n]$,
+		\item Sin memoria hay uno solo, $h_1[n]=3\delta[n]$,
 		que tiene la forma $K\delta[n]$ con $K=3$ y corresponde al sistema $y[n]=3x[n]$. Los
 		otros cuatro tienen valores no nulos fuera del origen y por lo tanto tienen memoria.
 
@@ -978,7 +978,7 @@
 		ejemplo, $h_4[-3]=1/8 \neq 0$. Ese sistema responde antes de que el impulso ingrese,
 		de modo que \textbf{no es causal}.
 
-		\item \textbf{Estabilidad.} Hay que sumar los módulos, uno por uno.
+		\item Hay que sumar los módulos, uno por uno.
 
 		\emph{$h_1$:} la suma tiene un único término, $\sum_n |h_1[n]| = 3 < \infty$.
 		\textbf{Estable.}
@@ -1013,14 +1013,14 @@
 		módulo por uno, pero no es absolutamente sumable, y el criterio BIBO exige lo
 		segundo.
 
-		\item \textbf{FIR o IIR.} La clasificación solo mira si el soporte es finito:
+		\item La clasificación solo mira si el soporte es finito:
 		$h_1$ (una muestra) y $h_2$ (cinco muestras) son \textbf{FIR}; $h_3$, $h_4$ y $h_5$
 		tienen infinitas muestras no nulas y son \textbf{IIR}. Las dos primeras confirman de
 		paso la regla general, ya que los dos sistemas FIR salieron estables sin necesidad
 		de examinar sus coeficientes.
 
-		\item \textbf{Estable y no causal.} El caso es $h_4[n]=2^n u[-n]$, el único de los
-		cinco que combina las dos condiciones. Las dos propiedades son independientes porque
+		\item El caso es $h_4[n]=2^n u[-n]$, el único de los
+		cinco que es estable y no causal a la vez. Las dos propiedades son independientes porque
 		responden preguntas distintas sobre la misma secuencia. La causalidad pregunta
 		\emph{dónde} vive $h[n]$, si a la izquierda o a la derecha del origen, y no le
 		importa cuánto valen sus muestras. La estabilidad pregunta \emph{cuánto suman} esas
@@ -1102,7 +1102,7 @@
 	\end{consigna}
 
 	\begin{enumerate}
-		\item \textbf{La respuesta al impulso.} La ecuación ya está despejada, así que se la
+		\item La ecuación ya está despejada, así que se la
 		corre directamente. El reposo inicial fija $y[-1]=0$, y la entrada es el impulso, que
 		vale $1$ en $n=0$ y cero en el resto:
 		\[
@@ -1122,7 +1122,7 @@
 			\boxed{\;h[n] = (0{,}8)^{n}\,u[n].\;}
 		\]
 
-		\item \textbf{FIR o IIR, y estabilidad.} La exponencial no se anula para ningún
+		\item La exponencial no se anula para ningún
 		$n \ge 0$, así que el soporte es infinito y el sistema es \textbf{IIR}. Para la
 		estabilidad se suman los módulos, que forman una serie geométrica de razón
 		$|0{,}8|<1$:
@@ -1131,7 +1131,7 @@
 		\]
 		El sistema es \textbf{estable}.
 
-		\item \textbf{La respuesta al escalón.} Ahora la entrada aporta un $1$ en cada
+		\item Ahora la entrada aporta un $1$ en cada
 		instante, no solo en el origen. Corriendo la misma recursión con $y[-1]=0$:
 		\[
 			\begin{aligned}
@@ -1155,7 +1155,7 @@
 		valor. Vale notar que el límite coincide con la suma que decidió la estabilidad en el
 		inciso anterior, que es la misma relación que el ejercicio~4 estableció en general.
 
-		\item \textbf{La realización.} La ecuación se transcribe directamente al diagrama de
+		\item La ecuación se transcribe directamente al diagrama de
 		la Figura~\ref{fig:sol_ej7}, sin ninguna manipulación algebraica. La entrada $x[n]$
 		ingresa al sumador con coeficiente $1$, de modo que no lleva escalador. La salida se
 		toma a la derecha del sumador y se deriva hacia un retardo unitario, cuya salida es
@@ -1170,7 +1170,7 @@
 			\label{fig:sol_ej7}
 		\end{figure}
 
-		\item \textbf{Cuándo se vuelve inestable.} Con un coeficiente genérico $a$ en lugar
+		\item Con un coeficiente genérico $a$ en lugar
 		de $0{,}8$, la misma recursión produce $h[n]=a^n u[n]$ y la condición de estabilidad
 		es la convergencia de la serie geométrica $\sum_{n\ge 0}|a|^n$, que converge
 		únicamente cuando $|a|<1$. Por lo tanto
@@ -1212,7 +1212,7 @@
 	\end{consigna}
 
 	\begin{enumerate}
-		\item \textbf{La respuesta al impulso.} La ecuación ya está despejada y se la corre
+		\item La ecuación ya está despejada y se la corre
 		como en el ejercicio anterior, con la diferencia de que cada muestra necesita las dos
 		anteriores en lugar de una sola. El reposo inicial fija $y[-1]=y[-2]=0$ y la entrada
 		es el impulso, que vale $1$ en $n=0$ y cero en el resto,
@@ -1238,7 +1238,7 @@
 		que ninguna potencia sola reproduce la secuencia. Por eso el enunciado pide las
 		muestras y no la forma cerrada.
 
-		\item \textbf{FIR o IIR, y las condiciones iniciales.} La recursión arranca en $n=0$,
+		\item La recursión arranca en $n=0$,
 		y para armar esa primera muestra la ecuación pide $y[-1]$ e $y[-2]$. Necesita
 		entonces \textbf{dos condiciones iniciales}, una por cada muestra pasada de la salida
 		que aparece en la ecuación.
@@ -1250,7 +1250,7 @@
 		decrecen sin llegar a cero, así que el soporte es infinito y el sistema es
 		\textbf{IIR}.
 
-		\item \textbf{La respuesta al escalón.} Ahora la entrada vale $1$ en todo instante
+		\item Ahora la entrada vale $1$ en todo instante
 		$n\ge 0$, no solo en el origen. Corriendo la misma recursión con $y[-1]=y[-2]=0$,
 		\[
 			\begin{aligned}
@@ -1281,7 +1281,7 @@
 		3{,}2044$ ya está cerca del total. La cuenta supone que el límite existe, y el
 		inciso~e) muestra qué ocurre cuando esa suposición no se cumple.
 
-		\item \textbf{La realización.} La ecuación se transcribe al diagrama de la
+		\item La ecuación se transcribe al diagrama de la
 		Figura~\ref{fig:sol_ej8} sin ninguna manipulación algebraica. La entrada $x[n]$ llega
 		al sumador de arriba con coeficiente $1$ y no lleva escalador. La salida se toma a la
 		derecha de ese sumador y se deriva hacia una cascada de dos retardos unitarios, que
@@ -1300,7 +1300,7 @@
 			\label{fig:sol_ej8}
 		\end{figure}
 
-		\item \textbf{El coeficiente cambiado de signo.} Con $+0{,}2$ en lugar de $-0{,}2$ la
+		\item Con $+0{,}2$ en lugar de $-0{,}2$ la
 		ecuación es $y[n]=x[n]+0{,}9\,y[n-1]+0{,}2\,y[n-2]$, y la recursión se corre igual que
 		antes,
 		\[
@@ -1369,9 +1369,7 @@
 	\end{consigna}
 
 	\begin{enumerate}
-		\item \textbf{Las dos respuestas al impulso.}
-
-		\emph{$\mathcal{T}_A$.} La ecuación no es recursiva, así que la respuesta al impulso
+		\item \emph{$\mathcal{T}_A$.} La ecuación no es recursiva, así que la respuesta al impulso
 		es la lista de los coeficientes. Reemplazando la entrada por $\delta[n]$,
 		\[
 			h_A[n] = \delta[n]+\delta[n-1]+\delta[n-2]+\delta[n-3]
@@ -1401,7 +1399,7 @@
 		\emph{en general} un sistema IIR, y este es uno de los casos que quedan fuera de ese
 		``en general''.
 
-		\item \textbf{Son el mismo sistema.} Las dos ecuaciones definen sistemas LIT, y la
+		\item Las dos ecuaciones definen sistemas LIT, y la
 		respuesta al impulso caracteriza por completo a un sistema LIT: dos sistemas con la
 		misma $h[n]$ producen la misma salida ante toda entrada, porque las dos salidas se
 		calculan con la misma convolución $y[n]=x[n]*h[n]$. Como $h_A[n]=h_B[n]$, los dos
@@ -1416,7 +1414,7 @@
 		escribe partiendo del total anterior, agregándole la muestra que ingresa y quitándole
 		la que sale de la ventana. Es la misma cuenta organizada de dos maneras.
 
-		\item \textbf{Las dos realizaciones.} Están en la Figura~\ref{fig:sol_ej9}, y cada
+		\item Están en la Figura~\ref{fig:sol_ej9}, y cada
 		una transcribe su propia ecuación.
 
 		En $\mathcal{T}_A$ la entrada atraviesa una cadena de \textbf{tres retardos}, y los
@@ -1443,7 +1441,7 @@
 			\label{fig:sol_ej9}
 		\end{figure}
 
-		\item \textbf{Ventana de largo $L$.} Las dos ecuaciones se generalizan sin cambiar de
+		\item Las dos ecuaciones se generalizan sin cambiar de
 		forma. La no recursiva suma las $L$ últimas muestras y la recursiva actualiza el
 		total anterior,
 		\[
